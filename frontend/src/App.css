@@ -1,0 +1,110 @@
+@import url("https://use.typekit.net/hso6euf.css");
+/* WorkSans Font */
+
+html,
+#root,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: work-sans, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-family: work-sans, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.flexBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.darkImage {
+  filter: brightness(50%);
+}
+
+.side_btn {
+  padding: 0;
+  background-color: white;
+  text-decoration: none;
+  border: none;
+  position: absolute;
+  top: 40px;
+  left: 30px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: 2px 2px gainsboro;
+}
+
+.sidebar {
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transition: 0.4s ease;
+  color: #202020;
+  height: 100%;
+  width: 285px;
+  z-index: 99;
+}
+
+.slideAnimation {
+  animation: 1s;
+  animation-name: slide;
+}
+@keyframes slide {
+  from {
+    margin-left: -300px;
+  }
+  to {
+    margin-left: 0px;
+  }
+}
+
+.loginRegisterBtn {
+  display: flex;
+  margin-top: 64px;
+  width: 200px;
+  height: 24px;
+  justify-content: space-between;
+  align-items: center;
+  font-family: work-sans, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 57px;
+  border-bottom: 1px solid #9b9b9b;
+}
+
+.header button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}

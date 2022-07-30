@@ -1,0 +1,49 @@
+.memberContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nicknameBtn {
+  display: flex;
+  padding-top: 64px;
+  padding-bottom: 64px;
+  width: 200px;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+  font-family: work-sans, sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  cursor: pointer;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.nicknameContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.nicknameContainer span:nth-child(1) {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.nicknameContainer span:nth-child(2) {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.menuListContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 200px;
+  margin-top: 64px;
+}
+.menuListContainer span {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 35px;
+}
