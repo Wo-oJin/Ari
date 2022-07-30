@@ -1,16 +1,19 @@
 {
-  "name": "react-study",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.27.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "recoil": "^0.6.1",
+    "recoil-persist": "^4.2.0",
+    "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
