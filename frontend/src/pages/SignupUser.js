@@ -49,6 +49,7 @@ const InputContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 83px;
     margin-bottom: 65px;
 `;
 
@@ -71,7 +72,6 @@ const ButtonContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 83px;
 `;
 
 const SignupUser = () => {

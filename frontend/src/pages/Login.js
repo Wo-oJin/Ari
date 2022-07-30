@@ -143,7 +143,7 @@ const Login = () => {
         <ButtonContainer>
           <LoginButton
             type="submit"
-            disabled={!(email !== "" && password !== "")}
+            disabled={email !== "" && password !== "" ? false : true}
           >
             로그인
           </LoginButton>

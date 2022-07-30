@@ -1,0 +1,21 @@
+.kakao span::before {
+  content: "";
+  background: url(../../public/images/Kakao_Logo.png) no-repeat;
+  display: inline-block;
+  height: 28px;
+  width: 28px;
+  position: relative;
+  top: 8px;
+  right: 5px;
+}
+
+.naver span::before {
+  content: "";
+  background: url(../../public/images/Naver_Logo.png) no-repeat;
+  display: inline-block;
+  height: 39px;
+  width: 39px;
+  position: relative;
+  top: 13px;
+  right: 5px;
+}

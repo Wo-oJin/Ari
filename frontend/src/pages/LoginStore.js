@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 import MainButton from '../components/common/Mainbutton';
 import styled from 'styled-components';
 
+const LogoContainer = styled.div`
+    width: 170px;
+    height: 75px;
+    background: #D9D9D9;
+    margin: 100px auto;
+`;
+
 const ButtonContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -12,6 +19,7 @@ const ButtonContainer = styled.div`
 const LoginStore = () => {
     return (
         <>
+            <LogoContainer></LogoContainer>
             <ButtonContainer>
                 <Link to="/login">
                     <MainButton
