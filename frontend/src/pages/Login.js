@@ -5,6 +5,13 @@ import styled from "styled-components";
 import { loginData } from "../services/login/loginData";
 import { emailState, nicknameState } from "../state";
 
+const LogoContainer = styled.div`
+    width: 170px;
+    height: 75px;
+    background: #D9D9D9;
+    margin: 72px auto;
+`;
+
 const Input = styled.input`
   width: 230px;
   line-height: 22px;
@@ -115,6 +122,7 @@ const Login = () => {
 
   return (
     <>
+      <LogoContainer></LogoContainer>
       <form onSubmit={onSubmit}>
         <InputContainer>
           <Formbox>
