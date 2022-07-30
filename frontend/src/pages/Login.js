@@ -158,7 +158,7 @@ const Login = () => {
         </ButtonContainer>
         <SubContainer>
           <SubAlign>
-            <Link to="/">
+            <Link to="/loginRegister">
               <span>이메일 회원가입</span>
             </Link>
             <span>이메일 찾기</span>
