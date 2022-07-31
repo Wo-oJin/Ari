@@ -1,7 +1,9 @@
 package ari.paran.auth;
 
+import ari.paran.domain.MemberRepository;
 import ari.paran.dto.SignupDto;
 import ari.paran.service.AuthService;
+import ari.paran.service.JwtAuthService;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -24,12 +26,14 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class NaverLogin {
 
-    private final static String NAVER_CLIENT_ID = "null";
-    private final static String NAVER_CLIENT_SECRET = "null";
+    private final static String NAVER_CLIENT_ID = "upEgP9hrTubxfYE6rikh";
+    private final static String NAVER_CLIENT_SECRET = "kUoimNInKY";
     private final static String NAVER_REDIRECT_URI = "http://localhost:8080/auth/naver/login"; //Redirect URL
     private final static String RESOURCE_SERVER_URL = "https://openapi.naver.com/v1/nid/me";
     private final static String SESSION_STATE = "naver_oauth_state";
-    private final AuthService authService;
+
+    private final JwtAuthService jwtAuthService;
+    private final MemberRepository memberRepository;
 
     // 코드 발급
     public String getAuthorizationUrl(HttpSession session) {
@@ -90,12 +94,11 @@ public class NaverLogin {
         Map<String, String> profile = new ConcurrentHashMap<>();
 
         profile.put("email", email);
-        log.info("email = {}",email);
 
-        String pw = UUID.randomUUID().toString();
+        String pw = name+gender+email+age;
         profile.put("password", pw);
 
-        if(authService.userEmailCheck(email) == 0) {
+        if(!memberRepository.existsByEmail(email)) {
             SignupDto form = new SignupDto();
             String[] username = email.split("@");
 
@@ -107,7 +110,7 @@ public class NaverLogin {
             form.setAge(age);
             form.setFromOauth(true);
 
-            authService.signup(form);
+            jwtAuthService.signup(form);
         }
 
         return profile;

@@ -1,4 +1,4 @@
-package ari.paran.auth.controller;
+package ari.paran.controller;
 
 import ari.paran.auth.KakaoLogin;
 import ari.paran.auth.NaverLogin;
@@ -22,12 +22,6 @@ public class HomeController {
 
     @Autowired
     private NaverLogin naverLogin;
-
-    @GetMapping({"/", "/home"})
-    public String signin(HttpSession httpSession, Model model){
-
-        return "home";
-    }
 
     @GetMapping("/kakao_login")
     public String kakaoLogin(HttpSession httpSession, Model model){

@@ -1,7 +1,11 @@
 package ari.paran.dto;
 
+import ari.paran.domain.Authority;
+import ari.paran.domain.Member;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -36,5 +40,24 @@ public class SignupDto {
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "휴대폰번호를 확인해 주세요")
     private String phone;
     */
+
+    public boolean getFromAuth(){
+        return this.fromOauth;
+    }
+
+    public Member toMember(PasswordEncoder passwordEncoder) {
+        return Member.builder()
+                .username(username)
+                .email(email)
+                .nickname(nickname)
+                .gender(gender)
+                .password(passwordEncoder.encode(password))
+                .authority(Authority.ROLE_USER)
+                .build();
+    }
+
+    public UsernamePasswordAuthenticationToken toAuthentication() {
+        return new UsernamePasswordAuthenticationToken(email, password);
+    }
 
 }

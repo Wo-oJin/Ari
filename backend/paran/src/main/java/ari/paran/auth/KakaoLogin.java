@@ -1,8 +1,9 @@
 package ari.paran.auth;
 
-import ari.paran.dao.AuthMapper;
+import ari.paran.domain.MemberRepository;
 import ari.paran.dto.SignupDto;
 import ari.paran.service.AuthService;
+import ari.paran.service.JwtAuthService;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -12,6 +13,7 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -25,13 +27,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class KakaoLogin {
 
-    private final static String KAKAO_CLIENT_ID = "null";
-    private final static String KAKAO_CLIENT_SECRET = "null";
+    private final static String KAKAO_CLIENT_ID = "6ba9808d7a83807d2d0ddc97b41c8889";
+    private final static String KAKAO_CLIENT_SECRET = "lNrtpw0rVlsGF3afrTh6xQdROxEp2fhC";
     private final static String KAKAO_REDIRECT_URI = "http://localhost:8080/auth/kakao/login"; //Redirect URL
     private final static String RESOURCE_SERVER_URL = "https://kapi.kakao.com/v2/user/me";
     private final static String SESSION_STATE = "kakao_oauth_state";
 
-    private final AuthService authService;
+    private final JwtAuthService jwtAuthService;
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // 코드 발급
     public String getAuthorizationUrl(HttpSession session) {
@@ -96,10 +100,10 @@ public class KakaoLogin {
 
         profile.put("email", email);
 
-        String pw = UUID.randomUUID().toString();
+        String pw = name+gender+email+age;
         profile.put("password", pw);
 
-        if(authService.userEmailCheck(email) == 0) {
+        if(!memberRepository.existsByEmail(email)) {
             SignupDto form = new SignupDto();
             String[] username = email.split("@");
 
@@ -111,7 +115,7 @@ public class KakaoLogin {
             form.setAge(age);
             form.setFromOauth(true);
 
-            authService.signup(form);
+            jwtAuthService.signup(form);
         }
 
         return profile;

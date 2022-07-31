@@ -1,7 +1,5 @@
 package ari.paran.service;
 
-import ari.paran.dao.AuthMapper;
-import ari.paran.dto.SignupDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,8 +14,6 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthService {
-
-    private final AuthMapper authMapper;
     private Map<String, String> errors;
 
     // 유효성 검사 메서드
@@ -34,15 +30,5 @@ public class AuthService {
         }
 
         return errors;
-    }
-
-    @Transactional
-    public int userEmailCheck(String email){
-        return authMapper.userEmailCheck(email);
-    }
-
-    @Transactional
-    public void signup(SignupDto signupDto) {
-        authMapper.signup(signupDto);
     }
 }
