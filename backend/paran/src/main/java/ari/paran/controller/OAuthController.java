@@ -3,7 +3,7 @@ package ari.paran.controller;
 import ari.paran.auth.KakaoLogin;
 import ari.paran.auth.NaverLogin;
 import ari.paran.dto.MemberRequestDto;
-import ari.paran.dto.TokenDto;
+import ari.paran.dto.response.TokenDto;
 import ari.paran.service.JwtAuthService;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.security.auth.login.LoginContext;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 

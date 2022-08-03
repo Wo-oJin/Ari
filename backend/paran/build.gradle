@@ -30,6 +30,7 @@ dependencies {
 	implementation 'javax.xml.bind:jaxb-api'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'mysql:mysql-connector-java'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'

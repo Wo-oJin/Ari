@@ -3,6 +3,7 @@ package ari.paran.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -23,7 +24,10 @@ public class Member {
     private String nickname;
     private String gender;
 
-    private boolean fromOauth = false;
+    private int age;
+
+    @ColumnDefault("0")
+    private boolean fromOauth;
 
     public void setFromOauth() {
         this.fromOauth = true;
@@ -33,13 +37,14 @@ public class Member {
     private Authority authority;
 
     @Builder
-    public Member(String username, String email, String password, String nickname, String gender, Authority authority) {
+    public Member(String username, String email, String password, String nickname, String gender, int age, Authority authority) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.authority = authority;
         this.nickname = nickname;
         this.gender = gender;
+        this.age = age;
         this.fromOauth = false;
     }
 }

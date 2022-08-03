@@ -1,4 +1,4 @@
-package ari.paran.dto;
+package ari.paran.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package ari.paran.dto;
+package ari.paran.dto.response;
 
 import lombok.*;
 
@@ -12,7 +12,7 @@ public class TokenDto {
     private String grantType;
     private String accessToken;
     private String refreshToken;
-    private Long accessTokenExpiresIn;
+    private Long refreshTokenExpiresIn;
 
 }
 
