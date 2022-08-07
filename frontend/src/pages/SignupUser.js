@@ -79,23 +79,22 @@ const SignupUser = () => {
 
     const navigate = useNavigate();
 
-    // 이메일, 비밀번호, 닉네임, 생년월일
+    // 이메일, 비밀번호, 닉네임, 연령대, 성별
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [nickname, setNickname] = useState("");
-    const [birthday, setBirthday] = useState("");
+    const [age, setAge] = useState("");
+    const [gender, setGender] = useState("");
 
     // 오류 메세지 상태 저장
     const [emailMessage, setEmailMessage] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
     const [nicknameMessage, setNicknameMessage] = useState("");
-    const [birthdayMessage, setBirthdayMessage] = useState("");
 
     // 유효성 검사
     const [isEmail, setIsEmail] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
     const [isNickname, setIsNickname] = useState(false);
-    const [isBirthday, setIsBirthday] = useState(false);
 
     // 이메일
     const onChangeEmail = (e) => {
@@ -128,27 +127,13 @@ const SignupUser = () => {
 
     // 닉네임
     const onChangeNickname = (e) => {
-        setNickname(e.target.value)
+        setNickname(e.target.value);
         if (e.target.value.length < 2 || e.target.value.length > 5) {
             setNicknameMessage('2글자 이상 5글자 미만으로 입력해주세요.');
             setIsNickname(false);
         } else {
-            setNicknameMessage('올바른 닉네임 형식입니다.')
-            setIsNickname(true)
-        }
-    };
-
-    // 생년월일
-    const onChangeBirthday = (e) => {
-        const birthdayRegex = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
-        setBirthday(e.target.value);
-
-        if (!birthdayRegex.test(e.target.value)) {
-            setBirthdayMessage('생년월일 8자리를 입력해주세요.');
-            setIsBirthday(false);
-        } else {
-            setBirthdayMessage('올바른 생년월일 형식입니다.');
-            setIsBirthday(true);
+            setNicknameMessage('올바른 닉네임 형식입니다.');
+            setIsNickname(true);
         }
     };
 
@@ -189,6 +174,16 @@ const SignupUser = () => {
             setIsEmailCheck(true);
         }
     };
+
+    // 연령대 드롭다운
+    const onChangeAge = (e) => {
+        setAge(e.target.value);
+    }
+
+    // 성별 라디오
+    const onChangeGender = (e) => {
+        setGender(e.target.value)
+    };
     
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -197,7 +192,8 @@ const SignupUser = () => {
             email: email,
             password: password,
             nickname: nickname,
-            birthday: birthday,
+            age: age,
+            gender: gender,
         });
         setuNickname(result); // recoil
 
@@ -234,8 +230,10 @@ const SignupUser = () => {
                             autoComplete="off"
                         />
                         {password.length > 0 && <p className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</p>}
+                        {/* 비밀번호 확인 추가하기 */}
                     </Formbox>
                     <Formbox>
+                        {/* 닉네임 중복 확인도 넣어야 할 듯 */}
                         <Intro>닉네임</Intro>
                         <Input
                             name="nickname"
@@ -248,19 +246,22 @@ const SignupUser = () => {
                         />
                         {nickname.length > 0 && <p className={`message ${isNickname ? 'success' : 'error'}`}>{nicknameMessage}</p>}
                     </Formbox>
-                    <Formbox>
-                        <Intro>생년월일</Intro>
-                        <Input
-                            name="birthday"
-                            value={birthday}
-                            type="text"
-                            onChange={onChangeBirthday}
-                            placeholder="생년월일 입력"
-                            required
-                            autoComplete="off"
-                        />
-                        {birthday.length > 0 && <p className={`message ${isBirthday ? 'success' : 'error'}`}>{birthdayMessage}</p>}
-                    </Formbox>
+                    
+                    <Intro>연령대</Intro>
+                    <select onChange={onChangeAge}>
+                        <option value="10대">10대</option>
+                        <option selected value="20대">20대</option>
+                        <option value="30대">30대</option>
+                        <option value="40대">40대</option>
+                        <option value="50대">50대</option>
+                        <option value="60대">60대</option>
+                        <option value="70대">70대 이상</option>
+                    </select>
+
+                    <Intro>성별</Intro>
+                    <input type="radio" name="gender" value="male" onChange={onChangeGender}></input>남성
+                    <input type="radio" name="gender" value="female" onChange={onChangeGender}></input>여성
+
                     <Formbox>
                         <Intro>메일 인증</Intro>
                         <div>
@@ -293,7 +294,8 @@ const SignupUser = () => {
                         color="#FFFFFF"
                         background="#386FFE;"
                         type="submit"
-                        disabled={(isNickname && isEmail && isPassword && isEmailCheck) ? false : true}
+                        // disabled={(isNickname && isEmail && isPassword && isEmailCheck) ? false : true}
+                        disabled={(isNickname && isEmail && isPassword) ? false : true}
                         text="회원가입"
                     />
                 </ButtonContainer>
