@@ -12,6 +12,7 @@ export default function KakaoMapScript() {
 
   //axios로 마커 정보 받아오기
   let data = getMarkerData();
+
   console.log(data);
   //   let data = [
   //     {
