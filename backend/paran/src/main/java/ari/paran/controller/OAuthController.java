@@ -53,8 +53,6 @@ public class OAuthController {
         memberRequestDto.setEmail(apiResult.get("email"));
         memberRequestDto.setPassword(apiResult.get("password"));
 
-        log.info("sdfsdfsdfds");
-
         return ResponseEntity.ok(jwtAuthService.login(memberRequestDto));
     }
 

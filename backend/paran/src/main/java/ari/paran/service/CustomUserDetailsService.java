@@ -31,6 +31,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails createUserDetails(Member member){
+//        if(!member.isActivated){
+//            throw new RuntimeException(member.getUsername() + " -> 활성화되어 있지 않습니다.");
+//        }
+
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getAuthority().toString());
 
         return new User(
