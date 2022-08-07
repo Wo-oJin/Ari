@@ -1,10 +1,13 @@
 import axios from "axios";
 
-export default async function getMarkerData() {
-  try {
-    const data = await axios.get("/map/store");
-    return data;
-  } catch (e) {
-    console.error(e);
-  }
-}
+const getMarkerData = async () => {
+  axios
+    .get("/map/store")
+    .then((response) => {
+      console.log(response.status);
+      console.log(response.data);
+    })
+    .catch((e) => console.log("something went wrong :(", e));
+};
+
+export default getMarkerData;
