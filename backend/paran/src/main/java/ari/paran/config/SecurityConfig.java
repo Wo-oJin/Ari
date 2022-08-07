@@ -4,6 +4,8 @@ import ari.paran.jwt.JwtAccessDeniedHandler;
 import ari.paran.jwt.JwtAuthenticationEntryPoint;
 import ari.paran.jwt.JwtSecurityConfig;
 import ari.paran.jwt.TokenProvider;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import ari.paran.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     private final CustomUserDetailsService loginService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // CSRF 설정 Disable
@@ -47,6 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
+                // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
+                .and()
+                .authorizeRequests()
+                .antMatchers("/auth/**").permitAll()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
