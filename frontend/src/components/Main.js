@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../App.css";
 import Map from "../services/map/Map";
 import SideBar from "./SideBar";
+import StoreModal from "./StoreModal";
 
 const Main = () => {
   const userState = 0; // 0:비회원 1:손님 2:사장님 3:관리자
@@ -22,9 +23,13 @@ const Main = () => {
             src="images/map.jpg"
           ></Map>
         ) : (
-          <Map />
+          <>
+            <Map />
+            <StoreModal />
+          </>
         )}
       </div>
+
       <button className="side_btn" onClick={onClick}>
         <img alt="" src="images/button.png"></img>
       </button>

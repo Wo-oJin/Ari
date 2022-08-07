@@ -58,8 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/map/**").permitAll()
 
-                .anyRequest().authenticated()
                 //권한 테스트
                 .antMatchers("/member/userTest").hasRole("USER")
                 .antMatchers("/member/adminTest").hasRole("ADMIN")

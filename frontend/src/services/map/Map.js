@@ -1,9 +1,25 @@
 import KakaoMapScript from "./KakaoMapScript";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function Map({ onClick, name }) {
+const Map = ({ onClick, name }) => {
+  const [data, setData] = useState("");
   useEffect(() => {
-    KakaoMapScript();
+    const getMarkerData = async () => {
+      axios
+        .get("/map/store")
+        .then((response) => {
+          console.log(response.status);
+          console.log(response.data.storeList);
+          // setData(response.data.storeList);
+          // console.log(data)
+          KakaoMapScript(response.data.storeList);
+        })
+        .catch((e) => console.log("something went wrong :(", e));
+    };
+    getMarkerData().then(()=> {
+      console.log("hi",data)
+    });
   }, []);
 
   return (
@@ -18,3 +34,5 @@ export default function Map({ onClick, name }) {
     ></div>
   );
 }
+
+export default Map;
