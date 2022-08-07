@@ -1,8 +1,7 @@
 package ari.paran.auth;
 
 import ari.paran.domain.MemberRepository;
-import ari.paran.dto.SignupDto;
-import ari.paran.service.AuthService;
+import ari.paran.dto.request.SignupDto;
 import ari.paran.service.JwtAuthService;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -107,7 +106,7 @@ public class NaverLogin {
             form.setNickname(name);
             form.setEmail(email);
             form.setGender(gender);
-            form.setAge(age);
+            form.setAge(Integer.valueOf(age));
             form.setFromOauth(true);
 
             jwtAuthService.signup(form);

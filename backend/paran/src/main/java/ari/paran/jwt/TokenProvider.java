@@ -1,6 +1,6 @@
 package ari.paran.jwt;
 
-import ari.paran.dto.TokenDto;
+import ari.paran.dto.response.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -63,7 +63,7 @@ public class TokenProvider {
         return TokenDto.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
-                .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
+                .refreshTokenExpiresIn(REFRESH_TOKEN_EXPIRE_TIME)
                 .refreshToken(refreshToken)
                 .build();
     }
@@ -94,6 +94,7 @@ public class TokenProvider {
     // 토큰 정보를 검증
     public boolean validateToken(String token) {
         try {
+            log.info("token: {}", token);
             Jwts.parserBuilder()
                     .setSigningKey(private_key)
                     .build()
@@ -121,5 +122,16 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    //accessToken의 남은 유효시간 얻기
+    public Long getExpiration(String accessToken) {
+        Date expiration = Jwts.parserBuilder().setSigningKey(private_key)
+                .build().parseClaimsJws(accessToken).getBody().getExpiration();
+
+        //현재 시간
+        long now = new Date().getTime();
+
+        return (expiration.getTime() - now);
     }
 }
