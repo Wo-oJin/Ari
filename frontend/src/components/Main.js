@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
+import Map from "../services/map/Map";
 import SideBar from "./SideBar";
 
 const Main = () => {
@@ -14,14 +15,14 @@ const Main = () => {
     <>
       <div>
         {isOpend ? (
-          <img
+          <Map
             alt=""
-            className="darkImage"
+            name="darkImage"
             onClick={onClick}
             src="images/map.jpg"
-          ></img>
+          ></Map>
         ) : (
-          <img alt="" src="images/map.jpg"></img>
+          <Map />
         )}
       </div>
       <button className="side_btn" onClick={onClick}>

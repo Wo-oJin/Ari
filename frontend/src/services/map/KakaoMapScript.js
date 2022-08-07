@@ -1,8 +1,12 @@
-import getMarkerData from "./getMarkerData";
+import axios from "axios";
+import { useState } from "react";
+
+
 
 const { kakao } = window;
 
-export default function KakaoMapScript() {
+export default function KakaoMapScript(data) {
+  
   const container = document.getElementById("myMap");
   const options = {
     center: new kakao.maps.LatLng(37.2775551775579, 127.04387899081716),
@@ -10,9 +14,11 @@ export default function KakaoMapScript() {
   };
   const map = new kakao.maps.Map(container, options);
 
+  console.log("kakao",data)
   //axios로 마커 정보 받아오기
-  let data = getMarkerData();
-  console.log(data);
+  
+  
+
   //   let data = [
   //     {
   //       title: "test1",
@@ -25,9 +31,9 @@ export default function KakaoMapScript() {
   //   ];
   let geoCoder = new kakao.maps.services.Geocoder();
 
-  for (let i = 0; i < data.storeList.length; i++) {
+  for (let i = 0; i < data.length; i++) {
     geoCoder.addressSearch(
-      data[0].storeList[i].address,
+      data[i].address,
       function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
@@ -41,7 +47,7 @@ export default function KakaoMapScript() {
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
           var infowindow = new kakao.maps.InfoWindow({
-            content: `<div style="width:150px;text-align:center;padding:6px 0;">${data[0].storeList[i].name}</div>`,
+            content: `<div style="width:150px;text-align:center;padding:6px 0;">${data[i].name}</div>`,
           });
           infowindow.open(map, marker);
 
