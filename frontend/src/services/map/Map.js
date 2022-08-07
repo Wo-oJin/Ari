@@ -1,4 +1,4 @@
-import KakaoMapScript from "../services/map/KakaoMapScript";
+import KakaoMapScript from "./KakaoMapScript";
 import React, { useEffect } from "react";
 
 export default function Map({ onClick, name }) {
