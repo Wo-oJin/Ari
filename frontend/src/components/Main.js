@@ -8,6 +8,7 @@ import StoreModal from "./StoreModal";
 const Main = () => {
   const userState = 0; // 0:비회원 1:손님 2:사장님 3:관리자
   const [isOpend, setIsOpened] = useState(false);
+
   const onClick = () => {
     setIsOpened(!isOpend);
   };
@@ -25,7 +26,6 @@ const Main = () => {
         ) : (
           <>
             <Map />
-            <StoreModal />
           </>
         )}
       </div>

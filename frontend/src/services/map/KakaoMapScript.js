@@ -1,17 +1,14 @@
-import axios from "axios";
-import { useState } from "react";
+import StoreModal from "../../components/StoreModal";
 
 const { kakao } = window;
 
-export default function KakaoMapScript(data) {
+const KakaoMapScript = (data, onMarkerClicked) => {
   const container = document.getElementById("myMap");
   const options = {
     center: new kakao.maps.LatLng(37.2775551775579, 127.04387899081716),
     level: 3,
   };
   const map = new kakao.maps.Map(container, options);
-
-  console.log("kakao", data);
 
   let geoCoder = new kakao.maps.services.Geocoder();
 
@@ -37,6 +34,8 @@ export default function KakaoMapScript(data) {
           // 마커 위에 인포윈도우를 표시합니다
           infowindow.open(map, marker);
           map.setCenter(coords);
+          onMarkerClicked(i);
+          console.log("in kakao", i);
         });
 
         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
@@ -45,4 +44,6 @@ export default function KakaoMapScript(data) {
       }
     });
   }
-}
+};
+
+export default KakaoMapScript;

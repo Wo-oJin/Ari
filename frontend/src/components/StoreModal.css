@@ -9,6 +9,11 @@
   width: 100vw;
   height: 338px;
   z-index: 12;
+  border-radius: 20% 20% 0 0;
+}
+.StoreImg {
+  min-width: 390px;
+  height: 226px;
 }
 .StoreModalContent {
   display: flex;
@@ -17,4 +22,16 @@
   height: 112px;
   justify-content: center;
   align-items: center;
+}
+.StoreModalTitle {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+.Label {
+  background-color: #ffea26;
+  margin-right: 5px;
+  padding: 7px;
+  border-radius: 20%;
+  font-size: 8px;
 }
