@@ -10,10 +10,10 @@ INSERT INTO store (address, store_name, owner_name, phone, private_event, stamp)
 INSERT INTO event (finish_date, start_date, store_name) VALUES ("2022-09-01","2022-08-01", "미스터쉐프");
 INSERT INTO event (finish_date, start_date, store_name) VALUES ("2022-10-01","2022-09-01", "아맛집");
 
-INSERT INTO event_info (event_id, info, event_info_order) VALUES (1, "미스터쉐프 할인 행사1", 1);
-INSERT INTO event_info (event_id, info, event_info_order) VALUES (1, "미스터쉐프 할인 행사2", 2);
-INSERT INTO event_info (event_id, info, event_info_order) VALUES (2, "아맛집 할인 행사1", 3);
-INSERT INTO event_info (event_id, info, event_info_order) VALUES (2, "아맛집 할인 행사2", 4);
+INSERT INTO event_info (event_id, info) VALUES (1, "미스터쉐프 할인 행사1");
+INSERT INTO event_info (event_id, info) VALUES (1, "미스터쉐프 할인 행사2");
+INSERT INTO event_info (event_id, info) VALUES (2, "아맛집 할인 행사1");
+INSERT INTO event_info (event_id, info) VALUES (2, "아맛집 할인 행사2");
 
 INSERT INTO partnership (to_store_name, store_id, from_store_name) VALUES ("아맛집", 1, "미스터쉐프");
 INSERT INTO partnership (to_store_name, store_id, from_store_name) VALUES ("미스터쉐프", 2, "아맛집");

@@ -1,5 +1,6 @@
 package ari.paran.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Event {
     @Column(name = "event_id")
     private long id;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "store_name", referencedColumnName = "store_name")
     private Store name;
@@ -28,9 +30,7 @@ public class Event {
             name = "event_info",
             joinColumns = @JoinColumn(name = "event_id")
     )
-    @OrderColumn
-    @Column(name = "info")
-    private List<String> eventInfo;
+    private List<String> info;
 
     @Column(name = "start_date")
     private LocalDate start;
