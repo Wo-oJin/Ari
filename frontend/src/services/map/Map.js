@@ -2,6 +2,8 @@ import KakaoMapScript from "./KakaoMapScript";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import StoreModal from "../../components/StoreModal";
+
+//테스트 데이터
 const testData = [
   {
     title: "미스터쉐프",
@@ -14,14 +16,19 @@ const testData = [
     eventList: [[true, "미스터쉐프"], true, false],
   },
 ];
+
 const Map = ({ onClick, name }) => {
   //const [data, setData] = useState("");
-  const [isModalOpend, setIsModalOpend] = useState(false);
+  const [isModalOpened, setIsModalOpened] = useState(false);
   const [index, setIndex] = useState(0);
+
+  //마커가 클릭되면 모달 open 상태 바꾸고 클릭된 데이터의 인덱스로 설정
   const onMarkerClicked = (index) => {
-    setIsModalOpend(!isModalOpend);
+    setIsModalOpened(!isModalOpened);
     setIndex(index);
   };
+
+  //처음에 한 번만 데이터를 가져오는 작업 수행
   useEffect(() => {
     const getMarkerData = async () => {
       axios
@@ -45,7 +52,12 @@ const Map = ({ onClick, name }) => {
           height: "100vh",
         }}
       ></div>
-      {isModalOpend ? <StoreModal data={testData[index]} /> : null}
+      {isModalOpened ? (
+        <StoreModal
+          data={testData[index]}
+          setIsmModalOpened={setIsModalOpened}
+        />
+      ) : null}
     </>
   );
 };

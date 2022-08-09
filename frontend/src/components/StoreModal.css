@@ -6,10 +6,24 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transition: 0.4 ease;
   width: 100vw;
   height: 338px;
   z-index: 12;
   border-radius: 20% 20% 0 0;
+}
+
+.SlideAnimation {
+  animation: 1s;
+  animation-name: slide;
+}
+@keyframes slide {
+  from {
+    bottom: -338px;
+  }
+  to {
+    bottom: 0px;
+  }
 }
 .StoreImg {
   min-width: 390px;

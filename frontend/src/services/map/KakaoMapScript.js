@@ -1,5 +1,3 @@
-import StoreModal from "../../components/StoreModal";
-
 const { kakao } = window;
 
 const KakaoMapScript = (data, onMarkerClicked) => {
@@ -33,7 +31,7 @@ const KakaoMapScript = (data, onMarkerClicked) => {
         kakao.maps.event.addListener(marker, "click", function () {
           // 마커 위에 인포윈도우를 표시합니다
           infowindow.open(map, marker);
-          map.setCenter(coords);
+          map.panTo(coords);
           onMarkerClicked(i);
           console.log("in kakao", i);
         });

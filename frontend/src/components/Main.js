@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import "../App.css";
 import Map from "../services/map/Map";
 import SideBar from "./SideBar";
-import StoreModal from "./StoreModal";
 
 const Main = () => {
   const userState = 0; // 0:비회원 1:손님 2:사장님 3:관리자
