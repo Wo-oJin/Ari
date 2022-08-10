@@ -4,7 +4,6 @@ import ari.paran.dto.*;
 import ari.paran.dto.request.LoginDto;
 import ari.paran.dto.request.SignupDto;
 import ari.paran.dto.request.TokenRequestDto;
-import ari.paran.dto.response.TokenDto;
 import ari.paran.service.Helper;
 import ari.paran.service.JwtAuthService;
 import ari.paran.service.MemberService;
@@ -13,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -42,6 +39,15 @@ public class JwtController {
             return response.invalidFields(Helper.refineErrors(errors));
         }
         return memberService.signupOwner(signupDto);
+    }
+
+    @PostMapping("/signup-code")
+    public ResponseEntity<?> authSignupCode(@RequestBody Map<String, String> param, Errors errors) {
+        String code = param.get("code");
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        return memberService.authSignupCode(code);
     }
 
     @PostMapping("/email")
