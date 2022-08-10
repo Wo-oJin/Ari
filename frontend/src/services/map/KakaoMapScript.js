@@ -26,14 +26,16 @@ const KakaoMapScript = (data, onMarkerClicked) => {
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var infowindow = new kakao.maps.InfoWindow({
           content: `<div style="width:150px;text-align:center;padding:6px 0;">${data[i].name}</div>`,
-          removable: true,
+          removable: false,
         });
         kakao.maps.event.addListener(marker, "click", function () {
           // 마커 위에 인포윈도우를 표시합니다
           infowindow.open(map, marker);
           map.panTo(coords);
           onMarkerClicked(i);
-          console.log("in kakao", i);
+          kakao.maps.event.addListener(map, "click", () => {
+            infowindow.close();
+          });
         });
 
         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다

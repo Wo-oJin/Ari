@@ -3,20 +3,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import StoreModal from "../../components/StoreModal";
 
-//테스트 데이터
-const testData = [
-  {
-    title: "미스터쉐프",
-    address: "경기 수원시 팔달구 아주로 47번길 16",
-    eventList: [[true, "아맛집"], false, true],
-  },
-  {
-    title: "아맛집",
-    address: "경기 수원시 팔달구 아주로 13번길 19 골든파크",
-    eventList: [[true, "미스터쉐프"], true, false],
-  },
-];
-
 const Map = ({ onClick, name }) => {
   const [data, setData] = useState(null);
   const [isModalOpened, setIsModalOpened] = useState(false);

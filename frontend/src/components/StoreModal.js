@@ -1,7 +1,12 @@
 import React, { useRef } from "react";
 import { useEffect } from "react";
 import "./StoreModal.css";
-const StoreModal = ({ data, isModalOpend, setIsmModalOpened }) => {
+const StoreModal = ({
+  data,
+  isModalOpend,
+
+  setIsmModalOpened,
+}) => {
   //영역 바깥을 클릭하면 모달창이 꺼지도록 모달 컴포넌트를 ref로 지정
   const modalRef = useRef();
 
@@ -17,7 +22,7 @@ const StoreModal = ({ data, isModalOpend, setIsmModalOpened }) => {
 
   console.log("여긴 모달", data);
 
-  //모달 바깥을 클릭하면 isModalOpened를 false로 지정
+  //모달 바깥을 클릭하면 모달창과 인포박스를 끄기
   const clickModalOutside = (event) => {
     if (modalRef && !modalRef.current.contains(event.target)) {
       setIsmModalOpened(false);
