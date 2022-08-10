@@ -1,9 +1,7 @@
 package ari.paran.service;
 
 import ari.paran.Util.SecurityUtil;
-import ari.paran.domain.Authority;
-import ari.paran.domain.Member;
-import ari.paran.domain.MemberRepository;
+import ari.paran.domain.*;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.dto.request.LoginDto;
@@ -21,7 +19,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +26,7 @@ import org.springframework.util.ObjectUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.Collections;
-import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -39,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final SignupCodeRepository signupCodeRepository;
     private final Response response;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -98,6 +95,18 @@ public class MemberService {
         memberRepository.save(member);
 
         return response.success("회원가입에 성공했습니다.");
+    }
+
+    public ResponseEntity<?> authSignupCode(String code) {
+        Optional<SignupCode> signupCode = signupCodeRepository.findByCode(code);
+
+        if (signupCode.orElse(null) == null || signupCode.get().isActivated() == true) {
+            return response.fail("유효하지 않은 가입코드 입니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        signupCode.get().setActivatedTrue();
+        signupCodeRepository.save(signupCode.get());
+        return response.success();
     }
 
     @Transactional
