@@ -15,6 +15,8 @@ const StoreModal = ({ data, isModalOpend, setIsmModalOpened }) => {
     };
   });
 
+  console.log("여긴 모달", data);
+
   //모달 바깥을 클릭하면 isModalOpened를 false로 지정
   const clickModalOutside = (event) => {
     if (modalRef && !modalRef.current.contains(event.target)) {
@@ -30,23 +32,21 @@ const StoreModal = ({ data, isModalOpend, setIsmModalOpened }) => {
     >
       <img className="StoreImg" src="../images/photo.png" width={"100%"}></img>
       <div className="StoreModalContent">
-        <span className="StoreModalTitle">{data.title}</span>
+        <span className="StoreModalTitle">{data.name}</span>
         <div className="StoreModalLabels">
           <>
-            {data.eventList[0][0] ? (
-              <span className="Label">{data.eventList[0][1]} +제휴 중</span>
+            {data.partnershipList.length > 0 ? (
+              <span className="Label">
+                {data.partnershipList[0].partnerName} +제휴 중
+              </span>
             ) : null}
           </>
           <>
-            {data.eventList[1] ? (
+            {data.private_event ? (
               <span className="Label">이벤트 중</span>
             ) : null}
           </>
-          <>
-            {data.eventList[2] ? (
-              <span className="Label">스탬프 가능</span>
-            ) : null}
-          </>
+          <>{data.stamp ? <span className="Label">스탬프 가능</span> : null}</>
         </div>
       </div>
     </div>

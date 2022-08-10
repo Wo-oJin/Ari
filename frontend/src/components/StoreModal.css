@@ -15,9 +15,9 @@
 
 .SlideAnimation {
   animation: 1s;
-  animation-name: slide;
+  animation-name: slides;
 }
-@keyframes slide {
+@keyframes slides {
   from {
     bottom: -338px;
   }

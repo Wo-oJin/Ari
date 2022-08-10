@@ -76,7 +76,7 @@ button {
   z-index: 99;
 }
 
-.slideAnimation {
+.slideAnimations {
   animation: 1s;
   animation-name: slide;
 }

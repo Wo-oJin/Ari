@@ -57,7 +57,9 @@ const SideBar = ({ userState }) => {
     }
   };
 
-  return <div className="sidebar slideAnimation">{userSideBar(userState)}</div>;
+  return (
+    <div className="sidebar slideAnimations">{userSideBar(userState)}</div>
+  );
 };
 
 export default SideBar;

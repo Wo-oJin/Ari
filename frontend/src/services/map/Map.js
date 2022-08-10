@@ -18,7 +18,7 @@ const testData = [
 ];
 
 const Map = ({ onClick, name }) => {
-  //const [data, setData] = useState("");
+  const [data, setData] = useState(null);
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [index, setIndex] = useState(0);
 
@@ -34,12 +34,14 @@ const Map = ({ onClick, name }) => {
       axios
         .get("/map/store")
         .then((response) => {
+          setData(response.data.storeList);
           KakaoMapScript(response.data.storeList, onMarkerClicked);
         })
         .catch((e) => console.log("something went wrong :(", e));
     };
     getMarkerData();
   }, []);
+  console.log("여긴 Map ", data);
 
   return (
     <>
@@ -53,10 +55,7 @@ const Map = ({ onClick, name }) => {
         }}
       ></div>
       {isModalOpened ? (
-        <StoreModal
-          data={testData[index]}
-          setIsmModalOpened={setIsModalOpened}
-        />
+        <StoreModal data={data[index]} setIsmModalOpened={setIsModalOpened} />
       ) : null}
     </>
   );
