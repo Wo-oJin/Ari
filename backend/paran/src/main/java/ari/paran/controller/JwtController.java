@@ -14,6 +14,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -24,7 +26,7 @@ public class JwtController {
     private final MemberService memberService;
     private final Response response;
 
-    @PostMapping("/signup/user")
+    @PostMapping("/signup-user")
     public ResponseEntity<?> signupUser(@RequestBody SignupDto signupDto, Errors errors) {
         //validation check
         if (errors.hasErrors()) {
@@ -33,13 +35,25 @@ public class JwtController {
         return memberService.signupUser(signupDto);
     }
 
-    @PostMapping("/signup/owner")
+    @PostMapping("/signup-owner")
     public ResponseEntity<?> signupOwner(@RequestBody SignupDto signupDto, Errors errors) {
         //validation check
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
         return memberService.signupOwner(signupDto);
+    }
+
+    @PostMapping("/email")
+    public ResponseEntity<?> sendEmail(@RequestBody Map<String, String> param) {
+        String email = param.get("email");
+        return memberService.sendEmail(email);
+    }
+
+    @PostMapping("email-auth")
+    public ResponseEntity<?> authEmail(@RequestBody Map<String, String> param) {
+        String code = param.get("code");
+        return memberService.authEmail(code);
     }
 
     @PostMapping("/login")
