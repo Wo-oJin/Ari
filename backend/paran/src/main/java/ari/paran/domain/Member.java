@@ -18,13 +18,12 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
     private String password;
     private String email;
     private String nickname;
     private String gender;
 
-    private int age;
+    private String age;
 
     @ColumnDefault("0")
     private boolean fromOauth;
@@ -37,8 +36,7 @@ public class Member {
     private Authority authority;
 
     @Builder
-    public Member(String username, String email, String password, String nickname, String gender, int age, Authority authority) {
-        this.username = username;
+    public Member(String username, String email, String password, String nickname, String gender, String age, Authority authority) {
         this.email = email;
         this.password = password;
         this.authority = authority;
@@ -46,5 +44,9 @@ public class Member {
         this.gender = gender;
         this.age = age;
         this.fromOauth = false;
+    }
+
+    public void changeRole(Authority authority) {
+        this.authority = authority;
     }
 }
