@@ -24,13 +24,22 @@ public class JwtController {
     private final MemberService memberService;
     private final Response response;
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupDto signupDto, Errors errors) {
+    @PostMapping("/signup/user")
+    public ResponseEntity<?> signupUser(@RequestBody SignupDto signupDto, Errors errors) {
         //validation check
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-        return memberService.signUp(signupDto);
+        return memberService.signupUser(signupDto);
+    }
+
+    @PostMapping("/signup/owner")
+    public ResponseEntity<?> signupOwner(@RequestBody SignupDto signupDto, Errors errors) {
+        //validation check
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        return memberService.signupOwner(signupDto);
     }
 
     @PostMapping("/login")

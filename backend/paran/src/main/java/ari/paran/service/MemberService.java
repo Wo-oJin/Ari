@@ -53,13 +53,12 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다"));
     }
 
-    public ResponseEntity<?> signUp(SignupDto signUp) {
+    public ResponseEntity<?> signupUser(SignupDto signUp) {
         if (memberRepository.existsByEmail(signUp.getEmail())) {
             return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
 
         Member member = Member.builder()
-                .username(signUp.getUsername())
                 .email(signUp.getEmail())
                 .password(passwordEncoder.encode(signUp.getPassword()))
                 .email(signUp.getEmail())
@@ -68,6 +67,27 @@ public class MemberService {
                 .age(signUp.getAge())
                 .authority(signUp.getAuthority())
                 .build();
+        memberRepository.save(member);
+
+        return response.success("회원가입에 성공했습니다.");
+    }
+
+    public ResponseEntity<?> signupOwner(SignupDto signUp) {
+        if (memberRepository.existsByEmail(signUp.getEmail())) {
+            return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        Member member = Member.builder()
+                .email(signUp.getEmail())
+                .password(passwordEncoder.encode(signUp.getPassword()))
+                .email(signUp.getEmail())
+                .nickname(signUp.getNickname())
+                .gender(signUp.getGender())
+                .age(signUp.getAge())
+                .authority(signUp.getAuthority())
+                .build();
+
+        member.changeRole(Authority.ROLE_OWNER);
         memberRepository.save(member);
 
         return response.success("회원가입에 성공했습니다.");
