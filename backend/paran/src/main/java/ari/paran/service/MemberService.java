@@ -1,7 +1,12 @@
 package ari.paran.service;
 
 import ari.paran.Util.SecurityUtil;
+<<<<<<< HEAD
 import ari.paran.domain.*;
+=======
+import ari.paran.domain.Member;
+import ari.paran.domain.Repository.MemberRepository;
+>>>>>>> map2
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.dto.request.LoginDto;
@@ -24,9 +29,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+<<<<<<< HEAD
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Optional;
+=======
+>>>>>>> map2
 import java.util.concurrent.TimeUnit;
 
 @Slf4j

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import "../App.css";
+import Map from "../services/map/Map";
 import SideBar from "./SideBar";
 
 const Main = () => {
   const userState = 0; // 0:비회원 1:손님 2:사장님 3:관리자
   const [isOpend, setIsOpened] = useState(false);
+
   const onClick = () => {
     setIsOpened(!isOpend);
   };
@@ -14,16 +15,19 @@ const Main = () => {
     <>
       <div>
         {isOpend ? (
-          <img
+          <Map
             alt=""
-            className="darkImage"
+            name="darkImage"
             onClick={onClick}
             src="images/map.jpg"
-          ></img>
+          ></Map>
         ) : (
-          <img alt="" src="images/map.jpg"></img>
+          <>
+            <Map />
+          </>
         )}
       </div>
+
       <button className="side_btn" onClick={onClick}>
         <img alt="" src="images/button.png"></img>
       </button>

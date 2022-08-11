@@ -58,6 +58,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
+<<<<<<< HEAD
+=======
+                .antMatchers("/map/**").permitAll()
+
+>>>>>>> map2
                 //권한 테스트
                 .antMatchers("/member/userTest").hasRole("USER")
                 .antMatchers("/member/ownerTest").hasRole("OWNER")
