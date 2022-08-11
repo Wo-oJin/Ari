@@ -1,5 +1,6 @@
-package ari.paran.domain;
+package ari.paran.domain.Repository;
 
+import ari.paran.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

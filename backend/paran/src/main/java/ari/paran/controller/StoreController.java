@@ -1,8 +1,8 @@
 package ari.paran.controller;
 
 import ari.paran.domain.Store;
-import ari.paran.domain.StoreRepository;
-import ari.paran.dto.response.StoreListResponseDto;
+import ari.paran.domain.Repository.StoreRepository;
+import ari.paran.dto.response.store.SimpleStoreDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +19,16 @@ public class StoreController {
     private final StoreRepository storeRepository;
 
     @GetMapping("/store")
-    public StoreListResponseDto storeList(){
+    public List<SimpleStoreDto.SimpleStore> storeList(){
+        SimpleStoreDto simpleStoreDto = new SimpleStoreDto();
         List<Store> storeList = storeRepository.findAll();
-        StoreListResponseDto storeListResponseDto = new StoreListResponseDto();
 
-        log.info("파트너 = {}", storeList.get(0).getPartnershipList().get(0).getInfo().toString());
+        for(Store store : storeList){
+            simpleStoreDto.addStore(store);
+        }
 
-        storeListResponseDto.setStoreList(storeList);
-        return storeListResponseDto;
+        return simpleStoreDto.getStoreList();
     }
 }
+
+

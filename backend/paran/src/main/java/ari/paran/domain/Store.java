@@ -47,5 +47,13 @@ public class Store implements Serializable{
     @OneToMany(mappedBy = "name")
     private List<Event> eventList;
 
+    public boolean getPrivateevent(){
+        return this.private_event;
+    }
+
+    public boolean getStamp(){
+        return this.stamp;
+    }
+
 
 }
