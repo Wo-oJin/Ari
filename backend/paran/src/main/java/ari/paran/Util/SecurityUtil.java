@@ -1,7 +1,7 @@
 package ari.paran.Util;
 
 import ari.paran.domain.Member;
-import ari.paran.domain.MemberRepository;
+import ari.paran.domain.Repository.MemberRepository;
 import ari.paran.dto.request.SignupDto;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
