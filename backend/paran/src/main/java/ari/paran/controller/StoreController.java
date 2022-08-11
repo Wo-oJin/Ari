@@ -19,7 +19,7 @@ public class StoreController {
     private final StoreRepository storeRepository;
 
     @GetMapping("/store")
-    public List<SimpleStoreDto.SimpleStore> storeList(){
+    public SimpleStoreDto storeList(){
         SimpleStoreDto simpleStoreDto = new SimpleStoreDto();
         List<Store> storeList = storeRepository.findAll();
 
@@ -27,7 +27,7 @@ public class StoreController {
             simpleStoreDto.addStore(store);
         }
 
-        return simpleStoreDto.getStoreList();
+        return simpleStoreDto;
     }
 }
 
