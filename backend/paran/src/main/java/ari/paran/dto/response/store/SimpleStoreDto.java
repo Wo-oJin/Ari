@@ -23,7 +23,7 @@ public class SimpleStoreDto {
         simpleStore.setName(store.getName());
         simpleStore.setAddress(store.getAddress());
         simpleStore.setPartnershipList(store.getPartnershipList());
-        simpleStore.setPrivate_event(store.getPrivateevent());
+        simpleStore.setPrivate_event(store.getPrivateEvent());
         simpleStore.setStamp(store.getStamp());
 
         storeList.add(simpleStore);

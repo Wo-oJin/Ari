@@ -3,8 +3,10 @@ package ari.paran.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,7 +27,7 @@ public class Store implements Serializable{
     private String name;
 
     @Column
-    private String owner_name;
+    private String ownerName;
 
     @Column
     private String address;
@@ -33,11 +35,21 @@ public class Store implements Serializable{
     @Column(name = "phone")
     private String phoneNumber;
 
+    @ColumnDefault("0")
     @Column
-    private boolean private_event;
+    private boolean privateEvent;
 
+    @ColumnDefault("0")
     @Column
     private boolean stamp;
+
+    @Builder
+    public Store(String name, String ownerName, String address, String phoneNumber) {
+        this.name = name;
+        this.ownerName = ownerName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
 
     @JsonManagedReference
     @OneToMany(mappedBy = "store")
@@ -47,8 +59,8 @@ public class Store implements Serializable{
     @OneToMany(mappedBy = "name")
     private List<Event> eventList;
 
-    public boolean getPrivateevent(){
-        return this.private_event;
+    public boolean getPrivateEvent(){
+        return this.privateEvent;
     }
 
     public boolean getStamp(){

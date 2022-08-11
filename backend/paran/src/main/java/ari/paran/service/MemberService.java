@@ -1,12 +1,11 @@
 package ari.paran.service;
 
 import ari.paran.Util.SecurityUtil;
-<<<<<<< HEAD
 import ari.paran.domain.*;
-=======
 import ari.paran.domain.Member;
 import ari.paran.domain.Repository.MemberRepository;
->>>>>>> map2
+import ari.paran.domain.Repository.SignupCodeRepository;
+import ari.paran.domain.Repository.StoreRepository;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.dto.request.LoginDto;
@@ -29,12 +28,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-<<<<<<< HEAD
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Optional;
-=======
->>>>>>> map2
+
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -44,6 +41,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final SignupCodeRepository signupCodeRepository;
+    private final StoreRepository storeRepository;
     private final Response response;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -101,6 +99,10 @@ public class MemberService {
 
         member.changeRole(Authority.ROLE_OWNER);
         memberRepository.save(member);
+
+
+
+
 
         return response.success("회원가입에 성공했습니다.");
     }
@@ -188,7 +190,7 @@ public class MemberService {
 
         //4. RefreshToken Redis 저장 (expirationTime 설정을 통해 자동 삭제 처리)
         redisTemplate.opsForValue()
-                .set("RT" + authentication.getName(), tokenDto.getRefreshToken(),
+                .set("RT:" + authentication.getName(), tokenDto.getRefreshToken(),
                         tokenDto.getRefreshTokenExpiresIn(), TimeUnit.MILLISECONDS);
 
         return response.success(tokenDto, "로그인에 성공했습니다.", HttpStatus.OK);
@@ -200,11 +202,13 @@ public class MemberService {
             return response.fail("Refresh Token 정보가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        //2. Access Token에서 User email을 가져옴
+        //2. Access Token에서 User id을 가져옴
         Authentication authentication = tokenProvider.getAuthentication(reissue.getAccessToken());
 
-        //3. redis에서 user email을 기반으로 저장된 refresh token 값을 가져옴
+        //3. redis에서 user id를 기반으로 저장된 refresh token 값을 가져옴
         String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + authentication.getName());
+
+        log.info("refresh Token: {}", refreshToken);
 
         //(추가) 로그아웃되어 redis에 refresh Token이 존재하지 않는 경우 처리
         if (ObjectUtils.isEmpty(refreshToken)) {
