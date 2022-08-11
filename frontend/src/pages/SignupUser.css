@@ -1,0 +1,14 @@
+.age {
+    width: 140px;
+    height: 41px;
+    color: #A3A3A3;
+    appearance: none;
+    background: url('../../public/images/selectArrow.png') calc(100% - 15px) center no-repeat;
+    border-radius: 5px;
+    padding: 9px 30px;
+    border: 1px solid #DCDCDC;
+}
+
+.age option {
+    /* padding: 9px 25px; */
+}

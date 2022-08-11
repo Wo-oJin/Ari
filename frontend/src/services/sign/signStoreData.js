@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const POST_BASE_URL = "http://.../signupStore";
+const POST_BASE_URL = "auth/signup-owner";
 
 export const signStoreData = async (inputData) => {
     try {

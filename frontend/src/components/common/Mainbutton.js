@@ -9,15 +9,20 @@ const StyledButton = styled.button`
     border-radius: ${(props) => props.radius};
     color: ${(props) => props.color};
     background: ${(props) => props.disabled ? '#DCDCDC' : props.background};
+    cursor: pointer;
+    &:disabled {
+        cursor: default;
+    }
 `;
 
-const MainButton = ({ radius, color, background, disabled, text }) => {
+const MainButton = ({ radius, color, background, disabled, text, onClick }) => {
     return (
         <StyledButton
             radius={radius}
             color={color}
             background={background}
-            disabled={disabled}>
+            disabled={disabled}
+            onClick={onClick}>
             {text}
         </StyledButton>
     );

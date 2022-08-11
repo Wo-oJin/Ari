@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const POST_BASE_URL = "http://.../signupUser";
+const POST_BASE_URL = "/auth/signup-user";
 
 export const signUserData = async (inputData) => {
     try {
