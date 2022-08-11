@@ -38,6 +38,12 @@ public class MemberController {
         return response.success();
     }
 
+    @GetMapping("/ownerTest")
+    public ResponseEntity<?> ownerTest() {
+        log.info("ROLE_OWNER TEST");
+        return response.success();
+    }
+
     @GetMapping("/adminTest")
     public ResponseEntity<?> adminTest() {
         log.info("ROLE_ADMIN TEST");

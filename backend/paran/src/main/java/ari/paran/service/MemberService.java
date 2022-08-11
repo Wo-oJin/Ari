@@ -1,9 +1,7 @@
 package ari.paran.service;
 
 import ari.paran.Util.SecurityUtil;
-import ari.paran.domain.Authority;
-import ari.paran.domain.Member;
-import ari.paran.domain.MemberRepository;
+import ari.paran.domain.*;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.dto.request.LoginDto;
@@ -12,32 +10,38 @@ import ari.paran.dto.request.TokenRequestDto;
 import ari.paran.dto.response.TokenDto;
 import ari.paran.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Collections;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final SignupCodeRepository signupCodeRepository;
     private final Response response;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
     private final RedisTemplate redisTemplate;
+    private final JavaMailSender javaMailSender;
 
     @Transactional(readOnly = true)
     public MemberResponseDto getMemberInfo(String email){
@@ -53,13 +57,12 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다"));
     }
 
-    public ResponseEntity<?> signUp(SignupDto signUp) {
+    public ResponseEntity<?> signupUser(SignupDto signUp) {
         if (memberRepository.existsByEmail(signUp.getEmail())) {
             return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
 
         Member member = Member.builder()
-                .username(signUp.getUsername())
                 .email(signUp.getEmail())
                 .password(passwordEncoder.encode(signUp.getPassword()))
                 .email(signUp.getEmail())
@@ -71,6 +74,91 @@ public class MemberService {
         memberRepository.save(member);
 
         return response.success("회원가입에 성공했습니다.");
+    }
+
+    public ResponseEntity<?> signupOwner(SignupDto signUp) {
+        if (memberRepository.existsByEmail(signUp.getEmail())) {
+            return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        Member member = Member.builder()
+                .email(signUp.getEmail())
+                .password(passwordEncoder.encode(signUp.getPassword()))
+                .email(signUp.getEmail())
+                .nickname(signUp.getNickname())
+                .gender(signUp.getGender())
+                .age(signUp.getAge())
+                .authority(signUp.getAuthority())
+                .build();
+
+        member.changeRole(Authority.ROLE_OWNER);
+        memberRepository.save(member);
+
+        return response.success("회원가입에 성공했습니다.");
+    }
+
+    public ResponseEntity<?> authSignupCode(String code) {
+        Optional<SignupCode> signupCode = signupCodeRepository.findByCode(code);
+
+        if (signupCode.orElse(null) == null || signupCode.get().isActivated() == true) {
+            return response.fail("유효하지 않은 가입코드 입니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        signupCode.get().setActivatedTrue();
+        signupCodeRepository.save(signupCode.get());
+        return response.success();
+    }
+
+    @Transactional
+    public ResponseEntity<?> sendEmail(String email) {
+        String code = SecurityUtil.generateCode();
+
+        String subject = "Ari 회원가입을 위한 인증번호입니다.";
+        String content="";
+        content+= "<div style='margin:100px;'>";
+        content+= "<h1> 안녕하세요 Ari입니다. </h1>";
+        content+= "<br>";
+        content+= "<p>아래 코드를 회원가입 창으로 돌아가 입력해주세요<p>";
+        content+= "<br>";
+        content+= "<p>감사합니다!<p>";
+        content+= "<br>";
+        content+= "<div align='center' style='border:1px solid black; font-family:verdana';>";
+        content+= "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
+        content+= "<div style='font-size:130%'>";
+        content+= "CODE : <strong>";
+        content+= code+"</strong><div><br/> ";
+        content+= "</div>";
+
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
+            helper.setTo(email);
+            helper.setFrom("aritest0222@gmail.com");
+            helper.setSubject(subject);
+            helper.setText(content, true);
+            javaMailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        // 코드 확인용. 나중에 삭제해야함
+        log.info("인증코드: {}", code);
+
+        redisTemplate.opsForValue()
+                .set(code, email, 5*60000, TimeUnit.MILLISECONDS);
+
+        return response.success();
+    }
+
+    public ResponseEntity<?> authEmail(String code) {
+        String result = (String) redisTemplate.opsForValue().get(code);
+
+        if (result != null) {
+            //이메일 확인용. 나중에 삭제해야함
+            log.info("인증코드 해당 이메일: {}", result);
+            return response.success();
+        }
+
+        return response.fail("인증코드가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<?> login(LoginDto loginDto) {

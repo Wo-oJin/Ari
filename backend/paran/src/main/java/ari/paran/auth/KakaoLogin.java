@@ -111,7 +111,7 @@ public class KakaoLogin {
             form.setNickname(name);
             form.setEmail(email);
             form.setGender(gender);
-            form.setAge(Integer.valueOf(age));
+            form.setAge(age);
             form.setFromOauth(true);
 
             jwtAuthService.signup(form);

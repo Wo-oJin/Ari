@@ -1,19 +1,27 @@
 package ari.paran.Util;
 
+import ari.paran.domain.Member;
+import ari.paran.domain.MemberRepository;
+import ari.paran.dto.request.SignupDto;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
+import java.util.Random;
+
 @Slf4j
 public class SecurityUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityUtil.class);
 
-    private SecurityUtil() {}
 
     public static Long getCurrentMemberEmail(){
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -33,4 +41,19 @@ public class SecurityUtil {
 
         return Long.parseLong(username);
     }
+
+    public static String generateCode() {
+        Random random = new Random();
+        String code = "";
+
+        for(int i = 0;i<3;i++){
+            int index = random.nextInt(25)+65;
+            code+=(char)index;
+        }
+        int numIndex = random.nextInt(9999)+1000;
+        code +=numIndex;
+
+        return code;
+    }
+
 }
