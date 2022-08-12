@@ -26,7 +26,7 @@ const LoginUser = () => {
                         text="이메일로 로그인"
                     />
                 </Link>
-                <div style={{ margin: "240px" }}>
+                <div style={{ marginTop: "240px" }}>
                     <Link to="/signupUser">
                         <MainButton
                             radius="15px"
