@@ -13,6 +13,7 @@ const StyledButton = styled.button`
     &:disabled {
         cursor: default;
     }
+    font-size: 16px;
 `;
 
 const MainButton = ({ radius, color, background, disabled, text, onClick }) => {
