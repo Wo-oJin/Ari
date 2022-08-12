@@ -125,11 +125,11 @@ const SignupUser = () => {
 
     // 이메일로 인증번호 보내고, 보낸 인증번호를 emailCode에 저장
     const sendEmailCode = async () => {
-        alert('전송되었습니다.');
         if (!isEmail) {
             alert('이메일 주소를 입력해주세요.');
             return false;
         }
+        alert('전송되었습니다.');
         try {
             await axios
                 .post("/auth/email", {
@@ -250,7 +250,7 @@ const SignupUser = () => {
                             color="#FFFFFF"
                             background="#386FFE;"
                             onClick={onEmailCheck}
-                            disabled={(certificationNumber.length > 0) ? false : true}
+                            disabled={(certificationNumber.length > 0 && !isEmailCheck) ? false : true}
                             text="인증 확인"
                         />
                         {certificationNumber.length > 0 && <p className={`message ${isEmailCheck ? 'success' : 'error'}`}>{emailCheckMessage}</p>}
