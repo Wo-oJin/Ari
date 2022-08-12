@@ -2,13 +2,7 @@ import { React } from 'react';
 import { Link } from "react-router-dom";
 import MainButton from '../components/common/Mainbutton';
 import styled from 'styled-components';
-
-const LogoContainer = styled.div`
-    width: 170px;
-    height: 75px;
-    background: #D9D9D9;
-    margin: 100px auto;
-`;
+import Header from '../components/Header';
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -19,7 +13,8 @@ const ButtonContainer = styled.div`
 const LoginStore = () => {
     return (
         <>
-            <LogoContainer></LogoContainer>
+            <Header text="로그인/회원가입" link="/loginRegister"></Header>
+            <div className="logoContainer"LogoContainer></div>
             <ButtonContainer>
                 <Link to="/login">
                     <MainButton
@@ -29,7 +24,7 @@ const LoginStore = () => {
                         text="이메일로 로그인"
                     />
                 </Link>
-                <Link to="/signupStore">
+                <Link to="/signupOwner">
                     <MainButton
                         radius="15px"
                         color="#FFFFFF"

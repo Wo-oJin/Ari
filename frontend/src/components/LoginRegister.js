@@ -22,7 +22,7 @@ const LoginRegister = () => {
             <span>제휴 정보를 나누고</span>
             <span>실시간 제휴 현황까지 확인해보세요!</span>
           </div>
-          <Link to="/loginStore">
+          <Link to="/loginOwner">
             <button style={marginTop}>사장님 로그인/회원가입</button>
           </Link>
 
