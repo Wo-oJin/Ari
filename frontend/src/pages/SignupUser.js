@@ -1,60 +1,13 @@
-import { React, useState, useCallback } from 'react';
+import { React, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
-import { useRecoilState } from 'recoil';
+// import { useRecoilState } from 'recoil';
 import MainButton from '../components/common/Mainbutton';
-import { nicknameState } from '../state';
+// import { nicknameState } from '../state';
 import { signUserData } from '../services/sign/signUserData';
 import Header from '../components/Header';
 import "../pages/SignupUser.css";
-
-const Intro = styled.div`
-    color: #3D3D3D;
-`;
-
-const Input = styled.input`
-    width: 230px;
-    line-height: 22px;
-    border: 1px solid #DCDCDC;
-    border-radius: 5px;
-    padding: 9px 14px;
-    &::placeholder {
-        color: #A3A3A3;
-    }
-`;
-
-const CertificationInput = styled.input`
-    width: 142px;
-    line-height: 22px;
-    border: 1px solid #DCDCDC;
-    border-radius: 5px;
-    padding: 9px 14px;
-    margin-bottom: 21px;
-    &::placeholder {
-        color: #A3A3A3;
-    }
-`;
-
-const SendButton = styled.button`
-    width: 76px;
-    line-height: 41px;
-    border-style: initial;
-    border-radius: 5px;
-    color: #FFFFFF;
-    background: #386FFE;
-    margin-bottom: 11px;
-    margin-left: 12px;
-    cursor: pointer;
-`;
-
-const InputContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 83px;
-    margin-bottom: 65px;
-`;
 
 const Formbox = styled.div`
     margin-bottom: 20px;
@@ -71,14 +24,8 @@ const Formbox = styled.div`
     }
 `;
 
-const ButtonContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
 const SignupUser = () => {
-    const [uNickname, setuNickname] = useRecoilState(nicknameState);
+    // const [uNickname, setuNickname] = useRecoilState(nicknameState);
 
     const navigate = useNavigate();
 
@@ -270,10 +217,10 @@ const SignupUser = () => {
         <>
             <Header text="회원가입" link="/"></Header>
             
-                <InputContainer>
+                <div className="inputContainer">
                     <Formbox>
-                        <Intro>이메일 주소</Intro>
-                        <Input
+                        <div className="intro">이메일 주소</div>
+                        <input className="inputBox"
                             name="email"
                             value={email}
                             type="email"
@@ -285,9 +232,9 @@ const SignupUser = () => {
                         {email.length > 0 && <p className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</p>}
                     </Formbox>
                     <Formbox>
-                        <Intro>메일 인증</Intro>
+                        <div className="intro">메일 인증</div>
                         <div>
-                            <CertificationInput
+                            <input className="certificationInput"
                                 name="certificationNumber"
                                 value={certificationNumber}
                                 type="text"
@@ -296,7 +243,7 @@ const SignupUser = () => {
                                 required
                                 autoComplete="off"
                             />
-                            <SendButton onClick={sendEmailCode}>전송</SendButton>
+                            <button className="sendBtn" onClick={sendEmailCode}>전송</button>
                         </div>
                         <MainButton
                             radius="5px"
@@ -309,8 +256,8 @@ const SignupUser = () => {
                         {certificationNumber.length > 0 && <p className={`message ${isEmailCheck ? 'success' : 'error'}`}>{emailCheckMessage}</p>}
                     </Formbox>
                     <Formbox>
-                        <Intro>비밀번호</Intro>
-                        <Input
+                        <div className="intro">비밀번호</div>
+                        <input className="inputBox"
                             name="password"
                             value={password}
                             type="password"
@@ -322,8 +269,8 @@ const SignupUser = () => {
                         {password.length > 0 && <p className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</p>}
                     </Formbox>
                     <Formbox>
-                        <Intro>비밀번호 확인</Intro>
-                        <Input
+                        <div className="intro">비밀번호 확인</div>
+                        <input className="inputBox"
                             name="passwordCheck"
                             value={passwordCheck}
                             type="password"
@@ -336,8 +283,8 @@ const SignupUser = () => {
                     </Formbox>
                     <Formbox>
                         {/* 닉네임 중복 확인도 넣어야 할 듯 */}
-                        <Intro>닉네임</Intro>
-                        <Input
+                        <div className="intro">닉네임</div>
+                        <input className="inputBox"
                             name="nickname"
                             value={nickname}
                             type="text"
@@ -350,11 +297,11 @@ const SignupUser = () => {
                     </Formbox>
                     
                     <Formbox>
-                        <Intro>연령대</Intro>
+                        <div className="intro">연령대</div>
                         <div style={{width: "260px"}}>
-                            <select onChange={onChangeAge} className="age">
+                            <select onChange={onChangeAge} className="select-age">
                                 <option value="10">10대</option>
-                                <option value="20">20대</option>
+                                <option value="20" selected>20대</option>
                                 <option value="30">30대</option>
                                 <option value="40">40대</option>
                                 <option value="50">50대</option>
@@ -364,15 +311,21 @@ const SignupUser = () => {
                         </div>
                     </Formbox>
                     <Formbox>
-                        <Intro>성별</Intro>
-                        <div style={{width: "260px"}}>
-                            <input type="radio" name="gender" value="male" onChange={onChangeGender} required></input>남
-                            <input type="radio" name="gender" value="female" onChange={onChangeGender}></input>여
+                        <div className="intro">성별</div>
+                        <div className="genderContainer">
+                            <div className="gender-wrap">
+                                <input type="radio" name="gender" value="male" id="male" onChange={onChangeGender} required></input>
+                                <label for="male">남</label>
+                            </div>
+                            <div className="gender-wrap">
+                                <input type="radio" name="gender" value="female" id="female" onChange={onChangeGender}></input>
+                                <label for="female">여</label>
+                            </div>
                         </div>
                     </Formbox>
-                </InputContainer>
+                </div>
                 <form onSubmit={onSubmit}>
-                <ButtonContainer>
+                <div className="buttonContainer">
                     <MainButton
                         radius="15px"
                         color="#FFFFFF"
@@ -381,7 +334,7 @@ const SignupUser = () => {
                         disabled={(isNickname && isEmail && isPassword && isPasswordCheck && isEmailCheck) ? false : true}
                         text="회원가입"
                     />
-                </ButtonContainer>
+                </div>
             </form>
         </>
     )
