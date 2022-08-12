@@ -5,3 +5,8 @@
   margin: 100px auto;
 }
 
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
