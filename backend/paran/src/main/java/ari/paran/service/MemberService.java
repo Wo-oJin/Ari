@@ -3,10 +3,10 @@ package ari.paran.service;
 import ari.paran.Util.SecurityUtil;
 import ari.paran.domain.*;
 
-import ari.paran.domain.MemberRepository;
-import ari.paran.domain.Repository.StoreRepository;
 
+import ari.paran.domain.repository.MemberRepository;
 import ari.paran.domain.repository.SignupCodeRepository;
+import ari.paran.domain.repository.StoreRepository;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.dto.request.LoginDto;
