@@ -1,7 +1,7 @@
 package ari.paran.controller;
 
 import ari.paran.domain.Store;
-import ari.paran.domain.Repository.StoreRepository;
+import ari.paran.domain.repository.StoreRepository;
 import ari.paran.dto.response.store.SimpleStoreDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

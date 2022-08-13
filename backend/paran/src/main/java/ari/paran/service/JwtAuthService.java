@@ -1,9 +1,8 @@
 package ari.paran.service;
 
 import ari.paran.domain.Member;
-import ari.paran.domain.Repository.MemberRepository;
+import ari.paran.domain.repository.MemberRepository;
 import ari.paran.dto.*;
-
 import ari.paran.dto.request.SignupDto;
 import ari.paran.dto.request.TokenRequestDto;
 import ari.paran.dto.response.TokenDto;

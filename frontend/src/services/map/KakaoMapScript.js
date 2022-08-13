@@ -46,4 +46,8 @@ const KakaoMapScript = (data, onMarkerClicked) => {
   }
 };
 
+<<<<<<< HEAD
 export default KakaoMapScript;
+=======
+export default KakaoMapScript;
+>>>>>>> upstream/signup

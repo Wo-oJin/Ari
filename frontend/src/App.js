@@ -1,13 +1,14 @@
-import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./components/Main";
 import LoginRegister from "./components/LoginRegister";
 import Login from "./pages/Login";
 import LoginUser from "./pages/LoginUser";
-import LoginStore from "./pages/LoginStore";
+import LoginOwner from "./pages/LoginOwner";
 import SignupUser from "./pages/SignupUser";
-import SignupStore from "./pages/SignupStore";
+import SignupOwner from "./pages/SignupOwner";
+import SignupOwner2 from './pages/SignupOwner2';
 import { RecoilRoot } from "recoil";
+
 function App() {
   return (
     <RecoilRoot>
@@ -17,9 +18,10 @@ function App() {
           <Route path="/loginRegister" element={<LoginRegister />}></Route>
           <Route path="/login" element={<Login />} />
           <Route path="/loginUser" element={<LoginUser />} />
-          <Route path="/loginStore" element={<LoginStore />} />
+          <Route path="/loginOwner" element={<LoginOwner />} />
           <Route path="/signupUser" element={<SignupUser />} />
-          <Route path="/signupStore" element={<SignupStore />} />
+          <Route path="/signupOwner" element={<SignupOwner />} />
+          <Route path="/signupOwner2" element={<SignupOwner2 />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

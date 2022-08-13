@@ -1,17 +1,20 @@
 import axios from "axios";
 
-const POST_BASE_URL = "/auth/signup-user";
+const POST_BASE_URL = "/auth/signup-owner";
 
-export const signUserData = async (inputData) => {
+export const signOwnerData = async (inputData) => {
     try {
         const response = await axios.post(
             POST_BASE_URL,
             {
                 email: inputData.email,
                 password: inputData.password,
-                nickname: inputData.nickname,
                 age: inputData.age,
                 gender: inputData.gender,
+                storeName: inputData.storeName,
+                ownerName: inputData.ownerName,
+                storeAddress: inputData.storeAddress,
+                phoneNumber: inputData.phoneNumber,
             },
             { withCredentials: true },
         );
