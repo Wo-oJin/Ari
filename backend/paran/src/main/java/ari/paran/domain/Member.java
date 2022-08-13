@@ -23,7 +23,7 @@ public class Member {
     private String nickname;
     private String gender;
 
-    private String age;
+    private int age;
 
     @ColumnDefault("0")
     private boolean fromOauth;
@@ -36,7 +36,7 @@ public class Member {
     private Authority authority;
 
     @Builder
-    public Member(String username, String email, String password, String nickname, String gender, String age, Authority authority) {
+    public Member(String username, String email, String password, String nickname, String gender, int age, Authority authority) {
         this.email = email;
         this.password = password;
         this.authority = authority;

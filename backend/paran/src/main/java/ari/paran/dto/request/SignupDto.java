@@ -2,6 +2,7 @@ package ari.paran.dto.request;
 
 import ari.paran.domain.Authority;
 import ari.paran.domain.Member;
+import ari.paran.domain.Store;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +31,7 @@ public class SignupDto {
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z]{2,30}$", message = "숫자 또는 특수문자를 제외한 2자이상 입력해주세요")
     private String nickname;
 
-    private String age;
+    private int age;
 
     private String gender;
 
@@ -38,10 +39,15 @@ public class SignupDto {
 
     private boolean fromOauth = false;
 
-    /*
+    private String storeName;
+    private String ownerName;
+    // 주소 형식 알아야 함
+    private String storeAddress;
+
+
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "휴대폰번호를 확인해 주세요")
-    private String phone;
-    */
+    private String phoneNumber;
+
 
     public boolean getFromAuth(){
         return this.fromOauth;
@@ -49,12 +55,21 @@ public class SignupDto {
 
     public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
-                .username(username)
                 .email(email)
+                .password(passwordEncoder.encode(password))
                 .nickname(nickname)
                 .gender(gender)
-                .password(passwordEncoder.encode(password))
+                .age(age)
                 .authority(Authority.ROLE_USER)
+                .build();
+    }
+
+    public Store toStore() {
+        return Store.builder()
+                .name(storeName)
+                .ownerName(ownerName)
+                .address(storeAddress)
+                .phoneNumber(phoneNumber)
                 .build();
     }
 
