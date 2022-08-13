@@ -9,9 +9,14 @@ export const signOwnerData = async (inputData) => {
             {
                 email: inputData.email,
                 password: inputData.password,
-                nickname: inputData.nickname,
-                storeCode: inputData.storeCode,
-            }
+                age: inputData.age,
+                gender: inputData.gender,
+                storeName: inputData.storeName,
+                ownerName: inputData.ownerName,
+                storeAddress: inputData.storeAddress,
+                phoneNumber: inputData.phoneNumber,
+            },
+            { withCredentials: true },
         );
         return response.data;
     } catch (e) {
