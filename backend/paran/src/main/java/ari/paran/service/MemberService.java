@@ -69,15 +69,7 @@ public class MemberService {
             return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        Member member = Member.builder()
-                .email(signUp.getEmail())
-                .password(passwordEncoder.encode(signUp.getPassword()))
-                .email(signUp.getEmail())
-                .nickname(signUp.getNickname())
-                .gender(signUp.getGender())
-                .age(signUp.getAge())
-                .authority(signUp.getAuthority())
-                .build();
+        Member member = signUp.toMember(passwordEncoder);
         memberRepository.save(member);
 
         return response.success("회원가입에 성공했습니다.");
@@ -88,35 +80,23 @@ public class MemberService {
             return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        Member member = Member.builder()
-                .email(signUp.getEmail())
-                .password(passwordEncoder.encode(signUp.getPassword()))
-                .email(signUp.getEmail())
-                .nickname(signUp.getNickname())
-                .gender(signUp.getGender())
-                .age(signUp.getAge())
-                .authority(signUp.getAuthority())
-                .build();
+        Member member = signUp.toMember(passwordEncoder);
 
         member.changeRole(Authority.ROLE_OWNER);
         memberRepository.save(member);
 
-
-
-
+        Store store = signUp.toStore();
+        storeRepository.save(store);
 
         return response.success("회원가입에 성공했습니다.");
     }
 
     public ResponseEntity<?> authSignupCode(String code) {
-        Optional<SignupCode> signupCode = signupCodeRepository.findByCode(code);
 
-        if (signupCode.orElse(null) == null || signupCode.get().isActivated() == true) {
+        if (signupCodeRepository.existsByCode(code) == false ) {
             return response.fail("유효하지 않은 가입코드 입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        signupCode.get().setActivatedTrue();
-        signupCodeRepository.save(signupCode.get());
         return response.success();
     }
 
