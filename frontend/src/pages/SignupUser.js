@@ -123,7 +123,7 @@ const SignupUser = () => {
     const [emailCheckMessage, setEmailCheckMessage] = useState("");
     const [isEmailCheck, setIsEmailCheck] = useState(false);
 
-    // 이메일로 인증번호 보내고, 보낸 인증번호를 emailCode에 저장
+    // 이메일로 인증번호 보내기
     const sendEmailCode = async () => {
         if (!isEmail) {
             alert('이메일 주소를 입력해주세요.');

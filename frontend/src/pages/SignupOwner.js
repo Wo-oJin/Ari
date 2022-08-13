@@ -1,57 +1,12 @@
 import { React, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
+// import { useRecoilState } from 'recoil';
 import MainButton from '../components/common/Mainbutton';
-import { useRecoilState } from 'recoil';
-import { signStoreData } from '../services/sign/signStoreData';
-import { nicknameState } from '../state';
-
-const Intro = styled.div`
-    color: #3D3D3D;
-`;
-
-const Input = styled.input`
-    width: 230px;
-    line-height: 22px;
-    border: 1px solid #DCDCDC;
-    border-radius: 5px;
-    padding: 9px 14px;
-    &::placeholder {
-        color: #A3A3A3;
-    }
-`;
-
-const CertificationInput = styled.input`
-    width: 142px;
-    line-height: 22px;
-    border: 1px solid #DCDCDC;
-    border-radius: 5px;
-    padding: 9px 14px;
-    margin-bottom: 21px;
-    &::placeholder {
-        color: #A3A3A3;
-    }
-`;
-
-const SendButton = styled.button`
-    width: 76px;
-    line-height: 41px;
-    border-style: initial;
-    border-radius: 5px;
-    color: #FFFFFF;
-    background: #386FFE;
-    margin-bottom: 11px;
-    margin-left: 12px;
-`;
-
-const InputContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 83px;
-    margin-bottom: 65px;
-`;
+// import { nicknameState } from '../state';
+import Header from '../components/Header';
+import "../pages/SignupOwner.css";
 
 const Formbox = styled.div`
     margin-bottom: 20px;
@@ -68,34 +23,27 @@ const Formbox = styled.div`
     }
 `;
 
-const ButtonContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
-const SignupUser = () => {
-    const [uNickname, setuNickname] = useRecoilState(nicknameState);
+const SignupOwner = () => {
+    // const [uNickname, setuNickname] = useRecoilState(nicknameState);
 
     const navigate = useNavigate();
 
-    // 이메일, 비밀번호, 닉네임, 가게 인증 코드
+    // 이메일, 비밀번호, 연령대, 성별
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [nickname, setNickname] = useState("");
-    const [storeCode, setStoreCode] = useState("");
+    const [passwordCheck, setPasswordCheck] = useState("");
+    const [age, setAge] = useState("");
+    const [gender, setGender] = useState("");
 
     // 오류 메세지 상태 저장
     const [emailMessage, setEmailMessage] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
-    const [nicknameMessage, setNicknameMessage] = useState("");
-    const [storeCodeMessage, setStoreCodeMessage] = useState("");
+    const [passwordCheckMessage, setPasswordCheckMessage] = useState("");
 
     // 유효성 검사
     const [isEmail, setIsEmail] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
-    const [isNickname, setIsNickname] = useState(false);
-    const [isStoreCode, setIsStoreCode] = useState(false);
+    const [isPasswordCheck, setIsPasswordCheck] = useState(false);
 
     // 이메일
     const onChangeEmail = (e) => {
@@ -124,23 +72,28 @@ const SignupUser = () => {
             setPasswordMessage('안전한 비밀번호입니다.');
             setIsPassword(true);
         }
-    };
-
-    // 닉네임
-    const onChangeNickname = (e) => {
-        setNickname(e.target.value)
-        if (e.target.value.length < 2 || e.target.value.length > 5) {
-            setNicknameMessage('2글자 이상 5글자 미만으로 입력해주세요.');
-            setIsNickname(false);
+        // password가 바뀔 때에도 passwordCheck와 일치한지 확인
+        if (passwordCheck !== e.target.value) {
+            setPasswordCheckMessage('일치하지 않는 비밀번호입니다.');
+            setIsPasswordCheck(false);
         } else {
-            setNicknameMessage('올바른 닉네임 형식입니다.')
-            setIsNickname(true)
+            setPasswordCheckMessage('비밀번호가 일치합니다.');
+            setIsPasswordCheck(true);
         }
     };
 
-    // 가게 인증 코드
-    const onChangeStoreCode = (e) => {
-        setStoreCode(e.target.value);
+    // 비밀번호 확인
+    const onChangePasswordCheck = (e) => {
+        setPasswordCheck(e.target.value);
+        // console.log("password>>"+password);
+        // console.log("passwordCheck>>"+passwordCheck);
+        if (password !== e.target.value) {
+            setPasswordCheckMessage('일치하지 않는 비밀번호입니다.');
+            setIsPasswordCheck(false);
+        } else {
+            setPasswordCheckMessage('비밀번호가 일치합니다.');
+            setIsPasswordCheck(true);
+        }
     };
 
     // 입력한 인증번호
@@ -151,176 +104,177 @@ const SignupUser = () => {
     };
 
     // 인증번호 확인
-    const [emailCheck, setEmailCheck] = useState("");
     const [emailCheckMessage, setEmailCheckMessage] = useState("");
     const [isEmailCheck, setIsEmailCheck] = useState(false);
 
-    // 이메일로 인증번호 보내고, 보낸 인증번호를 emailCheck에 저장
-    const getEmailCheck = async () => {
+    // 이메일로 인증번호 보내기
+    const sendEmailCode = async () => {
+        if (!isEmail) {
+            alert('이메일 주소를 입력해주세요.');
+            return false;
+        }
+        alert('전송되었습니다.');
         try {
             await axios
-                .get(`http://.../signup/certification?email=${email}`)
-                .then((res) => {
-                    console.log(res.data);
-                    setEmailCheck(res.data);
+                .post("/auth/email", {
+                    email: email,
                 });
         } catch (e) {
             console.log(e);
         }
     }
 
-    const onEmailCheck = () => {
-        console.log(certificationNumber);
-        console.log(emailCheck);
-        if (certificationNumber !== emailCheck) {
-            setEmailCheckMessage('잘못된 인증번호입니다.');
-            setIsEmailCheck(false);
-        } else {
-            setEmailCheckMessage('인증에 성공했습니다.');
-            setIsEmailCheck(true);
-        }
-    };
-
-    // 존재하는 가게 인증 번호인지 확인, isStoreCode에 true/false 저장
-    const getStoreCode = async (storeCode) => {
+    // 인증 확인 눌러서 post 요청 보내면 일치할 경우 200, 이외의 경우에는 400을 응답
+    const onEmailCheck = async () => {
         try {
             await axios
-                .get(`http://.../storeCode?${storeCode}`)
-                .then((res) => {
-                    console.log(res.data);
-                    setIsStoreCode(res.data);
+                .post("/auth/email-auth", {
+                    "code": certificationNumber,
                 })
+                .then((res) => {
+                    if (res.data.state === 200) {
+                        // console.log(res.data.state);
+                        setEmailCheckMessage('인증에 성공했습니다.');
+                        setIsEmailCheck(true);
+                    } else {
+                        // console.log(res.data.state);
+                        setEmailCheckMessage('잘못된 인증번호입니다.');
+                        setIsEmailCheck(false);
+                    }
+                });
         } catch (e) {
             console.log(e);
         }
+    };
+
+    // 연령대 드롭다운
+    const onChangeAge = (e) => {
+        setAge(e.target.value);
     }
 
-    const checkStoreCode = () => {
-        console.log(storeCode);
-        console.log(isStoreCode);
-        getStoreCode(storeCode);
-
-        if (!isStoreCode) {
-            setStoreCodeMessage('잘못된 가게 인증 번호입니다.');
-            setIsStoreCode(false);
-        } else {
-            setStoreCodeMessage('인증에 성공했습니다.');
-            setIsStoreCode(true);
-        }
+    // 성별 라디오
+    const onChangeGender = (e) => {
+        setGender(e.target.value)
     };
-    
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        checkStoreCode(); // 가게 인증 번호 확인
-        if (!isStoreCode) return;
 
-        const result = await signStoreData({
-            email: email,
-            password: password,
-            nickname: nickname,
-            storeCode: storeCode,
-        });
-        setuNickname(result); // recoil
-
-        alert("회원가입이 완료되었습니다.");
-        navigate("/login"); // 로그인 공통 페이지로 이동
+    const data = {
+        email: email,
+        password: password,
+        age: age,
+        gender: gender,
     }
 
     return (
         <>
-            <form onSubmit={onSubmit}>
-                <InputContainer>
-                    <Formbox>
-                        <Intro>이메일 주소</Intro>
-                        <Input
-                            name="email"
-                            value={email}
-                            type="email"
-                            onChange={onChangeEmail}
-                            placeholder="이메일 주소 입력"
-                            required
-                            autoComplete="off"
-                        />
-                        {email.length > 0 && <p className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</p>}
-                    </Formbox>
-                    <Formbox>
-                        <Intro>비밀번호</Intro>
-                        <Input
-                            name="password"
-                            value={password}
-                            type="password"
-                            onChange={onChangePassword}
-                            placeholder="비밀번호 입력"
-                            required
-                            autoComplete="off"
-                        />
-                        {password.length > 0 && <p className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</p>}
-                    </Formbox>
-                    <Formbox>
-                        <Intro>닉네임</Intro>
-                        <Input
-                            name="nickname"
-                            value={nickname}
+            <Header text="회원가입" link="/loginOwner"></Header>
+            <div className="inputContainer">
+                <Formbox>
+                    <div className="intro">이메일 주소</div>
+                    <input className="inputBox"
+                        name="email"
+                        value={email}
+                        type="email"
+                        onChange={onChangeEmail}
+                        placeholder="이메일 주소 입력"
+                        required
+                        autoComplete="off"
+                    />
+                    {email.length > 0 && <p className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</p>}
+                </Formbox>
+                <Formbox>
+                    <div className="intro">메일 인증</div>
+                    <div>
+                        <input className="certificationInput"
+                            name="certificationNumber"
+                            value={certificationNumber}
                             type="text"
-                            onChange={onChangeNickname}
-                            placeholder="닉네임 입력"
+                            onChange={onChangeCertificationNumber}
+                            placeholder="인증번호 입력"
                             required
                             autoComplete="off"
                         />
-                        {nickname.length > 0 && <p className={`message ${isNickname ? 'success' : 'error'}`}>{nicknameMessage}</p>}
-                    </Formbox>
-                    <Formbox>
-                        <Intro>가게 인증</Intro>
-                        <Input
-                            name="storeCode"
-                            value={storeCode}
-                            type="text"
-                            onChange={onChangeStoreCode}
-                            placeholder="가게 인증 코드 입력"
-                            required
-                            autoComplete="off"
-                        />
-                        {storeCode.length > 0 && <p className={`message ${isStoreCode ? 'success' : 'error'}`}>{storeCodeMessage}</p>}
-                    </Formbox>
-                    <Formbox>
-                        <Intro>메일 인증</Intro>
-                        <div>
-                            <CertificationInput
-                                name="certificationNumber"
-                                value={certificationNumber}
-                                type="text"
-                                onChange={onChangeCertificationNumber}
-                                placeholder="인증번호 입력"
-                                required
-                                autoComplete="off"
-                            />
-                            <SendButton type="button" onClick={getEmailCheck}>전송</SendButton>
+                        <button className="sendBtn" onClick={sendEmailCode}>전송</button>
+                    </div>
+                    <MainButton
+                        radius="5px"
+                        color="#FFFFFF"
+                        background="#386FFE;"
+                        onClick={onEmailCheck}
+                        disabled={(certificationNumber.length > 0 && !isEmailCheck) ? false : true}
+                        text="인증 확인"
+                    />
+                    {certificationNumber.length > 0 && <p className={`message ${isEmailCheck ? 'success' : 'error'}`}>{emailCheckMessage}</p>}
+                </Formbox>
+                <Formbox>
+                    <div className="intro">비밀번호</div>
+                    <input className="inputBox"
+                        name="password"
+                        value={password}
+                        type="password"
+                        onChange={onChangePassword}
+                        placeholder="비밀번호 입력"
+                        required
+                        autoComplete="off"
+                    />
+                    {password.length > 0 && <p className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</p>}
+                </Formbox>
+                <Formbox>
+                    <div className="intro">비밀번호 확인</div>
+                    <input className="inputBox"
+                        name="passwordCheck"
+                        value={passwordCheck}
+                        type="password"
+                        onChange={onChangePasswordCheck}
+                        placeholder="비밀번호 재입력"
+                        required
+                        autoComplete="off"
+                    />
+                    {passwordCheck.length > 0 && <p className={`message ${isPasswordCheck ? 'success' : 'error'}`}>{passwordCheckMessage}</p>}
+                </Formbox>
+                
+                <Formbox>
+                    <div className="intro">연령대</div>
+                    <div style={{width: "260px"}}>
+                        <select onChange={onChangeAge} className="select-age">
+                            <option value="10">10대</option>
+                            <option value="20" selected>20대</option>
+                            <option value="30">30대</option>
+                            <option value="40">40대</option>
+                            <option value="50">50대</option>
+                            <option value="60">60대</option>
+                            <option value="70">70대 이상</option>
+                        </select>
+                    </div>
+                </Formbox>
+                <Formbox>
+                    <div className="intro">성별</div>
+                    <div className="genderContainer">
+                        <div className="gender-wrap">
+                            <input type="radio" name="gender" value="male" id="male" onChange={onChangeGender} required></input>
+                            <label for="male">남</label>
                         </div>
-                        <MainButton
-                            radius="5px"
-                            color="#FFFFFF"
-                            background="#386FFE;"
-                            type="button"
-                            onClick={onEmailCheck}
-                            disabled={(certificationNumber.length > 0) ? false : true}
-                            text="인증 확인"
-                        />
-                        {certificationNumber.length > 0 && <p className={`message ${isEmailCheck ? 'success' : 'error'}`}>{emailCheckMessage}</p>}
-                    </Formbox>
-                </InputContainer>
-                <ButtonContainer>
+                        <div className="gender-wrap">
+                            <input type="radio" name="gender" value="female" id="female" onChange={onChangeGender}></input>
+                            <label for="female">여</label>
+                        </div>
+                    </div>
+                </Formbox>
+            </div>
+            <Link to="/signupOwner2" state={{ data: data }}>
+                <div className="buttonContainer">
                     <MainButton
                         radius="15px"
                         color="#FFFFFF"
                         background="#386FFE;"
                         type="submit"
-                        disabled={(isNickname && isEmail && isPassword && isEmailCheck) ? false : true}
-                        text="회원가입"
+                        // disabled={(isEmail && isPassword && isPasswordCheck && isEmailCheck) ? false : true}
+                        disabled={(isEmail && isPassword && isPasswordCheck) ? false : true}
+                        text="다음"
                     />
-                </ButtonContainer>
-            </form>
+                </div>
+            </Link>
         </>
     )
 }
 
-export default SignupUser;
+export default SignupOwner;

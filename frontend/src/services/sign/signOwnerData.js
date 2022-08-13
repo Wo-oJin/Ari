@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const POST_BASE_URL = "auth/signup-owner";
+const POST_BASE_URL = "/auth/signup-owner";
 
-export const signStoreData = async (inputData) => {
+export const signOwnerData = async (inputData) => {
     try {
         const response = await axios.post(
             POST_BASE_URL,
