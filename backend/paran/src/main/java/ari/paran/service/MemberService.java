@@ -1,9 +1,8 @@
 package ari.paran.service;
 
 import ari.paran.Util.SecurityUtil;
-import ari.paran.domain.Authority;
 import ari.paran.domain.Member;
-import ari.paran.domain.MemberRepository;
+import ari.paran.domain.Repository.MemberRepository;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.dto.request.LoginDto;
@@ -18,13 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 
