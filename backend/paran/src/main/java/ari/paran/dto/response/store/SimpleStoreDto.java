@@ -1,7 +1,7 @@
 package ari.paran.dto.response.store;
 
 import ari.paran.domain.Partnership;
-import ari.paran.domain.Store;
+import ari.paran.domain.store.Store;
 import lombok.Data;
 import lombok.Getter;
 

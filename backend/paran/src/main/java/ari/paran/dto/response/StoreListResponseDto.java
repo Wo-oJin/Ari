@@ -1,6 +1,6 @@
 package ari.paran.dto.response;
 
-import ari.paran.domain.Store;
+import ari.paran.domain.store.Store;
 import lombok.Data;
 
 import java.util.*;

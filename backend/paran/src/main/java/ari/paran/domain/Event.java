@@ -1,5 +1,6 @@
 package ari.paran.domain;
 
+import ari.paran.domain.store.Store;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
