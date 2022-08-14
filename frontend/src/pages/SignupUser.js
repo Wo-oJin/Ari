@@ -337,7 +337,8 @@ const SignupUser = () => {
                         color="#FFFFFF"
                         background="#386FFE;"
                         type="submit"
-                        disabled={(isNickname && isEmail && isPassword && isPasswordCheck && isEmailCheck) ? false : true}
+                        // disabled={(isNickname && isEmail && isPassword && isPasswordCheck && isEmailCheck) ? false : true}
+                        disabled={(isNickname && isEmail && isPassword && isPasswordCheck) ? false : true}
                         text="회원가입"
                     />
                 </div>
