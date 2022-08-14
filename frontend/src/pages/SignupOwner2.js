@@ -29,16 +29,14 @@ const SignupOwner2 = () => {
     // const [uNickname, setuNickname] = useRecoilState(nicknameState);
     const location = useLocation();
     const data = location.state.data; // SignOwner.js에서 Link로 보낸 데이터 받아오기
-    console.log(data);
-    console.log(JSON.stringify(data));
+
     const navigate = useNavigate();
 
     // 가게 이름, 사장님 성함, 가게 주소, 상세 주소, 연락처, 가게 인증
     const [storeName, setStoreName] = useState("");
     const [ownerName, setOwnerName] = useState("");
-    const [storeAddress, setStoreAddress] = useState(""); // 우편번호,도로명주소,상세주소
     const [storeRoadAddress, setStoreRoadAddress] = useState(""); // 도로명주소
-    const [storeAddressDetail, setStoreAddressDetail] = useState(""); // 상세주소
+    const [storeDetailAddress, setStoreDetailAddress] = useState(""); // 상세주소
     const [phoneNumber, setPhoneNumber] = useState("");
 
     // 오류 메세지 상태 저장
@@ -82,14 +80,13 @@ const SignupOwner2 = () => {
           fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
         }
     
-        setStoreAddress(`${data.zonecode}/${fullAddress}`); // 우편번호/도로명주소
         setStoreRoadAddress(fullAddress); // 도로명주소
         setIsOpenPost(false);
       };
 
     // 상세 주소
-    const onChangeStoreAddressDetail = (e) => {
-        setStoreAddressDetail(e.target.value);
+    const onChangeStoreDetailAddress = (e) => {
+        setStoreDetailAddress(e.target.value);
     }
 
     // 연락처
@@ -142,9 +139,7 @@ const SignupOwner2 = () => {
     
     const onSubmit = async (e) => {
         e.preventDefault();
-        const address = `${storeAddress}/${storeAddressDetail}`;
-        setStoreAddress(address); // 우편번호/도로명주소/상세주소
-        
+
         const result = await signOwnerData({
             email: data.email,
             password: data.password,
@@ -152,14 +147,21 @@ const SignupOwner2 = () => {
             gender: data.gender,
             storeName: storeName,
             ownerName: ownerName,
-            storeAddress: storeAddress,
+            storeRoadAddress: storeRoadAddress,
+            storeDetailAddress: storeDetailAddress,
             phoneNumber: phoneNumber,
         });
 
         // setuNickname(result); // recoil
-
-        alert("회원가입이 완료되었습니다.");
-        navigate("/login"); // 로그인 공통 페이지로 이동
+        console.log(JSON.stringify(result));
+        if (result.result === "fail") {
+            alert(result.massage);
+            navigate("/loginRegister"); // 로그인/회원가입 처음 페이지로 이동
+        } else {
+            alert(result.massage);
+            navigate("/login"); // 로그인 공통 페이지로 이동
+        }
+        
     }
 
     return (
@@ -207,10 +209,10 @@ const SignupOwner2 = () => {
                     {isOpenPost ? (<DaumPostcode className="daumPost" autoClose onComplete={onCompletePost} />) : null}
                     <div className="detailAddress">
                         <input className="inputBox"
-                            name="storeAddressDetail"
-                            value={storeAddressDetail}
+                            name="storeDetailAddress"
+                            value={storeDetailAddress}
                             type="text"
-                            onChange={onChangeStoreAddressDetail}
+                            onChange={onChangeStoreDetailAddress}
                             placeholder="상세 주소 입력"
                             required
                             autoComplete="off"

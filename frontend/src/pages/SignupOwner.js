@@ -235,9 +235,9 @@ const SignupOwner = () => {
                 <Formbox>
                     <div className="intro">연령대</div>
                     <div style={{width: "260px"}}>
-                        <select onChange={onChangeAge} className="select-age">
+                        <select onChange={onChangeAge} className="select-age" defaultValue="20">
                             <option value="10">10대</option>
-                            <option value="20" selected>20대</option>
+                            <option value="20">20대</option>
                             <option value="30">30대</option>
                             <option value="40">40대</option>
                             <option value="50">50대</option>
@@ -250,12 +250,12 @@ const SignupOwner = () => {
                     <div className="intro">성별</div>
                     <div className="genderContainer">
                         <div className="gender-wrap">
-                            <input type="radio" name="gender" value="male" id="male" onChange={onChangeGender} required></input>
-                            <label for="male">남</label>
+                            <input type="radio" name="gender" value="M" id="male" onChange={onChangeGender} required></input>
+                            <label htmlFor="male">남</label>
                         </div>
                         <div className="gender-wrap">
-                            <input type="radio" name="gender" value="female" id="female" onChange={onChangeGender}></input>
-                            <label for="female">여</label>
+                            <input type="radio" name="gender" value="F" id="female" onChange={onChangeGender}></input>
+                            <label htmlFor="female">여</label>
                         </div>
                     </div>
                 </Formbox>
