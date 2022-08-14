@@ -106,17 +106,12 @@ const Login = () => {
       email: email,
       password: password,
     });
-
-    if (result === "") {
-      // 해당하는 회원 정보가 없는 경우 로그인 실패
-      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+    // console.log("로그인>>"+JSON.stringify(result));
+    if (result.result === "fail") {
+        alert(result.massage);
     } else {
-      // 로그인 성공
-      setuEmail(result.email); // recoil
-      setuNickname(result.nickname); // recoil
-
-      alert("로그인이 완료되었습니다.");
-      navigate("/main"); // 메인 페이지로 이동
+        alert(result.massage);
+        navigate("/"); // 메인 페이지로 이동
     }
   };
 
