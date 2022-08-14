@@ -2,7 +2,6 @@ package ari.paran.domain.store;
 
 import ari.paran.domain.Event;
 import ari.paran.domain.Partnership;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,7 +36,7 @@ public class Store implements Serializable{
 
     @Embedded
     @Column(name = "img")
-    private ImgFiles imgFiles;
+    private ImgFile imgFile;
 
     @Column
     private boolean private_event;
@@ -60,6 +59,7 @@ public class Store implements Serializable{
     public boolean getStamp(){
         return this.stamp;
     }
+
 
 
 }

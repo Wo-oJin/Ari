@@ -1,23 +1,22 @@
 package ari.paran.domain.store;
 
-import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @Embeddable
-public class ImgFiles {
+public class ImgFile {
 
     String filename;
-    String fileOriName;
     String fileurl;
 
-    public ImgFiles(){};
+    public ImgFile(){};
 
-    public ImgFiles(String filename, String fileOriName, String fileurl){
+    public ImgFile(String filename, String fileurl){
         this.filename = filename;
-        this.fileOriName = fileOriName;
         this.fileurl = fileurl;
     }
 
