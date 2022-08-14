@@ -185,17 +185,59 @@ const SignupUser = () => {
         setGender(e.target.value)
     };
     
-    const onSubmit = async (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
 
-        const result = await signUserData({
-            email: email,
-            password: password,
-            nickname: nickname,
-            age: age,
-            gender: gender,
-        });
-        setuNickname(result); // recoil
+        // const result = await signUserData({
+        //     email: email,
+        //     password: password,
+        //     nickname: nickname,
+        //     age: age,
+        //     gender: gender,
+        // });
+
+        // const result = async () => {
+        //     try {
+        //         const response = await axios.post(
+        //             "POST_BASE_URL",
+        //             {
+        //                 email: email,
+        //                 password: password,
+        //                 nickname: nickname,
+        //                 age: age,
+        //                 gender: gender,
+        //             },
+        //             { withCredentials: true },
+        //         );
+        //         return response.data;
+        //     } catch (e) {
+        //         console.error(e);
+        //     }
+        // }
+        fetch("https://api주소", { // signup User api 주소
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                nickname: nickname,
+                age: age,
+                gender: gender,
+            }),
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                return response.json()
+            } else {
+                console.error(`HTTP error! status: ${response.status}`)
+            }
+        })
+        .then((jsonData) => console.log(jsonData))
+        .catch((error) => console.log(error));
+
+        // setuNickname(result); // recoil
 
         alert("회원가입이 완료되었습니다.");
         navigate("/login"); // 로그인 공통 페이지로 이동
@@ -247,20 +289,27 @@ const SignupUser = () => {
                         {nickname.length > 0 && <p className={`message ${isNickname ? 'success' : 'error'}`}>{nicknameMessage}</p>}
                     </Formbox>
                     
-                    <Intro>연령대</Intro>
-                    <select onChange={onChangeAge}>
-                        <option value="10대">10대</option>
-                        <option selected value="20대">20대</option>
-                        <option value="30대">30대</option>
-                        <option value="40대">40대</option>
-                        <option value="50대">50대</option>
-                        <option value="60대">60대</option>
-                        <option value="70대">70대 이상</option>
-                    </select>
-
-                    <Intro>성별</Intro>
-                    <input type="radio" name="gender" value="male" onChange={onChangeGender}></input>남성
-                    <input type="radio" name="gender" value="female" onChange={onChangeGender}></input>여성
+                    <Formbox>
+                        <div style={{display: "flex", justifyContent: "space-between", width: "260px"}}>
+                            <div>
+                                <Intro>연령대</Intro>
+                                <select onChange={onChangeAge}>
+                                    <option value="10대">10대</option>
+                                    <option selected value="20대">20대</option>
+                                    <option value="30대">30대</option>
+                                    <option value="40대">40대</option>
+                                    <option value="50대">50대</option>
+                                    <option value="60대">60대</option>
+                                    <option value="70대">70대 이상</option>
+                                </select>
+                            </div>
+                            <div>
+                                <Intro>성별</Intro>
+                                <input type="radio" name="gender" value="male" onChange={onChangeGender} required></input>남성
+                                <input type="radio" name="gender" value="female" onChange={onChangeGender}></input>여성
+                            </div>
+                        </div>
+                    </Formbox>
 
                     <Formbox>
                         <Intro>메일 인증</Intro>
