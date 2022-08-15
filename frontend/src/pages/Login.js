@@ -52,10 +52,10 @@ const Login = () => {
       email: email,
       password: password,
     });
-    // console.log("로그인>>"+JSON.stringify(result));
-    if (result.result === "fail") {
+    // console.log("로그인>>"+JSON.stringify(result.status));
+    if (result.result === "fail") { // 로그인 실패
         alert(result.massage);
-    } else {
+    } else { // 로그인 성공
         alert(result.massage);
         navigate("/"); // 메인 페이지로 이동
     }
