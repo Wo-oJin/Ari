@@ -34,7 +34,7 @@ const SignupUser = () => {
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
     const [nickname, setNickname] = useState("");
-    const [age, setAge] = useState("");
+    const [age, setAge] = useState("20");
     const [gender, setGender] = useState("");
 
     // 오류 메세지 상태 저장
@@ -209,7 +209,7 @@ const SignupUser = () => {
 
         // setuNickname(result); // recoil
 
-        console.log(JSON.stringify(result));
+        // console.log(JSON.stringify(result));
         if (result.result === "fail") {
             alert(result.massage);
             navigate("/loginRegister"); // 로그인/회원가입 처음 페이지로 이동

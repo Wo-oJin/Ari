@@ -32,7 +32,7 @@ const SignupOwner = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
-    const [age, setAge] = useState("");
+    const [age, setAge] = useState("20");
     const [gender, setGender] = useState("");
 
     // 오류 메세지 상태 저장
