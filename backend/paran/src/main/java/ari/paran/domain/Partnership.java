@@ -26,6 +26,8 @@ public class Partnership {
     @Column(name = "to_store_name")
     private String partnerName;
 
+    private transient String partnerLocation;
+
     @ElementCollection
     @CollectionTable(
             name = "partnership_info",

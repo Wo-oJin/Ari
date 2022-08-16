@@ -37,6 +37,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	implementation 'org.springframework.boot:spring-boot-devtools'
 
 	implementation 'org.apache.commons:commons-lang3:3.11'
 	implementation group: 'commons-codec', name: 'commons-codec', version: '1.9'
