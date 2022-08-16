@@ -1,0 +1,43 @@
+package ari.paran.controller;
+
+import ari.paran.domain.store.Store;
+import ari.paran.service.store.FileService;
+import ari.paran.service.store.StoreService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+@RequiredArgsConstructor
+@Controller
+@RequestMapping("/image")
+public class ImageController {
+
+    private final StoreService storeService;
+    private final FileService fileService;
+
+    @GetMapping("/upload")
+    public String uploadImage(){
+        return "upload";
+    }
+
+    @GetMapping("/get/{store_id}")
+    public String getImage(@PathVariable Long store_id, Model model) throws IOException {
+        Store store = storeService.findStore(store_id);
+        String fileImg = fileService.getImage(store);
+
+        model.addAttribute("storeImg", fileImg);
+        return "imageCheck";
+    }
+
+    @PostMapping("/upload")
+    public String saveImage(HttpServletRequest request, @RequestParam MultipartFile image) throws IOException {
+        fileService.saveImage(1L, image);
+
+        return "upload";
+    }
+}
