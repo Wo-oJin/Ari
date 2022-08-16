@@ -14,11 +14,47 @@ const testData = {
       partnershipList: [
         {
           partnership_id: 1,
-          partnerName: "아맛집",
+          partnerName: "아주맛있는집",
           partnerLocation: "경기 수원시 팔달구 아주로 47번길 16",
           info: [
             "아맛집에서 10000원 이상 구매 시 전 메뉴 500원 할인",
             "아맛집에서 5000원 이상 구매 시 전 메뉴 100원 할인",
+          ],
+        },
+        {
+          partnership_id: 2,
+          partnerName: "맥도날드",
+          partnerLocation: "경기도 수원시 영통구 아주로 46",
+          info: [
+            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
+            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
+          ],
+        },
+        {
+          partnership_id: 2,
+          partnerName: "맥도날드",
+          partnerLocation: "경기도 수원시 영통구 아주로 46",
+          info: [
+            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
+            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
+          ],
+        },
+        {
+          partnership_id: 2,
+          partnerName: "맥도날드",
+          partnerLocation: "경기도 수원시 영통구 아주로 46",
+          info: [
+            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
+            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
+          ],
+        },
+        {
+          partnership_id: 2,
+          partnerName: "맥도날드",
+          partnerLocation: "경기도 수원시 영통구 아주로 46",
+          info: [
+            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
+            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
           ],
         },
         {
@@ -43,7 +79,8 @@ const testData = {
   ],
 };
 const DetailCoopTap = () => {
-  const [isSelected, setIsSelected] = useState("0");
+  const [index, setIndex] = useState("0");
+  //로드되면 처음에 협력 가게 위치를 카카오맵 상에 마커로 찍기
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
@@ -53,7 +90,7 @@ const DetailCoopTap = () => {
     const map = new kakao.maps.Map(container, options);
     let geoCoder = new kakao.maps.services.Geocoder();
     geoCoder.addressSearch(
-      testData.storeList[0].partnershipList[0].partnerLocation,
+      testData.storeList[0].partnershipList[index].partnerLocation,
       function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
@@ -68,7 +105,7 @@ const DetailCoopTap = () => {
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
           var infowindow = new kakao.maps.InfoWindow({
-            content: `<div style="width:150px;text-align:center;padding:6px 0;">${testData.storeList[0].partnershipList[0].partnerName}</div>`,
+            content: `<div style="width:150px;text-align:center;padding:6px 0;">${testData.storeList[0].partnershipList[index].partnerName}</div>`,
             removable: false,
           });
           infowindow.open(map, marker);
@@ -79,7 +116,9 @@ const DetailCoopTap = () => {
         }
       }
     );
-  }, []);
+  }, [index]);
+
+  //협력 가게 index에 따라 다른 정보를 보여준다.
 
   return (
     <div className="TapContainer">
@@ -87,11 +126,11 @@ const DetailCoopTap = () => {
         <span>협력 중인 가게:</span>
         <div className="CoopStoreList">
           {testData.storeList[0].partnershipList.map((item, i) => {
-            return isSelected === `${i}` ? (
+            return index === `${i}` ? (
               <span
                 className="SelectedStoreTag"
                 onClick={() => {
-                  setIsSelected(`${i}`);
+                  setIndex(`${i}`);
                 }}
               >
                 {item.partnerName}
@@ -100,7 +139,7 @@ const DetailCoopTap = () => {
               <span
                 className="UnSelectedStoreTag"
                 onClick={() => {
-                  setIsSelected(`${i}`);
+                  setIndex(`${i}`);
                 }}
               >
                 {item.partnerName}{" "}
@@ -112,10 +151,7 @@ const DetailCoopTap = () => {
       <div className="EventContent">
         <span className="EventTitle">이벤트 내용:</span>
         <span className="EventSubText">
-          여긴 아주맛있는집과의 협력 이벤트 내용이 담겨있는 컨테이너입니다. 여긴
-          아주맛있는집과의 협력 이벤트 내용이 담겨있는 컨테이너입니다. 여긴
-          아주맛있는집과의 협력 이벤트 내용이 담겨있는 컨테이너입니다.여긴
-          아주맛있는집과의 협력 이벤트 내용이 담겨있는 컨테이너입니다.
+          {testData.storeList[0].partnershipList[index].info}
         </span>
       </div>
       <div className="StoreLocation">
