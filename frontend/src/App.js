@@ -8,6 +8,7 @@ import LoginStore from "./pages/LoginStore";
 import SignupUser from "./pages/SignupUser";
 import SignupStore from "./pages/SignupStore";
 import { RecoilRoot } from "recoil";
+import Detail from "./pages/Detail";
 function App() {
   return (
     <RecoilRoot>
@@ -20,6 +21,7 @@ function App() {
           <Route path="/loginStore" element={<LoginStore />} />
           <Route path="/signupUser" element={<SignupUser />} />
           <Route path="/signupStore" element={<SignupStore />} />
+          <Route path="/detail" element={<Detail />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

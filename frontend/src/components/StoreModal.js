@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./StoreModal.css";
 const StoreModal = ({
   data,
@@ -30,31 +31,39 @@ const StoreModal = ({
   };
 
   return (
-    <div
-      className="StoreModal SlideAnimation"
-      ref={modalRef}
-      value={isModalOpend}
-    >
-      <img className="StoreImg" src="../images/photo.png" width={"100%"}></img>
-      <div className="StoreModalContent">
-        <span className="StoreModalTitle">{data.name}</span>
-        <div className="StoreModalLabels">
-          <>
-            {data.partnershipList.length > 0 ? (
-              <span className="Label">
-                {data.partnershipList[0].partnerName} +제휴 중
-              </span>
-            ) : null}
-          </>
-          <>
-            {data.private_event ? (
-              <span className="Label">이벤트 중</span>
-            ) : null}
-          </>
-          <>{data.stamp ? <span className="Label">스탬프 가능</span> : null}</>
+    <Link to="/detail">
+      <div
+        className="StoreModal SlideAnimation"
+        ref={modalRef}
+        value={isModalOpend}
+      >
+        <img
+          className="StoreImg"
+          src="../images/photo.png"
+          width={"100%"}
+        ></img>
+        <div className="StoreModalContent">
+          <span className="StoreModalTitle">{data.name}</span>
+          <div className="StoreModalLabels">
+            <>
+              {data.partnershipList.length > 0 ? (
+                <span className="Label">
+                  {data.partnershipList[0].partnerName} +제휴 중
+                </span>
+              ) : null}
+            </>
+            <>
+              {data.private_event ? (
+                <span className="Label">이벤트 중</span>
+              ) : null}
+            </>
+            <>
+              {data.stamp ? <span className="Label">스탬프 가능</span> : null}
+            </>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

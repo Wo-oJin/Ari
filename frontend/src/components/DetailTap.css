@@ -1,0 +1,54 @@
+.TapContainer {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.CoopStoreListContainer > span {
+  font-size: 15px;
+  font-weight: 600;
+}
+.CoopStoreList {
+  margin-top: 5px;
+}
+.CoopStoreList span {
+  font-size: 13px;
+  background-color: #386ffe;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-right: 7px;
+}
+.EventContent {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+}
+.EventTitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.EventSubText {
+  width: 303px;
+  min-height: 100px;
+  max-height: 130px;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.StoreLocation {
+  margin-top: 30px;
+}
+.StoreLocation > span {
+  font-size: 15px;
+  font-weight: 600;
+}
+.map {
+  margin-top: 5px;
+  width: 320px;
+  height: 150px;
+  background-color: rgb(179, 177, 177);
+}
