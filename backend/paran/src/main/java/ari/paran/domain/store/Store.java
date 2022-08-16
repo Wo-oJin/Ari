@@ -28,8 +28,9 @@ public class Store implements Serializable{
     @Column
     private String owner_name;
 
+    @Embedded
     @Column
-    private String address;
+    private Address address;
 
     @Column(name = "phone")
     private String phoneNumber;
@@ -39,7 +40,7 @@ public class Store implements Serializable{
     private ImgFile imgFile;
 
     @Column
-    private boolean private_event;
+    private boolean privateEvent;
 
     @Column
     private boolean stamp;
@@ -52,14 +53,12 @@ public class Store implements Serializable{
     @OneToMany(mappedBy = "name")
     private List<Event> eventList;
 
-    public boolean getPrivateevent(){
-        return this.private_event;
+    public boolean getPrivateEvent(){
+        return this.privateEvent;
     }
 
     public boolean getStamp(){
         return this.stamp;
     }
-
-
 
 }

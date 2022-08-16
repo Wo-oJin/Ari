@@ -1,6 +1,7 @@
 package ari.paran.dto.response.store;
 
 import ari.paran.domain.Partnership;
+import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
 import ari.paran.service.store.FileService;
 import lombok.Data;
@@ -29,7 +30,7 @@ public class SimpleStoreDto {
         simpleStore.setAddress(store.getAddress());
         simpleStore.setPartnershipList(store.getPartnershipList());
         simpleStore.setImage(fileService.getImage(store));
-        simpleStore.setPrivate_event(store.getPrivateevent());
+        simpleStore.setPrivate_event(store.getPrivateEvent());
         simpleStore.setStamp(store.getStamp());
 
         storeList.add(simpleStore);
@@ -38,10 +39,12 @@ public class SimpleStoreDto {
     @Data
     public class SimpleStore{
         private String name;
-        private String address;
+        private Address address;
         private List<Partnership> partnershipList;
         private String image;
         private boolean private_event;
         private boolean stamp;
     }
+
+    // 사장님 이름, 사장님 전화번호, 개인 이벤트 진행 여부,
 }
