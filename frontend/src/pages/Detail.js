@@ -2,6 +2,7 @@ import "./Detail.css";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { useEffect, useState } from "react";
 import DetailCoopTap from "../components/DatailTap";
+
 const testData = {
   storeList: [
     {
@@ -16,6 +17,7 @@ const testData = {
         {
           partnership_id: 1,
           partnerName: "아맛집",
+          partnerLocation: "경기 수원시 팔달구 아주로 47번길 16",
           info: [
             "아맛집에서 10000원 이상 구매 시 전 메뉴 500원 할인",
             "아맛집에서 5000원 이상 구매 시 전 메뉴 100원 할인",
@@ -45,7 +47,8 @@ const Detail = () => {
   //좋아요 유무를 확인하기 위한 테스트용 변수
   const [isLiked, setIsLiked] = useState(false);
   //클릭한 탭의 인덱스를 관리하기 위한 변수 선언
-  const [tapIndex, setTapIndex] = useState(0);
+  const [tapIndex, setTapIndex] = useState("0");
+
   //좋아요 클릭 함수
   const onLikeClick = () => {
     setIsLiked(!isLiked);
@@ -58,7 +61,7 @@ const Detail = () => {
   const SwitchTap = (i, data) => {
     switch (i) {
       case "0":
-        return <DetailCoopTap data={data} />;
+        return <DetailCoopTap />;
       case "1":
         return <div>2</div>;
       case "2":
@@ -82,7 +85,7 @@ const Detail = () => {
               <FcLikePlaceholder size={"1.2em"}></FcLikePlaceholder>
             </button>
           )}
-          <span className="LikeText">찜 목록에 추가{data}</span>
+          <span className="LikeText">찜 목록에 추가</span>
         </div>
         <div className="LabelContainer">
           {testData.storeList[0].partnershipList.length > 0 ? (
@@ -96,7 +99,7 @@ const Detail = () => {
       </div>
       <div className="BottomContainer">
         <div className="SwitchTap">
-          {tapIndex == "0" ? (
+          {tapIndex === "0" ? (
             <div id="0" className="TapBold" onClick={onTapClick}>
               함께하는 이벤트
             </div>
@@ -105,7 +108,7 @@ const Detail = () => {
               함께하는 이벤트
             </div>
           )}
-          {tapIndex == "1" ? (
+          {tapIndex === "1" ? (
             <div id="1" className="TapBold" onClick={onTapClick}>
               개인 이벤트
             </div>
@@ -114,7 +117,7 @@ const Detail = () => {
               개인 이벤트
             </div>
           )}
-          {tapIndex == "2" ? (
+          {tapIndex === "2" ? (
             <div id="2" className="TapBold" onClick={onTapClick}>
               가게 정보
             </div>
@@ -124,7 +127,7 @@ const Detail = () => {
             </div>
           )}
         </div>
-        {SwitchTap(tapIndex, data)}
+        {SwitchTap(tapIndex, testData)}
       </div>
     </div>
   );

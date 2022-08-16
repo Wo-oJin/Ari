@@ -12,9 +12,18 @@
 .CoopStoreList {
   margin-top: 5px;
 }
-.CoopStoreList span {
+.SelectedStoreTag {
   font-size: 13px;
   background-color: #386ffe;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-right: 7px;
+}
+.UnSelectedStoreTag {
+  cursor: pointer;
+  font-size: 13px;
+  background-color: #a2a4aa;
   color: #ffffff;
   padding: 5px 10px;
   border-radius: 20px;
@@ -49,6 +58,5 @@
 .map {
   margin-top: 5px;
   width: 320px;
-  height: 150px;
-  background-color: rgb(179, 177, 177);
+  height: 180px;
 }

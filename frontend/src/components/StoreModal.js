@@ -39,7 +39,7 @@ const StoreModal = ({
       >
         <img
           className="StoreImg"
-          src="../images/photo.png"
+          src={`data:image/jpg;base64, ${data.image}`}
           width={"100%"}
         ></img>
         <div className="StoreModalContent">
