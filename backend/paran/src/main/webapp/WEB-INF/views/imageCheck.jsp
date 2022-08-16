@@ -8,7 +8,9 @@
 </head>
 <body>
 <div>
-    <img src="data:image/jpg;base64, ${storeImg}">
+    <img src="data:image/jpg;base64, ${storeImg[0]}">
+    <img src="data:image/jpg;base64, ${storeImg[1]}">
+    <img src="data:image/jpg;base64, ${storeImg[2]}">
 </div>
 </body>
 </html>

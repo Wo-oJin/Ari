@@ -13,7 +13,7 @@
 <div class="container">
     <form action="/image/upload" method="post"
           enctype="multipart/form-data">
-        <input type="file" name="image">
+        <input type="file" multiple name="images">
 
         <button type="submit" class="btn btn-dark">@업로드@</button>
     </form>

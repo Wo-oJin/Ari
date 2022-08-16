@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -28,15 +29,19 @@ public class ImageController {
     @GetMapping("/get/{store_id}")
     public String getImage(@PathVariable Long store_id, Model model) throws IOException {
         Store store = storeService.findStore(store_id);
-        String fileImg = fileService.getImage(store);
+        List<String> fileImg = fileService.getImage(store);
+
+        System.out.println(fileImg.size());
 
         model.addAttribute("storeImg", fileImg);
         return "imageCheck";
     }
 
     @PostMapping("/upload")
-    public String saveImage(HttpServletRequest request, @RequestParam MultipartFile image) throws IOException {
-        fileService.saveImage(1L, image);
+    public String saveImage(HttpServletRequest request, @RequestParam List<MultipartFile> images) throws IOException {
+
+        System.out.println("sdfsdfsdfdsf");
+        fileService.saveImage(1L, images);
 
         return "upload";
     }

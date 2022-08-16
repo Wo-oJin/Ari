@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.annotations.One;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,9 +36,9 @@ public class Store implements Serializable{
     @Column(name = "phone")
     private String phoneNumber;
 
-    @Embedded
-    @Column(name = "img")
-    private ImgFile imgFile;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<ImgFile> imgFile = new ArrayList<>();
 
     @Column
     private boolean privateEvent;
@@ -46,11 +47,11 @@ public class Store implements Serializable{
     private boolean stamp;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Partnership> partnershipList;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "name")
+    @OneToMany(mappedBy = "name", cascade = CascadeType.ALL)
     private List<Event> eventList;
 
     public boolean getPrivateEvent(){

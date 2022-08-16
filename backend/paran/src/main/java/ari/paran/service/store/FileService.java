@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.*;
 
 @Service
 public class FileService {
@@ -18,38 +19,49 @@ public class FileService {
     @Autowired
     StoreRepository storeRepository;
 
-    public void saveImage(Long store_id, MultipartFile file) throws IOException{
+    public void saveImage(Long store_id, List<MultipartFile> images) throws IOException{
 
         String fileUrl = "C://Users//김우진//Desktop//파란학기//프로젝트//backend//paran//src//main//resources//images/";
-
-        String fileName = file.getOriginalFilename();
-        //String extension = StringUtils.getFilenameExtension(fileName).toLowerCase();
-        File destinationFile = new File(fileUrl + fileName);
-
-        System.out.println("store_id: " + destinationFile.getPath());
-
-        destinationFile.getParentFile().mkdirs();
-        file.transferTo(destinationFile);
-
-        ImgFile imgFile = new ImgFile();
-        imgFile.setFilename(fileName);
-        imgFile.setFileurl(fileUrl);
-
+        List<ImgFile> imgFiles = new ArrayList<>();
         Store store = storeRepository.findById(store_id).orElseGet(null);
-        store.setImgFile(imgFile);
+
+        for(MultipartFile image : images) {
+            System.out.println("sdfsfsdf");
+            String fileName = image.getOriginalFilename();
+            //String extension = StringUtils.getFilenameExtension(fileName).toLowerCase();
+            File destinationFile = new File(fileUrl + fileName);
+
+            destinationFile.getParentFile().mkdirs();
+            image.transferTo(destinationFile);
+
+            ImgFile imgFile = new ImgFile();
+            imgFile.setStore(store);
+            imgFile.setFilename(fileName);
+            imgFile.setFileurl(fileUrl);
+
+            imgFiles.add(imgFile);
+        }
+
+        store.setImgFile(imgFiles);
 
         storeRepository.save(store);
     }
 
-    public String getImage(Store store) throws IOException{
-        ImgFile file = store.getImgFile();
-        //InputStream in = getClass().getResourceAsStream("/images/" + file.getFilename());
-        InputStream in = getClass().getResourceAsStream("/images/" + "iu.jpg");
+    public List<String> getImage(Store store) throws IOException{
+        List<String> base64Images = new ArrayList<>();
+        List<ImgFile> storeImages = store.getImgFile();
 
-        byte[] imgBytes = in.readAllBytes();
-        byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
-        String imgStr = new String(byteEnc64, "UTF-8");
+        for(ImgFile imgFile : storeImages) {
+            InputStream in = getClass().getResourceAsStream("/images/" + imgFile.getFilename());
+            //InputStream in = getClass().getResourceAsStream("/images/" + "iu.jpg");
 
-        return imgStr;
+            byte[] imgBytes = in.readAllBytes();
+            byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
+            String imgStr = new String(byteEnc64, "UTF-8");
+
+            base64Images.add(imgStr);
+        }
+
+        return base64Images;
     }
 }
