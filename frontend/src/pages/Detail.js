@@ -1,7 +1,7 @@
 import "./Detail.css";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { useEffect, useState } from "react";
-import DetailCoopTap from "../components/DatailTap";
+import { DetailCoopTap, PrivateEventTap } from "../components/DatailTap";
 
 const testData = {
   storeList: [
@@ -63,7 +63,7 @@ const Detail = () => {
       case "0":
         return <DetailCoopTap />;
       case "1":
-        return <div>2</div>;
+        return <PrivateEventTap />;
       case "2":
         return <div>3</div>;
     }

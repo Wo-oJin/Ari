@@ -70,7 +70,13 @@ const testData = {
       eventList: [
         {
           id: 1,
-          info: ["미스터쉐프 할인 행사1", "미스터쉐프 할인 행사2"],
+          info: "미스터쉐프 할인 행사1",
+          start: "2022-08-01",
+          finish: "2022-09-01",
+        },
+        {
+          id: 2,
+          info: "미스터쉐프 할인 행사2",
           start: "2022-08-01",
           finish: "2022-09-01",
         },
@@ -78,7 +84,8 @@ const testData = {
     },
   ],
 };
-const DetailCoopTap = () => {
+//협력 가게 정보 탭
+export const DetailCoopTap = () => {
   const [index, setIndex] = useState("0");
   //로드되면 처음에 협력 가게 위치를 카카오맵 상에 마커로 찍기
   useEffect(() => {
@@ -117,8 +124,6 @@ const DetailCoopTap = () => {
       }
     );
   }, [index]);
-
-  //협력 가게 index에 따라 다른 정보를 보여준다.
 
   return (
     <div className="TapContainer">
@@ -162,4 +167,64 @@ const DetailCoopTap = () => {
   );
 };
 
-export default DetailCoopTap;
+//개인 이벤트 탭
+export const PrivateEventTap = () => {
+  useEffect(() => {
+    const container = document.getElementById("map");
+    const options = {
+      center: new kakao.maps.LatLng(37.2775551775579, 127.04387899081716),
+      level: 4,
+    };
+    const map = new kakao.maps.Map(container, options);
+    let geoCoder = new kakao.maps.services.Geocoder();
+    geoCoder.addressSearch(
+      testData.storeList[0].address,
+      function (result, status) {
+        // 정상적으로 검색이 완료됐으면
+        if (status === kakao.maps.services.Status.OK) {
+          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+          // 결과값으로 받은 위치를 마커로 표시합니다
+          var marker = new kakao.maps.Marker({
+            map: map,
+            position: coords,
+            clickable: true,
+          });
+
+          // 인포윈도우로 장소에 대한 설명을 표시합니다
+          var infowindow = new kakao.maps.InfoWindow({
+            content: `<div style="width:150px;text-align:center;padding:6px 0;">${testData.storeList[0].name}</div>`,
+            removable: false,
+          });
+          infowindow.open(map, marker);
+          map.panTo(coords);
+          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        } else {
+          console.log("error");
+        }
+      }
+    );
+  }, []);
+  return (
+    <div className="TapContainer">
+      <div className="PrivateEventContent">
+        <span className="EventTitle">이벤트 내용:</span>
+        {testData.storeList[0].private_event ? (
+          testData.storeList[0].eventList.map((item, i) => {
+            return (
+              <span className="PrivateEventSubText">
+                {i + 1}. {item.info}
+              </span>
+            );
+          })
+        ) : (
+          <span>현재 진행 중인 이벤트가 없습니다</span>
+        )}
+      </div>
+      <div className="StoreLocation">
+        <span>위치 안내:</span>
+        <div id="map" className="map"></div>
+      </div>
+    </div>
+  );
+};

@@ -68,3 +68,13 @@
   width: 320px;
   height: 180px;
 }
+.PrivateEventSubText {
+  width: 303px;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.PrivateEventContent {
+  display: flex;
+  flex-direction: column;
+}
