@@ -28,6 +28,7 @@
 .StoreImg {
   min-width: 390px;
   height: 226px;
+  object-fit: cover;
 }
 .StoreModalContent {
   display: flex;
