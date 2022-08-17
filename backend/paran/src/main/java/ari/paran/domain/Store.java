@@ -30,7 +30,10 @@ public class Store implements Serializable{
     private String ownerName;
 
     @Column
-    private String address;
+    private String roadAddress;
+
+    @Column
+    private String detailAddress;
 
     @Column(name = "phone")
     private String phoneNumber;
@@ -44,10 +47,11 @@ public class Store implements Serializable{
     private boolean stamp;
 
     @Builder
-    public Store(String name, String ownerName, String address, String phoneNumber) {
+    public Store(String name, String ownerName, String roadAddress, String detailAddress, String phoneNumber) {
         this.name = name;
         this.ownerName = ownerName;
-        this.address = address;
+        this.roadAddress = roadAddress;
+        this.detailAddress = detailAddress;
         this.phoneNumber = phoneNumber;
     }
 

@@ -89,8 +89,14 @@ public class JwtController {
         return memberService.logout(logout);
     }
 
-    @GetMapping("test")
-    public String test() {
-        return "ok";
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody Map<String, String> param, Errors errors) {
+        // validation check
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        String email = param.get("email");
+        String newPassword = param.get("newPassword");
+        return memberService.changePassword(email, newPassword);
     }
 }

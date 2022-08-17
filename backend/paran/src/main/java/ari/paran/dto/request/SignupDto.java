@@ -42,8 +42,9 @@ public class SignupDto {
     private String storeName;
     private String ownerName;
 
+    private String storeRoadAddress;
 
-    private String storeAddress;
+    private String storeDetailAddress;
 
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "휴대폰번호를 확인해 주세요")
     private String phoneNumber;
@@ -68,7 +69,8 @@ public class SignupDto {
         return Store.builder()
                 .name(storeName)
                 .ownerName(ownerName)
-                .address(storeAddress)
+                .roadAddress(storeRoadAddress)
+                .detailAddress(storeDetailAddress)
                 .phoneNumber(phoneNumber)
                 .build();
     }

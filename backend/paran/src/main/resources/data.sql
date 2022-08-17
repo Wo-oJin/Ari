@@ -6,11 +6,11 @@ INSERT INTO SIGNUP_CODE (ID, CODE) VALUES (1, '11111');
 INSERT INTO SIGNUP_CODE (ID, CODE) VALUES (2, '22222');
 
 
-INSERT INTO store (address, store_name, owner_name, phone, private_event, stamp)
-    VALUES ("경기 수원시 팔달구 아주로 47번길 16", "미스터쉐프", "우영우", "010-1234-5678", 1, 0);
+INSERT INTO store (road_address, detail_address, store_name, owner_name, phone, private_event, stamp)
+    VALUES ("경기 수원시 팔달구 아주로 47번길 16", '106호', "미스터쉐프", "우영우", "010-1234-5678", 1, 0);
 
-INSERT INTO store (address, store_name, owner_name, phone, private_event, stamp)
-    VALUES ("경기 수원시 팔달구 아주로 13번길 19 골든파크", "아맛집", "동그라미", "010-5678-1234", 0, 1);
+INSERT INTO store (road_address, detail_address, store_name, owner_name, phone, private_event, stamp)
+    VALUES ("경기 수원시 팔달구 아주로 13번길 19 골든파크", '302호', "아맛집", "동그라미", "010-5678-1234", 0, 1);
 
 INSERT INTO event (finish_date, start_date, store_name) VALUES ("2022-09-01","2022-08-01", "미스터쉐프");
 INSERT INTO event (finish_date, start_date, store_name) VALUES ("2022-10-01","2022-09-01", "아맛집");

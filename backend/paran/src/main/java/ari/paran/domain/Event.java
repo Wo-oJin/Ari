@@ -37,4 +37,5 @@ public class Event {
 
     @Column(name = "finish_date")
     private LocalDate finish;
+}
 

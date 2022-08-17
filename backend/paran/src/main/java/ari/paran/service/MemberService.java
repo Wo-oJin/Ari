@@ -31,6 +31,8 @@ import org.springframework.util.ObjectUtils;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -39,8 +41,8 @@ import java.util.concurrent.TimeUnit;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final SignupCodeRepository signupCodeRepository;
     private final StoreRepository storeRepository;
+    private final SignupCodeRepository signupCodeRepository;
     private final Response response;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -74,6 +76,7 @@ public class MemberService {
     }
 
     public ResponseEntity<?> signupOwner(SignupDto signUp) {
+
         if (memberRepository.existsByEmail(signUp.getEmail())) {
             return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
@@ -103,17 +106,17 @@ public class MemberService {
     public ResponseEntity<?> sendEmail(String email) {
         String code = SecurityUtil.generateCode();
 
-        String subject = "Ari 회원가입을 위한 인증번호입니다.";
+        String subject = "Ari 인증을 위한 인증번호입니다.";
         String content="";
         content+= "<div style='margin:100px;'>";
         content+= "<h1> 안녕하세요 Ari입니다. </h1>";
         content+= "<br>";
-        content+= "<p>아래 코드를 회원가입 창으로 돌아가 입력해주세요<p>";
+        content+= "<p>아래 코드를 인증 창으로 돌아가 입력해주세요<p>";
         content+= "<br>";
         content+= "<p>감사합니다!<p>";
         content+= "<br>";
         content+= "<div align='center' style='border:1px solid black; font-family:verdana';>";
-        content+= "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
+        content+= "<h3 style='color:blue;'>인증 코드입니다.</h3>";
         content+= "<div style='font-size:130%'>";
         content+= "CODE : <strong>";
         content+= code+"</strong><div><br/> ";
@@ -153,8 +156,10 @@ public class MemberService {
 
     public ResponseEntity<?> login(LoginDto loginDto) {
 
-        if (memberRepository.findByEmail(loginDto.getEmail()).orElse(null) == null) {
-            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+        Optional<Member> member = memberRepository.findByEmail(loginDto.getEmail());
+
+        if (member.orElse(null) == null || !passwordEncoder.matches(loginDto.getPassword(), member.get().getPassword())) {
+            return response.fail("ID 또는 패스워드를 확인하세요", HttpStatus.BAD_REQUEST);
         }
 
         //1. Login id/pw를 기반으로 Authentication 객체 생성
@@ -232,4 +237,16 @@ public class MemberService {
         return response.success("로그아웃 되었습니다");
     }
 
+    public ResponseEntity<?> changePassword(String email, String newPassword) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+
+        if (member.orElse(null) == null) {
+            return response.fail("이메일을 다시 입력해주세요.", HttpStatus.BAD_REQUEST);
+        }
+
+        member.get().changePassword(passwordEncoder.encode(newPassword));
+        memberRepository.save(member.get());
+
+        return response.success("패스워드가 성공적으로 변경되었습니다.");
+    }
 }

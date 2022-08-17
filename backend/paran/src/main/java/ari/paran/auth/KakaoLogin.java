@@ -1,10 +1,6 @@
 package ari.paran.auth;
 
-<<<<<<< HEAD
 import ari.paran.domain.repository.MemberRepository;
-=======
-
->>>>>>> upstream/signup
 import ari.paran.dto.request.SignupDto;
 import ari.paran.service.JwtAuthService;
 import com.github.scribejava.core.builder.ServiceBuilder;
