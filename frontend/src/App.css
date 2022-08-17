@@ -58,6 +58,7 @@ button {
   height: 44px;
   border-radius: 50%;
   box-shadow: 2px 2px gainsboro;
+  z-index: 10;
 }
 
 .sidebar {
@@ -75,7 +76,7 @@ button {
   z-index: 99;
 }
 
-.slideAnimation {
+.slideAnimations {
   animation: 1s;
   animation-name: slide;
 }

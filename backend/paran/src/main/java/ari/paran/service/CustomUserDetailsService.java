@@ -1,7 +1,6 @@
 package ari.paran.service;
 
 import ari.paran.domain.Member;
-
 import ari.paran.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

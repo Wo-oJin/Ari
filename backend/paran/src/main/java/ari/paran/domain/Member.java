@@ -49,4 +49,8 @@ public class Member {
     public void changeRole(Authority authority) {
         this.authority = authority;
     }
+
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
+    }
 }

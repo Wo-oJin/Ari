@@ -47,4 +47,8 @@ const Map = ({ onClick, name }) => {
   );
 };
 
+<<<<<<< HEAD
 export default Map;
+=======
+export default Map;
+>>>>>>> upstream/signup

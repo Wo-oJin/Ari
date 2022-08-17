@@ -1,5 +1,3 @@
-
-
 package ari.paran.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;

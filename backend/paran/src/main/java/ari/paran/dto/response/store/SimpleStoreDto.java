@@ -21,7 +21,8 @@ public class SimpleStoreDto {
         SimpleStore simpleStore = new SimpleStore();
 
         simpleStore.setName(store.getName());
-        simpleStore.setAddress(store.getAddress());
+        simpleStore.setRoadAddress(store.getRoadAddress());
+        simpleStore.setDetailAddress(store.getDetailAddress());
         simpleStore.setPartnershipList(store.getPartnershipList());
         simpleStore.setPrivate_event(store.getPrivateEvent());
         simpleStore.setStamp(store.getStamp());
@@ -32,7 +33,8 @@ public class SimpleStoreDto {
     @Data
     public class SimpleStore{
         private String name;
-        private String address;
+        private String roadAddress;
+        private String detailAddress;
         private List<Partnership> partnershipList;
         private boolean private_event;
         private boolean stamp;
