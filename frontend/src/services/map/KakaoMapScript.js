@@ -26,17 +26,18 @@ const KakaoMapScript = (data, onMarkerClicked) => {
           });
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
-          var infowindow = new kakao.maps.InfoWindow({
-            content: `<div style="width:150px;text-align:center;padding:6px 0;">${data[i].name}</div>`,
-            removable: false,
+          var customOverlay = new kakao.maps.CustomOverlay({
+            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px; margin-bottom:40px">${data[i].name}</div>`,
+            position: coords,
+            yAnchor: 1,
           });
           kakao.maps.event.addListener(marker, "click", function () {
             // 마커 위에 인포윈도우를 표시합니다
-            infowindow.open(map, marker);
+            customOverlay.setMap(map);
             map.panTo(coords);
             onMarkerClicked(i);
             kakao.maps.event.addListener(map, "click", () => {
-              infowindow.close();
+              customOverlay.setMap(null);
             });
           });
         } else {

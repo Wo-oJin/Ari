@@ -113,11 +113,12 @@ export const DetailCoopTap = () => {
           });
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
-          var infowindow = new kakao.maps.InfoWindow({
-            content: `<div style="width:150px;text-align:center;padding:6px 0;">${testData.storeList[0].partnershipList[index].partnerName}</div>`,
+          var customOverlay = new kakao.maps.CustomOverlay({
+            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${testData.storeList[0].partnershipList[index].partnerName}</div>`,
             removable: false,
+            position: coords,
           });
-          infowindow.open(map, marker);
+          customOverlay.setMap(map);
           map.panTo(coords);
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
         } else {
@@ -196,11 +197,12 @@ export const PrivateEventTap = () => {
           });
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
-          var infowindow = new kakao.maps.InfoWindow({
-            content: `<div style="width:150px;text-align:center;padding:6px 0;">${testData.storeList[0].name}</div>`,
+          var customOverlay = new kakao.maps.CustomOverlay({
+            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${testData.storeList[0].name}</div>`,
             removable: false,
+            position: coords,
           });
-          infowindow.open(map, marker);
+          customOverlay.setMap(map);
           map.panTo(coords);
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
         } else {
@@ -257,11 +259,12 @@ export const StoreInfoTap = () => {
           });
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
-          var infowindow = new kakao.maps.InfoWindow({
-            content: `<div style="width:150px;text-align:center;padding:6px 0;">${testData.storeList[0].name}</div>`,
+          var customOverlay = new kakao.maps.CustomOverlay({
+            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${testData.storeList[0].name}</div>`,
             removable: false,
+            position: coords,
           });
-          infowindow.open(map, marker);
+          customOverlay.setMap(map);
           map.panTo(coords);
           // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
         } else {
