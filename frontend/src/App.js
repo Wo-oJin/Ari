@@ -36,7 +36,6 @@ function App() {
           <Route path="/loginUser" element={<LoginUser />} />
           <Route path="/loginOwner" element={<LoginOwner />} />
           <Route path="/signupUser" element={<SignupUser />} />
-          <Route path="/signupStore" element={<SignupStore />} />
           <Route path="/detail/:storeId" element={<Detail />} />
           <Route path="/signupOwner" element={<SignupOwner />} />
           <Route path="/signupOwner2" element={<SignupOwner2 />} />
