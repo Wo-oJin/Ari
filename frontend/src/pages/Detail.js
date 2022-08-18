@@ -1,7 +1,12 @@
 import "./Detail.css";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { useEffect, useState } from "react";
-import { DetailCoopTap, PrivateEventTap } from "../components/DatailTap";
+import {
+  DetailCoopTap,
+  PrivateEventTap,
+  StoreInfoTap,
+} from "../components/DatailTap";
+import { useParams } from "react-router-dom";
 
 const testData = {
   storeList: [
@@ -10,6 +15,8 @@ const testData = {
       name: "미스터쉐프",
       owner_name: "우영우",
       address: "경기 수원시 팔달구 아주로 47번길 16",
+      open_time: "연중무휴, 오전 10:00 ~ 오후 10:00",
+      sub_text: "여기는 한국 최고 한식집인 미스터쉐프입니다.",
       phoneNumber: "010-1234-5678",
       private_event: true,
       stamp: false,
@@ -21,6 +28,52 @@ const testData = {
           info: [
             "아맛집에서 10000원 이상 구매 시 전 메뉴 500원 할인",
             "아맛집에서 5000원 이상 구매 시 전 메뉴 100원 할인",
+          ],
+        },
+
+        {
+          partnership_id: 2,
+          partnerName: "맥도날드",
+          partnerLocation: "경기도 수원시 영통구 아주로 46",
+          info: [
+            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
+            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
+          ],
+        },
+        {
+          partnership_id: 2,
+          partnerName: "맥도날드",
+          partnerLocation: "경기도 수원시 영통구 아주로 46",
+          info: [
+            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
+            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
+          ],
+        },
+        {
+          partnership_id: 2,
+          partnerName: "맥도날드",
+          partnerLocation: "경기도 수원시 영통구 아주로 46",
+          info: [
+            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
+            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
+          ],
+        },
+        {
+          partnership_id: 2,
+          partnerName: "맥도날드",
+          partnerLocation: "경기도 수원시 영통구 아주로 46",
+          info: [
+            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
+            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
+          ],
+        },
+        {
+          partnership_id: 2,
+          partnerName: "맥도날드",
+          partnerLocation: "경기도 수원시 영통구 아주로 46",
+          info: [
+            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
+            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
           ],
         },
       ],
@@ -37,6 +90,8 @@ const testData = {
 };
 const Detail = () => {
   const [data, setData] = useState("");
+  const { storeId } = useParams();
+  console.log(storeId);
   useEffect(() => {
     const fetchingData = async () => {
       await setData(testData);
@@ -65,13 +120,13 @@ const Detail = () => {
       case "1":
         return <PrivateEventTap />;
       case "2":
-        return <div>3</div>;
+        return <StoreInfoTap />;
     }
   };
   return (
     <div className="DetailContainer">
       <div className="Wrapper">
-        <img src="../images/detail.png"></img>
+        <img src="../images/detail.png" alt="이미지"></img>
       </div>
       <div className="DetailContentModal">
         <span className="ContentTitle">미스터쉐프</span>
@@ -90,7 +145,8 @@ const Detail = () => {
         <div className="LabelContainer">
           {testData.storeList[0].partnershipList.length > 0 ? (
             <span className="Label">
-              {testData.storeList[0].partnershipList[0].partnerName} +제휴 중
+              {testData.storeList[0].partnershipList[0].partnerName} +
+              {testData.storeList[0].partnershipList.length} 제휴 중
             </span>
           ) : null}
           {testData.storeList[0].private_event ? <span>이벤트 중</span> : null}
