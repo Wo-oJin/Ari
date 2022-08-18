@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./components/Main";
 import LoginRegister from "./components/LoginRegister";
@@ -21,7 +20,7 @@ function App() {
           <Route path="/loginStore" element={<LoginStore />} />
           <Route path="/signupUser" element={<SignupUser />} />
           <Route path="/signupStore" element={<SignupStore />} />
-          <Route path="/detail" element={<Detail />} />
+          <Route path="/detail/:storeId" element={<Detail />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

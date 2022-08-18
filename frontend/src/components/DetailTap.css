@@ -49,8 +49,6 @@
 }
 .EventSubText {
   width: 303px;
-  min-height: 100px;
-  max-height: 130px;
   font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -77,4 +75,23 @@
 .PrivateEventContent {
   display: flex;
   flex-direction: column;
+}
+.StoreContainer {
+  display: flex;
+}
+.StoreContentL {
+  display: flex;
+  flex-direction: column;
+  width: 80px;
+  height: 100px;
+}
+.StoreContentR {
+  display: flex;
+  flex-direction: column;
+  width: 208px;
+  height: 100px;
+}
+.StoreInfo {
+  width: 303px;
+  font-size: 13px;
 }
