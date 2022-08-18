@@ -23,6 +23,10 @@ public class Store implements Serializable{
     @Column(name = "store_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @Column(name = "store_name")
     private String name;
 
@@ -47,12 +51,13 @@ public class Store implements Serializable{
     private boolean stamp;
 
     @Builder
-    public Store(String name, String ownerName, String roadAddress, String detailAddress, String phoneNumber) {
+    public Store(String name, String ownerName, String roadAddress, String detailAddress, String phoneNumber, Member member) {
         this.name = name;
         this.ownerName = ownerName;
         this.roadAddress = roadAddress;
         this.detailAddress = detailAddress;
         this.phoneNumber = phoneNumber;
+        this.member = member;
     }
 
     @JsonManagedReference

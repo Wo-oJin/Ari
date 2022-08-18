@@ -86,7 +86,7 @@ public class MemberService {
         member.changeRole(Authority.ROLE_OWNER);
         memberRepository.save(member);
 
-        Store store = signUp.toStore();
+        Store store = signUp.toStore(member);
         storeRepository.save(store);
 
 
@@ -177,6 +177,13 @@ public class MemberService {
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), tokenDto.getRefreshToken(),
                         tokenDto.getRefreshTokenExpiresIn(), TimeUnit.MILLISECONDS);
+
+        //5. user/owner에 따라 닉네임or가게이름 tokenDto에 추가
+        if (member.get().getAuthority() == Authority.ROLE_USER) {
+            tokenDto.setInfo(member.get().getNickname());
+        } else {
+            tokenDto.setInfo(member.get().getStores().get(0).getName());
+        }
 
         return response.success(tokenDto, "로그인에 성공했습니다.", HttpStatus.OK);
     }
