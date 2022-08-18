@@ -7,7 +7,7 @@ const LoginStore = () => {
     return (
         <>
             <Header text="로그인/회원가입" link="/loginRegister"></Header>
-            <div className="logoContainer"LogoContainer></div>
+            <div className="logoContainer"></div>
             <div className="buttonContainer">
                 <Link to="/login">
                     <MainButton

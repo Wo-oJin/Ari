@@ -221,7 +221,7 @@ const SignupUser = () => {
 
     return (
         <>
-            <Header text="회원가입" link="/"></Header>
+            <Header text="회원가입" link="/loginUser"></Header>
             
                 <div className="inputContainer">
                     <Formbox>
