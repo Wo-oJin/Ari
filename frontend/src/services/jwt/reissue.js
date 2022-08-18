@@ -10,7 +10,7 @@ export const reissue = async () => {
             }
         );
 
-        const { accessToken, refreshToken, refreshTokenExpiresIn } = response.data.data;
+        const { accessToken, refreshToken, accessTokenExpireIn } = response.data.data;
 
         // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
 		axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
@@ -20,7 +20,7 @@ export const reissue = async () => {
         localStorage.setItem("refreshToken", refreshToken);
 
         // accessToken 만료하기 1분 전에 로그인 연장
-        const a = setTimeout(reissue, parseInt(refreshTokenExpiresIn - 60000));
+        const a = setTimeout(reissue, parseInt(accessTokenExpireIn - 60000));
         clearTimeout(a);
 
         return response.data;

@@ -48,6 +48,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 9px;
 }
 
 .select-age {
@@ -105,12 +106,7 @@
 }
 
 .daumPost{
-    display: block;
-    position: relative;
-    top: 0%;
-    width: 400px;
-    height: 400px;
-    padding: 7px;
+    
 }
 
 .searchAddress {
@@ -131,4 +127,26 @@
 
 .roadAddress {
     width: 142px
+}
+
+.flex-align {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.current {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #386FFE;
+    margin-right: 5px;
+}
+
+.normal {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    margin-right: 5px;
 }

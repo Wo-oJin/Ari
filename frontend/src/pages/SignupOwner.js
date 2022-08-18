@@ -33,7 +33,7 @@ const SignupOwner = () => {
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
     const [age, setAge] = useState("20");
-    const [gender, setGender] = useState("");
+    const [gender, setGender] = useState("M");
 
     // 오류 메세지 상태 저장
     const [emailMessage, setEmailMessage] = useState("");
@@ -250,7 +250,7 @@ const SignupOwner = () => {
                     <div className="intro">성별</div>
                     <div className="genderContainer">
                         <div className="gender-wrap">
-                            <input type="radio" name="gender" value="M" id="male" onChange={onChangeGender} required></input>
+                            <input type="radio" name="gender" value="M" id="male" onChange={onChangeGender} defaultChecked></input>
                             <label htmlFor="male">남</label>
                         </div>
                         <div className="gender-wrap">
@@ -259,6 +259,10 @@ const SignupOwner = () => {
                         </div>
                     </div>
                 </Formbox>
+            </div>
+            <div className="flex-align">
+                <div className="current"></div>
+                <div className="normal"></div>
             </div>
             <Link to="/signupOwner2" state={{ data: data }}>
                 <div className="buttonContainer">
