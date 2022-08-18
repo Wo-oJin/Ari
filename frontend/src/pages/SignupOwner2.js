@@ -206,7 +206,7 @@ const SignupOwner2 = () => {
                         autoComplete="off"
                     />
                     <button className="searchAddress" onClick={onChangeOpenPost}>주소 찾기</button>
-                    {isOpenPost ? (<DaumPostcode className="daumPost" autoClose onComplete={onCompletePost} />) : null}
+                    <div style={{width: "260px"}}>{isOpenPost ? (<DaumPostcode className="daumPost" autoClose onComplete={onCompletePost} />) : null}</div>
                     <div className="detailAddress">
                         <input className="inputBox"
                             name="storeDetailAddress"
@@ -255,6 +255,10 @@ const SignupOwner2 = () => {
                     />
                     {certificationNumber.length > 0 && <p className={`message ${isStoreCheck ? 'success' : 'error'}`}>{storeCheckMessage}</p>}
                 </Formbox>
+            </div>
+            <div className="flex-align">
+                <div className="normal"></div>
+                <div className="current"></div>
             </div>
             <form onSubmit={onSubmit}>
                 <div className="buttonContainer">

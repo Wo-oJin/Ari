@@ -260,6 +260,10 @@ const SignupOwner = () => {
                     </div>
                 </Formbox>
             </div>
+            <div className="flex-align">
+                <div className="current"></div>
+                <div className="normal"></div>
+            </div>
             <Link to="/signupOwner2" state={{ data: data }}>
                 <div className="buttonContainer">
                     <MainButton
