@@ -26,7 +26,7 @@ public class DetailStoreDto {
 
         detailStore.setId(store.getId());
         detailStore.setName(store.getName());
-        detailStore.setOwner_name(store.getOwner_name());
+        detailStore.setOwner_name(store.getOwnerName());
         detailStore.setAddress(store.getAddress());
         detailStore.setOpen_hour(store.getOpenTime());
         detailStore.setSub_text(store.getSubText());

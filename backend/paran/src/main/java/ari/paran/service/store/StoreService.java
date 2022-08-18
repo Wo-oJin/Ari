@@ -1,8 +1,8 @@
 package ari.paran.service.store;
 
 import ari.paran.domain.Partnership;
-import ari.paran.domain.Repository.PartnershipRepository;
-import ari.paran.domain.Repository.StoreRepository;
+import ari.paran.domain.repository.PartnershipRepository;
+import ari.paran.domain.repository.StoreRepository;
 import ari.paran.domain.store.Store;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

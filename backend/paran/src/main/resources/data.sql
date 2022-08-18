@@ -3,7 +3,7 @@ INSERT INTO MEMBER (MEMBER_ID, PASSWORD, EMAIL, AGE, NICKNAME, GENDER, AUTHORITY
 INSERT INTO MEMBER (MEMBER_ID, PASSWORD, EMAIL, AGE, NICKNAME, GENDER, AUTHORITY) VALUES (3, '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'ghi789@efg.com', 30, null, 'female', 'ROLE_OWNER');
 INSERT INTO MEMBER (MEMBER_ID, PASSWORD, EMAIL, AGE, NICKNAME, GENDER, AUTHORITY) VALUES (4, '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'jkl101@efg.com', 30, null, 'male', 'ROLE_OWNER');
 
-INSERT INTO store (road_address, mebmer_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event, stamp)
+INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event, stamp)
     VALUES ("경기 수원시 팔달구 아주로 47번길 16", 3, "1층", "오전 9시 ~ 오후 9시", "미스터쉐프 한 줄 소개", "미스터쉐프", "우영우", "010-1234-5678", true, false);
 
 INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event, stamp)

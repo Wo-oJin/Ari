@@ -1,6 +1,7 @@
 package ari.paran.service.store;
 
-import ari.paran.domain.Repository.StoreRepository;
+import ari.paran.domain.repository.StoreRepository;
+import ari.paran.domain.repository.StoreRepository;
 import ari.paran.domain.store.ImgFile;
 import ari.paran.domain.store.Store;
 import org.apache.commons.codec.binary.Base64;

@@ -3,15 +3,9 @@ package ari.paran.domain.store;
 import ari.paran.domain.Event;
 import ari.paran.domain.Member;
 import ari.paran.domain.Partnership;
-import ari.paran.dto.response.store.PartnershipDto;
-import ari.paran.service.store.StoreService;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -65,6 +59,15 @@ public class Store implements Serializable{
     @ColumnDefault("0")
     @Column
     private boolean stamp;
+
+    @Builder
+    public Store(String name, String ownerName, Address address, String phoneNumber, Member member) {
+        this.name = name;
+        this.ownerName = ownerName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.member = member;
+    }
 
     @JsonManagedReference
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)

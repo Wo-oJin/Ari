@@ -1,5 +1,6 @@
 package ari.paran.domain;
 
+import ari.paran.domain.store.Store;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
