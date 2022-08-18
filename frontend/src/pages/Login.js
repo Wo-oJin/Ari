@@ -4,55 +4,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { loginData } from "../services/login/loginData";
 import { emailState, nicknameState } from "../state";
-
-const LogoContainer = styled.div`
-    width: 170px;
-    height: 75px;
-    background: #D9D9D9;
-    margin: 72px auto;
-`;
-
-const Input = styled.input`
-  width: 230px;
-  line-height: 22px;
-  border: 1px solid #dcdcdc;
-  border-radius: 5px;
-  padding: 9px 14px;
-  &::placeholder {
-    color: #a3a3a3;
-  }
-`;
-
-const SubContainer = styled.div`
-  width: 260px;
-  margin: 0 auto;
-  font-size: 12px;
-  color: #4e514f;
-`;
-
-const SubAlign = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const LoginButton = styled.button`
-  width: 260px;
-  height: 41px;
-  border-style: initial;
-  border-radius: 15px;
-  color: #ffffff;
-  margin-bottom: 10px;
-  background: #386ffe;
-  &:disabled {
-    background: #dcdcdc;
-  }
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+import "../pages/Login.css";
 
 const Formbox = styled.div`
   position: relative;
@@ -70,12 +22,6 @@ const Formbox = styled.div`
       color: #ff2727;
     }
   }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 const Login = () => {
@@ -106,27 +52,22 @@ const Login = () => {
       email: email,
       password: password,
     });
-
-    if (result === "") {
-      // 해당하는 회원 정보가 없는 경우 로그인 실패
-      alert("이메일 또는 비밀번호가 일치하지 않습니다.");
-    } else {
-      // 로그인 성공
-      setuEmail(result.email); // recoil
-      setuNickname(result.nickname); // recoil
-
-      alert("로그인이 완료되었습니다.");
-      navigate("/main"); // 메인 페이지로 이동
+    // console.log("로그인>>"+JSON.stringify(result.status));
+    if (result.result === "fail") { // 로그인 실패
+        alert(result.massage);
+    } else { // 로그인 성공
+        alert(result.massage);
+        navigate("/"); // 메인 페이지로 이동
     }
   };
 
   return (
     <>
-      <LogoContainer></LogoContainer>
+      <div className="logoContainer"></div>
       <form onSubmit={onSubmit}>
-        <InputContainer>
+        <div className="inputContainer">
           <Formbox>
-            <Input
+            <input className="inputBox"
               name="email"
               value={email}
               type="email"
@@ -137,7 +78,7 @@ const Login = () => {
             />
           </Formbox>
           <Formbox>
-            <Input
+            <input className="inputBox"
               name="password"
               value={password}
               type="password"
@@ -147,24 +88,23 @@ const Login = () => {
               autoComplete="off"
             />
           </Formbox>
-        </InputContainer>
-        <ButtonContainer>
-          <LoginButton
+        </div>
+        <div className="buttonContainer">
+          <button className="loginButton"
             type="submit"
-            disabled={email !== "" && password !== "" ? false : true}
-          >
+            disabled={email !== "" && password !== "" ? false : true}>
             로그인
-          </LoginButton>
-        </ButtonContainer>
-        <SubContainer>
-          <SubAlign>
+          </button>
+        </div>
+        <div className="subContainer">
+          <div className="subAlign">
             <Link to="/loginRegister">
               <span>이메일 회원가입</span>
             </Link>
             <span>이메일 찾기</span>
             <span>비밀번호 찾기</span>
-          </SubAlign>
-        </SubContainer>
+          </div>
+        </div>
       </form>
     </>
   );

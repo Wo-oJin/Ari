@@ -48,3 +48,4 @@ const Map = ({ onClick, name }) => {
 };
 
 export default Map;
+

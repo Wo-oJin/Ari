@@ -56,16 +56,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
                 .antMatchers("/map/**").permitAll()
                 .antMatchers("/image/**").permitAll()
 
+
                 //권한 테스트
                 .antMatchers("/member/userTest").hasRole("USER")
+                .antMatchers("/member/ownerTest").hasRole("OWNER")
                 .antMatchers("/member/adminTest").hasRole("ADMIN")
-
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
 

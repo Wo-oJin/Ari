@@ -2,6 +2,7 @@ package ari.paran.controller;
 
 import ari.paran.domain.store.Store;
 import ari.paran.dto.response.store.DetailStoreDto;
+import ari.paran.domain.repository.StoreRepository;
 import ari.paran.dto.response.store.SimpleStoreDto;
 import ari.paran.service.store.FileService;
 
@@ -53,5 +54,3 @@ public class StoreController {
     */
 
 }
-
-

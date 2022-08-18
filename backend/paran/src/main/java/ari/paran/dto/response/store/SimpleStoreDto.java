@@ -1,17 +1,12 @@
 package ari.paran.dto.response.store;
 
-import ari.paran.domain.Event;
-import ari.paran.domain.Partnership;
 import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
 import ari.paran.service.store.FileService;
 import ari.paran.service.store.StoreService;
 import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,7 @@
 package ari.paran.domain.store;
 
 import ari.paran.domain.Event;
+import ari.paran.domain.Member;
 import ari.paran.domain.Partnership;
 import ari.paran.dto.response.store.PartnershipDto;
 import ari.paran.service.store.StoreService;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -29,11 +31,15 @@ public class Store implements Serializable{
     @Column(name = "store_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @Column(name = "store_name")
     private String name;
 
     @Column
-    private String owner_name;
+    private String ownerName;
 
     @Embedded
     @Column
@@ -52,9 +58,11 @@ public class Store implements Serializable{
     @Column(name = "sub_text")
     private String subText;
 
+    @ColumnDefault("0")
     @Column
     private boolean privateEvent;
 
+    @ColumnDefault("0")
     @Column
     private boolean stamp;
 

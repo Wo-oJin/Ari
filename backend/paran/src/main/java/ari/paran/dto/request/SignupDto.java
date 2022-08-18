@@ -2,6 +2,7 @@ package ari.paran.dto.request;
 
 import ari.paran.domain.Authority;
 import ari.paran.domain.Member;
+import ari.paran.domain.Store;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,10 +39,16 @@ public class SignupDto {
 
     private boolean fromOauth = false;
 
-    /*
+    private String storeName;
+    private String ownerName;
+
+    private String storeRoadAddress;
+
+    private String storeDetailAddress;
+
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "휴대폰번호를 확인해 주세요")
-    private String phone;
-    */
+    private String phoneNumber;
+
 
     public boolean getFromAuth(){
         return this.fromOauth;
@@ -49,12 +56,23 @@ public class SignupDto {
 
     public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
-                .username(username)
                 .email(email)
+                .password(passwordEncoder.encode(password))
                 .nickname(nickname)
                 .gender(gender)
-                .password(passwordEncoder.encode(password))
+                .age(age)
                 .authority(Authority.ROLE_USER)
+                .build();
+    }
+
+    public Store toStore(Member member) {
+        return Store.builder()
+                .name(storeName)
+                .ownerName(ownerName)
+                .roadAddress(storeRoadAddress)
+                .detailAddress(storeDetailAddress)
+                .phoneNumber(phoneNumber)
+                .member(member)
                 .build();
     }
 

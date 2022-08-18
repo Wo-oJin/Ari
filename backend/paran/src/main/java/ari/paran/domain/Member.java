@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -18,7 +20,6 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
     private String password;
     private String email;
     private String nickname;
@@ -29,16 +30,18 @@ public class Member {
     @ColumnDefault("0")
     private boolean fromOauth;
 
+    @Enumerated(EnumType.STRING) // enum 이름을 DB에 저장
+    private Authority authority;
+
+    @OneToMany(mappedBy = "member")
+    private List<Store> stores = new ArrayList<>();
+
     public void setFromOauth() {
         this.fromOauth = true;
     }
 
-    @Enumerated(EnumType.STRING) // enum 이름을 DB에 저장
-    private Authority authority;
-
     @Builder
     public Member(String username, String email, String password, String nickname, String gender, int age, Authority authority) {
-        this.username = username;
         this.email = email;
         this.password = password;
         this.authority = authority;
@@ -46,5 +49,13 @@ public class Member {
         this.gender = gender;
         this.age = age;
         this.fromOauth = false;
+    }
+
+    public void changeRole(Authority authority) {
+        this.authority = authority;
+    }
+
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
     }
 }

@@ -1,5 +1,6 @@
 package ari.paran.jwt;
 
+import ari.paran.domain.Authority;
 import ari.paran.dto.response.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -60,11 +61,15 @@ public class TokenProvider {
                 .signWith(private_key, SignatureAlgorithm.HS512)
                 .compact();
 
+        log.info("권한: {}", authorities);
+
         return TokenDto.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .refreshTokenExpiresIn(REFRESH_TOKEN_EXPIRE_TIME)
                 .refreshToken(refreshToken)
+                .accessTokenExpireIn(ACCESS_TOKEN_EXPIRE_TIME)
+                .authority(authorities)
                 .build();
     }
 
