@@ -2,14 +2,20 @@ package ari.paran.domain.store;
 
 import ari.paran.domain.Event;
 import ari.paran.domain.Partnership;
+import ari.paran.dto.response.store.PartnershipDto;
+import ari.paran.service.store.StoreService;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.ibatis.annotations.One;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 
 @Data
@@ -40,6 +46,12 @@ public class Store implements Serializable{
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<ImgFile> imgFile = new ArrayList<>();
 
+    @Column(name = "open_time")
+    private String openTime;
+
+    @Column(name = "sub_text")
+    private String subText;
+
     @Column
     private boolean privateEvent;
 
@@ -51,7 +63,7 @@ public class Store implements Serializable{
     private List<Partnership> partnershipList;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "name", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Event> eventList;
 
     public boolean getPrivateEvent(){
@@ -60,6 +72,47 @@ public class Store implements Serializable{
 
     public boolean getStamp(){
         return this.stamp;
+    }
+
+
+    // 비즈니스 로직
+    public List<Partner> getPartners(){
+
+        List<Partner> partners = new ArrayList<>();
+        MultiValueMap<String, EventInfo> partners_info = new LinkedMultiValueMap<>();
+
+        for(Partnership partnership : partnershipList){
+            String partnerName = partnership.getPartnerName();
+            String info = partnership.getInfo();
+            LocalDate startDate = partnership.getStart_date();
+            LocalDate finishDate = partnership.getFinish_date();
+
+            partners_info.add(partnerName, new EventInfo(info, startDate, finishDate));
+        }
+
+        Set<String> keys = partners_info.keySet();
+        for(String key : keys){
+            Partner partner = new Partner(key, partners_info.get(key));
+            partners.add(partner);
+        }
+
+        return partners;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public class EventInfo{
+        private String eventInfo;
+        private LocalDate startDate;
+        private LocalDate finishDate;
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public class Partner{
+        private String partnerName;
+        private List<EventInfo> infos = new ArrayList<>();
     }
 
 }

@@ -26,7 +26,6 @@ public class FileService {
         Store store = storeRepository.findById(store_id).orElseGet(null);
 
         for(MultipartFile image : images) {
-            System.out.println("sdfsfsdf");
             String fileName = image.getOriginalFilename();
             //String extension = StringUtils.getFilenameExtension(fileName).toLowerCase();
             File destinationFile = new File(fileUrl + fileName);

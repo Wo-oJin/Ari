@@ -29,7 +29,7 @@ public class StoreController {
         List<Store> storeList = storeService.findStores();
 
         for(Store store : storeList){
-            simpleStoreDto.addStore(store, fileService);
+            simpleStoreDto.addStore(store, fileService, storeService);
         }
 
         return simpleStoreDto;

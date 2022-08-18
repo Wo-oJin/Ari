@@ -26,15 +26,13 @@ public class StoreService {
         return storeRepository.findById(store_id).orElseGet(null);
     }
 
-    /*
-    public List<String> getPartners(String storeName){
+    public List<String> getPartnersName(String storeName){
 
         List<Partnership> partnershipList = partnershipRepository.selectByStoreName(storeName);
 
         return partnershipList.stream()
                 .map(Partnership :: getPartnerName)
+                .distinct()
                 .collect(Collectors.toList());
     }
-    */
-
 }

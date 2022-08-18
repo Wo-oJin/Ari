@@ -9,6 +9,7 @@ import java.util.*;
 @Repository
 public interface PartnershipRepository extends JpaRepository<Partnership, Long> {
 
-    @Query("SELECT p FROM Partnership p WHERE p.store.name = ?1")
+    @Query("SELECT p FROM Partnership p INNER JOIN p.store s WHERE s.name = ?1")
     List<Partnership> selectByStoreName(String storeName);
+
 }
