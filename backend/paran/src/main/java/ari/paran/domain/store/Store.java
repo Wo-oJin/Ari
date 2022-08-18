@@ -103,7 +103,7 @@ public class Store implements Serializable{
 
         Set<String> keys = partners_info.keySet();
         for(String key : keys){
-            Partner partner = new Partner(key, partners_info.get(key));
+            Partner partner = new Partner(key, address.getRoadAddress(), partners_info.get(key));
             partners.add(partner);
         }
 
@@ -123,6 +123,7 @@ public class Store implements Serializable{
     @AllArgsConstructor
     public class Partner{
         private String partnerName;
+        private String roadAddress;
         private List<EventInfo> infos = new ArrayList<>();
     }
 
