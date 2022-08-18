@@ -1,91 +1,7 @@
 import { useEffect, useState } from "react";
 import "./DetailTap.css";
 const { kakao } = window;
-const testData = {
-  storeList: [
-    {
-      id: 1,
-      name: "미스터쉐프",
-      owner_name: "우영우",
-      open_time: "연중무휴, 오전 10:00 ~ 오후 10:00",
-      sub_text: "여기는 한국 최고 한식집인 미스터쉐프입니다.",
-      address: "경기 수원시 팔달구 아주로 47번길 16",
-      phoneNumber: "010-1234-5678",
-      private_event: true,
-      stamp: false,
-      partnershipList: [
-        {
-          partnership_id: 1,
-          partnerName: "아주맛있는집",
-          partnerLocation: "경기 수원시 팔달구 아주로 47번길 16",
-          info: [
-            "아맛집에서 10000원 이상 구매 시 전 메뉴 500원 할인",
-            "아맛집에서 5000원 이상 구매 시 전 메뉴 100원 할인",
-          ],
-        },
-        {
-          partnership_id: 2,
-          partnerName: "맥도날드",
-          partnerLocation: "경기도 수원시 영통구 아주로 46",
-          info: [
-            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
-            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
-          ],
-        },
-        {
-          partnership_id: 2,
-          partnerName: "맥도날드",
-          partnerLocation: "경기도 수원시 영통구 아주로 46",
-          info: [
-            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
-            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
-          ],
-        },
-        {
-          partnership_id: 2,
-          partnerName: "맥도날드",
-          partnerLocation: "경기도 수원시 영통구 아주로 46",
-          info: [
-            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
-            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
-          ],
-        },
-        {
-          partnership_id: 2,
-          partnerName: "맥도날드",
-          partnerLocation: "경기도 수원시 영통구 아주로 46",
-          info: [
-            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
-            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
-          ],
-        },
-        {
-          partnership_id: 2,
-          partnerName: "맥도날드",
-          partnerLocation: "경기도 수원시 영통구 아주로 46",
-          info: [
-            "맥도날드에서 10000원 이상 구매 시 전 메뉴 500원 할인",
-            "맥도날드에서 5000원 이상 구매 시 전 메뉴 100원 할인",
-          ],
-        },
-      ],
-      eventList: [
-        {
-          id: 1,
-          info: "미스터쉐프 할인 행사1",
-          start: "2022-08-01",
-          finish: "2022-09-01",
-        },
-        {
-          id: 2,
-          info: "미스터쉐프 할인 행사2",
-          start: "2022-08-01",
-          finish: "2022-09-01",
-        },
-      ],
-    },
-  ],
-};
+
 //협력 가게 정보 탭
 export const DetailCoopTap = ({ data }) => {
   const [index, setIndex] = useState("0");
@@ -99,7 +15,7 @@ export const DetailCoopTap = ({ data }) => {
     const map = new kakao.maps.Map(container, options);
     let geoCoder = new kakao.maps.services.Geocoder();
     geoCoder.addressSearch(
-      testData.storeList[0].partnershipList[index].partnerLocation,
+      data[0].partners[index].roadAddress,
       function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
@@ -114,7 +30,7 @@ export const DetailCoopTap = ({ data }) => {
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
           var customOverlay = new kakao.maps.CustomOverlay({
-            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${testData.storeList[0].partnershipList[index].partnerName}</div>`,
+            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data[0].partners[index].partnerName}</div>`,
             removable: false,
             position: coords,
           });
@@ -250,7 +166,7 @@ export const StoreInfoTap = ({ data }) => {
     const map = new kakao.maps.Map(container, options);
     let geoCoder = new kakao.maps.services.Geocoder();
     geoCoder.addressSearch(
-      testData.storeList[0].address,
+      data[0].address.roadAddress,
       function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
