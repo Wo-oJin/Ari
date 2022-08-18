@@ -87,7 +87,7 @@ const testData = {
   ],
 };
 //협력 가게 정보 탭
-export const DetailCoopTap = () => {
+export const DetailCoopTap = ({ data }) => {
   const [index, setIndex] = useState("0");
   //로드되면 처음에 협력 가게 위치를 카카오맵 상에 마커로 찍기
   useEffect(() => {
@@ -127,13 +127,13 @@ export const DetailCoopTap = () => {
       }
     );
   }, [index]);
-
+  console.log("in Tapㅁ ", data[0].partners);
   return (
     <div className="TapContainer">
       <div className="CoopStoreListContainer">
         <span>협력 중인 가게:</span>
         <div className="CoopStoreList">
-          {testData.storeList[0].partnershipList.map((item, i) => {
+          {data[0].partners.map((item, i) => {
             return index === `${i}` ? (
               <span
                 className="SelectedStoreTag"
@@ -160,9 +160,13 @@ export const DetailCoopTap = () => {
       </div>
       <div className="EventContent">
         <span className="EventTitle">이벤트 내용:</span>
-        <span className="EventSubText">
-          {testData.storeList[0].partnershipList[index].info}
-        </span>
+        {data[0].partners[index].infos.map((item, i) => {
+          return (
+            <span key={i} className="EventSubText">
+              {item.eventInfo}
+            </span>
+          );
+        })}
       </div>
       <div className="StoreLocation">
         <span>위치 안내:</span>
@@ -173,7 +177,7 @@ export const DetailCoopTap = () => {
 };
 
 //개인 이벤트 탭
-export const PrivateEventTap = () => {
+export const PrivateEventTap = ({ data }) => {
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
@@ -183,7 +187,7 @@ export const PrivateEventTap = () => {
     const map = new kakao.maps.Map(container, options);
     let geoCoder = new kakao.maps.services.Geocoder();
     geoCoder.addressSearch(
-      testData.storeList[0].address,
+      data[0].address.roadAddress,
       function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
@@ -198,7 +202,7 @@ export const PrivateEventTap = () => {
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
           var customOverlay = new kakao.maps.CustomOverlay({
-            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${testData.storeList[0].name}</div>`,
+            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data[0].name}</div>`,
             removable: false,
             position: coords,
           });
@@ -211,12 +215,13 @@ export const PrivateEventTap = () => {
       }
     );
   }, []);
+  console.log("in private ", data);
   return (
     <div className="TapContainer">
       <div className="PrivateEventContent">
         <span className="EventTitle">이벤트 내용:</span>
-        {testData.storeList[0].private_event ? (
-          testData.storeList[0].eventList.map((item, i) => {
+        {data[0].events.length > 0 ? (
+          data[0].events.map((item, i) => {
             return (
               <span className="PrivateEventSubText" key={i}>
                 {i + 1}. {item.info}
@@ -235,7 +240,7 @@ export const PrivateEventTap = () => {
   );
 };
 
-export const StoreInfoTap = () => {
+export const StoreInfoTap = ({ data }) => {
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
@@ -260,7 +265,7 @@ export const StoreInfoTap = () => {
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
           var customOverlay = new kakao.maps.CustomOverlay({
-            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${testData.storeList[0].name}</div>`,
+            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data[0].name}</div>`,
             removable: false,
             position: coords,
           });
@@ -284,12 +289,22 @@ export const StoreInfoTap = () => {
           <span className="StoreInfo">한 줄 소개: </span>
         </div>
         <div className="StoreContentR">
-          <span className="StoreInfo">{testData.storeList[0].name} </span>
-          <span className="StoreInfo">{testData.storeList[0].open_time} </span>
-          <span className="StoreInfo">
-            {testData.storeList[0].phoneNumber}{" "}
-          </span>
-          <span className="StoreInfo">{testData.storeList[0].sub_text} </span>
+          <span className="StoreInfo">{data[0].name} </span>
+          {data[0].open_hour ? (
+            <span className="StoreInfo">{data[0].open_hour} </span>
+          ) : (
+            <span>아직 등록된 정보가 없습니다.</span>
+          )}
+          {data[0].phoneNumber ? (
+            <span className="StoreInfo">{data[0].phoneNumber} </span>
+          ) : (
+            <span>아직 등록된 정보가 없습니다.</span>
+          )}
+          {data[0].sub_text ? (
+            <span className="StoreInfo">{data[0].sub_text} </span>
+          ) : (
+            <span>아직 등록된 정보가 없습니다.</span>
+          )}
         </div>
       </div>
       <div className="StoreLocation">

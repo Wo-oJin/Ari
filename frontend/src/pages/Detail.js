@@ -7,6 +7,7 @@ import {
   StoreInfoTap,
 } from "../components/DatailTap";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const testData = {
   storeList: [
@@ -89,16 +90,18 @@ const testData = {
   ],
 };
 const Detail = () => {
-  const [data, setData] = useState("");
+  const [data, setData] = useState(null);
   const { storeId } = useParams();
   console.log(storeId);
   useEffect(() => {
-    const fetchingData = async () => {
-      await setData(testData);
+    const getDetailData = async () => {
+      axios.get(`/map/store/${storeId}`).then((response) => {
+        setData(response.data.storeList);
+      });
     };
-    fetchingData();
+    getDetailData();
   }, []);
-  console.log(data);
+  console.log("in Detail ", data);
   //좋아요 유무를 확인하기 위한 테스트용 변수
   const [isLiked, setIsLiked] = useState(false);
   //클릭한 탭의 인덱스를 관리하기 위한 변수 선언
@@ -116,20 +119,23 @@ const Detail = () => {
   const SwitchTap = (i, data) => {
     switch (i) {
       case "0":
-        return <DetailCoopTap />;
+        return <DetailCoopTap data={data} />;
       case "1":
-        return <PrivateEventTap />;
+        return <PrivateEventTap data={data} />;
       case "2":
-        return <StoreInfoTap />;
+        return <StoreInfoTap data={data} />;
     }
   };
+  if (data === null) {
+    return <div>로딩 중</div>;
+  }
   return (
     <div className="DetailContainer">
       <div className="Wrapper">
         <img src="../images/detail.png" alt="이미지"></img>
       </div>
       <div className="DetailContentModal">
-        <span className="ContentTitle">미스터쉐프</span>
+        <span className="ContentTitle">{data[0].name}</span>
         <div key={0} className="LikeContainer">
           {isLiked ? (
             <button className="UnLikeBtn" onClick={onLikeClick}>
@@ -143,14 +149,14 @@ const Detail = () => {
           <span className="LikeText">찜 목록에 추가</span>
         </div>
         <div className="LabelContainer">
-          {testData.storeList[0].partnershipList.length > 0 ? (
+          {data[0].partners.length > 0 ? (
             <span className="Label">
-              {testData.storeList[0].partnershipList[0].partnerName} +
-              {testData.storeList[0].partnershipList.length} 제휴 중
+              {data[0].partners[0].partnerName} +{data[0].partners.length} 제휴
+              중
             </span>
           ) : null}
-          {testData.storeList[0].private_event ? <span>이벤트 중</span> : null}
-          {testData.storeList[0].stamp ? <span>스탬프 가능</span> : null}
+          {data[0].private_event ? <span>이벤트 중</span> : null}
+          {data[0].stamp ? <span>스탬프 가능</span> : null}
         </div>
       </div>
       <div className="BottomContainer">
@@ -183,7 +189,7 @@ const Detail = () => {
             </div>
           )}
         </div>
-        {SwitchTap(tapIndex, testData)}
+        {SwitchTap(tapIndex, data)}
       </div>
     </div>
   );
