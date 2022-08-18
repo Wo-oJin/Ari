@@ -65,13 +65,14 @@ public class SignupDto {
                 .build();
     }
 
-    public Store toStore() {
+    public Store toStore(Member member) {
         return Store.builder()
                 .name(storeName)
                 .ownerName(ownerName)
                 .roadAddress(storeRoadAddress)
                 .detailAddress(storeDetailAddress)
                 .phoneNumber(phoneNumber)
+                .member(member)
                 .build();
     }
 

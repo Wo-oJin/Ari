@@ -28,21 +28,7 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="fa0c95e0-48b2-443e-a68a-df29f8fc6e9d">
-      <console name="ari" type="STANDARD" schema="ari" session="Main"><![CDATA[select * from member;]]></console>
-      <console name="ari2" type="STANDARD" schema="ari" session="Main"><![CDATA[create table member (
-       member_id bigint not null auto_increment,
-        age integer not null,
-        authority varchar(255),
-        email varchar(255),
-        from_oauth bit default 0 not null,
-        gender varchar(255),
-        nickname varchar(255),
-        password varchar(255),
-        primary key (member_id)
-) engine=InnoDB;]]></console>
-    </connection>
-    <connection id="de2c68f9-dcf7-4bcd-bdb0-f13dc52b579b">
+    <connection id="fbf4ec36-2960-41cc-880f-27cfa4b723f1">
       <console name="ari" type="STANDARD" schema="mysql" session="Main" />
     </connection>
   </component>
@@ -50,8 +36,7 @@
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="fa0c95e0-48b2-443e-a68a-df29f8fc6e9d" />
-    <connection id="de2c68f9-dcf7-4bcd-bdb0-f13dc52b579b" />
+    <connection id="fbf4ec36-2960-41cc-880f-27cfa4b723f1" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -84,94 +69,10 @@
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="fa0c95e0-48b2-443e-a68a-df29f8fc6e9d" active="true" signed="true">
+      <connection id="fbf4ec36-2960-41cc-880f-27cfa4b723f1" active="true" signed="true">
         <database>
           <name value="ari" />
-          <description value="test for ari" />
-          <database-type value="MYSQL" />
-          <config-type value="BASIC" />
-          <database-version value="8.0" />
-          <driver-source value="BUILTIN" />
-          <driver-library value="" />
-          <driver value="" />
-          <url-type value="DATABASE" />
-          <host value="ari-first-test.cxvedxcacnsw.ap-northeast-2.rds.amazonaws.com" />
-          <port value="3306" />
-          <database value="mysql" />
-          <type value="USER_PASSWORD" />
-          <user value="admin" />
-          <deprecated-pwd value="ZGtmbGdoa2RseGxk" />
-        </database>
-        <properties>
-          <auto-commit value="false" />
-        </properties>
-        <ssh-settings>
-          <active value="false" />
-          <proxy-host value="" />
-          <proxy-port value="22" />
-          <proxy-user value="" />
-          <deprecated-proxy-pwd value="" />
-          <auth-type value="PASSWORD" />
-          <key-file value="" />
-          <key-passphrase value="" />
-        </ssh-settings>
-        <ssl-settings>
-          <active value="false" />
-          <certificate-authority-file value="" />
-          <client-certificate-file value="" />
-          <client-key-file value="" />
-        </ssl-settings>
-        <details>
-          <charset value="UTF-8" />
-          <session-management value="true" />
-          <ddl-file-binding value="true" />
-          <database-logging value="true" />
-          <connect-automatically value="true" />
-          <restore-workspace value="true" />
-          <restore-workspace-deep value="false" />
-          <environment-type value="default" />
-          <connectivity-timeout value="5" />
-          <idle-time-to-disconnect value="30" />
-          <idle-time-to-disconnect-pool value="5" />
-          <credential-expiry-time value="10" />
-          <max-connection-pool-size value="7" />
-          <alternative-statement-delimiter value="" />
-        </details>
-        <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
-          <object-type-filter>
-            <object-type name="SCHEMA" enabled="true" />
-            <object-type name="USER" enabled="true" />
-            <object-type name="ROLE" enabled="true" />
-            <object-type name="PRIVILEGE" enabled="true" />
-            <object-type name="CHARSET" enabled="true" />
-            <object-type name="TABLE" enabled="true" />
-            <object-type name="VIEW" enabled="true" />
-            <object-type name="MATERIALIZED_VIEW" enabled="true" />
-            <object-type name="NESTED_TABLE" enabled="true" />
-            <object-type name="COLUMN" enabled="true" />
-            <object-type name="INDEX" enabled="true" />
-            <object-type name="CONSTRAINT" enabled="true" />
-            <object-type name="DATASET_TRIGGER" enabled="true" />
-            <object-type name="DATABASE_TRIGGER" enabled="true" />
-            <object-type name="SYNONYM" enabled="true" />
-            <object-type name="SEQUENCE" enabled="true" />
-            <object-type name="PROCEDURE" enabled="true" />
-            <object-type name="FUNCTION" enabled="true" />
-            <object-type name="PACKAGE" enabled="true" />
-            <object-type name="TYPE" enabled="true" />
-            <object-type name="TYPE_ATTRIBUTE" enabled="true" />
-            <object-type name="ARGUMENT" enabled="true" />
-            <object-type name="DIMENSION" enabled="true" />
-            <object-type name="CLUSTER" enabled="true" />
-            <object-type name="DBLINK" enabled="true" />
-          </object-type-filter>
-          <object-name-filters />
-        </object-filters>
-      </connection>
-      <connection id="de2c68f9-dcf7-4bcd-bdb0-f13dc52b579b" active="true" signed="true">
-        <database>
-          <name value="ari" />
-          <description value="ari" />
+          <description value="for ari test" />
           <database-type value="MYSQL" />
           <config-type value="BASIC" />
           <database-version value="8.0" />
