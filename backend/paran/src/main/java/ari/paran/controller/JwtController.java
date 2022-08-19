@@ -5,7 +5,6 @@ import ari.paran.dto.request.LoginDto;
 import ari.paran.dto.request.SignupDto;
 import ari.paran.dto.request.TokenRequestDto;
 import ari.paran.service.Helper;
-import ari.paran.service.JwtAuthService;
 import ari.paran.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtController {
 
-    private final JwtAuthService jwtAuthService;
     private final MemberService memberService;
     private final Response response;
 

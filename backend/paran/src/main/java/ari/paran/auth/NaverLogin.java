@@ -4,7 +4,7 @@ package ari.paran.auth;
 
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.dto.request.SignupDto;
-import ari.paran.service.JwtAuthService;
+import ari.paran.service.MemberService;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -32,8 +32,7 @@ public class NaverLogin {
     private final static String NAVER_REDIRECT_URI = "http://localhost:8080/auth/naver/login"; //Redirect URL
     private final static String RESOURCE_SERVER_URL = "https://openapi.naver.com/v1/nid/me";
     private final static String SESSION_STATE = "naver_oauth_state";
-
-    private final JwtAuthService jwtAuthService;
+    private final MemberService memberService;
     private final MemberRepository memberRepository;
 
     // 코드 발급
@@ -111,7 +110,7 @@ public class NaverLogin {
             form.setAge(Integer.valueOf(age));
             form.setFromOauth(true);
 
-            jwtAuthService.signup(form);
+            memberService.signupUser(form);
         }
 
         return profile;
