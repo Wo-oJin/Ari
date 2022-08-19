@@ -28,15 +28,15 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="fbf4ec36-2960-41cc-880f-27cfa4b723f1">
-      <console name="ari" type="STANDARD" schema="mysql" session="Main" />
+    <connection id="2d897372-393b-4437-9dce-942408b46272">
+      <console name="ari" type="STANDARD" schema="mysql" session="Main"><![CDATA[select @@time_zone, now();]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="fbf4ec36-2960-41cc-880f-27cfa4b723f1" />
+    <connection id="2d897372-393b-4437-9dce-942408b46272" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -63,24 +63,22 @@
     <diagnostics-history />
   </component>
   <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
-    <recently-used-interfaces>
-      <mapping database-type="MYSQL" interface-id="DEFAULT" />
-    </recently-used-interfaces>
+    <recently-used-interfaces />
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="fbf4ec36-2960-41cc-880f-27cfa4b723f1" active="true" signed="true">
+      <connection id="2d897372-393b-4437-9dce-942408b46272" active="true" signed="true">
         <database>
           <name value="ari" />
-          <description value="for ari test" />
+          <description value="ari" />
           <database-type value="MYSQL" />
           <config-type value="BASIC" />
-          <database-version value="8.0" />
+          <database-version value="5.5" />
           <driver-source value="BUILTIN" />
           <driver-library value="" />
           <driver value="" />
           <url-type value="DATABASE" />
-          <host value="ari-first-test.cxvedxcacnsw.ap-northeast-2.rds.amazonaws.com" />
+          <host value="ari-test.cxvedxcacnsw.ap-northeast-2.rds.amazonaws.com" />
           <port value="3306" />
           <database value="mysql" />
           <type value="USER_PASSWORD" />
