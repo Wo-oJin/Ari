@@ -10,6 +10,7 @@ const StoreModal = ({
 }) => {
   //영역 바깥을 클릭하면 모달창이 꺼지도록 모달 컴포넌트를 ref로 지정
   const modalRef = useRef();
+
   useEffect(() => {
     //컴포넌트가 생성된 시점에 mousedown이벤트를 추가하고 clickModalOutside 호출
     document.addEventListener("mousedown", clickModalOutside);
@@ -40,6 +41,7 @@ const StoreModal = ({
           className="StoreImg"
           src={`data:image/jpg;base64, ${data.image}`}
           width={"100%"}
+          alt="images"
         ></img>
         <div className="StoreModalContent">
           <span className="StoreModalTitle">{data.name}</span>
