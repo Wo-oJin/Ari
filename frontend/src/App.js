@@ -9,13 +9,11 @@ import SignupUser from "./pages/SignupUser";
 import SignupOwner from "./pages/SignupOwner";
 import SignupOwner2 from './pages/SignupOwner2';
 import { RecoilRoot } from "recoil";
+import Detail from "./pages/Detail";
 import { reissue } from './services/jwt/reissue';
 
 function App() {
   useEffect(() => { // 처음 렌더링될 때 한 번 실행
-    console.log("localStorage authority>>"+localStorage.getItem("authority")); // 유저 권한 가져오기
-    console.log("localStorage info>>"+localStorage.getItem("info")); // 유저 정보 가져오기
-
     const a = async () => {
       const result = await reissue(); // 토큰 갱신 요청
       
@@ -38,8 +36,10 @@ function App() {
           <Route path="/loginUser" element={<LoginUser />} />
           <Route path="/loginOwner" element={<LoginOwner />} />
           <Route path="/signupUser" element={<SignupUser />} />
+          <Route path="/detail/:storeId" element={<Detail />} />
           <Route path="/signupOwner" element={<SignupOwner />} />
           <Route path="/signupOwner2" element={<SignupOwner2 />} />
+
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

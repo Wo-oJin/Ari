@@ -2,7 +2,7 @@ package ari.paran.auth;
 
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.dto.request.SignupDto;
-import ari.paran.service.JwtAuthService;
+import ari.paran.service.MemberService;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -12,7 +12,6 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -32,9 +31,8 @@ public class KakaoLogin {
     private final static String RESOURCE_SERVER_URL = "https://kapi.kakao.com/v2/user/me";
     private final static String SESSION_STATE = "kakao_oauth_state";
 
-    private final JwtAuthService jwtAuthService;
+    private final MemberService memberService;
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
     // 코드 발급
     public String getAuthorizationUrl(HttpSession session) {
@@ -114,7 +112,7 @@ public class KakaoLogin {
             form.setAge(Integer.valueOf(age));
             form.setFromOauth(true);
 
-            jwtAuthService.signup(form);
+            memberService.signupUser(form);
         }
 
         return profile;

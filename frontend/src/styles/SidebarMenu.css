@@ -47,3 +47,11 @@
   font-weight: 700;
   margin-bottom: 35px;
 }
+
+.logout {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4E514F;
+  margin-bottom: 35px;
+  cursor: pointer;
+}

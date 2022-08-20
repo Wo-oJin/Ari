@@ -6,6 +6,7 @@ import ari.paran.domain.Member;
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.domain.repository.SignupCodeRepository;
 import ari.paran.domain.repository.StoreRepository;
+import ari.paran.domain.store.Store;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.dto.request.LoginDto;
@@ -180,9 +181,9 @@ public class MemberService {
 
         //5. user/owner에 따라 닉네임or가게이름 tokenDto에 추가
         if (member.get().getAuthority() == Authority.ROLE_USER) {
-            tokenDto.setInfo(member.get().getNickname());
+            tokenDto.setInfo(member.get().getNickname()); // 닉네임
         } else {
-            tokenDto.setInfo(member.get().getStores().get(0).getName());
+            tokenDto.setInfo(member.get().getStores().get(0).getName()); // 가게이름
         }
 
         return response.success(tokenDto, "로그인에 성공했습니다.", HttpStatus.OK);

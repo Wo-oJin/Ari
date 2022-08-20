@@ -2,9 +2,8 @@ package ari.paran.controller;
 
 import ari.paran.auth.KakaoLogin;
 import ari.paran.auth.NaverLogin;
-import ari.paran.dto.MemberRequestDto;
-import ari.paran.dto.response.TokenDto;
-import ari.paran.service.JwtAuthService;
+import ari.paran.dto.request.LoginDto;
+import ari.paran.service.MemberService;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,38 +21,32 @@ import java.util.Map;
 public class OAuthController {
     private final KakaoLogin kakaoLogin;
     private final NaverLogin naverLogin;
-    private final JwtAuthService jwtAuthService;
+    private final MemberService memberService;
 
     @ResponseBody
     @GetMapping("/auth/kakao/login")
-    public ResponseEntity<TokenDto> kakaoCallback(HttpSession session, @RequestParam String code, @RequestParam String state, RedirectAttributes redirectAttributes) throws Exception {
+    public ResponseEntity<?> kakaoCallback(HttpSession session, @RequestParam String code, @RequestParam String state, RedirectAttributes redirectAttributes) throws Exception {
 
         OAuth2AccessToken token = kakaoLogin.getAccessToken(session, code, state);
 
         Map<String, String> apiResult = kakaoLogin.getUserProfile(token);
 
-        MemberRequestDto memberRequestDto = new MemberRequestDto();
+        LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
 
-        memberRequestDto.setEmail(apiResult.get("email"));
-        memberRequestDto.setPassword(apiResult.get("password"));
-
-        return ResponseEntity.ok(jwtAuthService.login(memberRequestDto));
+        return ResponseEntity.ok(memberService.login(loginDto));
     }
 
     @ResponseBody
     @GetMapping("/auth/naver/login")
-    public ResponseEntity<TokenDto> NaverCallback(HttpSession session, @RequestParam String code, @RequestParam String state) throws Exception {
+    public ResponseEntity<?> NaverCallback(HttpSession session, @RequestParam String code, @RequestParam String state) throws Exception {
 
         OAuth2AccessToken token = naverLogin.getAccessToken(session, code, state);
 
         Map<String, String> apiResult = naverLogin.getUserProfile(token);
 
-        MemberRequestDto memberRequestDto = new MemberRequestDto();
+        LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
 
-        memberRequestDto.setEmail(apiResult.get("email"));
-        memberRequestDto.setPassword(apiResult.get("password"));
-
-        return ResponseEntity.ok(jwtAuthService.login(memberRequestDto));
+        return ResponseEntity.ok(memberService.login(loginDto));
     }
 
 }

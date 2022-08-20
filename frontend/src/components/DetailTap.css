@@ -1,0 +1,97 @@
+.TapContainer {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.CoopStoreListContainer > span {
+  font-size: 15px;
+  font-weight: 600;
+}
+.CoopStoreList {
+  margin-top: 5px;
+  width: 303px;
+  word-break: keep-all;
+}
+.SelectedStoreTag {
+  display: inline-block;
+  text-align: center;
+  min-width: 80px;
+  font-size: 13px;
+  background-color: #386ffe;
+  color: #ffffff;
+  border-radius: 20px;
+  margin-top: 5px;
+  margin-right: 7px;
+}
+.UnSelectedStoreTag {
+  margin-top: 5px;
+  text-align: center;
+  display: inline-block;
+  min-width: 80px;
+  cursor: pointer;
+  font-size: 13px;
+  background-color: #a2a4aa;
+  color: #ffffff;
+  border-radius: 20px;
+  margin-right: 7px;
+}
+.EventContent {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+}
+.EventTitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.EventSubText {
+  width: 303px;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: keep-all;
+}
+.StoreLocation {
+  margin-top: 30px;
+}
+.StoreLocation > span {
+  font-size: 15px;
+  font-weight: 600;
+}
+.map {
+  margin-top: 5px;
+  width: 320px;
+  height: 180px;
+}
+.PrivateEventSubText {
+  width: 303px;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.PrivateEventContent {
+  display: flex;
+  flex-direction: column;
+}
+.StoreContainer {
+  display: flex;
+}
+.StoreContentL {
+  display: flex;
+  flex-direction: column;
+  width: 80px;
+  height: 100px;
+}
+.StoreContentR {
+  display: flex;
+  flex-direction: column;
+  width: 208px;
+  height: 100px;
+}
+.StoreInfo {
+  width: 303px;
+  font-size: 13px;
+}

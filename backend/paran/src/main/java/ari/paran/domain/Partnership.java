@@ -1,10 +1,17 @@
 package ari.paran.domain;
 
+import ari.paran.domain.store.Store;
+import ari.paran.dto.response.store.PartnershipDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import net.bytebuddy.asm.Advice;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 
 @Data
@@ -17,19 +24,19 @@ public class Partnership {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "store_id", referencedColumnName = "store_id"),
-            @JoinColumn(name = "from_store_name", referencedColumnName = "store_name")
-    })
+    @JoinColumn(name = "from_store_id")
     private Store store;
 
     @Column(name = "to_store_name")
     private String partnerName;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "partnership_info",
-            joinColumns = @JoinColumn(name = "partnership_id")
-    )
-    private List<String> info;
+    // transient -> db에 저장 안함
+    private transient String partnerLocation;
+
+    private String info;
+
+    private LocalDate start_date;
+
+    private LocalDate finish_date;
+
 }

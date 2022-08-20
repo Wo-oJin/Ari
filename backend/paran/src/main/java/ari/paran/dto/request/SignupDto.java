@@ -2,7 +2,8 @@ package ari.paran.dto.request;
 
 import ari.paran.domain.Authority;
 import ari.paran.domain.Member;
-import ari.paran.domain.Store;
+import ari.paran.domain.store.Store;
+import ari.paran.domain.store.Address;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,9 +43,7 @@ public class SignupDto {
     private String storeName;
     private String ownerName;
 
-    private String storeRoadAddress;
-
-    private String storeDetailAddress;
+    private Address address;
 
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "휴대폰번호를 확인해 주세요")
     private String phoneNumber;
@@ -69,8 +68,7 @@ public class SignupDto {
         return Store.builder()
                 .name(storeName)
                 .ownerName(ownerName)
-                .roadAddress(storeRoadAddress)
-                .detailAddress(storeDetailAddress)
+                .address(address)
                 .phoneNumber(phoneNumber)
                 .member(member)
                 .build();
