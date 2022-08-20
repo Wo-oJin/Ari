@@ -320,11 +320,11 @@ const SignupUser = () => {
                         <div className="intro">성별</div>
                         <div className="genderContainer">
                             <div className="gender-wrap">
-                                <input type="radio" name="gender" value="M" id="male" onChange={onChangeGender} defaultChecked></input>
+                                <input type="radio" name="gender" value="male" id="male" onChange={onChangeGender} defaultChecked></input>
                                 <label htmlFor="male">남</label>
                             </div>
                             <div className="gender-wrap">
-                                <input type="radio" name="gender" value="F" id="female" onChange={onChangeGender}></input>
+                                <input type="radio" name="gender" value="female" id="female" onChange={onChangeGender}></input>
                                 <label htmlFor="female">여</label>
                             </div>
                         </div>
