@@ -33,7 +33,7 @@ const SignupOwner = () => {
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
     const [age, setAge] = useState("20");
-    const [gender, setGender] = useState("M");
+    const [gender, setGender] = useState("male");
 
     // 오류 메세지 상태 저장
     const [emailMessage, setEmailMessage] = useState("");
