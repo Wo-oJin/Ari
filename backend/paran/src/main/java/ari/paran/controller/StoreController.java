@@ -4,6 +4,7 @@ import ari.paran.domain.store.Store;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.domain.repository.StoreRepository;
 import ari.paran.dto.response.store.SimpleStoreDto;
+import ari.paran.service.MemberService;
 import ari.paran.service.store.FileService;
 
 import ari.paran.service.store.StoreService;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.*;
 
 
@@ -22,6 +24,7 @@ public class StoreController {
 
     private final StoreService storeService;
     private final FileService fileService;
+    private final MemberService memberService;
 
     @GetMapping("/map/store")
     @ResponseBody
@@ -37,11 +40,13 @@ public class StoreController {
     }
 
     @GetMapping("/map/store/{store_id}")
-    public DetailStoreDto detailStoreList(@PathVariable Long store_id) throws IOException {
+    public DetailStoreDto detailStoreList(@PathVariable Long store_id, Principal principal) throws IOException {
         DetailStoreDto detailStoreDto = new DetailStoreDto();
         Store store = storeService.findStore(store_id);
 
-        detailStoreDto.addStore(store, fileService);
+        Long member_id = Long.valueOf(principal.getName());
+
+        detailStoreDto.addStore(store, fileService, memberService.getMemberInfoById(member_id));
 
         return detailStoreDto;
     }

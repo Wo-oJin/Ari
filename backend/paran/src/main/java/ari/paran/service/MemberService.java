@@ -52,9 +52,15 @@ public class MemberService {
     private final JavaMailSender javaMailSender;
 
     @Transactional(readOnly = true)
-    public MemberResponseDto getMemberInfo(String email){
+    public MemberResponseDto getMemberInfoByEmail(String email){
         return memberRepository.findByEmail(email)
                 .map(MemberResponseDto::of)
+                .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    public Member getMemberInfoById(Long id){
+        return memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
     }
 

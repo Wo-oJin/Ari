@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,6 +23,25 @@ public class OAuthController {
     private final KakaoLogin kakaoLogin;
     private final NaverLogin naverLogin;
     private final MemberService memberService;
+
+    @GetMapping("/kakao_login")
+    public String kakaoLogin(HttpSession httpSession, Model model){
+        // code를 받을 수 있는 인증 URL 반환
+        String codeUrl = kakaoLogin.getAuthorizationUrl(httpSession);
+        model.addAttribute("kakao_url", codeUrl);
+
+        return "kakao_login";
+    }
+
+    @GetMapping("/naver_login")
+    public String naverLogin(HttpSession httpSession, Model model){
+
+        // code를 받을 수 있는 인증 URL 반환
+        String codeUrl = naverLogin.getAuthorizationUrl(httpSession);
+        model.addAttribute("naver_url", codeUrl);
+
+        return "naver_login";
+    }
 
     @ResponseBody
     @GetMapping("/auth/kakao/login")

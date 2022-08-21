@@ -28,7 +28,7 @@ public class MemberController {
     @GetMapping("/{email}")
     public ResponseEntity<MemberResponseDto> getMemberInfo(@PathVariable String email){
         System.out.println("email: " + email);
-        return ResponseEntity.ok(memberService.getMemberInfo(email));
+        return ResponseEntity.ok(memberService.getMemberInfoByEmail(email));
     }
 
     // 권한 테스트

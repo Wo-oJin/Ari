@@ -54,6 +54,8 @@ public class SignupDto {
     }
 
     public Member toMember(PasswordEncoder passwordEncoder) {
+        log.info("비밀번호 = {}", passwordEncoder.encode(password));
+
         return Member.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))

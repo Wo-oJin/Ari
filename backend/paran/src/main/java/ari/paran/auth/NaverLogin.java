@@ -61,6 +61,7 @@ public class NaverLogin {
             OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
             return accessToken;
         }
+
         return null;
     }
 
@@ -80,7 +81,7 @@ public class NaverLogin {
         Map<String, Map<String, String>> attributes = new HashMap<>();
         attributes = new Gson().fromJson(body, attributes.getClass());
 
-        Map<String, String> account = new HashMap<>();
+        Map<String, String> account;
 
         account = attributes.get("response");
 

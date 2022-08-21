@@ -1,12 +1,16 @@
 package ari.paran.dto.response.store;
 
 import ari.paran.domain.Event;
+import ari.paran.domain.Member;
 import ari.paran.domain.Partnership;
 import ari.paran.domain.store.Address;
+import ari.paran.domain.store.Favorite;
 import ari.paran.domain.store.Store;
 import ari.paran.service.store.FileService;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +25,7 @@ public class DetailStoreDto {
         this.storeList = new ArrayList<DetailStore>();
     }
 
-    public void addStore(Store store, FileService fileService) throws IOException {
+    public void addStore(Store store, FileService fileService, Member member) throws IOException {
         DetailStore detailStore = new DetailStore();
 
         detailStore.setId(store.getId());
@@ -30,6 +34,7 @@ public class DetailStoreDto {
         detailStore.setAddress(store.getAddress());
         detailStore.setOpen_hour(store.getOpenTime());
         detailStore.setSub_text(store.getSubText());
+        detailStore.setFavoriteList(member.getFavoriteStoreId());
         detailStore.setPhoneNumber(store.getPhoneNumber());
         detailStore.setImage(fileService.getImage(store));
         detailStore.setPrivate_event(store.getPrivateEvent());
@@ -47,8 +52,8 @@ public class DetailStoreDto {
         storeList.add(detailStore);
     }
 
-    @Data
-    public class DetailStore{
+    @Setter
+    private static class DetailStore{
 
         private Long id;
         private String name;
@@ -57,6 +62,7 @@ public class DetailStoreDto {
         private String phoneNumber;
         private String open_hour;
         private String sub_text;
+        private List<Long> favoriteList;
         private List<Store.Partner> partners;
         private List<Event> events;
         private List<String> image;

@@ -3,6 +3,7 @@ package ari.paran.domain.store;
 import ari.paran.domain.Event;
 import ari.paran.domain.Member;
 import ari.paran.domain.Partnership;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -25,6 +26,7 @@ public class Store implements Serializable{
     @Column(name = "store_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -42,7 +44,7 @@ public class Store implements Serializable{
     @Column(name = "phone")
     private String phoneNumber;
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<ImgFile> imgFile = new ArrayList<>();
 
@@ -60,20 +62,11 @@ public class Store implements Serializable{
     @Column
     private boolean stamp;
 
-    @Builder
-    public Store(String name, String ownerName, Address address, String phoneNumber, Member member) {
-        this.name = name;
-        this.ownerName = ownerName;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.member = member;
-    }
-
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Partnership> partnershipList;
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Event> eventList;
 
@@ -83,6 +76,15 @@ public class Store implements Serializable{
 
     public boolean getStamp(){
         return this.stamp;
+    }
+
+    @Builder
+    public Store(String name, String ownerName, Address address, String phoneNumber, Member member) {
+        this.name = name;
+        this.ownerName = ownerName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.member = member;
     }
 
 

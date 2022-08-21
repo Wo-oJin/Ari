@@ -37,7 +37,7 @@ public class SimpleStoreDto {
     }
 
     @Data
-    public class SimpleStore{
+    private static class SimpleStore{
 
         private Long store_id;
         private String name;

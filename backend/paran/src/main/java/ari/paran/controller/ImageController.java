@@ -40,7 +40,6 @@ public class ImageController {
     @PostMapping("/upload")
     public String saveImage(HttpServletRequest request, @RequestParam List<MultipartFile> images) throws IOException {
 
-        System.out.println("sdfsdfsdfdsf");
         fileService.saveImage(1L, images);
 
         return "upload";

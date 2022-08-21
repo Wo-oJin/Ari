@@ -61,6 +61,7 @@ public class KakaoLogin {
             OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
             return accessToken;
         }
+
         return null;
     }
 
