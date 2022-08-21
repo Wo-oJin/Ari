@@ -4,9 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class ImgFile {
 
@@ -20,12 +19,13 @@ public class ImgFile {
     private Store store;
 
     String filename;
-    String fileurl;
+    String fileUrl;
 
-    public ImgFile(Store store, String filename, String fileurl){
+    @Builder
+    public ImgFile(Store store, String filename, String fileUrl){
         this.store = store;
         this.filename = filename;
-        this.fileurl = fileurl;
+        this.fileUrl = fileUrl;
     }
 
 }

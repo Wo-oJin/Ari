@@ -1,14 +1,12 @@
-package ari.paran.domain;
+package ari.paran.domain.member;
 
 import ari.paran.domain.store.Favorite;
 import ari.paran.domain.store.Store;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,8 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@NoArgsConstructor
-@Table(name = "member")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Member {
 
@@ -36,21 +33,25 @@ public class Member {
     private Authority authority;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Store> stores = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Favorite> favorites = new ArrayList<>();
 
     @Builder
     public Member(String username, String email, String password, String nickname, String gender, int age, Authority authority) {
-        this.email = email;
         this.password = password;
-        this.authority = authority;
+        this.email = email;
         this.nickname = nickname;
         this.gender = gender;
         this.age = age;
+        this.authority = authority;
+    }
+
+    public void addStore(Store store){
+        this.stores.add(store);
     }
 
     public void changeRole(Authority authority) {
@@ -60,7 +61,6 @@ public class Member {
     public void changePassword(String newPassword) {
         this.password = newPassword;
     }
-
 
     // 비즈니스 메서드
     public List<Long> getFavoriteStoreId(){

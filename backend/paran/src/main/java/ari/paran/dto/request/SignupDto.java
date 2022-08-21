@@ -1,10 +1,11 @@
 package ari.paran.dto.request;
 
-import ari.paran.domain.Authority;
-import ari.paran.domain.Member;
+import ari.paran.domain.member.Authority;
+import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Store;
 import ari.paran.domain.store.Address;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-@Data
+@Getter
 @Slf4j
 public class SignupDto {
 
@@ -33,24 +34,24 @@ public class SignupDto {
     private String nickname;
 
     private int age;
-
     private String gender;
 
-    private Authority authority = Authority.ROLE_USER;
-
-    private boolean fromOauth = false;
 
     private String storeName;
     private String ownerName;
-
     private Address address;
 
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "휴대폰번호를 확인해 주세요")
     private String phoneNumber;
 
-
-    public boolean getFromAuth(){
-        return this.fromOauth;
+    @Builder
+    public SignupDto(String username, String password, String email, String nickname, int age, String gender){
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.nickname = nickname;
+        this.age = age;
+        this.gender = gender;
     }
 
     public Member toMember(PasswordEncoder passwordEncoder) {

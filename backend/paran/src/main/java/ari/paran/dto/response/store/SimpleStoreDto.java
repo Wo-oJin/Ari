@@ -6,6 +6,7 @@ import ari.paran.service.store.FileService;
 import ari.paran.service.store.StoreService;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,7 +37,8 @@ public class SimpleStoreDto {
         storeList.add(simpleStore);
     }
 
-    @Data
+    @Getter
+    @Setter
     private static class SimpleStore{
 
         private Long store_id;

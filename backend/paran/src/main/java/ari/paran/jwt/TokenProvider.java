@@ -1,6 +1,5 @@
 package ari.paran.jwt;
 
-import ari.paran.domain.Authority;
 import ari.paran.dto.response.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

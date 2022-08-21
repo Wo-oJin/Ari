@@ -1,4 +1,4 @@
-package ari.paran.auth;
+package ari.paran.service.oauth;
 
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.dto.request.SignupDto;
@@ -15,15 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class KakaoLogin {
+public class KakaoLoginService {
 
     private final static String KAKAO_CLIENT_ID = "6ba9808d7a83807d2d0ddc97b41c8889";
     private final static String KAKAO_CLIENT_SECRET = "lNrtpw0rVlsGF3afrTh6xQdROxEp2fhC";
@@ -76,42 +73,33 @@ public class KakaoLogin {
         oauthService.signRequest(oauthToken, request);
 
         Response response = request.send();
-
         String body = response.getBody();
 
         Map<String, Map<String, String>> attributes = new HashMap<>();
         attributes = new Gson().fromJson(body, attributes.getClass());
 
-        Map<String, String> properties = new HashMap<>();
-        Map<String, String> account = new HashMap<>();
+        Map<String, String> account = attributes.get("kakao_account");
 
-        properties = attributes.get("properties");
-        account = attributes.get("kakao_account");
-
-        //String id = new Gson().fromJson(body, JsonObject.class).get("id").getAsString();
-        String name = properties.get("nickname");
-        String gender = account.get("gender");
         String email = account.get("email");
+        String nickname = Arrays.asList(email.split("@")).get(0);
+        String gender = account.get("gender");
         String age = account.get("age_range").substring(0,2);
 
-        Map<String, String> profile = new ConcurrentHashMap<>();
+        Map<String, String> profile = new HashMap<>();
 
         profile.put("email", email);
 
-        String pw = name+gender+email+age;
-        profile.put("password", pw);
+        String password = nickname+gender+email+age;
+        profile.put("password", password);
 
         if(!memberRepository.existsByEmail(email)) {
-            SignupDto form = new SignupDto();
-            String[] username = email.split("@");
-
-            form.setUsername(username[0]);
-            form.setPassword(pw);
-            form.setNickname(name);
-            form.setEmail(email);
-            form.setGender(gender);
-            form.setAge(Integer.valueOf(age));
-            form.setFromOauth(true);
+            SignupDto form = SignupDto.builder()
+                    .email(email)
+                    .password(password)
+                    .nickname(nickname)
+                    .gender(gender)
+                    .age(Integer.valueOf(age))
+                    .build();
 
             memberService.signupUser(form);
         }

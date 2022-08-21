@@ -2,7 +2,6 @@ package ari.paran.controller;
 
 import ari.paran.domain.store.Store;
 import ari.paran.dto.response.store.DetailStoreDto;
-import ari.paran.domain.repository.StoreRepository;
 import ari.paran.dto.response.store.SimpleStoreDto;
 import ari.paran.service.MemberService;
 import ari.paran.service.store.FileService;
@@ -50,12 +49,5 @@ public class StoreController {
 
         return detailStoreDto;
     }
-
-    /*
-    @GetMapping("/map/partners/{store_name}")
-    public List<String> getPartners(@PathVariable String store_name){
-        return storeService.getPartners(store_name);
-    }
-    */
 
 }

@@ -1,6 +1,4 @@
-package ari.paran.auth;
-
-
+package ari.paran.service.oauth;
 
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.dto.request.SignupDto;
@@ -17,15 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class NaverLogin {
+public class NaverLoginService {
 
     private final static String NAVER_CLIENT_ID = "upEgP9hrTubxfYE6rikh";
     private final static String NAVER_CLIENT_SECRET = "kUoimNInKY";
@@ -75,47 +73,38 @@ public class NaverLogin {
         oauthService.signRequest(oauthToken, request);
 
         Response response = request.send();
-
         String body = response.getBody();
 
         Map<String, Map<String, String>> attributes = new HashMap<>();
         attributes = new Gson().fromJson(body, attributes.getClass());
 
-        Map<String, String> account;
+        Map<String, String> account = attributes.get("response");
 
-        account = attributes.get("response");
-
-        //String id = new Gson().fromJson(body, JsonObject.class).get("id").getAsString();
-        String name = account.get("name");
-        String nickname = account.get("nickname");
-        String gender = account.get("gender");
         String email = account.get("email");
+        String nickname = Arrays.asList(email.split("@")).get(0);
+        String gender = account.get("gender");
         String age = account.get("age").substring(0,2);
 
-        Map<String, String> profile = new ConcurrentHashMap<>();
+        Map<String, String> profile = new HashMap<>();
 
         profile.put("email", email);
 
-        String pw = name+gender+email+age;
-        profile.put("password", pw);
+        String password = nickname+gender+email+age;
+        profile.put("password", password);
 
         if(!memberRepository.existsByEmail(email)) {
-            SignupDto form = new SignupDto();
-            String[] username = email.split("@");
-
-            form.setUsername(username[0]);
-            form.setPassword(pw);
-            form.setNickname(name);
-            form.setEmail(email);
-            form.setGender(gender);
-            form.setAge(Integer.valueOf(age));
-            form.setFromOauth(true);
+            SignupDto form = SignupDto.builder()
+                    .email(email)
+                    .password(password)
+                    .nickname(nickname)
+                    .gender(gender)
+                    .age(Integer.valueOf(age))
+                    .build();
 
             memberService.signupUser(form);
         }
 
         return profile;
-
     }
 
     // 세션 유효성 검증을 위한 난수

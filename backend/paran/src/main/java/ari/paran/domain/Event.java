@@ -1,15 +1,14 @@
 package ari.paran.domain;
 
 import ari.paran.domain.store.Store;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Data
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Event {
 
@@ -18,7 +17,7 @@ public class Event {
     @Column(name = "event_id")
     private int id;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
@@ -27,11 +26,18 @@ public class Event {
     private String info;
 
     @Column(name = "start_date")
-    private LocalDate start;
+    private LocalDate startDate;
 
     @Column(name = "finish_date")
-    private LocalDate finish;
+    private LocalDate finishDate;
 
-    protected Event(){};
+    @Builder
+    private Event(Store store, String info, LocalDate startDate, LocalDate finishDate){
+        this.store = store;
+        this.info = info;
+        this.startDate = startDate;
+        this.finishDate = finishDate;
+    }
+
 }
 

@@ -23,7 +23,6 @@ public class FileService {
     public void saveImage(Long store_id, List<MultipartFile> images) throws IOException{
 
         String fileUrl = "C://Users//김우진//Desktop//파란학기//프로젝트//backend//paran//src//main//resources//images/";
-        List<ImgFile> imgFiles = new ArrayList<>();
         Store store = storeRepository.findById(store_id).orElseGet(null);
 
         for(MultipartFile image : images) {
@@ -34,22 +33,20 @@ public class FileService {
             destinationFile.getParentFile().mkdirs();
             image.transferTo(destinationFile);
 
-            ImgFile imgFile = new ImgFile();
-            imgFile.setStore(store);
-            imgFile.setFilename(fileName);
-            imgFile.setFileurl(fileUrl);
+            ImgFile imgFile = ImgFile.builder()
+                            .store(store)
+                            .filename(fileName)
+                            .fileUrl(fileUrl).build();
 
-            imgFiles.add(imgFile);
+            store.addImgFile(imgFile);
         }
-
-        store.setImgFile(imgFiles);
 
         storeRepository.save(store);
     }
 
     public List<String> getImage(Store store) throws IOException{
         List<String> base64Images = new ArrayList<>();
-        List<ImgFile> storeImages = store.getImgFile();
+        List<ImgFile> storeImages = store.getImgFiles();
 
         for(ImgFile imgFile : storeImages) {
             InputStream in = getClass().getResourceAsStream("/images/" + imgFile.getFilename());

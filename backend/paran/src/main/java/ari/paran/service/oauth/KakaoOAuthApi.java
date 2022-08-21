@@ -1,32 +1,32 @@
-package ari.paran.auth;
+package ari.paran.service.oauth;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
-public class NaverOAuthApi extends DefaultApi20 {
+public class KakaoOAuthApi extends DefaultApi20 {
 
-    protected NaverOAuthApi() {
+    protected KakaoOAuthApi() {
     }
 
     private static class InstanceHolder {
-        private static final NaverOAuthApi INSTANCE = new NaverOAuthApi();
+        private static final KakaoOAuthApi INSTANCE = new KakaoOAuthApi();
     }
 
-    public static NaverOAuthApi instance() {
+    public static KakaoOAuthApi instance() {
         return InstanceHolder.INSTANCE;
     }
 
     @Override // 토큰 발급
     public String getRefreshTokenEndpoint() {
-        return "https://nid.naver.com/oauth2.0/token";
+        return "https://kauth.kakao.com/oauth/token";
     }
 
     @Override // 토큰 발급
     public String getAccessTokenEndpoint() {
-        return "https://nid.naver.com/oauth2.0/token";
+        return "https://kauth.kakao.com/oauth/token";
     }
 
     @Override // 코드 발급
     protected String getAuthorizationBaseUrl() {
-        return "https://nid.naver.com/oauth2.0/authorize";
+        return "https://kauth.kakao.com/oauth/authorize";
     }
 }

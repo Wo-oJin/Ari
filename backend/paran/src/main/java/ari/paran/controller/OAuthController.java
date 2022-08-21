@@ -1,7 +1,7 @@
 package ari.paran.controller;
 
-import ari.paran.auth.KakaoLogin;
-import ari.paran.auth.NaverLogin;
+import ari.paran.service.oauth.KakaoLoginService;
+import ari.paran.service.oauth.NaverLoginService;
 import ari.paran.dto.request.LoginDto;
 import ari.paran.service.MemberService;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -20,24 +20,24 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 public class OAuthController {
-    private final KakaoLogin kakaoLogin;
-    private final NaverLogin naverLogin;
+    private final KakaoLoginService kakaoLoginService;
+    private final NaverLoginService naverLoginService;
     private final MemberService memberService;
 
-    @GetMapping("/kakao_login")
+    @GetMapping("auth/kakao_login")
     public String kakaoLogin(HttpSession httpSession, Model model){
         // code를 받을 수 있는 인증 URL 반환
-        String codeUrl = kakaoLogin.getAuthorizationUrl(httpSession);
+        String codeUrl = kakaoLoginService.getAuthorizationUrl(httpSession);
         model.addAttribute("kakao_url", codeUrl);
 
         return "kakao_login";
     }
 
-    @GetMapping("/naver_login")
+    @GetMapping("auth/naver_login")
     public String naverLogin(HttpSession httpSession, Model model){
 
         // code를 받을 수 있는 인증 URL 반환
-        String codeUrl = naverLogin.getAuthorizationUrl(httpSession);
+        String codeUrl = naverLoginService.getAuthorizationUrl(httpSession);
         model.addAttribute("naver_url", codeUrl);
 
         return "naver_login";
@@ -47,9 +47,9 @@ public class OAuthController {
     @GetMapping("/auth/kakao/login")
     public ResponseEntity<?> kakaoCallback(HttpSession session, @RequestParam String code, @RequestParam String state, RedirectAttributes redirectAttributes) throws Exception {
 
-        OAuth2AccessToken token = kakaoLogin.getAccessToken(session, code, state);
+        OAuth2AccessToken token = kakaoLoginService.getAccessToken(session, code, state);
 
-        Map<String, String> apiResult = kakaoLogin.getUserProfile(token);
+        Map<String, String> apiResult = kakaoLoginService.getUserProfile(token);
 
         LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
 
@@ -60,9 +60,9 @@ public class OAuthController {
     @GetMapping("/auth/naver/login")
     public ResponseEntity<?> NaverCallback(HttpSession session, @RequestParam String code, @RequestParam String state) throws Exception {
 
-        OAuth2AccessToken token = naverLogin.getAccessToken(session, code, state);
+        OAuth2AccessToken token = naverLoginService.getAccessToken(session, code, state);
 
-        Map<String, String> apiResult = naverLogin.getUserProfile(token);
+        Map<String, String> apiResult = naverLoginService.getUserProfile(token);
 
         LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
 

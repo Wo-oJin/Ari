@@ -1,16 +1,13 @@
 package ari.paran.dto.response.store;
 
 import ari.paran.domain.Event;
-import ari.paran.domain.Member;
-import ari.paran.domain.Partnership;
+import ari.paran.domain.member.Member;
+import ari.paran.domain.store.Partnership;
 import ari.paran.domain.store.Address;
-import ari.paran.domain.store.Favorite;
 import ari.paran.domain.store.Store;
 import ari.paran.service.store.FileService;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,6 +49,7 @@ public class DetailStoreDto {
         storeList.add(detailStore);
     }
 
+    @Getter
     @Setter
     private static class DetailStore{
 

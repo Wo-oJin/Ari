@@ -1,8 +1,8 @@
 package ari.paran.service;
 
 import ari.paran.Util.SecurityUtil;
-import ari.paran.domain.*;
-import ari.paran.domain.Member;
+import ari.paran.domain.member.Member;
+import ari.paran.domain.member.Authority;
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.domain.repository.SignupCodeRepository;
 import ari.paran.domain.repository.StoreRepository;
@@ -32,7 +32,6 @@ import org.springframework.util.ObjectUtils;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 

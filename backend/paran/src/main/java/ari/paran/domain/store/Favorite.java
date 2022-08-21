@@ -1,14 +1,15 @@
 package ari.paran.domain.store;
 
-import ari.paran.domain.Member;
-import ari.paran.domain.store.Store;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import ari.paran.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Favorite {
 
