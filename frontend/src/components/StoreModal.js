@@ -30,7 +30,7 @@ const StoreModal = ({
   };
 
   return (
-    <Link to={`/detail/${data.store_id}`}>
+    <Link to={`/detail/${data.storeId}`}>
       <div
         className="StoreModal SlideAnimation"
         ref={modalRef}
@@ -45,9 +45,9 @@ const StoreModal = ({
           <span className="StoreModalTitle">{data.name}</span>
           <div className="StoreModalLabels">
             <>
-              {data.partners_name.length > 0 ? (
+              {data.partnersName.length > 0 ? (
                 <span className="Label">
-                  {data.partners_name[0]} +{data.partners_name.length} 제휴 중
+                  {data.partnersName[0]} +{data.partnersName.length} 제휴 중
                 </span>
               ) : null}
             </>
