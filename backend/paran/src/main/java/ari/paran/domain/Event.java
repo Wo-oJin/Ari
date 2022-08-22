@@ -39,5 +39,9 @@ public class Event {
         this.finishDate = finishDate;
     }
 
+    public void changeStore(Store store){
+        this.store = store;
+    }
+
 }
 

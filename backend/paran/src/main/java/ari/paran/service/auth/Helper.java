@@ -1,4 +1,4 @@
-package ari.paran.service;
+package ari.paran.service.auth;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 

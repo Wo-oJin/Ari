@@ -8,13 +8,11 @@ import lombok.Setter;
 import javax.persistence.Embeddable;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class Address {
-
     private String roadAddress;
     private String detailAddress;
-
-    protected Address(){};
 
     protected Address(String roadAddress, String detailAddress){
         this.roadAddress = roadAddress;

@@ -6,9 +6,7 @@ import ari.paran.jwt.JwtSecurityConfig;
 import ari.paran.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import ari.paran.service.CustomUserDetailsService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
+import ari.paran.service.auth.CustomUserDetailsService;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,8 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // exception handling 할 때 우리가 만든 클래스를 추가
                 .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 401
+                .accessDeniedHandler(jwtAccessDeniedHandler) // 403
 
                 // 시큐리티는 기본적으로 세션을 사용
                 // 여기서는 세션을 사용하지 않기 때문에 세션 설정을 Stateless 로 설정
@@ -55,15 +53,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/map/**").permitAll()
-                .antMatchers("/image/**").permitAll()
+                .antMatchers("/map/**").permitAll() //test
+                .antMatchers("/image/**").permitAll() //test
 
                 //권한 테스트
                 .antMatchers("/member/userTest").hasRole("USER")
                 .antMatchers("/member/ownerTest").hasRole("OWNER")
                 .antMatchers("/member/adminTest").hasRole("ADMIN")
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
-
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
                 .and()

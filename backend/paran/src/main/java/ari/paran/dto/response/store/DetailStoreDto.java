@@ -27,24 +27,23 @@ public class DetailStoreDto {
 
         detailStore.setId(store.getId());
         detailStore.setName(store.getName());
-        detailStore.setOwner_name(store.getOwnerName());
+        detailStore.setOwnerName(store.getOwnerName());
         detailStore.setAddress(store.getAddress());
-        detailStore.setOpen_hour(store.getOpenTime());
-        detailStore.setSub_text(store.getSubText());
+        detailStore.setOpenHour(store.getOpenTime());
+        detailStore.setSubText(store.getSubText());
         detailStore.setFavoriteList(member.getFavoriteStoreId());
         detailStore.setPhoneNumber(store.getPhoneNumber());
         detailStore.setImage(fileService.getImage(store));
-        detailStore.setPrivate_event(store.getPrivateEvent());
+        detailStore.setPrivateEvent(store.getPrivateEvent());
         detailStore.setStamp(store.getStamp());
+        detailStore.setEvents(store.getEventList());
 
         List<Partnership> partners = store.getPartnershipList();
 
         for(Partnership partner : partners){
             partner.setPartnerLocation(store.getAddress().getRoadAddress());
         }
-
         detailStore.setPartners(store.getPartners());
-        detailStore.setEvents(store.getEventList());
 
         storeList.add(detailStore);
     }
@@ -55,16 +54,16 @@ public class DetailStoreDto {
 
         private Long id;
         private String name;
-        private String owner_name;
+        private String ownerName;
         private Address address;
         private String phoneNumber;
-        private String open_hour;
-        private String sub_text;
+        private String openHour;
+        private String subText;
         private List<Long> favoriteList;
         private List<Store.Partner> partners;
         private List<Event> events;
         private List<String> image;
-        private boolean private_event;
+        private boolean privateEvent;
         private boolean stamp;
     }
 

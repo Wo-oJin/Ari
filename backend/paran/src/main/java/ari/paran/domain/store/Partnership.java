@@ -30,13 +30,17 @@ public class Partnership {
     private LocalDate finishDate;
 
     @Builder
-    private Partnership(Store store, String partnerName, String PartnerLocation, String info, LocalDate startDate, LocalDate finishDate){
+    private Partnership(Store store, String partnerName, String partnerLocation, String info, LocalDate startDate, LocalDate finishDate){
         this.store = store;
         this.partnerName = partnerName;
-        this.partnerLocation = getPartnerLocation();
+        this.partnerLocation = partnerLocation;
         this.info = info;
         this.startDate = startDate;
         this.finishDate = finishDate;
+    }
+
+    public void changePartnershipStore(Store store){
+        this.store = store;
     }
 
     // 임시로 사용 --> 기능 구현 시 삭제해야함

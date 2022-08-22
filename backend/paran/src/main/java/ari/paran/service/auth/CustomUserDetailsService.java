@@ -1,4 +1,4 @@
-package ari.paran.service;
+package ari.paran.service.auth;
 
 import ari.paran.domain.member.Member;
 import ari.paran.domain.repository.MemberRepository;

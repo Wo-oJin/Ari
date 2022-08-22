@@ -3,7 +3,7 @@ package ari.paran.controller;
 import ari.paran.service.oauth.KakaoLoginService;
 import ari.paran.service.oauth.NaverLoginService;
 import ari.paran.dto.request.LoginDto;
-import ari.paran.service.MemberService;
+import ari.paran.service.auth.MemberService;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

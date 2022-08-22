@@ -2,7 +2,7 @@ package ari.paran.service.oauth;
 
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.dto.request.SignupDto;
-import ari.paran.service.MemberService;
+import ari.paran.service.auth.MemberService;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;

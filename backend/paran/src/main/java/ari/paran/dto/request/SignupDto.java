@@ -14,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Getter
-@Slf4j
 public class SignupDto {
 
     @NotBlank(message = "아이디를 입력해주세요")
@@ -33,16 +32,20 @@ public class SignupDto {
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z]{2,30}$", message = "숫자 또는 특수문자를 제외한 2자이상 입력해주세요")
     private String nickname;
 
-    private int age;
-    private String gender;
-
-
-    private String storeName;
-    private String ownerName;
-    private Address address;
-
+    @NotBlank
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "휴대폰번호를 확인해 주세요")
     private String phoneNumber;
+
+    @NotBlank
+    private int age;
+    @NotBlank
+    private String gender;
+    @NotBlank
+    private String storeName;
+    @NotBlank
+    private String ownerName;
+    @NotBlank
+    private Address address;
 
     @Builder
     public SignupDto(String username, String password, String email, String nickname, int age, String gender){
@@ -55,7 +58,7 @@ public class SignupDto {
     }
 
     public Member toMember(PasswordEncoder passwordEncoder) {
-        log.info("비밀번호 = {}", passwordEncoder.encode(password));
+        //log.info("비밀번호 = {}", passwordEncoder.encode(password));
 
         return Member.builder()
                 .email(email)

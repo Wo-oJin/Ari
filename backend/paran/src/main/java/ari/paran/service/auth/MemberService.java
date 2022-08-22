@@ -1,4 +1,4 @@
-package ari.paran.service;
+package ari.paran.service.auth;
 
 import ari.paran.Util.SecurityUtil;
 import ari.paran.domain.member.Member;
@@ -195,6 +195,7 @@ public class MemberService {
     }
 
     public ResponseEntity<?> reissue(TokenRequestDto reissue) {
+
         //1. refresh token 검증
         if (!tokenProvider.validateToken(reissue.getRefreshToken())) {
             return response.fail("Refresh Token 정보가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);

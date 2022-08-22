@@ -2,7 +2,7 @@ package ari.paran.controller;
 
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
-import ari.paran.service.MemberService;
+import ari.paran.service.auth.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

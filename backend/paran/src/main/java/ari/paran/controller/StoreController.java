@@ -3,7 +3,7 @@ package ari.paran.controller;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.response.store.SimpleStoreDto;
-import ari.paran.service.MemberService;
+import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.FileService;
 
 import ari.paran.service.store.StoreService;
