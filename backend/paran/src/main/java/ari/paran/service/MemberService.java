@@ -87,7 +87,7 @@ public class MemberService {
         member.changeRole(Authority.ROLE_OWNER);
         memberRepository.save(member);
 
-        Store store = signUp.toStore(member);
+        Store store = signUp.toStore(member, signUp.toAddress(signUp.getStoreRoadAddress(), signUp.getStoreDetailAddress()));
         storeRepository.save(store);
 
 
