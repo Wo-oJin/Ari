@@ -42,10 +42,12 @@ dependencies {
 
 	implementation 'org.apache.commons:commons-lang3:3.11'
 	implementation group: 'commons-codec', name: 'commons-codec', version: '1.9'
+	implementation 'org.springframework.session:spring-session-jdbc:2.1.6.RELEASE'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
 	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'org.mariadb,jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'

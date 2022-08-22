@@ -29,7 +29,10 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="2d897372-393b-4437-9dce-942408b46272">
-      <console name="ari" type="STANDARD" schema="mysql" session="Main"><![CDATA[select @@time_zone, now();]]></console>
+      <console name="ari" type="STANDARD" schema="ari" session="Main"><![CDATA[show tables;
+
+select * from member;
+select * from store;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
@@ -37,6 +40,9 @@
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="2d897372-393b-4437-9dce-942408b46272" />
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="2d897372-393b-4437-9dce-942408b46272" dataset="ari.member" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
