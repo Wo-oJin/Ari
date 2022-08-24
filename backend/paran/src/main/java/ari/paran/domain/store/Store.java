@@ -56,7 +56,7 @@ public class Store implements Serializable{
 
     @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private List<ImgFile> imgFiles = new ArrayList<>();
+    private List<StoreImgFile> storeImgFiles = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
@@ -130,8 +130,8 @@ public class Store implements Serializable{
 
     }
 
-    public void addImgFile(ImgFile imgFile){
-        this.imgFiles.add(imgFile);
+    public void addImgFile(StoreImgFile storeImgFile){
+        this.storeImgFiles.add(storeImgFile);
     }
 
     public void addPartnership(Partnership partnership){

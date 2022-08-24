@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ImgFile {
+public class StoreImgFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class ImgFile {
     String fileUrl;
 
     @Builder
-    public ImgFile(Store store, String filename, String fileUrl){
+    public StoreImgFile(Store store, String filename, String fileUrl){
         this.store = store;
         this.filename = filename;
         this.fileUrl = fileUrl;

@@ -26,6 +26,7 @@ public class OAuthController {
 
     @GetMapping("auth/kakao_login")
     public String kakaoLogin(HttpSession httpSession, Model model){
+
         // code를 받을 수 있는 인증 URL 반환
         String codeUrl = kakaoLoginService.getAuthorizationUrl(httpSession);
         model.addAttribute("kakao_url", codeUrl);

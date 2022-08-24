@@ -1,8 +1,7 @@
 package ari.paran.service.store;
 
 import ari.paran.domain.repository.StoreRepository;
-import ari.paran.domain.repository.StoreRepository;
-import ari.paran.domain.store.ImgFile;
+import ari.paran.domain.store.StoreImgFile;
 import ari.paran.domain.store.Store;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -35,12 +34,12 @@ public class FileService {
             destinationFile.getParentFile().mkdirs();
             image.transferTo(destinationFile);
 
-            ImgFile imgFile = ImgFile.builder()
+            StoreImgFile storeImgFile = StoreImgFile.builder()
                             .store(store)
                             .filename(fileName)
                             .fileUrl(fileUrl).build();
 
-            store.addImgFile(imgFile);
+            store.addImgFile(storeImgFile);
         }
 
         storeRepository.save(store);
@@ -48,10 +47,10 @@ public class FileService {
 
     public List<String> getImage(Store store) throws IOException{
         List<String> base64Images = new ArrayList<>();
-        List<ImgFile> storeImages = store.getImgFiles();
+        List<StoreImgFile> storeImages = store.getStoreImgFiles();
 
-        for(ImgFile imgFile : storeImages) {
-            InputStream in = getClass().getResourceAsStream("/images/" + imgFile.getFilename());
+        for(StoreImgFile storeImgFile : storeImages) {
+            InputStream in = getClass().getResourceAsStream("/images/" + storeImgFile.getFilename());
             //InputStream in = getClass().getResourceAsStream("/images/" + "iu.jpg");
 
             byte[] imgBytes = in.readAllBytes();
