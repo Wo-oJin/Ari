@@ -1,5 +1,6 @@
 package ari.paran.domain.member;
 
+import ari.paran.domain.board.Article;
 import ari.paran.domain.store.Favorite;
 import ari.paran.domain.store.Store;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,6 +41,10 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Favorite> favorites = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Article> articles = new ArrayList<>();
+
     @Builder
     public Member(String username, String email, String password, String nickname, String gender, int age, Authority authority) {
         this.password = password;
@@ -52,6 +57,12 @@ public class Member {
 
     public void addStore(Store store){
         this.stores.add(store);
+        store.setMember(this);
+    }
+
+    public void addArticle(Article article){
+        this.articles.add(article);
+        article.setMember(this);
     }
 
     public void changeRole(Authority authority) {
