@@ -61,12 +61,10 @@ public class StoreController {
         return storeService.existingInfo(principal);
     }
 
-//    @PostMapping("/edit/store")
-//    public ResponseEntity<?> editInfo(@RequestParam String name, @RequestParam String address, @RequestParam String ownerName,
-//                                      @RequestParam String phoneNumber, @RequestParam List<MultipartFile> images, @RequestParam String subText,
-//                                      @RequestParam String openHour, Principal principal) {
-//
-//    }
+    @PostMapping("/edit/store")
+    public ResponseEntity<?> editInfo(@ModelAttribute DetailStoreDto.DetailStore detailStore, Principal principal) {
+
+    }
 
     /*
     @GetMapping("/map/partners/{store_name}")

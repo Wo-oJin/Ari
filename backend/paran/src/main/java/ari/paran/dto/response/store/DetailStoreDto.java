@@ -65,7 +65,7 @@ public class DetailStoreDto {
     }
 
     @Data
-    public static class DetailStore{
+    private static class DetailStore{
 
         private Long id;
         private String name;
