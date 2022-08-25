@@ -26,13 +26,13 @@ public class DetailStoreDto {
 
         detailStore.setId(store.getId());
         detailStore.setName(store.getName());
-        detailStore.setOwner_name(store.getOwnerName());
+        detailStore.setOwnerName(store.getOwnerName());
         detailStore.setAddress(store.getAddress());
-        detailStore.setOpen_hour(store.getOpenTime());
-        detailStore.setSub_text(store.getSubText());
+        detailStore.setOpenHour(store.getOpenTime());
+        detailStore.setSubText(store.getSubText());
         detailStore.setPhoneNumber(store.getPhoneNumber());
         detailStore.setImage(fileService.getImage(store));
-        detailStore.setPrivate_event(store.getPrivateEvent());
+        detailStore.setPrivateEvent(store.getPrivateEvent());
         detailStore.setStamp(store.getStamp());
 
         List<Partnership> partners = store.getPartnershipList();
@@ -47,21 +47,50 @@ public class DetailStoreDto {
         storeList.add(detailStore);
     }
 
+    public DetailStoreDto.DetailStore makeDetailStoreDto(Store store, FileService fileService) throws  IOException{
+        DetailStore detailStore = new DetailStore();
+
+        detailStore.setId(store.getId());
+        detailStore.setName(store.getName());
+        detailStore.setOwnerName(store.getOwnerName());
+        detailStore.setAddress(store.getAddress());
+        detailStore.setOpenHour(store.getOpenTime());
+        detailStore.setSubText(store.getSubText());
+        detailStore.setPhoneNumber(store.getPhoneNumber());
+        detailStore.setImage(fileService.getImage(store));
+        detailStore.setPrivateEvent(store.getPrivateEvent());
+        detailStore.setStamp(store.getStamp());
+
+        return detailStore;
+    }
+
     @Data
-    public class DetailStore{
+    public static class DetailStore{
 
         private Long id;
         private String name;
-        private String owner_name;
+        private String ownerName;
         private Address address;
         private String phoneNumber;
-        private String open_hour;
-        private String sub_text;
+        private String openHour;
+        private String subText;
         private List<Store.Partner> partners;
         private List<Event> events;
         private List<String> image;
-        private boolean private_event;
+        private boolean privateEvent;
         private boolean stamp;
+
+        public Store toStore() {
+            return Store.builder()
+                    .name(getName())
+                    .address(getAddress())
+                    .ownerName(getOwnerName())
+                    .phoneNumber(getPhoneNumber())
+                    .subText(getSubText())
+                    .openTime(getOpenHour())
+                    .build();
+        }
+
     }
 
 }

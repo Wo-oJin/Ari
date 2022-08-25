@@ -1,11 +1,15 @@
 package ari.paran.service.store;
 
+import ari.paran.domain.repository.ImgFileRepository;
 import ari.paran.domain.repository.StoreRepository;
 import ari.paran.domain.repository.StoreRepository;
 import ari.paran.domain.store.ImgFile;
 import ari.paran.domain.store.Store;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,20 +18,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+@RequiredArgsConstructor
 @Service
 public class FileService {
 
-    @Autowired
-    StoreRepository storeRepository;
+    private final StoreRepository storeRepository;
+
+    private final ImgFileRepository imgFileRepository;
+
+    @Value("${file.storage.path}")
+    private String fileUrl; //"C://Users//김우진//Desktop//파란학기//프로젝트//backend//paran//src//main//resources//images/";
 
     public void saveImage(Long store_id, List<MultipartFile> images) throws IOException{
 
-        String fileUrl = "C://Users//김우진//Desktop//파란학기//프로젝트//backend//paran//src//main//resources//images/";
         List<ImgFile> imgFiles = new ArrayList<>();
         Store store = storeRepository.findById(store_id).orElseGet(null);
 
         for(MultipartFile image : images) {
-            String fileName = image.getOriginalFilename();
+            String originalFileName = image.getOriginalFilename();
+            String fileName = UUID.randomUUID().toString();
             //String extension = StringUtils.getFilenameExtension(fileName).toLowerCase();
             File destinationFile = new File(fileUrl + fileName);
 
@@ -36,9 +45,11 @@ public class FileService {
 
             ImgFile imgFile = new ImgFile();
             imgFile.setStore(store);
-            imgFile.setFilename(fileName);
-            imgFile.setFileurl(fileUrl);
+            imgFile.setOriginFilename(originalFileName);
+            imgFile.setFileName(fileName);
+            imgFile.setFileUrl(fileUrl);
 
+            imgFileRepository.save(imgFile);
             imgFiles.add(imgFile);
         }
 
@@ -52,7 +63,7 @@ public class FileService {
         List<ImgFile> storeImages = store.getImgFile();
 
         for(ImgFile imgFile : storeImages) {
-            InputStream in = getClass().getResourceAsStream("/images/" + imgFile.getFilename());
+            InputStream in = getClass().getResourceAsStream("/images/" + imgFile.getOriginFilename());
             //InputStream in = getClass().getResourceAsStream("/images/" + "iu.jpg");
 
             byte[] imgBytes = in.readAllBytes();

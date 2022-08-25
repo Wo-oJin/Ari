@@ -61,12 +61,17 @@ public class Store implements Serializable{
     private boolean stamp;
 
     @Builder
-    public Store(String name, String ownerName, Address address, String phoneNumber, Member member) {
+    public Store(String name, String ownerName, Address address, String phoneNumber, Member member, List<ImgFile> imgFile,
+                 String subText, String openTime) {
         this.name = name;
         this.ownerName = ownerName;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.member = member;
+        this.imgFile = imgFile;
+        this.subText = subText;
+        this.openTime = openTime;
+
     }
 
     @JsonManagedReference
