@@ -35,7 +35,7 @@ const SignupUser = () => {
     const [passwordCheck, setPasswordCheck] = useState("");
     const [nickname, setNickname] = useState("");
     const [age, setAge] = useState("20");
-    const [gender, setGender] = useState("M");
+    const [gender, setGender] = useState("male");
 
     // 오류 메세지 상태 저장
     const [emailMessage, setEmailMessage] = useState("");
@@ -320,11 +320,11 @@ const SignupUser = () => {
                         <div className="intro">성별</div>
                         <div className="genderContainer">
                             <div className="gender-wrap">
-                                <input type="radio" name="gender" value="M" id="male" onChange={onChangeGender} defaultChecked></input>
+                                <input type="radio" name="gender" value="male" id="male" onChange={onChangeGender} defaultChecked></input>
                                 <label htmlFor="male">남</label>
                             </div>
                             <div className="gender-wrap">
-                                <input type="radio" name="gender" value="F" id="female" onChange={onChangeGender}></input>
+                                <input type="radio" name="gender" value="female" id="female" onChange={onChangeGender}></input>
                                 <label htmlFor="female">여</label>
                             </div>
                         </div>

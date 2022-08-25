@@ -5,12 +5,11 @@ import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.response.store.SimpleStoreDto;
 import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.FileService;
-
 import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -45,9 +44,21 @@ public class StoreController {
 
         Long member_id = Long.valueOf(principal.getName());
 
-        detailStoreDto.addStore(store, fileService, memberService.getMemberInfoById(member_id));
+        detailStoreDto.getStore(store, fileService, memberService.getMemberInfoById(member_id));
 
         return detailStoreDto;
     }
+
+    @GetMapping("/edit/store")
+    public ResponseEntity<?> existingInfo(Principal principal) throws IOException{
+        return storeService.existingInfo(principal);
+    }
+
+    /*
+    @GetMapping("/map/partners/{store_name}")
+    public List<String> getPartners(@PathVariable String store_name){
+        return storeService.getPartners(store_name);
+    }
+    */
 
 }

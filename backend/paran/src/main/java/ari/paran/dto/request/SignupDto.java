@@ -33,17 +33,23 @@ public class SignupDto {
     private String nickname;
 
     @NotBlank
+    private int age;
+
+    private String gender;
+
+    private Authority authority = Authority.ROLE_USER;
+
+    private boolean fromOauth = false;
+
+    private String storeName;
+    private String ownerName;
+
+    private String storeRoadAddress;
+    private String storeDetailAddress;
+
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "휴대폰번호를 확인해 주세요")
     private String phoneNumber;
 
-    @NotBlank
-    private int age;
-    @NotBlank
-    private String gender;
-    @NotBlank
-    private String storeName;
-    @NotBlank
-    private String ownerName;
     @NotBlank
     private Address address;
 
@@ -70,7 +76,7 @@ public class SignupDto {
                 .build();
     }
 
-    public Store toStore(Member member) {
+    public Store toStore(Member member, Address address) {
         return Store.builder()
                 .name(storeName)
                 .ownerName(ownerName)
@@ -78,6 +84,10 @@ public class SignupDto {
                 .phoneNumber(phoneNumber)
                 .member(member)
                 .build();
+    }
+
+    public Address toAddress(String roadAddr, String detailAddr) {
+        return new Address(roadAddr, detailAddr);
     }
 
     public UsernamePasswordAuthenticationToken toAuthentication() {

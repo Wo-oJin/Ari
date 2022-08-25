@@ -19,12 +19,15 @@ public class StoreImgFile {
     private Store store;
 
     String filename;
+
+    String originalFileName;
     String fileUrl;
 
     @Builder
-    public StoreImgFile(Store store, String filename, String fileUrl){
+    public StoreImgFile(Store store, String filename, String originalFileName, String fileUrl){
         this.store = store;
         this.filename = filename;
+        this.originalFileName = originalFileName;
         this.fileUrl = fileUrl;
     }
 

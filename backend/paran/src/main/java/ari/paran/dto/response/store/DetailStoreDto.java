@@ -16,13 +16,7 @@ import java.util.List;
 @Getter
 public class DetailStoreDto {
 
-    private final List<DetailStore> storeList;
-
-    public DetailStoreDto(){
-        this.storeList = new ArrayList<DetailStore>();
-    }
-
-    public void addStore(Store store, FileService fileService, Member member) throws IOException {
+    public DetailStore getStore(Store store, FileService fileService, Member member) throws IOException {
         DetailStore detailStore = new DetailStore();
 
         detailStore.setId(store.getId());
@@ -45,7 +39,7 @@ public class DetailStoreDto {
         }
         detailStore.setPartners(store.getPartners());
 
-        storeList.add(detailStore);
+        return detailStore;
     }
 
     @Getter
@@ -65,6 +59,7 @@ public class DetailStoreDto {
         private List<String> image;
         private boolean privateEvent;
         private boolean stamp;
+
     }
 
 }

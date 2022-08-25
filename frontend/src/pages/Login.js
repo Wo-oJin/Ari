@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { loginData } from "../services/login/loginData";
-import { emailState, nicknameState } from "../state";
+import { authState, nameState } from "../state";
 import "../pages/Login.css";
 import Header from '../components/Header';
 
@@ -26,8 +26,8 @@ const Formbox = styled.div`
 `;
 
 const Login = () => {
-  const [uEmail, setuEmail] = useRecoilState(emailState);
-  const [uNickname, setuNickname] = useRecoilState(nicknameState);
+  const [auth, setAuth] = useRecoilState(authState);
+  const [name, setName] = useRecoilState(nameState);
 
   const navigate = useNavigate();
 
@@ -57,8 +57,19 @@ const Login = () => {
     if (result.result === "fail") { // 로그인 실패
         alert(result.massage);
     } else { // 로그인 성공
-        alert(result.massage);
-        navigate("/"); // 메인 페이지로 이동
+
+      // 사용자 권한을 recoil 변수에 저장
+      if (result.data.authority === "ROLE_USER") { // 손님
+        setAuth(1);
+      } else if (result.data.authority === "ROLE_OWNER") { // 사장
+        setAuth(2);
+      } else if (result.data.authority === "ROLE_ADMIN") { // 관리자
+        setAuth(3);
+      }
+
+      setName(result.data.info); // recoil
+      alert(result.massage);
+      navigate("/"); // 메인 페이지로 이동
     }
   };
 

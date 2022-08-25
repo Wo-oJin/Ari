@@ -67,14 +67,16 @@ public class Store implements Serializable{
     private List<Event> eventList = new ArrayList<>();
 
     @Builder
-    public Store(String name, String ownerName, Address address, String phoneNumber, Member member) {
+    public Store(String name, String ownerName, Address address, String phoneNumber, Member member, List<StoreImgFile> storeImgFile,
+                 String subText, String openTime) {
         this.name = name;
         this.ownerName = ownerName;
         this.address = address;
         this.phoneNumber = phoneNumber;
-
         this.member = member;
-        member.addStore(this);
+        this.storeImgFiles = storeImgFile;
+        this.subText = subText;
+        this.openTime = openTime;
     }
 
     public boolean getPrivateEvent(){
