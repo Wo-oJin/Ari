@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="f58c1a18-44bd-4dbc-89db-fb38b04517f3" name="ariServer">
+        <fileTransfer accessType="SFTP" host="13.209.105.171" port="22" sshConfigId="43267968-fddb-49d6-94a1-bc73be68842f" sshConfig="ec2-user@13.209.105.171:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

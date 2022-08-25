@@ -19,13 +19,23 @@ public class ImgFile {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    String filename;
-    String fileurl;
+    String originFilename;
 
-    public ImgFile(Store store, String filename, String fileurl){
+    String fileName;
+    String fileUrl;
+
+    public ImgFile(Store store, String fileName, String fileUrl){
         this.store = store;
-        this.filename = filename;
-        this.fileurl = fileurl;
+        this.originFilename = originFilename;
+        this.fileName = fileName;
+        this.fileUrl = fileUrl;
     }
 
+    @Builder
+    public ImgFile(Long id, String originFilename, String filename, String fileUrl) {
+        this.id = id;
+        this.originFilename = originFilename;
+        this.fileName = filename;
+        this.fileUrl = fileUrl;
+    }
 }
