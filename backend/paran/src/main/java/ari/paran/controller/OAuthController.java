@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -23,6 +24,19 @@ public class OAuthController {
     private final KakaoLoginService kakaoLoginService;
     private final NaverLoginService naverLoginService;
     private final MemberService memberService;
+
+    @GetMapping("/auth/login")
+    @ResponseBody
+    public Map<String, String> oauthLogin(HttpSession httpSession){
+        String kakaoCodeUrl = kakaoLoginService.getAuthorizationUrl(httpSession);
+        String naverCodeUrl = naverLoginService.getAuthorizationUrl(httpSession);
+
+        Map<String, String> urlMap = new HashMap<>();
+        urlMap.put("kakao", kakaoCodeUrl);
+        urlMap.put("naver", naverCodeUrl);
+
+        return urlMap;
+    }
 
     @GetMapping("auth/kakao_login")
     public String kakaoLogin(HttpSession httpSession, Model model){
