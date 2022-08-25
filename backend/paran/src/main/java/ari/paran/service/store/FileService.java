@@ -1,5 +1,9 @@
 package ari.paran.service.store;
 
+import ari.paran.domain.board.Article;
+import ari.paran.domain.board.ArticleImgFile;
+import ari.paran.domain.repository.ArticleImgFilesRepository;
+import ari.paran.domain.repository.BoardRepository;
 import ari.paran.domain.repository.StoreRepository;
 import ari.paran.domain.store.StoreImgFile;
 import ari.paran.domain.store.Store;
@@ -18,8 +22,9 @@ import java.util.*;
 @Slf4j
 public class FileService {
 
-    @Autowired
-    StoreRepository storeRepository;
+    @Autowired StoreRepository storeRepository;
+    @Autowired BoardRepository boardRepository;
+    @Autowired ArticleImgFilesRepository articleImgFilesRepository;
 
     public void saveImage(Long store_id, List<MultipartFile> images) throws IOException{
 
@@ -43,6 +48,29 @@ public class FileService {
         }
 
         storeRepository.save(store);
+    }
+
+    public void saveArticleImage(Long articleId, List<MultipartFile> images) throws IOException{
+
+        String fileUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\images\\";
+        Article article = boardRepository.findById(articleId).orElse(null);
+
+        for(MultipartFile image : images) {
+            String fileName = image.getOriginalFilename();
+            //String extension = StringUtils.getFilenameExtension(fileName).toLowerCase();
+            File destinationFile = new File(fileUrl + fileName);
+
+            destinationFile.getParentFile().mkdirs();
+            image.transferTo(destinationFile);
+
+            ArticleImgFile articleImgFile = ArticleImgFile.builder()
+                    .article(article)
+                    .filename(fileName)
+                    .fileUrl(fileUrl).build();
+
+            article.addImgFile(articleImgFile);
+            articleImgFilesRepository.save(articleImgFile);
+        }
     }
 
     public List<String> getImage(Store store) throws IOException{
