@@ -23,7 +23,7 @@ const SideBar = ({ userState, nameState }) => {
       case 1: //손님
         return (
           <div className="memberContainer">
-            <Link className="nicknameBtn" to="/myPage">
+            <Link className="nicknameBtn" to="/myPageUser">
               <div className="nicknameContainer">
                 <span>{nameState}</span>
                 <span>자기소개...</span>
@@ -38,7 +38,7 @@ const SideBar = ({ userState, nameState }) => {
       case 2: //사장님
         return (
           <div className="memberContainer">
-            <Link className="nicknameBtn" to="/myPage">
+            <Link className="nicknameBtn" to="/myPageOwner">
               <div className="nicknameContainer">
                 <span>{nameState}</span>
                 <span>자기소개...</span>
