@@ -11,6 +11,9 @@ import SignupOwner2 from './pages/SignupOwner2';
 import { RecoilRoot } from "recoil";
 import Detail from "./pages/Detail";
 import { reissue } from './services/jwt/reissue';
+import MyPageOwner from './pages/MyPageOwner';
+import { StoreInfoTap } from './components/DatailTap';
+import StoreInfoEdit from './pages/StoreInfoEdit';
 
 function App() {
   useEffect(() => { // 처음 렌더링될 때 한 번 실행
@@ -39,6 +42,8 @@ function App() {
           <Route path="/detail/:storeId" element={<Detail />} />
           <Route path="/signupOwner" element={<SignupOwner />} />
           <Route path="/signupOwner2" element={<SignupOwner2 />} />
+          <Route path="/myPageOwner" element={<MyPageOwner />} />
+          <Route path="/storeInfoEdit" element={<StoreInfoEdit />} />
 
         </Routes>
       </BrowserRouter>
