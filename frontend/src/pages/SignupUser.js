@@ -2,9 +2,7 @@ import { React, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
-// import { useRecoilState } from 'recoil';
 import MainButton from '../components/common/Mainbutton';
-// import { nicknameState } from '../state';
 import { signUserData } from '../services/sign/signUserData';
 import Header from '../components/Header';
 import "../pages/SignupUser.css";
@@ -25,8 +23,6 @@ const Formbox = styled.div`
 `;
 
 const SignupUser = () => {
-    // const [uNickname, setuNickname] = useRecoilState(nicknameState);
-
     const navigate = useNavigate();
 
     // 이메일, 비밀번호, 닉네임, 연령대, 성별
@@ -36,6 +32,9 @@ const SignupUser = () => {
     const [nickname, setNickname] = useState("");
     const [age, setAge] = useState("20");
     const [gender, setGender] = useState("male");
+
+    // 입력한 인증번호
+    const [certificationNumber, setCertificationNumber] = useState("");
 
     // 오류 메세지 상태 저장
     const [emailMessage, setEmailMessage] = useState("");
@@ -112,13 +111,6 @@ const SignupUser = () => {
         }
     };
 
-    // 입력한 인증번호
-    const [certificationNumber, setCertificationNumber] = useState("");
-
-    const onChangeCertificationNumber = (e) => {
-        setCertificationNumber(e.target.value);
-    };
-
     // 인증번호 확인
     const [emailCheckMessage, setEmailCheckMessage] = useState("");
     const [isEmailCheck, setIsEmailCheck] = useState(false);
@@ -126,7 +118,7 @@ const SignupUser = () => {
     // 이메일로 인증번호 보내기
     const sendEmailCode = async () => {
         if (!isEmail) {
-            alert('이메일 주소를 입력해주세요.');
+            alert('이메일 주소를 확인해주세요.');
             return false;
         }
         alert('전송되었습니다.');
@@ -149,28 +141,16 @@ const SignupUser = () => {
                 })
                 .then((res) => {
                     if (res.data.state === 200) {
-                        // console.log(res.data.state);
                         setEmailCheckMessage('인증에 성공했습니다.');
                         setIsEmailCheck(true);
                     } else {
-                        // console.log(res.data.state);
-                        setEmailCheckMessage('잘못된 인증번호입니다.');
+                        setEmailCheckMessage(res.data.massage);
                         setIsEmailCheck(false);
                     }
                 });
         } catch (e) {
             console.log(e);
         }
-    };
-
-    // 연령대 드롭다운
-    const onChangeAge = (e) => {
-        setAge(e.target.value);
-    }
-
-    // 성별 라디오
-    const onChangeGender = (e) => {
-        setGender(e.target.value)
     };
     
     const onSubmit = async (e) => {
@@ -184,32 +164,6 @@ const SignupUser = () => {
             gender: gender,
         });
 
-        // fetch("auth/signup-user", { // signup User api 주소
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //         email: email,
-        //         password: password,
-        //         nickname: nickname,
-        //         age: age,
-        //         gender: gender,
-        //     }),
-        // })
-        // .then((response) => {
-        //     if (response.status === 200) {
-        //         return response.json()
-        //     } else {
-        //         console.error(`HTTP error! status: ${response.status}`)
-        //     }
-        // })
-        // .then((jsonData) => console.log(jsonData))
-        // .catch((error) => console.log(error));
-
-        // setuNickname(result); // recoil
-
-        // console.log(JSON.stringify(result));
         if (result.result === "fail") {
             alert(result.massage);
             navigate("/loginRegister"); // 로그인/회원가입 처음 페이지로 이동
@@ -244,7 +198,7 @@ const SignupUser = () => {
                                 name="certificationNumber"
                                 value={certificationNumber}
                                 type="text"
-                                onChange={onChangeCertificationNumber}
+                                onChange={e => setCertificationNumber(e.target.value)}
                                 placeholder="인증번호 입력"
                                 required
                                 autoComplete="off"
@@ -305,7 +259,7 @@ const SignupUser = () => {
                     <Formbox>
                         <div className="intro">연령대</div>
                         <div style={{width: "260px"}}>
-                            <select onChange={onChangeAge} className="select-age" defaultValue="20">
+                            <select onChange={e => setAge(e.target.value)} className="select-age" defaultValue="20">
                                 <option value="10">10대</option>
                                 <option value="20">20대</option>
                                 <option value="30">30대</option>
@@ -320,11 +274,11 @@ const SignupUser = () => {
                         <div className="intro">성별</div>
                         <div className="genderContainer">
                             <div className="gender-wrap">
-                                <input type="radio" name="gender" value="male" id="male" onChange={onChangeGender} defaultChecked></input>
+                                <input type="radio" name="gender" value="male" id="male" onChange={e => setGender(e.target.value)} defaultChecked></input>
                                 <label htmlFor="male">남</label>
                             </div>
                             <div className="gender-wrap">
-                                <input type="radio" name="gender" value="female" id="female" onChange={onChangeGender}></input>
+                                <input type="radio" name="gender" value="female" id="female" onChange={e => setGender(e.target.value)}></input>
                                 <label htmlFor="female">여</label>
                             </div>
                         </div>
@@ -337,8 +291,8 @@ const SignupUser = () => {
                         color="#FFFFFF"
                         background="#386FFE;"
                         type="submit"
-                        // disabled={(isNickname && isEmail && isPassword && isPasswordCheck && isEmailCheck) ? false : true}
-                        disabled={(isNickname && isEmail && isPassword && isPasswordCheck) ? false : true}
+                        disabled={(isNickname && isEmail && isPassword && isPasswordCheck && isEmailCheck) ? false : true}
+                        // disabled={(isNickname && isEmail && isPassword && isPasswordCheck) ? false : true}
                         text="회원가입"
                     />
                 </div>

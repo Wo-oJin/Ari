@@ -2,9 +2,7 @@ import { React, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
-// import { useRecoilState } from 'recoil';
 import MainButton from '../components/common/Mainbutton';
-// import { nicknameState } from '../state';
 import { signOwnerData } from '../services/sign/signOwnerData';
 import Header from '../components/Header';
 import "../pages/SignupOwner.css";
@@ -26,7 +24,6 @@ const Formbox = styled.div`
 `;
 
 const SignupOwner2 = () => {
-    // const [uNickname, setuNickname] = useRecoilState(nicknameState);
     const location = useLocation();
     const data = location.state.data; // SignOwner.js에서 Link로 보낸 데이터 받아오기
 
@@ -39,26 +36,15 @@ const SignupOwner2 = () => {
     const [storeDetailAddress, setStoreDetailAddress] = useState(""); // 상세주소
     const [phoneNumber, setPhoneNumber] = useState("");
 
+    // 입력한 가게 인증번호
+    const [certificationNumber, setCertificationNumber] = useState("");
+
     // 오류 메세지 상태 저장
     const [phoneNumberMessage, setPhoneNumberMessage] = useState("");
 
     // 유효성 검사
     const [isPhoneNumber, setIsPhoneNumber] = useState(false);
-
-    // 가게 이름
-    const onChangeStoreName = (e) => {
-        setStoreName(e.target.value);
-    }
-
-    // 사장님 성함
-    const onChangeOwnerName = (e) => {
-        setOwnerName(e.target.value);
-    }
-
-    // 가게 주소
-    const onChangeStoreRoadAddress = (e) => {
-        setStoreRoadAddress(e.target.value);
-    }
+    const [isAddress, setIsAddress] = useState(false);
 
     const [isOpenPost, setIsOpenPost] = useState(false); // daum-postcode api를 팝업처럼 관리하기 위함
 
@@ -81,13 +67,9 @@ const SignupOwner2 = () => {
         }
     
         setStoreRoadAddress(fullAddress); // 도로명주소
+        setIsAddress(true);
         setIsOpenPost(false);
-      };
-
-    // 상세 주소
-    const onChangeStoreDetailAddress = (e) => {
-        setStoreDetailAddress(e.target.value);
-    }
+    };
 
     // 연락처
     const onChangePhoneNumner = (e) => {
@@ -102,13 +84,6 @@ const SignupOwner2 = () => {
             setIsPhoneNumber(true);
         }
     }
-
-    // 입력한 가게 인증번호
-    const [certificationNumber, setCertificationNumber] = useState("");
-
-    const onChangeCertificationNumber = (e) => {
-        setCertificationNumber(e.target.value);
-    };
 
     // 가게 인증번호 확인
     const [storeCheckMessage, setStoreCheckMessage] = useState("");
@@ -128,7 +103,7 @@ const SignupOwner2 = () => {
                         setIsStoreCheck(true);
                     } else {
                         // console.log(res.data.state);
-                        setStoreCheckMessage('잘못된 인증번호입니다.');
+                        setStoreCheckMessage(res.data.massage);
                         setIsStoreCheck(false);
                     }
                 });
@@ -152,16 +127,14 @@ const SignupOwner2 = () => {
             phoneNumber: phoneNumber,
         });
 
-        // setuNickname(result); // recoil
-        console.log(JSON.stringify(result));
+        // console.log(JSON.stringify(result));
         if (result.result === "fail") {
             alert(result.massage);
             navigate("/loginRegister"); // 로그인/회원가입 처음 페이지로 이동
         } else {
             alert(result.massage);
             navigate("/login"); // 로그인 공통 페이지로 이동
-        }
-        
+        }   
     }
 
     return (
@@ -174,7 +147,7 @@ const SignupOwner2 = () => {
                         name="storeName"
                         value={storeName}
                         type="text"
-                        onChange={onChangeStoreName}
+                        onChange={e =>  setStoreName(e.target.value)}
                         placeholder="가게 이름 입력"
                         required
                         autoComplete="off"
@@ -187,7 +160,7 @@ const SignupOwner2 = () => {
                         name="ownerName"
                         value={ownerName}
                         type="text"
-                        onChange={onChangeOwnerName}
+                        onChange={e => setOwnerName(e.target.value)}
                         placeholder="사장님 성함 입력"
                         required
                         autoComplete="off"
@@ -200,7 +173,7 @@ const SignupOwner2 = () => {
                         name="storeRoadAddress"
                         value={storeRoadAddress}
                         type="text"
-                        onChange={onChangeStoreRoadAddress}
+                        onChange={e => setStoreRoadAddress(e.target.value)}
                         placeholder="도로명 주소 검색"
                         required
                         autoComplete="off"
@@ -212,9 +185,8 @@ const SignupOwner2 = () => {
                             name="storeDetailAddress"
                             value={storeDetailAddress}
                             type="text"
-                            onChange={onChangeStoreDetailAddress}
+                            onChange={e => setStoreDetailAddress(e.target.value)}
                             placeholder="상세 주소 입력"
-                            required
                             autoComplete="off"
                         />
                     </div>
@@ -239,7 +211,7 @@ const SignupOwner2 = () => {
                             name="certificationNumber"
                             value={certificationNumber}
                             type="text"
-                            onChange={onChangeCertificationNumber}
+                            onChange={e => setCertificationNumber(e.target.value)}
                             placeholder="가게 인증 코드 입력"
                             required
                             autoComplete="off"
@@ -256,7 +228,7 @@ const SignupOwner2 = () => {
                     {certificationNumber.length > 0 && <p className={`message ${isStoreCheck ? 'success' : 'error'}`}>{storeCheckMessage}</p>}
                 </Formbox>
             </div>
-            <div className="flex-align">
+            <div className="flexContainer">
                 <div className="normal"></div>
                 <div className="current"></div>
             </div>
@@ -267,8 +239,8 @@ const SignupOwner2 = () => {
                         color="#FFFFFF"
                         background="#386FFE;"
                         type="submit"
-                        // disabled={(isPhoneNumber && isStoreCheck) ? false : true}
-                        disabled={(isPhoneNumber) ? false : true}
+                        disabled={(isPhoneNumber && isAddress && isStoreCheck) ? false : true}
+                        // disabled={(isPhoneNumber && isAddress) ? false : true}
                         text="회원가입"
                     />
                 </div>
