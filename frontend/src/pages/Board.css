@@ -1,0 +1,58 @@
+.searchContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  z-index: 1;
+}
+
+.searchForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 230px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  background-color: #efefef;
+  z-index: 1;
+}
+.searchInput {
+  height: 80%;
+  z-index: 1;
+  border: none;
+  background-color: transparent;
+  font-size: 15px;
+}
+
+.writeBtn {
+  width: 70px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #386ffe;
+  color: #ffffff;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.serachIcon {
+  padding-left: 10px;
+  padding-top: 4px;
+  z-index: 10;
+}
+
+.deleteSearchWordBtn {
+  padding-right: 10px;
+  padding-top: 3px;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.itemContainer {
+  width: 100%;
+  height: 30%;
+}

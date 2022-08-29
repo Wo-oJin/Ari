@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "../App.css";
 import Map from "../services/map/Map";
 import SideBar from "./SideBar";
-import { useRecoilState } from 'recoil';
-import { authState, nameState } from '../state';
+import { useRecoilState } from "recoil";
+import { authState, nameState } from "../state";
 
 const Main = () => {
   // 0:비회원 1:손님 2:사장님 3:관리자
