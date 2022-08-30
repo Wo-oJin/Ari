@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class FileService {
     private String detailUrl;
 
     @Transactional
-    public void saveImage(Long store_id, List<MultipartFile> images) throws IOException{
+    public void saveStoreImage(Long store_id, List<MultipartFile> images) throws IOException{
 
         String fileUrl = System.getProperty("user.dir") + detailUrl;
         Store store = storeRepository.findById(store_id).orElseGet(null);
