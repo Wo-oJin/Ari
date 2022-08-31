@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import "./Board.css";
 import { FiSearch } from "react-icons/fi";
@@ -25,20 +25,35 @@ const BoardItem = ({ boardId, img, title, author, date }) => {
 };
 const Board = () => {
   const [ref, inView] = useInView();
+  const [endPage, setEndPage] = useState(false);
   const [page, setPage] = useState(0);
   const [data, setData] = useState("");
   const [load, setLoad] = useState(true);
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   const getBoardData = async () => {
-    axios.get(`/board/list?page=${page}`).then((response) => {
-      if (response.data) setData((prev) => [...prev, ...response.data]);
-      setLoad(false);
+    if (!endPage) {
+      axios.get(`/board/list?page=${page}`).then((response) => {
+        if (response.data.last === false) {
+          setData((prev) => [...prev, ...response.data.content]);
+        } else {
+          setData((prev) => [...prev, ...response.data.content]);
+          setEndPage(true);
+          console.log("페이지 끝임");
+        }
+      });
+    }
+  };
+  const searchBoardData = async (keyword) => {
+    axios.get(`/board/list?keyword=${keyword}`).then((res) => {
+      setData(res.data.content);
+      setEndPage(true);
     });
   };
   //page 바뀔 때마다 데이터 불러오기
   useEffect(() => {
     setLoad(true);
     getBoardData();
+    setLoad(false);
   }, [page]);
 
   useEffect(() => {
@@ -47,6 +62,17 @@ const Board = () => {
       setPage((prevState) => prevState + 1);
     }
   }, [inView, load]);
+
+  const handleOnKeyPress = (e) => {
+    if (e.key == "Enter") {
+      if (search === null || search === "") {
+        //getBoardData();
+      } else {
+        //기존 데이터 목록에서 검색어가 포함된 데이터만 추출
+        searchBoardData(search);
+      }
+    }
+  };
 
   if (load) {
     return <h1>로딩 중</h1>;
@@ -58,21 +84,7 @@ const Board = () => {
     e.preventDefault();
     setSearch(e.target.value);
   };
-  //검색을 실행
-  const onSearch = (e) => {
-    e.preventDefault();
-    //만약 검색어가 없다면 전체 데이터 반환
-    if (search === null || search === "") {
-      getBoardData();
-    } else {
-      //기존 데이터 목록에서 검색어가 포함된 데이터만 추출
-      const filterData = data.filter((item) => item.title.includes(search));
-      setData(filterData);
-      console.log("검색 ", filterData);
-    }
-    //검색어 초기화
-    setSearch("");
-  };
+
   const deleteSearchWord = () => {
     setSearch("");
   };
@@ -80,19 +92,15 @@ const Board = () => {
     <>
       <Header text={"제휴 맺기 게시판"} back={true}></Header>
       <div className="searchContainer">
-        <form
-          className="searchForm"
-          onSubmit={(e) => {
-            onSearch(e);
-          }}
-        >
+        <form className="searchForm" onSubmit={(e) => e.preventDefault()}>
           <div className="serachIcon">
             <FiSearch></FiSearch>
           </div>
           <input
+            onKeyPress={handleOnKeyPress}
             className="searchInput"
             type="text"
-            value={search || ""}
+            value={search}
             placeholder={"검색어를 입력하세요"}
             onChange={onChangeSearch}
           ></input>
@@ -118,7 +126,7 @@ const Board = () => {
       ) : (
         <span>data 없음</span>
       )}
-      <div ref={ref}> 무한 스크롤링 옵저버 </div>
+      <div ref={ref}> </div>
     </>
   );
 };
