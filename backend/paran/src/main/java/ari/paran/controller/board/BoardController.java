@@ -6,6 +6,7 @@ import ari.paran.dto.response.board.SimpleArticleDto;
 import ari.paran.service.board.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -24,7 +25,7 @@ public class BoardController {
     BoardService boardService;
 
     @GetMapping("/list")
-    public List<SimpleArticleDto> ArticleList(
+    public Page<SimpleArticleDto> ArticleList(
             @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false) String keyword){
 
