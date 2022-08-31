@@ -26,7 +26,7 @@ public class BoardService {
     @Autowired
     FileService fileService;
 
-    public List<SimpleArticleDto> getArticleList(Pageable pageable, String keyword){
+    public Page<SimpleArticleDto> getArticleList(Pageable pageable, String keyword){
 
         Page<Article> board;
 
@@ -35,15 +35,13 @@ public class BoardService {
         else
             board = boardRepository.findByTitleContaining(keyword, pageable);
 
-        return board.stream()
-                .map(article -> SimpleArticleDto.builder()
+        return board.map(article -> SimpleArticleDto.builder()
                         .id(article.getId())
                         .title(article.getTitle())
                         .author(article.getAuthor())
                         .createDate(article.getCreateDate())
                         .image(article.getImgFiles().isEmpty() ? null : article.getImgFiles().get(0))
-                        .build())
-                .collect(Collectors.toList());
+                        .build());
     }
 
     public DetailArticleDto findArticle(Long id){
