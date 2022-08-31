@@ -43,6 +43,7 @@ public class Store implements Serializable{
 
     @Column
     @ColumnDefault("0")
+    @JoinColumn(name = "private_event")
     private boolean privateEvent;
 
     @Column

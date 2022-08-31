@@ -1,10 +1,8 @@
 import { React, useState } from 'react';
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
-// import { useRecoilState } from 'recoil';
 import MainButton from '../components/common/Mainbutton';
-// import { nicknameState } from '../state';
 import Header from '../components/Header';
 import "../pages/SignupOwner.css";
 
@@ -24,16 +22,15 @@ const Formbox = styled.div`
 `;
 
 const SignupOwner = () => {
-    // const [uNickname, setuNickname] = useRecoilState(nicknameState);
-
-    const navigate = useNavigate();
-
     // 이메일, 비밀번호, 연령대, 성별
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
     const [age, setAge] = useState("20");
     const [gender, setGender] = useState("male");
+
+    // 입력한 인증번호
+    const [certificationNumber, setCertificationNumber] = useState("");
 
     // 오류 메세지 상태 저장
     const [emailMessage, setEmailMessage] = useState("");
@@ -96,13 +93,6 @@ const SignupOwner = () => {
         }
     };
 
-    // 입력한 인증번호
-    const [certificationNumber, setCertificationNumber] = useState("");
-
-    const onChangeCertificationNumber = (e) => {
-        setCertificationNumber(e.target.value);
-    };
-
     // 인증번호 확인
     const [emailCheckMessage, setEmailCheckMessage] = useState("");
     const [isEmailCheck, setIsEmailCheck] = useState(false);
@@ -110,7 +100,7 @@ const SignupOwner = () => {
     // 이메일로 인증번호 보내기
     const sendEmailCode = async () => {
         if (!isEmail) {
-            alert('이메일 주소를 입력해주세요.');
+            alert('이메일 주소를 확인해주세요.');
             return false;
         }
         alert('전송되었습니다.');
@@ -138,23 +128,13 @@ const SignupOwner = () => {
                         setIsEmailCheck(true);
                     } else {
                         // console.log(res.data.state);
-                        setEmailCheckMessage('잘못된 인증번호입니다.');
+                        setEmailCheckMessage(res.data.massage);
                         setIsEmailCheck(false);
                     }
                 });
         } catch (e) {
             console.log(e);
         }
-    };
-
-    // 연령대 드롭다운
-    const onChangeAge = (e) => {
-        setAge(e.target.value);
-    }
-
-    // 성별 라디오
-    const onChangeGender = (e) => {
-        setGender(e.target.value)
     };
 
     const data = {
@@ -188,7 +168,7 @@ const SignupOwner = () => {
                             name="certificationNumber"
                             value={certificationNumber}
                             type="text"
-                            onChange={onChangeCertificationNumber}
+                            onChange={e => setCertificationNumber(e.target.value)}
                             placeholder="인증번호 입력"
                             required
                             autoComplete="off"
@@ -235,7 +215,7 @@ const SignupOwner = () => {
                 <Formbox>
                     <div className="intro">연령대</div>
                     <div style={{width: "260px"}}>
-                        <select onChange={onChangeAge} className="select-age" defaultValue="20">
+                        <select onChange={e => setAge(e.target.value)} className="select-age" defaultValue="20">
                             <option value="10">10대</option>
                             <option value="20">20대</option>
                             <option value="30">30대</option>
@@ -250,17 +230,17 @@ const SignupOwner = () => {
                     <div className="intro">성별</div>
                     <div className="genderContainer">
                         <div className="gender-wrap">
-                            <input type="radio" name="gender" value="male" id="male" onChange={onChangeGender} defaultChecked></input>
+                            <input type="radio" name="gender" value="male" id="male" onChange={e => setGender(e.target.value)} defaultChecked></input>
                             <label htmlFor="male">남</label>
                         </div>
                         <div className="gender-wrap">
-                            <input type="radio" name="gender" value="female" id="female" onChange={onChangeGender}></input>
+                            <input type="radio" name="gender" value="female" id="female" onChange={e => setGender(e.target.value)}></input>
                             <label htmlFor="female">여</label>
                         </div>
                     </div>
                 </Formbox>
             </div>
-            <div className="flex-align">
+            <div className="flexContainer">
                 <div className="current"></div>
                 <div className="normal"></div>
             </div>
@@ -271,8 +251,8 @@ const SignupOwner = () => {
                         color="#FFFFFF"
                         background="#386FFE;"
                         type="submit"
-                        // disabled={(isEmail && isPassword && isPasswordCheck && isEmailCheck) ? false : true}
-                        disabled={(isEmail && isPassword && isPasswordCheck) ? false : true}
+                        disabled={(isEmail && isPassword && isPasswordCheck && isEmailCheck) ? false : true}
+                        // disabled={(isEmail && isPassword && isPasswordCheck) ? false : true}
                         text="다음"
                     />
                 </div>

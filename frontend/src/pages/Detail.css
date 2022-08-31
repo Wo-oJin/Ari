@@ -8,6 +8,20 @@
 button {
   padding: 0;
 }
+.BackBtn {
+  position: absolute;
+  color: #ffffff;
+  top: 2%;
+  left: 3%;
+  cursor: pointer;
+}
+.HomeBtn {
+  position: absolute;
+  color: #ffffff;
+  top: 2%;
+  right: 3%;
+  cursor: pointer;
+}
 .LikeBtn {
   cursor: pointer;
 }
