@@ -11,14 +11,22 @@ import ari.paran.domain.store.Store;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -31,17 +39,18 @@ public class FileService {
     @Autowired ArticleImgFilesRepository articleImgFilesRepository;
     @Autowired StoreImgFileRepository storeImgFileRepository;
 
-    @Value("${file.storage.path}")
-    private String fileUrl; //"C://Users//김우진//Desktop//파란학기//프로젝트//backend//paran//src//main//resources//images/";
+    @Value("${user.dir}")
+    private String fileUrl;
 
     public void saveImage(Long store_id, List<MultipartFile> images) throws IOException{
 
+        String fileUrl = System.getProperty("user.dir") + "/paran/src/main/resources/images/";
         List<StoreImgFile> imgFiles = new ArrayList<>();
         Store store = storeRepository.findById(store_id).orElseGet(null);
 
         for(MultipartFile image : images) {
             String originalFileName = image.getOriginalFilename();
-            String fileName = UUID.randomUUID().toString(); //uuid
+            String fileName = UUID.randomUUID().toString() + ".jpg"; //uuid
             File destinationFile = new File(fileUrl + fileName);
 
             destinationFile.getParentFile().mkdirs();
@@ -90,14 +99,37 @@ public class FileService {
         List<StoreImgFile> storeImages = store.getStoreImgFiles();
 
         for(StoreImgFile storeImgFile : storeImages) {
-            InputStream in = getClass().getResourceAsStream("/images/" + storeImgFile.getFilename());
+            Path filePath = Paths.get(File.separatorChar + "images",
+                    File.separatorChar + storeImgFile.getFilename());
+            InputStream in = getClass().getResourceAsStream(filePath.toString());
 
             byte[] byteEnc64 = Base64.encodeBase64(in.readAllBytes());
             String imgStr = new String(byteEnc64, "UTF-8");
+
+            log.info("스트림: {}", imgStr);
 
             base64Images.add(imgStr);
         }
 
         return base64Images;
     }
+
+    public List<String> loadImage(Store store) throws IOException{
+        List<String> base64Images = new ArrayList<>();
+        List<StoreImgFile> storeImages = store.getStoreImgFiles();
+
+        for(StoreImgFile imgFile : storeImages) {
+            FileInputStream imageStream = new FileInputStream(imgFile.getFileUrl() + imgFile.getFilename());
+            byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());
+            String result = new String(bytes, "UTF-8");
+            imageStream.close();
+
+            log.info("스트림: {}", result);
+
+            base64Images.add(result);
+        }
+
+        return base64Images;
+    }
+
 }

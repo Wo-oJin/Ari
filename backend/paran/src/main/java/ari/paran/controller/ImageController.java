@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.*;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/image")
 public class ImageController {
 
