@@ -40,6 +40,7 @@ const RedirectLogin = () => {
         }
 
         setName(info); // recoil
+        
         alert('로그인에 성공했습니다.');
         navigate("/"); // 메인 페이지로 이동
     }, [])
