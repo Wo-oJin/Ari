@@ -122,7 +122,7 @@ public class StoreService {
         Event newEvent = Event.builder().store(store).info(info).build();
         eventRepository.save(newEvent);
 
-        log.info("이벤트 갯수: {}", store.getEventList().size());
+        log.info("이벤트 갯수 표시: {}", store.getEventList().size());
         if (store.getEventList().size() == 1) {
             store.changeEventStatus(true);
         }
@@ -138,7 +138,7 @@ public class StoreService {
         Event event = store.getEventList().get(eventNum);
 
         store.getEventList().remove(event);
-        log.info("이벤트 갯수: {}", store.getEventList().size());
+        log.info("이벤트 갯수 표시: {}", store.getEventList().size());
         if (store.getEventList().size() == 0) {
             store.changeEventStatus(false);
         }
