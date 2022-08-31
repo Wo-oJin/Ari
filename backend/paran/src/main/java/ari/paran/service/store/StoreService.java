@@ -75,6 +75,7 @@ public class StoreService {
             File file = new File(imgFile.getFileUrl() + imgFile.getFilename());
             if (file.exists()) {
                 file.delete();
+                storeImgFileRepository.delete(imgFile);
             }
         }
         store.getStoreImgFiles().clear();
@@ -121,10 +122,14 @@ public class StoreService {
         Event newEvent = Event.builder().store(store).info(info).build();
         eventRepository.save(newEvent);
 
+        log.info("이벤트 갯수: {}", store.getEventList().size());
+        if (store.getEventList().size() == 1) {
+            store.changeEventStatus(true);
+        }
         store.getEventList().add(newEvent);
         storeRepository.save(store);
 
-        return response.success();
+        return response.success("", "성공적으로 이벤트가 추가되었습니다.", HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteEvent(int eventNum, Principal principal) {
@@ -133,6 +138,10 @@ public class StoreService {
         Event event = store.getEventList().get(eventNum);
 
         store.getEventList().remove(event);
+        log.info("이벤트 갯수: {}", store.getEventList().size());
+        if (store.getEventList().size() == 0) {
+            store.changeEventStatus(false);
+        }
         storeRepository.save(store);
 
         eventRepository.delete(event);

@@ -50,7 +50,8 @@ public class FileService {
 
         for(MultipartFile image : images) {
             String originalFileName = image.getOriginalFilename();
-            String fileName = UUID.randomUUID().toString() + ".jpg"; //uuid
+            String fileName = UUID.randomUUID().toString() +
+                    originalFileName.substring(originalFileName.lastIndexOf(".")); //uuid
             File destinationFile = new File(fileUrl + fileName);
 
             destinationFile.getParentFile().mkdirs();
@@ -124,7 +125,7 @@ public class FileService {
             String result = new String(bytes, "UTF-8");
             imageStream.close();
 
-            log.info("스트림: {}", result);
+            //log.info("스트림: {}", result);
 
             base64Images.add(result);
         }

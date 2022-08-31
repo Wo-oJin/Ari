@@ -154,4 +154,8 @@ public class Store implements Serializable{
         this.eventList.add(event);
     }
 
+    public void changeEventStatus(boolean status) {
+        this.privateEvent = status;
+    }
+
 }
