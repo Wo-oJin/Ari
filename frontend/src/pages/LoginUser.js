@@ -9,7 +9,7 @@ const LoginUser = () => {
     let kakao;
     let naver;
 
-    // Oauth 로그인
+    // Oauth 로그인 요청 url 받아옴
     const getOauthURL = async () => {
         try {
             await axios
@@ -27,7 +27,7 @@ const LoginUser = () => {
         getOauthURL();
     }, []);
 
-    const onKakao = () => {
+    const onKakao = async () => {
         window.location.href = kakao;
     }
 
