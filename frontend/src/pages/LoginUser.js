@@ -27,7 +27,7 @@ const LoginUser = () => {
         getOauthURL();
     }, []);
 
-    const onKakao = async () => {
+    const onKakao = () => {
         window.location.href = kakao;
     }
 
