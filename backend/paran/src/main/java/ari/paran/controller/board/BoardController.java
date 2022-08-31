@@ -25,7 +25,7 @@ public class BoardController {
 
     @GetMapping("/list")
     public List<SimpleArticleDto> ArticleList(
-            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false) String keyword){
 
         return boardService.getArticleList(pageable, keyword);
