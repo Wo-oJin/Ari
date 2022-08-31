@@ -24,12 +24,14 @@ public class ArticleImgFile {
     @JoinColumn(name = "article_id")
     private Article article;
 
+    String originalFileName;
     String filename;
     String fileUrl;
 
     @Builder
-    public ArticleImgFile(Article article, String filename, String fileUrl){
+    public ArticleImgFile(Article article, String originalFileName, String filename, String fileUrl){
         this.article = article;
+        this.originalFileName = originalFileName;
         this.filename = filename;
         this.fileUrl = fileUrl;
     }

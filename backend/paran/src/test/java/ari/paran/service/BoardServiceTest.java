@@ -33,9 +33,9 @@ public class BoardServiceTest {
                 .updateDate(LocalDate.now())
                 .build();
 
-        Long id = boardService.articleSave(article, null);
+        Long id = boardService.saveArticle(article, null);
 
-        Article findArticle = boardService.articleFind(id);
+        Article findArticle = boardService.findArticle(id);
 
         Assertions.assertThat(article).isEqualTo(findArticle);
     }
@@ -50,12 +50,12 @@ public class BoardServiceTest {
                 .updateDate(LocalDate.now())
                 .build();
 
-        Long id = boardService.articleSave(article, null);
+        Long id = boardService.saveArticle(article, null);
 
         article.changeTitle("title2");
-        id = boardService.articleSave(article, null);
+        id = boardService.saveArticle(article, null);
 
-        Article findArticle = boardService.articleFind(id);
+        Article findArticle = boardService.findArticle(id);
 
         Assertions.assertThat(article.getTitle()).isEqualTo("title2");
     }

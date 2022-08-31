@@ -32,35 +32,39 @@ public class Article {
     @JoinColumn(name = "writer_id")
     private Member member;
 
+    @Column
+    private String author;
+
     @Column(name = "create_date")
     private LocalDate createDate;
 
     @Column(name = "update_date")
     private LocalDate updateDate;
 
-    @Column(name = "start_date")
-    private LocalDate startDate;
-
-    @Column(name = "finish_date")
-    private LocalDate finishDate;
+    @Column(name = "partnership_period")
+    private String period;
 
     @JsonIgnore
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<ArticleImgFile> imgFiles = new ArrayList<>();
 
     @Builder
-    public Article(String title, String content, Member member, LocalDate createDate, LocalDate updateDate){
+    public Article(String title, String content, Member member, String author,
+                   LocalDate createDate, LocalDate updateDate, String period){
         this.title = title;
         this.content = content;
         this.member = member;
+        this.author = author;
         this.createDate = createDate;
         this.updateDate = updateDate;
+        this.period = period;
     }
 
     public void setMember(Member member){
         this.member = member;
     }
 
+    // for test
     public void changeTitle(String title){
         this.title = title;
     }

@@ -19,7 +19,6 @@ public class StoreImgFile {
     private Store store;
 
     String filename;
-
     String originalFileName;
     String fileUrl;
 

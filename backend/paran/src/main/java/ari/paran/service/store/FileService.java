@@ -14,14 +14,16 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 @Slf4j
 public class FileService {
@@ -31,12 +33,13 @@ public class FileService {
     @Autowired ArticleImgFilesRepository articleImgFilesRepository;
     @Autowired StoreImgFileRepository storeImgFileRepository;
 
-    @Value("${file.storage.path}")
-    private String fileUrl; //"C://Users//김우진//Desktop//파란학기//프로젝트//backend//paran//src//main//resources//images/";
+    @Value("${file.path}")
+    private String detailUrl;
 
-    public void saveImage(Long store_id, List<MultipartFile> images) throws IOException{
+    @Transactional
+    public void saveStoreImage(Long store_id, List<MultipartFile> images) throws IOException{
 
-        List<StoreImgFile> imgFiles = new ArrayList<>();
+        String fileUrl = System.getProperty("user.dir") + detailUrl;
         Store store = storeRepository.findById(store_id).orElseGet(null);
 
         for(MultipartFile image : images) {
@@ -62,14 +65,15 @@ public class FileService {
         storeRepository.save(store);
     }
 
+    @Transactional
     public void saveArticleImage(Long articleId, List<MultipartFile> images) throws IOException{
 
-        String fileUrl = System.getProperty("user.dir") + "\\src\\main\\resources\\images\\";
+        String fileUrl = System.getProperty("user.dir") + detailUrl;
         Article article = boardRepository.findById(articleId).orElse(null);
 
         for(MultipartFile image : images) {
-            String fileName = image.getOriginalFilename();
-            //String extension = StringUtils.getFilenameExtension(fileName).toLowerCase();
+            String originalFileName = image.getOriginalFilename();
+            String fileName = UUID.randomUUID().toString(); //uuid
             File destinationFile = new File(fileUrl + fileName);
 
             destinationFile.getParentFile().mkdirs();
@@ -77,6 +81,7 @@ public class FileService {
 
             ArticleImgFile articleImgFile = ArticleImgFile.builder()
                     .article(article)
+                    .originalFileName(originalFileName)
                     .filename(fileName)
                     .fileUrl(fileUrl).build();
 
@@ -90,9 +95,10 @@ public class FileService {
         List<StoreImgFile> storeImages = store.getStoreImgFiles();
 
         for(StoreImgFile storeImgFile : storeImages) {
-            InputStream in = getClass().getResourceAsStream("/images/" + storeImgFile.getFilename());
+            FileInputStream imageStream = new FileInputStream(storeImgFile.getFileUrl() + storeImgFile.getFilename());
 
-            byte[] byteEnc64 = Base64.encodeBase64(in.readAllBytes());
+            byte[] imgBytes = imageStream.readAllBytes();
+            byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
             String imgStr = new String(byteEnc64, "UTF-8");
 
             base64Images.add(imgStr);

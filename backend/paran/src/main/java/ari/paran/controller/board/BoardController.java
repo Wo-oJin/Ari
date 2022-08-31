@@ -1,11 +1,11 @@
 package ari.paran.controller.board;
 
 import ari.paran.domain.board.Article;
-import ari.paran.dto.response.board.ArticleListDto;
+import ari.paran.dto.response.board.DetailArticleDto;
+import ari.paran.dto.response.board.SimpleArticleDto;
 import ari.paran.service.board.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -24,36 +24,25 @@ public class BoardController {
     BoardService boardService;
 
     @GetMapping("/list")
-    public ArticleListDto ArticleList(
+    public List<SimpleArticleDto> ArticleList(
             @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false) String keyword){
 
-        Page<Article> board;
+        return boardService.getArticleList(pageable, keyword);
+    }
 
-        if(keyword == null)
-            board = boardService.articleList(pageable);
-        else
-            board = boardService.articleSearch(pageable, keyword);
-
-        int now = pageable.getPageNumber();
-        int start = (now / 5) * 5 + 1;
-        int end = (now / 5) * 5 + 5;
-
-        return ArticleListDto.builder()
-                .articleList(board)
-                .now(now)
-                .start(start)
-                .end(end)
-                .build();
+    @GetMapping("/list/{id}")
+    public DetailArticleDto detailArticle(@PathVariable Long id){
+        return boardService.findArticle(id);
     }
 
     @PostMapping({"/write", "/update"}) // update로도 쓸 수 있음
     public void ArticleWrite(@ModelAttribute Article article, List<MultipartFile> files) throws IOException {
-        boardService.articleSave(article, files);
+        boardService.saveArticle(article, files);
     }
 
     @PostMapping("/delete/{id}")
     public void ArticleDelete(@PathVariable Long id){
-        boardService.articleDelete(id);
+        boardService.deleteArticle(id);
     }
 }
