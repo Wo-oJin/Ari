@@ -58,6 +58,7 @@ public class OAuthController {
         return "naver_login";
     }
 
+
     @ResponseBody
     @GetMapping("/auth/kakao/login")
     public ResponseEntity<?> kakaoCallback(HttpSession session, @RequestParam String code, @RequestParam String state, RedirectAttributes redirectAttributes) throws Exception {
@@ -70,6 +71,7 @@ public class OAuthController {
 
         return ResponseEntity.ok(memberService.login(loginDto));
     }
+
 
     @ResponseBody
     @GetMapping("/auth/naver/login")
