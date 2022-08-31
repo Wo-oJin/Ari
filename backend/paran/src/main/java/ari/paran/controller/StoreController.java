@@ -1,6 +1,7 @@
 package ari.paran.controller;
 
 import ari.paran.domain.store.Store;
+import ari.paran.dto.EditInfoDto;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.response.store.SimpleStoreDto;
 import ari.paran.service.auth.MemberService;
@@ -30,7 +31,7 @@ public class StoreController {
         SimpleStoreDto simpleStoreDto = new SimpleStoreDto();
         List<Store> storeList = storeService.findStores();
 
-        for(Store store : storeList){
+        for (Store store : storeList) {
             simpleStoreDto.addStore(store, fileService, storeService);
         }
 
@@ -50,8 +51,40 @@ public class StoreController {
     }
 
     @GetMapping("/edit/store")
-    public ResponseEntity<?> existingInfo(Principal principal) throws IOException{
+    public ResponseEntity<?> existingInfo(Principal principal) throws IOException {
         return storeService.existingInfo(principal);
+    }
+
+    @PostMapping("/edit/store")
+    public ResponseEntity<?> editInfo(@ModelAttribute EditInfoDto editInfoDto, Principal principal) throws IOException {
+        return storeService.editInfo(editInfoDto, principal);
+    }
+
+    @GetMapping("/edit/self-event")
+    public ResponseEntity<?> existingEvent(Principal principal) {
+        return storeService.existingEvent(principal);
+    }
+
+    @PostMapping("/edit/self-event")
+    public ResponseEntity<?> editEvent(@RequestBody Map<String, String> param, Principal principal) {
+        Integer eventNum = Integer.valueOf(param.get("eventNum"));
+        String newInfo = param.get("newInfo");
+
+        return storeService.editEvent(eventNum, newInfo, principal);
+    }
+
+    @PostMapping("/add/self-event")
+    public ResponseEntity<?> addEvent(@RequestBody Map<String, String> param, Principal principal) {
+        String info = param.get("info");
+
+        return storeService.addEvent(info, principal);
+    }
+
+    @PostMapping("/delete/self-event")
+    public ResponseEntity<?> deleteEvent(@RequestBody Map<String, String> param, Principal principal) {
+        Integer eventNum = Integer.valueOf(param.get("eventNum"));
+
+        return storeService.deleteEvent(eventNum, principal);
     }
 
     /*
