@@ -122,3 +122,12 @@ button {
   left: 20px;
   cursor: pointer;
 }
+.completeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 16px;
+  color: #386ffe;
+  font-weight: 600;
+  cursor: pointer;
+}

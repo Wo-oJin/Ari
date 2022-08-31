@@ -88,6 +88,10 @@ const Board = () => {
   const deleteSearchWord = () => {
     setSearch("");
   };
+
+  const moveToWritePage = () => {
+    window.location.href = "/board/write";
+  };
   return (
     <>
       <Header text={"제휴 맺기 게시판"} back={true}></Header>
@@ -108,7 +112,9 @@ const Board = () => {
             <IoMdCloseCircle size={"1.5em"} color={"B8B8B8"}></IoMdCloseCircle>
           </button>
         </form>
-        <button className="writeBtn">작성하기</button>
+        <button className="writeBtn" onClick={moveToWritePage}>
+          작성하기
+        </button>
       </div>
       {data ? (
         data.map((item, index) => {
