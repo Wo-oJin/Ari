@@ -42,7 +42,7 @@
   width: 200px;
   margin-top: 64px;
 }
-.menuListContainer span {
+.menuListContainer a {
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 35px;
@@ -51,7 +51,7 @@
 .logout {
   font-size: 18px;
   font-weight: 700;
-  color: #4E514F;
+  color: #4e514f;
   margin-bottom: 35px;
   cursor: pointer;
 }
