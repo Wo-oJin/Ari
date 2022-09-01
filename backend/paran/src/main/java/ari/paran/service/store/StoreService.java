@@ -27,10 +27,13 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
     private final PartnershipRepository partnershipRepository;
-    private final StoreImgFileRepository storeImgFileRepository;
     private final Response response;
     private final FileService fileService;
-    private final MemberService memberService;
+
+    public void save(Store store){
+        storeRepository.save(store);
+    }
+
     public List<Store> findStores(){
         return storeRepository.findAll();
     }

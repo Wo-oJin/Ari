@@ -3,9 +3,11 @@ package ari.paran.service.auth;
 import ari.paran.Util.SecurityUtil;
 import ari.paran.domain.member.Member;
 import ari.paran.domain.member.Authority;
+import ari.paran.domain.repository.FavoriteRepository;
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.domain.repository.SignupCodeRepository;
 import ari.paran.domain.repository.StoreRepository;
+import ari.paran.domain.store.Favorite;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
@@ -14,6 +16,7 @@ import ari.paran.dto.request.SignupDto;
 import ari.paran.dto.request.TokenRequestDto;
 import ari.paran.dto.response.TokenDto;
 import ari.paran.jwt.TokenProvider;
+import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -45,7 +48,8 @@ import java.util.concurrent.TimeUnit;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final StoreRepository storeRepository;
+    private final FavoriteRepository favoriteRepository;
+    private final StoreService storeService;
     private final SignupCodeRepository signupCodeRepository;
     private final Response response;
     private final PasswordEncoder passwordEncoder;
@@ -53,6 +57,20 @@ public class MemberService {
     private final TokenProvider tokenProvider;
     private final RedisTemplate redisTemplate;
     private final JavaMailSender javaMailSender;
+
+    @Transactional
+    public ResponseEntity<?> addMemberFavoriteStore(Long memberId, Long storeId){
+        Member member = getMemberInfoById(memberId);
+        Store store = storeService.findStore(storeId);
+
+        Favorite favorite = new Favorite(member, store);
+        member.addFavorite(favorite);
+        store.addFavorite(favorite);
+
+        favoriteRepository.save(favorite);
+
+        return response.success("찜 목록에 성공적으로 저장했습니다.");
+    }
 
     @Transactional(readOnly = true)
     public MemberResponseDto getMemberInfoByEmail(String email){
@@ -97,8 +115,7 @@ public class MemberService {
         memberRepository.save(member);
 
         Store store = signUp.toStore(member, signUp.toAddress(signUp.getStoreRoadAddress(), signUp.getStoreDetailAddress()));
-        storeRepository.save(store);
-
+        storeService.save(store);
 
         return response.success("회원가입에 성공했습니다.");
     }
