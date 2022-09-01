@@ -1,5 +1,6 @@
 package ari.paran.controller;
 
+import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.response.store.SimpleStoreDto;
@@ -39,12 +40,13 @@ public class StoreController {
 
     @GetMapping("/map/store/{store_id}")
     public DetailStoreDto detailStoreList(@PathVariable Long store_id, Principal principal) throws IOException {
-        DetailStoreDto detailStoreDto = new DetailStoreDto();
+
         Store store = storeService.findStore(store_id);
+        Member member = memberService.getMemberInfoById(Long.valueOf(principal.getName()));
 
-        Long member_id = Long.valueOf(principal.getName());
-
-        detailStoreDto.getStore(store, fileService, memberService.getMemberInfoById(member_id));
+        DetailStoreDto detailStoreDto = new DetailStoreDto(store);
+        detailStoreDto.setStoreImages(fileService.getImage(store));
+        detailStoreDto.setFavoriteList(member.getFavoriteStoreId());
 
         return detailStoreDto;
     }

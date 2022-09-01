@@ -7,59 +7,56 @@ import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
 import ari.paran.service.store.FileService;
 import lombok.Getter;
-import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 public class DetailStoreDto {
 
-    public DetailStore getStore(Store store, FileService fileService, Member member) throws IOException {
-        DetailStore detailStore = new DetailStore();
+    private Long id;
+    private String name;
+    private String ownerName;
+    private Address address;
+    private String phoneNumber;
+    private String openHour;
+    private String subText;
+    private List<Long> favoriteList;
+    private List<Store.Partner> partners;
+    private List<Event> events;
+    private List<String> images;
+    private boolean privateEvent;
+    private boolean stamp;
 
-        detailStore.setId(store.getId());
-        detailStore.setName(store.getName());
-        detailStore.setOwnerName(store.getOwnerName());
-        detailStore.setAddress(store.getAddress());
-        detailStore.setOpenHour(store.getOpenTime());
-        detailStore.setSubText(store.getSubText());
-        detailStore.setFavoriteList(member.getFavoriteStoreId());
-        detailStore.setPhoneNumber(store.getPhoneNumber());
-        detailStore.setImage(fileService.getImage(store));
-        detailStore.setPrivateEvent(store.getPrivateEvent());
-        detailStore.setStamp(store.getStamp());
-        detailStore.setEvents(store.getEventList());
+    public DetailStoreDto(Store store) throws IOException {
+
+        this.id = store.getId();
+        this.name = store.getName();
+        this.ownerName = store.getOwnerName();
+        this.address = store.getAddress();
+        this.openHour = store.getOpenTime();
+        this.subText = store.getSubText();
+        this.phoneNumber = store.getPhoneNumber();
+        this.privateEvent = store.getPrivateEvent();
+        this.stamp = store.getStamp();
+        this.events = store.getEventList();
 
         List<Partnership> partners = store.getPartnershipList();
 
         for(Partnership partner : partners){
             partner.setPartnerLocation(store.getAddress().getRoadAddress());
         }
-        detailStore.setPartners(store.getPartners());
 
-        return detailStore;
+        this.partners = store.getPartners();
     }
 
-    @Getter
-    @Setter
-    private static class DetailStore{
+    public void setStoreImages(List<String> images){
+        this.images = images;
+    }
 
-        private Long id;
-        private String name;
-        private String ownerName;
-        private Address address;
-        private String phoneNumber;
-        private String openHour;
-        private String subText;
-        private List<Long> favoriteList;
-        private List<Store.Partner> partners;
-        private List<Event> events;
-        private List<String> image;
-        private boolean privateEvent;
-        private boolean stamp;
-
+    public void setFavoriteList(List<Long> favoriteList){
+        this.favoriteList = favoriteList;
     }
 
 }

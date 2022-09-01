@@ -1,5 +1,6 @@
 package ari.paran.service.store;
 
+import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Partnership;
 import ari.paran.domain.repository.StoreImgFileRepository;
 import ari.paran.domain.repository.MemberRepository;
@@ -8,6 +9,7 @@ import ari.paran.domain.repository.StoreRepository;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.Response;
 import ari.paran.dto.response.store.DetailStoreDto;
+import ari.paran.service.auth.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +30,7 @@ public class StoreService {
     private final StoreImgFileRepository storeImgFileRepository;
     private final Response response;
     private final FileService fileService;
-
+    private final MemberService memberService;
     public List<Store> findStores(){
         return storeRepository.findAll();
     }
@@ -48,14 +50,14 @@ public class StoreService {
     }
 
     public ResponseEntity<?> existingInfo(Principal principal) throws IOException {
-        Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+        Member member = memberRepository.findById(Long.valueOf(principal.getName())).orElse(null);
+        Store store = member.getStores().get(0);
 
-        DetailStoreDto detailStoreDto = new DetailStoreDto();
+        DetailStoreDto detailStoreDto = new DetailStoreDto(store);
+        detailStoreDto.setStoreImages(fileService.getImage(store));
+        detailStoreDto.setFavoriteList(member.getFavoriteStoreId());
 
-        return response.success(detailStoreDto.getStore(store, fileService, memberRepository.findById(ownerId).orElse(null))
-                , "기존 가게정보"
-                , HttpStatus.OK);
+        return response.success(detailStoreDto, "기존 가게정보", HttpStatus.OK);
     }
 
 //    @Transactional
