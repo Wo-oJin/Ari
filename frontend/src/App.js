@@ -12,6 +12,7 @@ import { RecoilRoot } from "recoil";
 import Detail from "./pages/Detail";
 import { reissue } from "./services/jwt/reissue";
 import Board from "./pages/Board";
+import RedirectLogin from "./pages/RedirectLogin";
 
 function App() {
   useEffect(() => {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/signupOwner2" element={<SignupOwner2 />} />
           <Route path="/board/list" element={<Board />}></Route>
           <Route path="/board/:boardId" element={<Board />}></Route>
+          <Route path="/redirectLogin" element={<RedirectLogin />}></Route>
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

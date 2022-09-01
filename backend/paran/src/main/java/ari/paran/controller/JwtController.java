@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URISyntaxException;
 import java.util.Map;
 
 @RestController
@@ -61,7 +62,7 @@ public class JwtController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto loginDto, Errors errors) {
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto, Errors errors) throws URISyntaxException {
         //validation check
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));

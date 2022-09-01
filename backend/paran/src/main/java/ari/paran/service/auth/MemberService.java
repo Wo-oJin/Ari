@@ -17,6 +17,7 @@ import ari.paran.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -28,10 +29,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -160,12 +164,12 @@ public class MemberService {
         return response.fail("인증코드가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<?> login(LoginDto loginDto) {
+    public ResponseEntity<?> login(LoginDto loginDto) throws URISyntaxException {
 
         Optional<Member> member = memberRepository.findByEmail(loginDto.getEmail());
 
         if (member.orElse(null) == null || !passwordEncoder.matches(loginDto.getPassword(), member.get().getPassword())) {
-            return response.fail("ID 또는 패스워드를 확인하세요", HttpStatus.BAD_REQUEST);
+            return null;
         }
 
         //1. Login id/pw를 기반으로 Authentication 객체 생성
@@ -191,7 +195,23 @@ public class MemberService {
             tokenDto.setInfo(member.get().getStores().get(0).getName()); // 가게이름
         }
 
-        return response.success(tokenDto, "로그인에 성공했습니다.", HttpStatus.OK);
+        String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin/")
+                .queryParam("accessToken", "{at}")
+                .queryParam("refreshToken", "{rt}")
+                .queryParam("authority", "{authority}")
+                .queryParam("accessTokenExpireIn", "{atExp}")
+                .queryParam("refreshTokenExpireIn", "{rtExp}")
+                .queryParam("info", "{info}")
+                .encode()
+                .buildAndExpand(tokenDto.getAccessToken(), tokenDto.getRefreshToken(),tokenDto.getAuthority(),
+                        tokenDto.getAccessTokenExpireIn(), tokenDto.getRefreshTokenExpiresIn(), tokenDto.getInfo())
+                .toUriString();
+
+        URI redirectUri = new URI(redirectUrl);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(redirectUri);
+
+        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
 
     public ResponseEntity<?> reissue(TokenRequestDto reissue) {

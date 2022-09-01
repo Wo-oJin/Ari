@@ -28,7 +28,7 @@ const LoginUser = () => {
     }, []);
 
     const onKakao = async () => {
-        window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+        window.location.href = kakao;
         
     }
 

@@ -1,5 +1,6 @@
 package ari.paran.controller;
 
+import ari.paran.dto.response.TokenDto;
 import ari.paran.service.oauth.KakaoLoginService;
 import ari.paran.service.oauth.NaverLoginService;
 import ari.paran.dto.request.LoginDto;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class OAuthController {
@@ -38,28 +38,6 @@ public class OAuthController {
         return urlMap;
     }
 
-    @GetMapping("auth/kakao_login")
-    public String kakaoLogin(HttpSession httpSession, Model model){
-
-        // code를 받을 수 있는 인증 URL 반환
-        String codeUrl = kakaoLoginService.getAuthorizationUrl(httpSession);
-        model.addAttribute("kakao_url", codeUrl);
-
-        return "kakao_login";
-    }
-
-    @GetMapping("auth/naver_login")
-    public String naverLogin(HttpSession httpSession, Model model){
-
-        // code를 받을 수 있는 인증 URL 반환
-        String codeUrl = naverLoginService.getAuthorizationUrl(httpSession);
-        model.addAttribute("naver_url", codeUrl);
-
-        return "naver_login";
-    }
-
-
-    @ResponseBody
     @GetMapping("/auth/kakao/login")
     public ResponseEntity<?> kakaoCallback(HttpSession session, @RequestParam String code, @RequestParam String state, RedirectAttributes redirectAttributes) throws Exception {
 
@@ -69,9 +47,8 @@ public class OAuthController {
 
         LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
 
-        return ResponseEntity.ok(memberService.login(loginDto));
+        return memberService.login(loginDto);
     }
-
 
     @ResponseBody
     @GetMapping("/auth/naver/login")
@@ -83,7 +60,7 @@ public class OAuthController {
 
         LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
 
-        return ResponseEntity.ok(memberService.login(loginDto));
+        return memberService.login(loginDto);
     }
 
 }
