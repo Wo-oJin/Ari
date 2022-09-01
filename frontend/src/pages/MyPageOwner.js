@@ -1,41 +1,12 @@
 import { React, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from '../components/Header';
 import "../pages/MyPageOwner.css";
 import { useRecoilState } from 'recoil';
 import { nameState } from '../state';
-import axios from 'axios';
 
 const MyPageOwner = () => {
     const [name, setName] = useRecoilState(nameState);
-
-    const navigate = useNavigate();
-
-    const onEditStore = async () => {
-        try {
-            await axios
-                .get("/edit/store")
-                .then((res) => {
-                    const [storeName, roadAddress, detailAddress, ownerName,
-                        phoneNumber, images, subText, openHour] = res.data;
-
-                    const data = {
-                        storeName: storeName,
-                        roadAddress: roadAddress,
-                        detailAddress: detailAddress,
-                        ownerName: ownerName,
-                        phoneNumber: phoneNumber,
-                        images: images,
-                        subText: subText,
-                        openHour: openHour,
-                    }
-                    // 컴포넌트 이동 시 데이터 전달
-                    navigate('/storeInfoEdit', { data: data });
-                });
-        } catch (e) {
-            console.log(e);
-        }
-    }
 
     return (
         <>
@@ -61,14 +32,18 @@ const MyPageOwner = () => {
                         </div>
                     </div>
                 </div>
-                <div className="sub-info" onClick={onEditStore}>
-                    <p style={{marginLeft: "28px"}}>내 가게 정보 수정</p>
-                    <img style={{marginRight: "20px"}} alt="" src="images/arrow_right.png"></img>
-                </div>
-                <div className="sub-info">
-                    <p style={{marginLeft: "28px"}}>개인 이벤트 등록</p>
-                    <img style={{marginRight: "20px"}} alt="" src="images/arrow_right.png"></img>
-                </div>
+                <Link to="/storeInfoEdit">
+                    <div className="sub-info">
+                        <p style={{marginLeft: "28px"}}>내 가게 정보 수정</p>
+                        <img style={{marginRight: "20px"}} alt="" src="images/arrow_right.png"></img>
+                    </div>
+                </Link>
+                <Link to="/storePrivateEventList">
+                    <div className="sub-info">
+                        <p style={{marginLeft: "28px"}}>개인 이벤트 등록</p>
+                        <img style={{marginRight: "20px"}} alt="" src="images/arrow_right.png"></img>
+                    </div>
+                </Link>
                 <div className="sub-info">
                     <p style={{marginLeft: "28px"}}>찜 목록</p>
                     <img style={{marginRight: "20px"}} alt="" src="images/arrow_right.png"></img>
