@@ -1,5 +1,5 @@
-import { React, useState } from 'react';
-import { Link } from "react-router-dom";
+import { React, useEffect, useState } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
 import MainButton from '../components/common/Mainbutton';
@@ -22,6 +22,10 @@ const Formbox = styled.div`
 `;
 
 const SignupOwner = () => {
+    // const { historystate } = useLocation(); // SignupOwner.js에서 Link 태그로 보낸 데이터 받아오기
+
+    const navigate = useNavigate();
+    
     // 이메일, 비밀번호, 연령대, 성별
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -41,6 +45,36 @@ const SignupOwner = () => {
     const [isEmail, setIsEmail] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
     const [isPasswordCheck, setIsPasswordCheck] = useState(false);
+
+    // 인증번호 확인
+    const [emailCheckMessage, setEmailCheckMessage] = useState("");
+    const [isEmailCheck, setIsEmailCheck] = useState(false);
+
+    // history back 여부 판단해서 입력값 세팅
+    // useEffect(() => {
+    //     if (localStorage.getItem('email') !== null) {
+    //         setEmail(localStorage.getItem('email'));
+    //         setCertificationNumber(localStorage.getItem('certificationNumber'));
+    //         setAge(localStorage.getItem('age'));
+    //         setGender(localStorage.getItem('gender'));
+    //         setEmailCheckMessage('인증에 성공했습니다.');
+    //         setIsEmailCheck(true);
+
+            
+    //     }
+    // }, []);
+
+    // useEffect(() => {
+    //     console.log("historystate>>"+historystate);
+    //     if (historystate !== undefined) { // history back한 경우
+    //         setEmail(historystate.email);
+    //         setCertificationNumber(historystate.certificationNumber);
+    //         setAge(historystate.age);
+    //         setGender(historystate.gender);
+    //         setEmailCheckMessage('인증에 성공했습니다.');
+    //         setIsEmailCheck(true);
+    //     }
+    // }, [historystate]);
 
     // 이메일
     const onChangeEmail = (e) => {
@@ -93,10 +127,6 @@ const SignupOwner = () => {
         }
     };
 
-    // 인증번호 확인
-    const [emailCheckMessage, setEmailCheckMessage] = useState("");
-    const [isEmailCheck, setIsEmailCheck] = useState(false);
-
     // 이메일로 인증번호 보내기
     const sendEmailCode = async () => {
         if (!isEmail) {
@@ -142,6 +172,16 @@ const SignupOwner = () => {
         password: password,
         age: age,
         gender: gender,
+    }
+
+    const onNext = () => {
+        // 뒤로가기 했을 때 상태 유지 위해 localStorge에 임시 저장
+        // localStorage.setItem('email', email);
+        // localStorage.setItem('certificationNumber', certificationNumber);
+        // localStorage.setItem('age', age);
+        // localStorage.setItem('gender', gender);
+
+        navigate('/signupOwner2', { state: data });
     }
 
     return (
@@ -244,19 +284,18 @@ const SignupOwner = () => {
                 <div className="current"></div>
                 <div className="normal"></div>
             </div>
-            <Link to="/signupOwner2" state={{ data: data }}>
-                <div className="buttonContainer">
-                    <MainButton
-                        radius="15px"
-                        color="#FFFFFF"
-                        background="#386FFE;"
-                        type="submit"
-                        disabled={(isEmail && isPassword && isPasswordCheck && isEmailCheck) ? false : true}
-                        // disabled={(isEmail && isPassword && isPasswordCheck) ? false : true}
-                        text="다음"
-                    />
-                </div>
-            </Link>
+            <div className="buttonContainer">
+                <MainButton
+                    radius="15px"
+                    color="#FFFFFF"
+                    background="#386FFE;"
+                    type="submit"
+                    onClick={onNext}
+                    disabled={(isEmail && isPassword && isPasswordCheck && isEmailCheck) ? false : true}
+                    // disabled={(isEmail && isPassword && isPasswordCheck) ? false : true}
+                    text="다음"
+                />
+            </div>
         </>
     )
 }

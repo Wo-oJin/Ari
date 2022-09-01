@@ -112,9 +112,8 @@ const Login = () => {
         <div className="subContainer">
           <div className="subAlign">
             <Link to="/loginRegister">
-              <span>이메일 회원가입</span>
+              <span style={{ marginRight: "16px" }}>이메일 회원가입</span>
             </Link>
-            <span>이메일 찾기</span>
             <span>비밀번호 찾기</span>
           </div>
         </div>
