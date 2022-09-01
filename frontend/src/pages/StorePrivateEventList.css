@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-list-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 327px;
+    height: 60px;
+    border: 0.7px solid #D7D7D7;
+    border-radius: 15px;
+    margin-bottom: 17px;
+    cursor: pointer;
+}
+
+.text-ellipsis {
+    width: 250px;
+    padding-left: 28px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.addList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 327px;
+    height: 60px;
+    border: 0.7px dashed #D7D7D7;
+    border-radius: 15px;
+    cursor: pointer;
+}

@@ -1,10 +1,9 @@
 import { React, useState } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
 import MainButton from '../components/common/Mainbutton';
 import { signOwnerData } from '../services/sign/signOwnerData';
-import Header from '../components/Header';
 import "../pages/SignupOwner.css";
 import DaumPostcode from "react-daum-postcode";
 
@@ -24,8 +23,7 @@ const Formbox = styled.div`
 `;
 
 const SignupOwner2 = () => {
-    const location = useLocation();
-    const data = location.state.data; // SignOwner.js에서 Link로 보낸 데이터 받아오기
+    const { state } = useLocation(); // SignupOwner.js에서 navigate로 보낸 데이터 받아오기
 
     const navigate = useNavigate();
 
@@ -115,11 +113,17 @@ const SignupOwner2 = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
+        // 뒤로가기 했을 때 상태 유지 위해 localStorge에 임시 저장해둔 상태 삭제
+        // localStorage.removeItem('email', data.email);
+        // localStorage.removeItem('certificationNumber', certificationNumber);
+        // localStorage.removeItem('age', data.age);
+        // localStorage.removeItem('gender', data.gender);
+
         const result = await signOwnerData({
-            email: data.email,
-            password: data.password,
-            age: data.age,
-            gender: data.gender,
+            email: state.email,
+            password: state.password,
+            age: state.age,
+            gender: state.gender,
             storeName: storeName,
             ownerName: ownerName,
             storeRoadAddress: storeRoadAddress,
@@ -139,7 +143,20 @@ const SignupOwner2 = () => {
 
     return (
         <>
-            <Header text="회원가입" link="/loginOwner"></Header>
+            <div className="header">
+                {/* <Link to="/signupOwner" historystate={{state: state}}> */}
+                <Link to="/signupOwner">
+                    <button style={{position: "absolute", top: "20px", left: "20px", cursor: "pointer"}}>
+                        <img alt="" src="images/arrow_left.png"></img>
+                    </button>
+                </Link>
+                <span>회원가입</span>
+                <button className="rightBtn">
+                    <Link to="/loginOwner">
+                        <img alt="" src="images/quit_btn.png"></img>
+                    </Link>
+                </button>
+            </div>
             <div className="inputContainer">
                 <Formbox>
                     <div className="intro">가게 이름</div>
@@ -188,6 +205,7 @@ const SignupOwner2 = () => {
                             onChange={e => setStoreDetailAddress(e.target.value)}
                             placeholder="상세 주소 입력"
                             autoComplete="off"
+                            maxLength="20"
                         />
                     </div>
                 </Formbox>

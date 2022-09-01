@@ -11,6 +11,7 @@ const RedirectLogin = () => {
 
     const navigate = useNavigate();
 
+    // url 파라미터로 전달된 데이터 받아오기
     const params = new URL(window.location.href).searchParams;
     const accessToken = params.get("accessToken");
     const refreshToken = params.get("refreshToken");
@@ -40,6 +41,7 @@ const RedirectLogin = () => {
         }
 
         setName(info); // recoil
+        
         alert('로그인에 성공했습니다.');
         navigate("/"); // 메인 페이지로 이동
     }, [])

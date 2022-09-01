@@ -63,7 +63,7 @@
     cursor: default;
 }
 
-.imageBox {
+.uploadImage {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -79,7 +79,6 @@
     width: 63px;
     height: 63px;
     border-radius: 10px;
-    cursor: pointer;
 }
 
 .delete-image {

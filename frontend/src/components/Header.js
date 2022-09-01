@@ -4,7 +4,7 @@ const Header = ({ text, link }) => {
   return (
     <div className="header">
       <span>{text}</span>
-      <button>
+      <button className="rightBtn">
         <Link to={link}>
           <img alt="" src="images/quit_btn.png"></img>
         </Link>
