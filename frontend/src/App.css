@@ -111,7 +111,7 @@ button {
   border-bottom: 1px solid #9b9b9b;
 }
 
-.header button {
+.header .rightBtn {
   position: absolute;
   top: 20px;
   right: 20px;
