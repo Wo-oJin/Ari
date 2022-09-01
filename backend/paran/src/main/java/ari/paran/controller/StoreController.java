@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 
-
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -27,15 +26,19 @@ public class StoreController {
 
     @GetMapping("/map/store")
     @ResponseBody
-    public SimpleStoreDto simpleStoreList() throws IOException {
-        SimpleStoreDto simpleStoreDto = new SimpleStoreDto();
+    public List<SimpleStoreDto> simpleStoreList() throws IOException {
+        List<SimpleStoreDto> simpleStoreDtoList = new ArrayList<>();
         List<Store> storeList = storeService.findStores();
 
         for(Store store : storeList){
-            simpleStoreDto.addStore(store, fileService, storeService);
+            SimpleStoreDto simpleStoreDto = new SimpleStoreDto(store);
+            simpleStoreDto.setPartnersName(storeService.getPartnersName(store.getName()));
+            simpleStoreDto.setImage(fileService.getImage(store));
+
+            simpleStoreDtoList.add(simpleStoreDto);
         }
 
-        return simpleStoreDto;
+        return simpleStoreDtoList;
     }
 
     @GetMapping("/map/store/{store_id}")
@@ -55,12 +58,5 @@ public class StoreController {
     public ResponseEntity<?> existingInfo(Principal principal) throws IOException{
         return storeService.existingInfo(principal);
     }
-
-    /*
-    @GetMapping("/map/partners/{store_name}")
-    public List<String> getPartners(@PathVariable String store_name){
-        return storeService.getPartners(store_name);
-    }
-    */
 
 }
