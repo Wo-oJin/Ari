@@ -58,7 +58,7 @@ public class StoreService {
 
         DetailStoreDto detailStoreDto = new DetailStoreDto(store);
         detailStoreDto.setStoreImages(fileService.getImage(store));
-        detailStoreDto.setFavoriteList(member.getFavoriteStoreId());
+        detailStoreDto.setFavorite(member.favoriteStore(store));
 
         return response.success(detailStoreDto, "기존 가게정보", HttpStatus.OK);
     }

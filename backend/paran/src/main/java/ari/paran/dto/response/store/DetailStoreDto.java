@@ -22,7 +22,7 @@ public class DetailStoreDto {
     private String phoneNumber;
     private String openHour;
     private String subText;
-    private List<Long> favoriteList;
+    private boolean favorite;
     private List<Store.Partner> partners;
     private List<Event> events;
     private List<String> images;
@@ -55,8 +55,8 @@ public class DetailStoreDto {
         this.images = images;
     }
 
-    public void setFavoriteList(List<Long> favoriteList){
-        this.favoriteList = favoriteList;
+    public void setFavorite(boolean favorite){
+        this.favorite = favorite;
     }
 
 }

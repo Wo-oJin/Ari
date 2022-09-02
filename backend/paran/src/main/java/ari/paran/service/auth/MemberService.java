@@ -64,6 +64,10 @@ public class MemberService {
         Store store = storeService.findStore(storeId);
 
         Favorite favorite = new Favorite(member, store);
+        if(member.favoriteStore(store)) {
+            return response.fail("이미 찜 목록에 저장되어 있습니다.", HttpStatus.BAD_REQUEST);
+        }
+
         member.addFavorite(favorite);
         store.addFavorite(favorite);
 

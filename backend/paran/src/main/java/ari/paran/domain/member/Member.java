@@ -81,6 +81,11 @@ public class Member {
                 .collect(Collectors.toList());
     }
 
+    public boolean favoriteStore(Store store){
+        return favorites.stream().map(Favorite :: getStore)
+                .anyMatch(findStore->  findStore.getId() == store.getId());
+    }
+
     public void addFavorite(Favorite favorite) {
         this.favorites.add(favorite);
     }
