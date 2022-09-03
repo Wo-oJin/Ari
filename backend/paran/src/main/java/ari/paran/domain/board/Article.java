@@ -2,10 +2,7 @@ package ari.paran.domain.board;
 
 import ari.paran.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -38,6 +35,7 @@ public class Article {
     @Column(name = "create_date")
     private LocalDate createDate;
 
+    @Setter
     @Column(name = "update_date")
     private LocalDate updateDate;
 
@@ -68,6 +66,9 @@ public class Article {
     public void changeTitle(String title){
         this.title = title;
     }
+    public void changeContent(String content){this.content = content;}
+    public void changePeriod(String period){this.period = period;}
+    public void changeImages(List<ArticleImgFile> imgFiles){this.imgFiles = imgFiles;}
 
     public void addImgFile(ArticleImgFile articleImgFile){
         this.imgFiles.add(articleImgFile);

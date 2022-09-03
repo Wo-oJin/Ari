@@ -69,6 +69,7 @@ public class FileService {
     public void saveArticleImage(Long articleId, List<MultipartFile> images) throws IOException{
 
         String fileUrl = System.getProperty("user.dir") + detailUrl;
+        log.info("아이디 = {}", articleId);
         Article article = boardRepository.findById(articleId).orElse(null);
 
         for(MultipartFile image : images) {
@@ -90,12 +91,37 @@ public class FileService {
         }
     }
 
+    @Transactional
+    public void changeArticleImage(Long articleId, List<MultipartFile> images) throws IOException {
+        articleImgFilesRepository.deleteAll();
+
+        saveArticleImage(articleId, images);
+    }
+
     public List<String> getImage(Store store) throws IOException{
         List<String> base64Images = new ArrayList<>();
         List<StoreImgFile> storeImages = store.getStoreImgFiles();
 
         for(StoreImgFile storeImgFile : storeImages) {
             FileInputStream imageStream = new FileInputStream(storeImgFile.getFileUrl() + storeImgFile.getFilename());
+
+            byte[] imgBytes = imageStream.readAllBytes();
+            byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
+            String imgStr = new String(byteEnc64, "UTF-8");
+
+            base64Images.add(imgStr);
+        }
+
+        return base64Images;
+    }
+
+    public List<String> getArticleImage(Article article, int count) throws IOException{
+        List<String> base64Images = new ArrayList<>();
+        List<ArticleImgFile> articleImages = article.getImgFiles();
+
+        for(int i=0;i<count;i++) {
+            ArticleImgFile articleImgFile = articleImages.get(i);
+            FileInputStream imageStream = new FileInputStream(articleImgFile.getFileUrl() + articleImgFile.getFilename());
 
             byte[] imgBytes = imageStream.readAllBytes();
             byte[] byteEnc64 = Base64.encodeBase64(imgBytes);

@@ -15,11 +15,11 @@ public class DetailArticleDto {
     private String period;
     private LocalDate createDate;
     private LocalDate updateDate;
-    private List<ArticleImgFile> images;
+    private List<String> images;
 
     @Builder
     public DetailArticleDto(String title, String author, String content, String period,
-                            LocalDate createDate, LocalDate updateDate, List<ArticleImgFile> images){
+                            LocalDate createDate, LocalDate updateDate, List<String> images){
 
         this.title = title;
         this.author = author;
