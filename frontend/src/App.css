@@ -17,6 +17,14 @@ body {
   letter-spacing: 0.2px;
 }
 
+textarea {
+  font-family: work-sans, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+}
+
 a {
   text-decoration: none;
   color: inherit;
@@ -120,5 +128,14 @@ button {
   position: absolute;
   top: 20px;
   left: 20px;
+  cursor: pointer;
+}
+.completeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 16px;
+  color: #386ffe;
+  font-weight: 600;
   cursor: pointer;
 }

@@ -1,18 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
-import { getBoardData } from "../services/board/getBoardData";
 import "./Board.css";
 import { FiSearch } from "react-icons/fi";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { useInView } from "react-intersection-observer";
 
 const BoardItem = ({ boardId, img, title, author, date }) => {
   return (
     <Link to={`/board/${boardId}`}>
       <div className="itemContainer">
         <div className="itemBox">
-          <img src={img}></img>
+          <img className="itemImg" src={"/images/photo.png"}></img>
           <div className="itemContent">
             <span className="itemTitle">{title}</span>
             <span className="itemAuthor">{author}</span>
@@ -24,61 +24,84 @@ const BoardItem = ({ boardId, img, title, author, date }) => {
   );
 };
 const Board = () => {
+  const [ref, inView] = useInView();
+  const [endPage, setEndPage] = useState(false);
+  const [page, setPage] = useState(0);
   const [data, setData] = useState("");
   const [load, setLoad] = useState(true);
-  const [search, setSearch] = useState();
-  useEffect(() => {
-    const getBoardData = async () => {
-      axios.get(`/board/list`).then((response) => {
-        setData(response.data);
-        setLoad(false);
+  const [search, setSearch] = useState("");
+  const getBoardData = async () => {
+    if (!endPage) {
+      axios.get(`/board/list?page=${page}`).then((response) => {
+        if (response.data.last === false) {
+          setData((prev) => [...prev, ...response.data.content]);
+        } else {
+          setData((prev) => [...prev, ...response.data.content]);
+          setEndPage(true);
+          console.log("페이지 끝임");
+        }
       });
-    };
+    }
+  };
+  const searchBoardData = async (keyword) => {
+    axios.get(`/board/list?keyword=${keyword}`).then((res) => {
+      setData(res.data.content);
+      setEndPage(true);
+    });
+  };
+  //page 바뀔 때마다 데이터 불러오기
+  useEffect(() => {
+    setLoad(true);
     getBoardData();
-  }, []);
+    setLoad(false);
+  }, [page]);
+
+  useEffect(() => {
+    // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
+    if (inView && !load) {
+      setPage((prevState) => prevState + 1);
+    }
+  }, [inView, load]);
+
+  const handleOnKeyPress = (e) => {
+    if (e.key == "Enter") {
+      if (search === null || search === "") {
+        //getBoardData();
+      } else {
+        //기존 데이터 목록에서 검색어가 포함된 데이터만 추출
+        searchBoardData(search);
+      }
+    }
+  };
+
   if (load) {
     return <h1>로딩 중</h1>;
   }
-  console.log(data.articleList.content);
+  console.log(data);
 
   //onChange 이벤트 발생할 때마다 검색어 최신화
   const onChangeSearch = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
   };
-  //검색을 실행
-  const onSearch = (e) => {
-    e.preventDefault();
-    //만약 검색어가 없다면 전체 데이터 반환
-    if (search === null || search === "") {
-      getBoardData();
-    } else {
-      //기존 데이터 목록에서 검색어가 포함된 데이터만 추출
-      const filterData = data.content.filter((item) =>
-        item.title.includes(search)
-      );
-      setData(filterData);
-    }
-    //검색어 초기화
-    setSearch("");
-  };
+
   const deleteSearchWord = () => {
     setSearch("");
+  };
+
+  const moveToWritePage = () => {
+    window.location.href = "/board/write";
   };
   return (
     <>
       <Header text={"제휴 맺기 게시판"} back={true}></Header>
       <div className="searchContainer">
-        <form
-          className="searchForm"
-          onSubmit={(e) => {
-            onSearch(e);
-          }}
-        >
+        <form className="searchForm" onSubmit={(e) => e.preventDefault()}>
           <div className="serachIcon">
             <FiSearch></FiSearch>
           </div>
           <input
+            onKeyPress={handleOnKeyPress}
             className="searchInput"
             type="text"
             value={search}
@@ -89,12 +112,15 @@ const Board = () => {
             <IoMdCloseCircle size={"1.5em"} color={"B8B8B8"}></IoMdCloseCircle>
           </button>
         </form>
-        <button className="writeBtn">작성하기</button>
+        <button className="writeBtn" onClick={moveToWritePage}>
+          작성하기
+        </button>
       </div>
       {data ? (
-        data.articleList.content.map((item, index) => {
+        data.map((item, index) => {
           return (
             <BoardItem
+              key={index}
               boardId={item.id}
               img={""}
               title={item.title}
@@ -106,6 +132,7 @@ const Board = () => {
       ) : (
         <span>data 없음</span>
       )}
+      <div ref={ref}> </div>
     </>
   );
 };
