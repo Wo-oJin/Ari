@@ -24,10 +24,10 @@ const BoardWrite = () => {
         title: title,
         content: content,
         period: period,
-        image: imageUrl,
+        files: imageUrl,
       })
       .then((res) => {
-        window.location.href("/board/list");
+        navigate("/board/list");
       });
   };
   const onChangeTitle = (e) => {
@@ -72,6 +72,11 @@ const BoardWrite = () => {
     }
   };
   console.log("저장된 이미지 배열", imageUrl);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    sendData();
+  };
   return (
     <>
       <div className="header">
@@ -85,59 +90,61 @@ const BoardWrite = () => {
         >
           <MdArrowBackIosNew size={"1.3em"} color="black"></MdArrowBackIosNew>
         </button>
-        <button className="completeBtn" onClick={sendData}>
-          완료
-        </button>
       </div>
       <div className="writeContainer">
-        <div className="uploadPhotoBox">
-          <label htmlFor="uploadPhotoInput" className="uploadPhotoBtn">
-            <HiOutlineCamera size={"1.7em"}></HiOutlineCamera>
-            <div>
-              <span className="currentImageNum">{imageUrl.length}</span>
-              <span>/3</span>
+        <form className="writeForm" onSubmit={submitHandler}>
+          <div className="uploadPhotoBox">
+            <label htmlFor="uploadPhotoInput" className="uploadPhotoBtn">
+              <HiOutlineCamera size={"1.7em"}></HiOutlineCamera>
+              <div>
+                <span className="currentImageNum">{imageUrl.length}</span>
+                <span>/3</span>
+              </div>
+            </label>
+            <input
+              id="uploadPhotoInput"
+              type="file"
+              onChange={onChangeImage}
+              ref={imgRef}
+              multiple={true}
+            ></input>
+            <div className="photoContainer">
+              {imageUrl.map((item, index) => {
+                return (
+                  <div>
+                    <img alt={index} className="uploadedPhoto" src={item}></img>
+                    <button id={index} className="deletePhotoBtn">
+                      <IoMdCloseCircle
+                        id={index}
+                        size={"1.5em"}
+                        color={"B8B8B8"}
+                        onClick={deletePhoto}
+                      ></IoMdCloseCircle>
+                    </button>
+                  </div>
+                );
+              })}
             </div>
-          </label>
-          <input
-            id="uploadPhotoInput"
-            type="file"
-            onChange={onChangeImage}
-            ref={imgRef}
-            multiple={true}
-          ></input>
-          <div className="photoContainer">
-            {imageUrl.map((item, index) => {
-              return (
-                <div>
-                  <img alt={index} className="uploadedPhoto" src={item}></img>
-                  <button id={index} className="deletePhotoBtn">
-                    <IoMdCloseCircle
-                      id={index}
-                      size={"1.5em"}
-                      color={"B8B8B8"}
-                      onClick={deletePhoto}
-                    ></IoMdCloseCircle>
-                  </button>
-                </div>
-              );
-            })}
           </div>
-        </div>
-        <input
-          className="writeTitle"
-          placeholder="글 제목 (ex.[요청 업종]~와 제휴 원합니다.)"
-          onChange={onChangeTitle}
-        ></input>
-        <input
-          className="writeDuration"
-          placeholder="제휴기간 (일주일/한 달/1년)"
-          onChange={onChangePeriod}
-        ></input>
-        <textarea
-          className="writeContent"
-          placeholder="제휴를 함께하고 싶은 가게에게 요청하는 글을 작성해주세요."
-          onChange={onChangeContent}
-        ></textarea>
+          <input
+            className="writeTitle"
+            placeholder="글 제목 (ex.[요청 업종]~와 제휴 원합니다.)"
+            onChange={onChangeTitle}
+          ></input>
+          <input
+            className="writeDuration"
+            placeholder="제휴기간 (일주일/한 달/1년)"
+            onChange={onChangePeriod}
+          ></input>
+          <textarea
+            className="writeContent"
+            placeholder="제휴를 함께하고 싶은 가게에게 요청하는 글을 작성해주세요."
+            onChange={onChangeContent}
+          ></textarea>
+          <button className="completeBtn" type="submit">
+            완료
+          </button>
+        </form>
       </div>
     </>
   );

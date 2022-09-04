@@ -12,7 +12,7 @@
 .searchForm {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: start;
   width: 230px;
   height: 40px;
   border: none;
@@ -21,7 +21,9 @@
   z-index: 1;
 }
 .searchInput {
+  margin-left: 10px;
   height: 80%;
+  width: 70%;
   z-index: 1;
   border: none;
   background-color: transparent;
@@ -46,9 +48,8 @@
 }
 
 .deleteSearchWordBtn {
-  padding-right: 10px;
   padding-top: 3px;
-  z-index: 10;
+  z-index: 15;
   cursor: pointer;
 }
 
