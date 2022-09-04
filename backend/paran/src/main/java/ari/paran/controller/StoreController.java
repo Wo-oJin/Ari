@@ -3,6 +3,7 @@ package ari.paran.controller;
 import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.response.store.DetailStoreDto;
+import ari.paran.dto.response.store.MainResult;
 import ari.paran.dto.response.store.SimpleStoreDto;
 import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.FileService;
@@ -26,7 +27,7 @@ public class StoreController {
 
     @GetMapping("/map/store")
     @ResponseBody
-    public List<SimpleStoreDto> simpleStoreList() throws IOException {
+    public MainResult simpleStoreList() throws IOException {
         List<SimpleStoreDto> simpleStoreDtoList = new ArrayList<>();
         List<Store> storeList = storeService.findStores();
 
@@ -38,7 +39,7 @@ public class StoreController {
             simpleStoreDtoList.add(simpleStoreDto);
         }
 
-        return simpleStoreDtoList;
+        return new MainResult(simpleStoreDtoList);
     }
 
     @GetMapping("/map/store/{store_id}")
