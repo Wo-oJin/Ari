@@ -29,9 +29,6 @@ public class Article {
     @JoinColumn(name = "writer_id")
     private Member member;
 
-    @Column
-    private String author;
-
     @Column(name = "create_date")
     private LocalDate createDate;
 
@@ -47,12 +44,11 @@ public class Article {
     private List<ArticleImgFile> imgFiles = new ArrayList<>();
 
     @Builder
-    public Article(String title, String content, Member member, String author,
+    public Article(String title, String content, Member member,
                    LocalDate createDate, LocalDate updateDate, String period){
         this.title = title;
         this.content = content;
         this.member = member;
-        this.author = author;
         this.createDate = createDate;
         this.updateDate = updateDate;
         this.period = period;

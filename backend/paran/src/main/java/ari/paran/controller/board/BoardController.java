@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -42,20 +43,25 @@ public class BoardController {
         return boardService.findArticle(id);
     }
 
+    /*
     @GetMapping("/write")
     public String returnWritePage(){
         return "boardwrite";
     }
 
-    @PostMapping("/write") // update로도 쓸 수 있음
-    @ResponseBody
-    public void ArticleWrite(@ModelAttribute Article article, List<MultipartFile> files) throws IOException {
-        boardService.saveArticle(article, files);
-    }
-
     @GetMapping("/update/{id}")
     public String returnUpdatePage(@PathVariable Long id){
         return "boardupdate";
+    }
+     */
+
+    @PostMapping("/write") // update로도 쓸 수 있음
+    @ResponseBody
+    public void ArticleWrite(@RequestBody Article article, List<MultipartFile> files, Principal principal) throws IOException {
+        log.info("파일 = {}", article.getTitle());
+        Long memberId = Long.parseLong(principal.getName());
+
+        boardService.saveArticle(article, files, memberId);
     }
 
     @PostMapping("/update/{id}") // update로도 쓸 수 있음

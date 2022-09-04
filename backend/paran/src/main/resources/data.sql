@@ -6,10 +6,10 @@ INSERT INTO member (member_id, password, email, age, nickname, gender, authority
 INSERT INTO member (member_id, password, email, age, nickname, gender, authority) VALUES (5, '$2a$10$Pqli0r4TwDdi7Fd2RPL9SOKTvmTru121x6loQryHplGMuKg8wWnJu', 'dnwls813@ajou.ac.kr', 20, null, 'M', 'ROLE_USER');
 
 INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event, stamp)
-    VALUES ("경기 수원시 팔달구 아주로 47번길 16", 3, "1층", "오전 9시 ~ 오후 9시", "미스터쉐프 한 줄 소개", "미스터쉐프", "우영우", "010-1234-5678", true, false);
+    VALUES ("경기 수원시 팔달구 아주로 47번길 16", 1, "1층", "오전 9시 ~ 오후 9시", "미스터쉐프 한 줄 소개", "미스터쉐프", "우영우", "010-1234-5678", true, false);
 
 INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event, stamp)
-    VALUES ("경기 수원시 팔달구 아주로 13번길 19 골든파크", 4, "1층", "오전 9시 ~ 오후 9시", "미스터쉐프 한 줄 소개", "아맛집", "동그라미", "010-5678-1234", false, true);
+    VALUES ("경기 수원시 팔달구 아주로 13번길 19 골든파크", 2, "1층", "오전 9시 ~ 오후 9시", "미스터쉐프 한 줄 소개", "아맛집", "동그라미", "010-5678-1234", false, true);
 
 INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event, stamp)
     VALUES ("경기 수원시 영통구 아주로 46", 3, "아록빌딩 1층", "오전 9시 ~ 오후 9시", "맥도날드 한 줄 소개", "맥도날드 아주대점", "정명석", "010-5678-1234", false, true);
@@ -38,18 +38,18 @@ INSERT INTO favorite (favorite_id, member_id, store_id) VALUES (4, 2, 1);
 INSERT INTO favorite (favorite_id, member_id, store_id) VALUES (5, 5, 1);
 INSERT INTO favorite (favorite_id, member_id, store_id) VALUES (6, 5, 2);
 
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목1", "내용1", 1, "작성자1", "3달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목2", "내용2", 1, "작성자2", "3달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목3", "내용3", 1, "작성자3", "3달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목4", "내용4", 1, "작성자4", "3달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목5", "내용5", 1, "작성자5", "3달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목6", "내용6", 1, "작성자6", "3달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목7", "내용7", 1, "작성자7", "3달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목8", "내용8", 1, "작성자8", "3달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목9", "내용9", 1, "작성자9", "3달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목10", "내용10", 2, "작성자10", "2달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목11", "내용11", 2, "작성자11", "2달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목12", "내용12", 2, "작성자12", "2달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목13", "내용13", 2, "작성자13", "2달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목14", "내용14", 2, "작성자14", "2달", now(), now());
-INSERT INTO board(title, content, writer_id, author, partnership_period, create_date, update_date) VALUES("제목15", "내용15", 2, "작성자15", "2달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목1", "내용1", 1, "3달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목2", "내용2", 2, "3달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목3", "내용3", 3, "3달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목4", "내용4", 4, "3달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목5", "내용5", 1, "3달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목6", "내용6", 2, "3달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목7", "내용7", 3, "3달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목8", "내용8", 4, "3달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목9", "내용9", 1, "3달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목10", "내용10", 2, "2달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목11", "내용11", 3, "2달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목12", "내용12", 4, "2달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목13", "내용13", 1, "2달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목14", "내용14", 2, "2달", now(), now());
+INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목15", "내용15", 3, "2달", now(), now());

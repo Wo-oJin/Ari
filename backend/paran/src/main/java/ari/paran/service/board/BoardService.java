@@ -2,10 +2,15 @@ package ari.paran.service.board;
 
 import ari.paran.domain.board.Article;
 import ari.paran.domain.repository.BoardRepository;
+import ari.paran.domain.repository.StoreRepository;
+import ari.paran.domain.store.Store;
 import ari.paran.dto.response.board.DetailArticleDto;
 import ari.paran.dto.response.board.SimpleArticleDto;
 import ari.paran.dto.response.board.UpdateForm;
+import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.FileService;
+import ari.paran.service.store.StoreService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,17 +21,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class BoardService {
 
-    @Autowired
-    BoardRepository boardRepository;
-
-    @Autowired
-    FileService fileService;
+    private final BoardRepository boardRepository;
+    private final FileService fileService;
+    private final MemberService memberService;
 
     public Page<SimpleArticleDto> getArticleList(Pageable pageable, String keyword) throws IOException{
 
@@ -42,7 +45,7 @@ public class BoardService {
                 return SimpleArticleDto.builder()
                                 .id(article.getId())
                                 .title(article.getTitle())
-                                .author(article.getAuthor())
+                                .author(article.getMember().getStores().get(0).getName())
                                 .createDate(article.getCreateDate())
                                 .image(article.getImgFiles().isEmpty() ? null : fileService.getArticleImage(article, 1).get(0))
                                 .build();
@@ -58,8 +61,8 @@ public class BoardService {
         if(article != null){
             return DetailArticleDto.builder()
                     .title(article.getTitle())
-                    .author(article.getAuthor())
                     .content(article.getContent())
+                    .author(article.getMember().getStores().get(0).getName())
                     .createDate(article.getCreateDate())
                     .updateDate(article.getUpdateDate())
                     .images(fileService.getArticleImage(article, article.getImgFiles().size()))
@@ -70,14 +73,15 @@ public class BoardService {
     }
 
     @Transactional
-    public Long saveArticle(Article article, List<MultipartFile> files) throws IOException {
+    public void saveArticle(Article article, List<MultipartFile> files, Long authorId) throws IOException {
 
+        //String storeName = memberService.getMemberInfoById(authorId).getStores().get(0).getName();
+        article.setMember(memberService.getMemberInfoById(authorId));
         boardRepository.save(article);
 
         if(files!=null)
             fileService.saveArticleImage(article.getId(), files);
 
-        return article.getId();
     }
 
     @Transactional

@@ -193,6 +193,14 @@ public class MemberService {
             return null;
         }
 
+        Member findMember = member.orElseGet(null);
+        Store store = Store.builder()
+                .name("우진이의 가게")
+                .member(findMember)
+                .build();
+        findMember.addStore(store);
+        storeService.save(store);
+
         //1. Login id/pw를 기반으로 Authentication 객체 생성
         //이때 authentication는 인증 여부를 확인하는 authenticated 값이 false
         UsernamePasswordAuthenticationToken authenticationToken = loginDto.toAuthentication();
