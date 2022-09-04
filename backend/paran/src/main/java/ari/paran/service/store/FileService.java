@@ -72,22 +72,24 @@ public class FileService {
         log.info("아이디 = {}", articleId);
         Article article = boardRepository.findById(articleId).orElse(null);
 
-        for(MultipartFile image : images) {
-            String originalFileName = image.getOriginalFilename();
-            String fileName = UUID.randomUUID().toString(); //uuid
-            File destinationFile = new File(fileUrl + fileName);
+        if(images!=null) {
+            for (MultipartFile image : images) {
+                String originalFileName = image.getOriginalFilename();
+                String fileName = UUID.randomUUID().toString(); //uuid
+                File destinationFile = new File(fileUrl + fileName);
 
-            destinationFile.getParentFile().mkdirs();
-            image.transferTo(destinationFile);
+                destinationFile.getParentFile().mkdirs();
+                image.transferTo(destinationFile);
 
-            ArticleImgFile articleImgFile = ArticleImgFile.builder()
-                    .article(article)
-                    .originalFileName(originalFileName)
-                    .filename(fileName)
-                    .fileUrl(fileUrl).build();
+                ArticleImgFile articleImgFile = ArticleImgFile.builder()
+                        .article(article)
+                        .originalFileName(originalFileName)
+                        .filename(fileName)
+                        .fileUrl(fileUrl).build();
 
-            article.addImgFile(articleImgFile);
-            articleImgFilesRepository.save(articleImgFile);
+                article.addImgFile(articleImgFile);
+                articleImgFilesRepository.save(articleImgFile);
+            }
         }
     }
 

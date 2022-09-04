@@ -58,7 +58,6 @@ public class BoardController {
     @PostMapping("/write") // update로도 쓸 수 있음
     @ResponseBody
     public void ArticleWrite(@RequestBody Article article, List<MultipartFile> files, Principal principal) throws IOException {
-        log.info("파일 = {}", article.getTitle());
         Long memberId = Long.parseLong(principal.getName());
 
         boardService.saveArticle(article, files, memberId);
@@ -66,7 +65,7 @@ public class BoardController {
 
     @PostMapping("/update/{id}") // update로도 쓸 수 있음
     @ResponseBody
-    public void ArticleUpdate(@PathVariable Long id, @ModelAttribute Article article, List<MultipartFile> files) throws IOException {
+    public void ArticleUpdate(@PathVariable Long id, @RequestBody Article article, List<MultipartFile> files) throws IOException {
         UpdateForm updateForm = UpdateForm.builder()
                 .id(id)
                 .title(article.getTitle())

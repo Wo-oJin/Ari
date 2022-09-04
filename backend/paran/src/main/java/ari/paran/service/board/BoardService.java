@@ -63,6 +63,7 @@ public class BoardService {
                     .title(article.getTitle())
                     .content(article.getContent())
                     .author(article.getMember().getStores().get(0).getName())
+                    .period(article.getPeriod())
                     .createDate(article.getCreateDate())
                     .updateDate(article.getUpdateDate())
                     .images(fileService.getArticleImage(article, article.getImgFiles().size()))
@@ -77,6 +78,7 @@ public class BoardService {
 
         //String storeName = memberService.getMemberInfoById(authorId).getStores().get(0).getName();
         article.setMember(memberService.getMemberInfoById(authorId));
+        article.setCreateDate(LocalDate.now());
         boardRepository.save(article);
 
         if(files!=null)

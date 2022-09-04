@@ -29,6 +29,7 @@ public class Article {
     @JoinColumn(name = "writer_id")
     private Member member;
 
+    @Setter
     @Column(name = "create_date")
     private LocalDate createDate;
 
