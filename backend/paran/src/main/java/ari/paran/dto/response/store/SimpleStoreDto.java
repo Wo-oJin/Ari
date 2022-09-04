@@ -2,49 +2,36 @@ package ari.paran.dto.response.store;
 
 import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
-import ari.paran.service.store.FileService;
-import ari.paran.service.store.StoreService;
+import ari.paran.domain.store.StoreImgFile;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 public class SimpleStoreDto {
 
-    private final List<SimpleStore> storeList;
+    private Long storeId;
+    private String name;
+    private Address address;
+    private List<String> partnersName;
+    private List<String> images;
+    private boolean privateEvent;
+    private boolean stamp;
 
-    public SimpleStoreDto(){
-        this.storeList = new ArrayList<SimpleStore>();
+    public SimpleStoreDto(Store store){
+        this.storeId = store.getId();
+        this.name = store.getName();
+        this.address = store.getAddress();
+        this.privateEvent = store.getPrivateEvent();
+        this.stamp = store.getStamp();
     }
 
-    public void addStore(Store store, FileService fileService, StoreService storeService) throws IOException {
-        SimpleStore simpleStore = new SimpleStore();
-
-        simpleStore.setStoreId(store.getId());
-        simpleStore.setName(store.getName());
-        simpleStore.setAddress(store.getAddress());
-        simpleStore.setPartnersName(storeService.getPartnersName(store.getName()));
-        simpleStore.setImage(fileService.getImage(store));
-        simpleStore.setPrivateEvent(store.getPrivateEvent());
-        simpleStore.setStamp(store.getStamp());
-
-        storeList.add(simpleStore);
+    public void setPartnersName(List<String> partnersName) {
+        this.partnersName = partnersName;
     }
 
-    @Getter
-    @Setter
-    private static class SimpleStore{
-
-        private Long storeId;
-        private String name;
-        private Address address;
-        private List<String> partnersName;
-        private List<String> image;
-        private boolean privateEvent;
-        private boolean stamp;
+    public void setImage(List<String> images){
+        this.images = images;
     }
 
 }

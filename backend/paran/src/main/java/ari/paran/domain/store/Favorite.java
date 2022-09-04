@@ -28,4 +28,9 @@ public class Favorite {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    public Favorite(Member member, Store store){
+        this.member = member;
+        this.store = store;
+    }
+
 }

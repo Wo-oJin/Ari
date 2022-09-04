@@ -6,7 +6,6 @@ import ari.paran.jwt.JwtSecurityConfig;
 import ari.paran.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import ari.paran.service.auth.CustomUserDetailsService;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,8 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    private final CustomUserDetailsService loginService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -67,5 +64,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider, redisTemplate));
     }
-
 }

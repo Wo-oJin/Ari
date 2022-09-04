@@ -1,15 +1,16 @@
 package ari.paran.controller;
 
+import ari.paran.domain.member.Member;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.service.auth.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.*;
+
+import java.security.Principal;
 
 @Slf4j
 @RestController
@@ -19,6 +20,20 @@ public class MemberController {
 
     private final MemberService memberService;
     private final Response response;
+
+    @PostMapping("/favorite/add")
+    public ResponseEntity<?> addMemberFavoriteStore(@RequestParam Long storeId, Principal principal){
+        Long memberId = Long.parseLong(principal.getName());
+        return memberService.addMemberFavoriteStore(memberId, storeId);
+    }
+
+    @GetMapping("/favorite_list")
+    public List<Long> getMemberFavoriteStore(Principal principal){
+        Long memberId = Long.parseLong(principal.getName());
+        Member member = memberService.getMemberInfoById(memberId);
+
+        return member.getFavoriteStoreId();
+    }
 
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> getMyMemberInfo(){

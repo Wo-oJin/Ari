@@ -3,9 +3,11 @@ package ari.paran.service.auth;
 import ari.paran.Util.SecurityUtil;
 import ari.paran.domain.member.Member;
 import ari.paran.domain.member.Authority;
+import ari.paran.domain.repository.FavoriteRepository;
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.domain.repository.SignupCodeRepository;
 import ari.paran.domain.repository.StoreRepository;
+import ari.paran.domain.store.Favorite;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
@@ -14,9 +16,11 @@ import ari.paran.dto.request.SignupDto;
 import ari.paran.dto.request.TokenRequestDto;
 import ari.paran.dto.response.TokenDto;
 import ari.paran.jwt.TokenProvider;
+import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -28,10 +32,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +48,8 @@ import java.util.concurrent.TimeUnit;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final StoreRepository storeRepository;
+    private final FavoriteRepository favoriteRepository;
+    private final StoreService storeService;
     private final SignupCodeRepository signupCodeRepository;
     private final Response response;
     private final PasswordEncoder passwordEncoder;
@@ -49,6 +57,24 @@ public class MemberService {
     private final TokenProvider tokenProvider;
     private final RedisTemplate redisTemplate;
     private final JavaMailSender javaMailSender;
+
+    @Transactional
+    public ResponseEntity<?> addMemberFavoriteStore(Long memberId, Long storeId){
+        Member member = getMemberInfoById(memberId);
+        Store store = storeService.findStore(storeId);
+
+        Favorite favorite = new Favorite(member, store);
+        if(member.favoriteStore(store)) {
+            return response.fail("이미 찜 목록에 저장되어 있습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        member.addFavorite(favorite);
+        store.addFavorite(favorite);
+
+        favoriteRepository.save(favorite);
+
+        return response.success("찜 목록에 성공적으로 저장했습니다.");
+    }
 
     @Transactional(readOnly = true)
     public MemberResponseDto getMemberInfoByEmail(String email){
@@ -93,8 +119,7 @@ public class MemberService {
         memberRepository.save(member);
 
         Store store = signUp.toStore(member, signUp.toAddress(signUp.getStoreRoadAddress(), signUp.getStoreDetailAddress()));
-        storeRepository.save(store);
-
+        storeService.save(store);
 
         return response.success("회원가입에 성공했습니다.");
     }
@@ -160,12 +185,12 @@ public class MemberService {
         return response.fail("인증코드가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<?> login(LoginDto loginDto) {
+    public ResponseEntity<?> login(LoginDto loginDto) throws URISyntaxException {
 
         Optional<Member> member = memberRepository.findByEmail(loginDto.getEmail());
 
         if (member.orElse(null) == null || !passwordEncoder.matches(loginDto.getPassword(), member.get().getPassword())) {
-            return response.fail("ID 또는 패스워드를 확인하세요", HttpStatus.BAD_REQUEST);
+            return null;
         }
 
         //1. Login id/pw를 기반으로 Authentication 객체 생성
@@ -191,7 +216,23 @@ public class MemberService {
             tokenDto.setInfo(member.get().getStores().get(0).getName()); // 가게이름
         }
 
-        return response.success(tokenDto, "로그인에 성공했습니다.", HttpStatus.OK);
+        String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin/")
+                .queryParam("accessToken", "{at}")
+                .queryParam("refreshToken", "{rt}")
+                .queryParam("authority", "{authority}")
+                .queryParam("accessTokenExpireIn", "{atExp}")
+                .queryParam("refreshTokenExpireIn", "{rtExp}")
+                .queryParam("info", "{info}")
+                .encode()
+                .buildAndExpand(tokenDto.getAccessToken(), tokenDto.getRefreshToken(),tokenDto.getAuthority(),
+                        tokenDto.getAccessTokenExpireIn(), tokenDto.getRefreshTokenExpiresIn(), tokenDto.getInfo())
+                .toUriString();
+
+        URI redirectUri = new URI(redirectUrl);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(redirectUri);
+
+        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
 
     public ResponseEntity<?> reissue(TokenRequestDto reissue) {

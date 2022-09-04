@@ -46,7 +46,7 @@ public class Member {
     private List<Article> articles = new ArrayList<>();
 
     @Builder
-    public Member(String username, String email, String password, String nickname, String gender, int age, Authority authority) {
+    public Member(String email, String password, String nickname, String gender, int age, Authority authority) {
         this.password = password;
         this.email = email;
         this.nickname = nickname;
@@ -79,5 +79,14 @@ public class Member {
                 .map(Favorite :: getStore)
                 .map(Store :: getId)
                 .collect(Collectors.toList());
+    }
+
+    public boolean favoriteStore(Store store){
+        return favorites.stream().map(Favorite :: getStore)
+                .anyMatch(findStore->  findStore.getId() == store.getId());
+    }
+
+    public void addFavorite(Favorite favorite) {
+        this.favorites.add(favorite);
     }
 }
