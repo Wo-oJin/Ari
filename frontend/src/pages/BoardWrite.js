@@ -15,21 +15,42 @@ const BoardWrite = () => {
   const navigate = useNavigate();
   const imgRef = useRef();
   let newImageURL = [];
+
   useEffect(() => {
     console.log("현재 상태: ", imageUrl);
   }, [imageUrl]);
+
   const sendData = async () => {
-    await axios
-      .post("/board/write", {
-        title: title,
-        content: content,
-        period: period,
-        files: imageUrl,
+    let formData = new FormData();
+    formData.append("files", imageUrl);
+    let data = {
+      title: title,
+      content: content,
+      period: period,
+    };
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(data)], { type: "application/json" })
+    );
+    // await axios
+    //   .post("/board/write", formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   })
+    //   .then(console.log(formData));
+    axios
+      .post("/board/write", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then((res) => {
-        navigate("/board/list");
+        console.log(formData);
       });
+    console.log(formData);
   };
+
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
     console.log("제목: ", title);
