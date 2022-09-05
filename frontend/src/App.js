@@ -14,6 +14,7 @@ import { reissue } from "./services/jwt/reissue";
 import Board from "./pages/Board";
 import BoardWrite from "./pages/BoardWrite";
 import RedirectLogin from "./pages/RedirectLogin";
+import BoardListView from "./pages/BoardListView";
 
 function App() {
   useEffect(() => {
@@ -47,6 +48,10 @@ function App() {
           <Route path="/board/:boardId" element={<Board />}></Route>
           <Route path="/board/write" element={<BoardWrite />}></Route>
           <Route path="/redirectLogin" element={<RedirectLogin />}></Route>
+          <Route
+            path="board/list/:articleId"
+            element={<BoardListView />}
+          ></Route>
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

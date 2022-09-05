@@ -9,7 +9,7 @@ import { useInView } from "react-intersection-observer";
 
 const BoardItem = ({ boardId, img, title, author, date }) => {
   return (
-    <Link to={`/board/${boardId}`}>
+    <Link to={`/board/list/${boardId}`}>
       <div className="itemContainer">
         <div className="itemBox">
           <img className="itemImg" src={"/images/photo.png"}></img>
