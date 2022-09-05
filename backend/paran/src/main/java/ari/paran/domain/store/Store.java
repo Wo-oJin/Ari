@@ -67,6 +67,10 @@ public class Store implements Serializable{
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private List<Event> eventList = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Favorite> favorites = new ArrayList<>();
+
     @Builder
     public Store(String name, String ownerName, Address address, String phoneNumber, Member member, List<StoreImgFile> storeImgFile,
                  String subText, String openTime) {

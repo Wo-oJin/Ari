@@ -3,9 +3,11 @@ package ari.paran.service.auth;
 import ari.paran.Util.SecurityUtil;
 import ari.paran.domain.member.Member;
 import ari.paran.domain.member.Authority;
+import ari.paran.domain.repository.FavoriteRepository;
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.domain.repository.SignupCodeRepository;
 import ari.paran.domain.repository.StoreRepository;
+import ari.paran.domain.store.Favorite;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
@@ -13,7 +15,9 @@ import ari.paran.dto.request.LoginDto;
 import ari.paran.dto.request.SignupDto;
 import ari.paran.dto.request.TokenRequestDto;
 import ari.paran.dto.response.TokenDto;
+import ari.paran.dto.response.store.LikeListDto;
 import ari.paran.jwt.TokenProvider;
+import ari.paran.service.store.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -32,6 +36,10 @@ import org.springframework.util.ObjectUtils;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import java.io.IOException;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +51,9 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
     private final SignupCodeRepository signupCodeRepository;
+    private final FavoriteRepository favoriteRepository;
     private final Response response;
+    private final FileService fileService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
@@ -70,35 +80,46 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다"));
     }
 
+    /**
+     * 일반 사용자 회원가입 메소드
+     */
     public ResponseEntity<?> signupUser(SignupDto signUp) {
+        /* 해당 이메일 계정이 이미 존재하는지 확인*/
         if (memberRepository.existsByEmail(signUp.getEmail())) {
             return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
 
+        /* SignupDto를 통해 추가할 Member 객체 생성 및 저장 */
         Member member = signUp.toMember(passwordEncoder);
         memberRepository.save(member);
 
         return response.success("회원가입에 성공했습니다.");
     }
 
+    /**
+     * 사장님 회원가입 메소드
+     */
     public ResponseEntity<?> signupOwner(SignupDto signUp) {
-
+        /* 해당 이메일 계정이 이미 존재하는지 확인*/
         if (memberRepository.existsByEmail(signUp.getEmail())) {
             return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
 
+        /* SignupDto를 통해 추가할 Member 객체 생성 및 저장 */
         Member member = signUp.toMember(passwordEncoder);
-
-        member.changeRole(Authority.ROLE_OWNER);
+        member.changeRole(Authority.ROLE_OWNER); // 일반 사용자와 구분하기 위해 authority 변경
         memberRepository.save(member);
 
+        /* SignupDto를 통해 추가할 Store 객체 생성 및 저장 */
         Store store = signUp.toStore(member, signUp.toAddress(signUp.getStoreRoadAddress(), signUp.getStoreDetailAddress()));
         storeRepository.save(store);
 
-
         return response.success("회원가입에 성공했습니다.");
     }
 
+    /**
+     * 가게코드 인증
+     */
     public ResponseEntity<?> authSignupCode(String code) {
 
         if (signupCodeRepository.existsByCode(code) == false ) {
@@ -108,10 +129,14 @@ public class MemberService {
         return response.success();
     }
 
+    /**
+     * 인증코드 이메일 전송
+     */
     @Transactional
     public ResponseEntity<?> sendEmail(String email) {
-        String code = SecurityUtil.generateCode();
+        String code = SecurityUtil.generateCode(); // 가입코드 생성
 
+        /* 메일 제목과 내용 구성 */
         String subject = "Ari 인증을 위한 인증번호입니다.";
         String content="";
         content+= "<div style='margin:100px;'>";
@@ -128,6 +153,7 @@ public class MemberService {
         content+= code+"</strong><div><br/> ";
         content+= "</div>";
 
+        /* JavaMailSender를 이용해 인증코드 전송 */
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "utf-8");
@@ -139,18 +165,23 @@ public class MemberService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        // 코드 확인용. 나중에 삭제해야함
-        log.info("인증코드: {}", code);
 
+        log.info("인증코드: {}", code); //코드 확인용. 나중에 삭제해야함
+
+        /* redis에 인증코드 5분간 보관 */
         redisTemplate.opsForValue()
                 .set(code, email, 5*60000, TimeUnit.MILLISECONDS);
 
         return response.success();
     }
 
+    /**
+     * 가입코드 인증
+     */
     public ResponseEntity<?> authEmail(String code) {
-        String result = (String) redisTemplate.opsForValue().get(code);
+        String result = (String) redisTemplate.opsForValue().get(code); //redis에 입력한 코드가 있는지 확인
 
+        /* 입력한 코드가 존재한다면 성공 메세지 반환 */
         if (result != null) {
             //이메일 확인용. 나중에 삭제해야함
             log.info("인증코드 해당 이메일: {}", result);
@@ -160,6 +191,9 @@ public class MemberService {
         return response.fail("인증코드가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * 로그인
+     */
     public ResponseEntity<?> login(LoginDto loginDto) {
 
         Optional<Member> member = memberRepository.findByEmail(loginDto.getEmail());
@@ -168,23 +202,25 @@ public class MemberService {
             return response.fail("ID 또는 패스워드를 확인하세요", HttpStatus.BAD_REQUEST);
         }
 
-        //1. Login id/pw를 기반으로 Authentication 객체 생성
-        //이때 authentication는 인증 여부를 확인하는 authenticated 값이 false
+        /* Login id/pw를 기반으로 Authentication 객체 생성
+         * 이때 authentication는 인증 여부를 확인하는 authenticated 값이 false
+         */
         UsernamePasswordAuthenticationToken authenticationToken = loginDto.toAuthentication();
 
-        //2. 실제 검증(사용자 비밀번호 체크)이 이루어지는 부분
-        //authenticate 메서드가 실행될 때 CustomUserDetailService에서 만든 loadUserByUserName 메서드 실행
+        /* 실제 검증(사용자 비밀번호 체크)이 이루어지는 부분
+         * authenticate 메서드가 실행될 때 CustomUserDetailService에서 만든 loadUserByUserName 메서드 실행
+         */
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        //3. 인증 정보를 기반으로 JWT 토큰 생성
+        /* 인증 정보를 기반으로 JWT 토큰 생성 */
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
-        //4. RefreshToken Redis 저장 (expirationTime 설정을 통해 자동 삭제 처리)
+        /* RefreshToken Redis 저장 (expirationTime 설정을 통해 자동 삭제 처리) */
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), tokenDto.getRefreshToken(),
                         tokenDto.getRefreshTokenExpiresIn(), TimeUnit.MILLISECONDS);
 
-        //5. user/owner에 따라 닉네임or가게이름 tokenDto에 추가
+        /* user/owner에 따라 닉네임or가게이름 tokenDto에 추가 */
         if (member.get().getAuthority() == Authority.ROLE_USER) {
             tokenDto.setInfo(member.get().getNickname()); // 닉네임
         } else {
@@ -263,4 +299,45 @@ public class MemberService {
 
         return response.success("패스워드가 성공적으로 변경되었습니다.");
     }
+
+    public ResponseEntity<?> showLikeList(Principal principal) throws IOException {
+        Member member = memberRepository.findById(Long.valueOf(principal.getName())).get();
+        List<Favorite> favorites = member.getFavorites();
+        List<LikeListDto> data = new ArrayList<>();
+        for (Favorite favorite : favorites) {
+            data.add(LikeListDto.builder()
+                            .name(favorite.getStore().getName())
+                            .address(favorite.getStore().getAddress().getRoadAddress())
+                            .image(fileService.getMainImage(favorite.getStore()))
+                    .build());
+        }
+        log.info("좋아요 가게 개수: {}", data.size());
+
+        return response.success(data, "좋아요 가게 목록", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> addLike(String storeName, Principal principal) {
+        Member member = memberRepository.findById(Long.valueOf(principal.getName())).get();
+        Store store = storeRepository.findByName(storeName).get();
+
+        Favorite like = Favorite.builder()
+                .member(member)
+                .store(store)
+                .build();
+        member.getFavorites().add(like);
+        memberRepository.save(member);
+
+        return response.success();
+    }
+
+    public ResponseEntity<?> deleteLike(String storeName, Principal principal) {
+        Member member = memberRepository.findById(Long.valueOf(principal.getName())).get();
+        Store store = storeRepository.findByName(storeName).get();
+        Favorite like = favoriteRepository.findFavoriteByMemberAndStore(member, store).get();
+
+        favoriteRepository.delete(like);
+
+        return response.success();
+    }
+
 }

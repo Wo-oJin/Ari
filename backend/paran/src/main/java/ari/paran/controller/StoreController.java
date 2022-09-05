@@ -87,6 +87,7 @@ public class StoreController {
         return storeService.deleteEvent(eventNum, principal);
     }
 
+
     /*
     @GetMapping("/map/partners/{store_name}")
     public List<String> getPartners(@PathVariable String store_name){
