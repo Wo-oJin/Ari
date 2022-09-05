@@ -3,13 +3,16 @@ package ari.paran.controller;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.service.auth.MemberService;
+import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.Principal;
 
 @Slf4j
 @RestController
@@ -48,5 +51,21 @@ public class MemberController {
     public ResponseEntity<?> adminTest() {
         log.info("ROLE_ADMIN TEST");
         return response.success();
+    }
+
+    @GetMapping("/like")
+    public ResponseEntity<?> likeList(Principal principal) throws IOException {
+
+        return memberService.showLikeList(principal);
+    }
+
+    @PostMapping("/like/add/{store_name}")
+    public ResponseEntity<?> addLike(@PathVariable String store_name, Principal principal) {
+
+        return memberService.addLike(store_name, principal);
+    }
+    @PostMapping("/like/delete/{store_name}")
+    public ResponseEntity<?> deleteLike(@PathVariable String store_name, Principal principal) {
+        return memberService.deleteLike(store_name, principal);
     }
 }

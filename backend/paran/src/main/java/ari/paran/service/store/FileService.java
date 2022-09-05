@@ -115,6 +115,25 @@ public class FileService {
         return base64Images;
     }
 
+    public String getMainImage(Store store) throws IOException{
+        try {
+            StoreImgFile mainImage = store.getStoreImgFiles().get(0);
+
+            Path filePath = Paths.get(File.separatorChar + "images",
+                    File.separatorChar + mainImage.getFilename());
+            InputStream in = getClass().getResourceAsStream(filePath.toString());
+
+            byte[] byteEnc64 = Base64.encodeBase64(in.readAllBytes());
+            String imgStr = new String(byteEnc64, "UTF-8");
+
+            log.info("스트림: {}", imgStr);
+
+            return imgStr;
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
     public List<String> loadImage(Store store) throws IOException{
         List<String> base64Images = new ArrayList<>();
         List<StoreImgFile> storeImages = store.getStoreImgFiles();
