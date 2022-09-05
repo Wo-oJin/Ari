@@ -1,25 +1,29 @@
 package ari.paran.service.store;
-
 import ari.paran.domain.member.Member;
+import ari.paran.domain.Event;
+import ari.paran.domain.repository.*;
+import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Partnership;
-import ari.paran.domain.repository.StoreImgFileRepository;
-import ari.paran.domain.repository.MemberRepository;
-import ari.paran.domain.repository.PartnershipRepository;
-import ari.paran.domain.repository.StoreRepository;
 import ari.paran.domain.store.Store;
+import ari.paran.domain.store.StoreImgFile;
 import ari.paran.dto.Response;
 import ari.paran.dto.response.store.DetailStoreDto;
-import ari.paran.service.auth.MemberService;
+import ari.paran.dto.EditInfoDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StoreService {
@@ -27,6 +31,8 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
     private final PartnershipRepository partnershipRepository;
+    private final StoreImgFileRepository storeImgFileRepository;
+    private final EventRepository eventRepository;
     private final Response response;
     private final FileService fileService;
 
@@ -53,38 +59,106 @@ public class StoreService {
     }
 
     public ResponseEntity<?> existingInfo(Principal principal) throws IOException {
-        Member member = memberRepository.findById(Long.valueOf(principal.getName())).orElse(null);
-        Store store = member.getStores().get(0);
 
-        DetailStoreDto detailStoreDto = new DetailStoreDto(store);
-        detailStoreDto.setStoreImages(fileService.getImage(store));
-        detailStoreDto.setFavorite(member.favoriteStore(store));
+        Long ownerId = Long.valueOf(principal.getName());
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+        List<String> existingImages = fileService.loadImage(store);
 
-        return response.success(detailStoreDto, "기존 가게정보", HttpStatus.OK);
+
+        EditInfoDto existingInfo = new EditInfoDto(store.getName(), store.getAddress().getRoadAddress(), store.getAddress().getDetailAddress(),
+                store.getOwnerName(), store.getPhoneNumber(), existingImages, store.getSubText(), store.getOpenTime());
+
+        return response.success(existingInfo, "기존 가게정보", HttpStatus.OK);
+
     }
 
-//    @Transactional
-//    public ResponseEntity<?> editInfo(DetailStoreDto.DetailStore newInfo, Principal principal) {
-//        //1. 우선 해당 가게의 기존 이미지 파일을 모두 삭제
-//        Long ownerId = Long.valueOf(principal.getName());
-//        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
-//        //1-1. 이미지 파일을 삭제. 파일 경로 정해야 함
-//        for (ImgFile imgFile : store.getImgFile()) {
-//            File file = new File(imgFile.getFileUrl() + imgFile.getFileName());
-//            if (file.exists()) {
-//                file.delete();
-//            }
-//        }
-//        store.getImgFile().clear();
-//
-//        //2. 새 가게 정보로 변경
-//        store.setName(newInfo.getName());
-//        store.setAddress(newInfo.getAddress());
-//        store.setOwnerName(newInfo.getOwnerName());
-//        store.setPhoneNumber(newInfo.getPhoneNumber());
-//        store.setSubText(newInfo.getSubText());
-//        store.setOpenTime(newInfo.getOpenHour());
-//
-//
-//    }
+    @Transactional
+    public ResponseEntity<?> editInfo(EditInfoDto editInfoDto,
+                                      List<MultipartFile> images,
+                                      Principal principal) throws IOException {
+        //1. 우선 해당 가게의 기존 이미지 파일을 모두 삭제
+        Long ownerId = Long.valueOf(principal.getName());
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+        //1-1. 이미지 파일을 삭제. 파일 경로 정해야 함
+        for (StoreImgFile imgFile : store.getStoreImgFiles()) {
+            File file = new File(imgFile.getFileUrl() + imgFile.getFilename());
+            if (file.exists()) {
+                file.delete();
+                storeImgFileRepository.delete(imgFile);
+            }
+        }
+        store.getStoreImgFiles().clear();
+
+        //2. 이미지를 제외하고 새 가게 정보로 변경
+        store.updateInfo(editInfoDto.getStoreName(), new Address(editInfoDto.getRoadAddress(), editInfoDto.getDetailAddress()),
+                editInfoDto.getOwnerName(), editInfoDto.getPhoneNumber(), editInfoDto.getSubText(), editInfoDto.getOpenHour());
+
+        //3. 이미지 새로 저장
+        fileService.saveStoreImage(store.getId(), images);
+
+        storeRepository.save(store);
+
+        return response.success();
+    }
+
+    public ResponseEntity<?> existingEvent(Principal principal) {
+        Long ownerId = Long.valueOf(principal.getName());
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+        List<String> eventInfo = new ArrayList<>();
+
+        List<Event> eventList = store.getEventList();
+        for (Event event : eventList) {
+            eventInfo.add(event.getInfo());
+        }
+        return response.success(eventInfo, "기존 이벤트 정보", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> editEvent(int eventNum, String newInfo, Principal principal) {
+        Long ownerId = Long.valueOf(principal.getName());
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+        Event event = store.getEventList().get(eventNum);
+        event.changeInfo(newInfo);
+
+        eventRepository.save(event);
+
+        return response.success();
+    }
+
+    public ResponseEntity<?> addEvent(String info, Principal principal) {
+        Long ownerId = Long.valueOf(principal.getName());
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+
+        Event newEvent = Event.builder().store(store).info(info).build();
+        eventRepository.save(newEvent);
+
+        log.info("이벤트 갯수 표시: {}", store.getEventList().size());
+        if (store.getEventList().size() == 1) {
+            store.changeEventStatus(true);
+        }
+        store.getEventList().add(newEvent);
+        storeRepository.save(store);
+
+        return response.success("", "성공적으로 이벤트가 추가되었습니다.", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> deleteEvent(int eventNum, Principal principal) {
+        Long ownerId = Long.valueOf(principal.getName());
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+        Event event = store.getEventList().get(eventNum);
+
+        store.getEventList().remove(event);
+        log.info("이벤트 갯수 표시: {}", store.getEventList().size());
+        if (store.getEventList().size() == 0) {
+            store.changeEventStatus(false);
+        }
+        storeRepository.save(store);
+
+        eventRepository.delete(event);
+
+        return response.success();
+    }
+
+    public Store findByName(String storeName) {
+        return storeRepository.findByName(storeName).orElse(null);
+    }
 }

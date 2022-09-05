@@ -7,15 +7,16 @@ import ari.paran.domain.store.Address;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class SignupDto {
 
     @NotBlank(message = "아이디를 입력해주세요")

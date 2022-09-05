@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,12 +38,16 @@ public class FileService {
     @Transactional
     public void saveStoreImage(Long store_id, List<MultipartFile> images) throws IOException{
 
+        if(images == null)
+            return;
+
         String fileUrl = System.getProperty("user.dir") + detailUrl;
         Store store = storeRepository.findById(store_id).orElseGet(null);
 
         for(MultipartFile image : images) {
             String originalFileName = image.getOriginalFilename();
-            String fileName = UUID.randomUUID().toString(); //uuid
+            String fileName = UUID.randomUUID().toString() +
+                    originalFileName.substring(originalFileName.lastIndexOf(".")); //uuid
             File destinationFile = new File(fileUrl + fileName);
 
             destinationFile.getParentFile().mkdirs();
@@ -68,8 +71,10 @@ public class FileService {
     @Transactional
     public void saveArticleImage(Long articleId, List<MultipartFile> images) throws IOException{
 
+        if(images == null)
+            return;
+
         String fileUrl = System.getProperty("user.dir") + detailUrl;
-        log.info("아이디 = {}", articleId);
         Article article = boardRepository.findById(articleId).orElse(null);
 
         if(images!=null) {
@@ -100,18 +105,17 @@ public class FileService {
         saveArticleImage(articleId, images);
     }
 
-    public List<String> getImage(Store store) throws IOException{
-        List<String> base64Images = new ArrayList<>();
+    public List<String> loadImage(Store store) throws IOException{
         List<StoreImgFile> storeImages = store.getStoreImgFiles();
+        List<String> base64Images = new ArrayList<>();
 
-        for(StoreImgFile storeImgFile : storeImages) {
-            FileInputStream imageStream = new FileInputStream(storeImgFile.getFileUrl() + storeImgFile.getFilename());
+        for(StoreImgFile imgFile : storeImages) {
+            FileInputStream imageStream = new FileInputStream(imgFile.getFileUrl() + imgFile.getFilename());
+            byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());
+            String result = new String(bytes, "UTF-8");
+            imageStream.close();
 
-            byte[] imgBytes = imageStream.readAllBytes();
-            byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
-            String imgStr = new String(byteEnc64, "UTF-8");
-
-            base64Images.add(imgStr);
+            base64Images.add(result);
         }
 
         return base64Images;
@@ -134,4 +138,22 @@ public class FileService {
 
         return base64Images;
     }
+
+    public String getMainImage(Store store) throws IOException{
+        try {
+            StoreImgFile mainImage = store.getStoreImgFiles().get(0);
+
+            FileInputStream imageStream = new FileInputStream(mainImage.getFileUrl() + mainImage.getFilename());
+
+            byte[] imgBytes = imageStream.readAllBytes();
+            byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
+            String imgStr = new String(byteEnc64, "UTF-8");
+
+            imageStream.close();
+            return imgStr;
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
 }

@@ -53,6 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/map/**").permitAll() //test
                 .antMatchers("/image/**").permitAll() //test
                 .antMatchers("/board/**").permitAll()
+                .antMatchers("/edit/**").permitAll()
+                .antMatchers("/add/**").permitAll()
+                .antMatchers("/delete/**").permitAll()
 
                 //권한 테스트
                 .antMatchers("/member/userTest").hasRole("USER")

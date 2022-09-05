@@ -119,18 +119,13 @@ button {
   border-bottom: 1px solid #9b9b9b;
 }
 
-.header a {
-  position: absolute;
-  top: 17px;
-  right: 20px;
-}
 .backBtn {
   position: absolute;
   top: 20px;
   left: 20px;
   cursor: pointer;
 }
-.completeBtn {
+.header .rightBtn {
   position: absolute;
   top: 20px;
   right: 20px;

@@ -1,4 +1,3 @@
-
 INSERT INTO member (member_id, password, email, age, nickname, gender, authority) VALUES (1, '$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi', 'abc123@cdf.com', 20,'admin', 'male', 'ROLE_ADMIN');
 INSERT INTO member (member_id, password, email, age, nickname, gender, authority) VALUES (2, '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'cdf456@efg.com', 30,'user', 'female', 'ROLE_USER');
 INSERT INTO member (member_id, password, email, age, nickname, gender, authority) VALUES (3, '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'ghi789@efg.com', 30, null, 'female', 'ROLE_OWNER');
@@ -16,6 +15,7 @@ INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text,
 
 INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event, stamp)
     VALUES ("경기 수원시 영통구 아주로 18", 4, "1층", "오전 9시 ~ 오후 9시", "카리스마 한 줄 소개", "카리스마 아주대점", "한수연", "010-5678-1234", false, true);
+
 
 INSERT INTO signup_code (ID, CODE) VALUES (1, '11111');
 INSERT INTO signup_code (ID, CODE) VALUES (2, '22222');

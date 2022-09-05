@@ -7,14 +7,11 @@ const Header = ({ text, back }) => {
   return (
     <div className="header">
       <span>{text}</span>
-      <button
-        className="backBtn"
-        onClick={() => {
-          //back btn 클릭 시, 뒤로 가기
-          navigate(-1);
-        }}
-      >
-        <MdArrowBackIosNew size={"1.3em"} color="black"></MdArrowBackIosNew>
+
+      <button className="rightBtn">
+        <Link to={link}>
+          <img alt="" src="images/quit_btn.png"></img>
+        </Link>
       </button>
       <Link to={"/"}>
         <AiOutlineClose size={"1.3em"}></AiOutlineClose>

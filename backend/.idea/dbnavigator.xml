@@ -32,7 +32,12 @@
       <console name="ari" type="STANDARD" schema="ari" session="Main"><![CDATA[show tables;
 
 select * from member;
-select * from store;]]></console>
+select * from store;
+
+SET foreign_key_checks = 0;    # 외래키 체크 설정 해제
+SET foreign_key_checks = 1;    # 외래키 체크 설정
+
+drop table store]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">

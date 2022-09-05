@@ -2,7 +2,6 @@ package ari.paran.dto.response.store;
 
 import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
-import ari.paran.domain.store.StoreImgFile;
 import lombok.Getter;
 
 import java.util.List;

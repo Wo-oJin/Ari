@@ -4,12 +4,13 @@ import ari.paran.domain.member.Member;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.service.auth.MemberService;
+import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
-
+import java.io.IOException;
 import java.security.Principal;
 
 @Slf4j
@@ -63,5 +64,21 @@ public class MemberController {
     public ResponseEntity<?> adminTest() {
         log.info("ROLE_ADMIN TEST");
         return response.success();
+    }
+
+    @GetMapping("/like")
+    public ResponseEntity<?> likeList(Principal principal) throws IOException {
+
+        return memberService.showLikeList(principal);
+    }
+
+    @PostMapping("/like/add/{store_name}")
+    public ResponseEntity<?> addLike(@PathVariable String store_name, Principal principal) {
+
+        return memberService.addLike(store_name, principal);
+    }
+    @PostMapping("/like/delete/{store_name}")
+    public ResponseEntity<?> deleteLike(@PathVariable String store_name, Principal principal) {
+        return memberService.deleteLike(store_name, principal);
     }
 }

@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.eventForm {
+    box-sizing: border-box;
+    width: 327px;
+    height: 213px;
+    border: 0.7px solid #D7D7D7;
+    border-radius: 15px;
+    font-size: 16px;
+    font-family: 'Work Sans';
+    padding: 18px 19px;
+    outline: none;
+    resize: none;
+}
+
+.edit-buttonContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.deleteBtn {
+    width: 155px;
+    height: 36px;
+    color: #FBFBFB;
+    background: #FF6767;
+    border: 0.7px solid #D7D7D7;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-bottom: 57px;
+}
+
+.event-editBtn {
+    width: 155px;
+    height: 36px;
+    color: #FBFBFB;
+    background: #386FFE;
+    border: 0.7px solid #D7D7D7;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-bottom: 57px;
+}
