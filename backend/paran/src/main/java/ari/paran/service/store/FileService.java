@@ -44,6 +44,9 @@ public class FileService {
 
     public void saveImage(Long store_id, List<MultipartFile> images) throws IOException{
 
+        if(images == null)
+            return;
+
         String fileUrl = System.getProperty("user.dir") + "/paran/src/main/resources/images/";
         List<StoreImgFile> imgFiles = new ArrayList<>();
         Store store = storeRepository.findById(store_id).orElseGet(null);
