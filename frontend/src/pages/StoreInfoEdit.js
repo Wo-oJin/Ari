@@ -1,6 +1,6 @@
-import { React, useEffect, useState } from "react";
-import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { React, useEffect, useState, useRef } from "react";
+// import { useLocation } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import Header from '../components/Header';
 import styled from 'styled-components';
 import "../pages/StoreInfoEdit.css";
@@ -20,8 +20,6 @@ const Formbox = styled.div`
 `;
 
 const StoreInfoEdit = () => {
-    const formData = new FormData(); // 이미지와 json 데이터를 함께 전달하기 위해 FormData 객체에 담음
-
     // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
     const [uStoreName, setuStoreName] = useState("");
     const [uRoadAddress, setuRoadAddress] = useState("");
@@ -29,10 +27,14 @@ const StoreInfoEdit = () => {
     const [uOwnerName, setuOwnerName] = useState("");
     const [uPhoneNumber, setuPhoneNumber] = useState("");
     const [uImages, setuImages] = useState([]); // base64 인코딩된 문자열이 들어감
-    const [uFormImages, setuFormImages] = useState(""); // form data에 담아 보낼 이미지 파일
+    const [uFormImages, setuFormImages] = useState([]); // form data에 담아 보낼 이미지 파일 리스트
     const [uCurrentImagesLength, setuCurrentImagesLength] = useState(0); // 현재 업로드한 이미지 개수
-    const [uSubText, setuSubText] = useState(null);
+    const [uSubText, setuSubText] = useState("");
     const [uOpenHour, setuOpenHour] = useState("");
+
+    const fileRef = useRef(null); // input[type="file"] DOM 요소에 접근하기 위함
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const initialEdit = async () => {
@@ -54,21 +56,33 @@ const StoreInfoEdit = () => {
                             setuDetailAddress(detailAddress);
                             setuOwnerName(ownerName);
                             setuPhoneNumber(phoneNumber);
+                            setuSubText(subText || "");
+                            setuOpenHour(openHour || "");
 
                             if (existingImages !== undefined) {
-                                setuImages(existingImages);
-                                setuCurrentImagesLength(existingImages.length);
-                            }
-                            
-                            if (subText !== undefined) {
-                                setuSubText(subText);
-                            }
+                                setuImages(existingImages.map((image) => `data:image/;base64,${image}`)); // 미리보기 이미지
+                                setuCurrentImagesLength(existingImages.length); // 현재 업로드된 이미지 개수
 
-                            if (openHour !== undefined) {
-                                setuOpenHour(openHour);
-                            }
+                                // input[type="file"] 요소에 files props 할당하기
+                                // 1. base64 이미지 url을 file 객체로 디코딩
+                                let decodeFilesArr = [];
+                                existingImages.forEach((image, index) => {
+                                    decodeFilesArr[index] = base64ToFile(`data:image/;base64,${image}`, `${storeName}_${index}.png`);
+                                });
 
-                            displayPageForm(existingImages, "fileName"); // file tage에 file list 할당
+                                setuFormImages(decodeFilesArr);
+
+                                // 2. DataTransfer 객체를 이용하여 FileList의 값을 변경
+                                const dataTranster = new DataTransfer();
+
+                                decodeFilesArr.forEach(file => {
+                                    dataTranster.items.add(file);
+                                });
+
+                                // 2-1. document.getElementById('images').prop("files", setFilesArr);
+                                fileRef.current.files = dataTranster.files;
+                                // console.log(fileRef.current.files);
+                            }
                     });
             } catch (e) {
                 console.log(e);
@@ -108,6 +122,7 @@ const StoreInfoEdit = () => {
         setIsOpenPost(false);
     };
 
+    // 가게 이름
     const onChangeStoreName = (e) => {
         setuStoreName(e.target.value);
         setIsStoreName(true);
@@ -117,6 +132,7 @@ const StoreInfoEdit = () => {
         }
     }
 
+    // 사장님 성함
     const onChangeOwnerName = (e) => {
         setuOwnerName(e.target.value);
         setIsOwnerName(true);
@@ -126,19 +142,21 @@ const StoreInfoEdit = () => {
         }
     }
 
+    // 가게 전화번호
     const onChangePhoneNumner = (e) => {
+        const phoneNumberRegex = /^\d{3}-\d{3,4}-\d{4}$/;
         setuPhoneNumber(e.target.value);
-        setIsPhoneNumber(true);
 
-        if (e.target.value.trim() === '') {
+        if (!phoneNumberRegex.test(e.target.value)) {
             setIsPhoneNumber(false);
+        } else {
+            setIsPhoneNumber(true);
         }
     }
 
+    // 가게 대표 사진 (최대 3장)
     const onChangeImage = (e) => {
         const imageArr = e.target.files; // e.target.files에서 넘어온 이미지들을 배열에 저장
-
-        setuFormImages(e.target.files);
 
         let imageURLs = [];
 
@@ -151,12 +169,13 @@ const StoreInfoEdit = () => {
 
         if (imageArr.length > addImagesLength) {
             alert(`최대 등록 가능한 이미지 개수를 초과했습니다.`);
+            return false;
+        } else {
+            setuFormImages([...uFormImages, ...e.target.files]);
         }
 
         for (let i = 0; i < addImagesLength; i++) {
             image = imageArr[i];
-
-            // formData.append(`newImages[${i}]`, image); // base64 인코딩하기 전 이미지 파일을 formData에 담기
 
             // 파일 업로드 시 모든 파일 (*.*) 선택 방지 위해 이미지 type을 한 번 더 검증
             if (image.type !== "image/jpeg" && image.type !== "image/jpg" && image.type !== "image/png") {
@@ -181,13 +200,21 @@ const StoreInfoEdit = () => {
     // 이미지 삭제: images 배열의 데이터 삭제
     const deleteImage = (e) => {
         // 클릭 안 된 것들로만 배열 만들기
-        const newImageArr = uImages.filter((image, index) => index !== parseInt(e.target.name));
+        // 1. 미리보기 이미지
+        const newImagesArr = uImages.filter((image, index) => index !== parseInt(e.target.name));
+        setuImages([...newImagesArr]);
 
-        setuImages([...newImageArr]);
+        // 2. 실제로 전달할 파일 객체
+        const fromImagesArr = Array.from(uFormImages);
+
+        const newFromImagesArr = fromImagesArr.filter((image, index) => index !== parseInt(e.target.name));
+        setuFormImages([...newFromImagesArr]);
+
+        // 현재 업로드된 이미지 개수 변경
         setuCurrentImagesLength(uCurrentImagesLength - 1);
     };
 
-    // base64 인코딩되어 받은 이미지를 file 객체로 디코딩하여 보내기
+    // base64 인코딩되어 받은 이미지 url을 file 객체로 디코딩
     function base64ToFile(base64, fileName) {
         const arr = base64.split(',');
         const mime = arr[0].match(/:(.*?);/)[1];
@@ -202,42 +229,42 @@ const StoreInfoEdit = () => {
         return new File([u8arr], fileName, {type:mime});
     }
 
-    function getFileListItems(files) {
-        let b = new ClipboardEvent("").clipboardData || new DataTransfer();
-
-        for (let i = 0, len = files.length; i < len; i++) {
-            b.items.add(files[i]);
-        }
-
-        return b.files;
-    }
-
-    function displayPageForm(base64, fileName) {
-        document.getElementById('images').prop("files", getFileListItems([base64ToFile(base64, fileName)]));
-    }
-
     const onSubmit = async (e) => {
         e.preventDefault();
+        
+        // 이미지와 json 데이터를 함께 전달하기 위해 FormData 객체에 담아서 전달
+        const formData = new FormData();
 
-        // 이미지와 함께 json 데이터 전달하기 위해 formData에 담아서 전달
+        if (uFormImages.length > 0) { // 이미지 파일이 업로드된 경우
+            Array.from(uFormImages).forEach((image) => {
+                formData.append('newImages', image); // 이미지 파일 배열 담기
+            });
+        } else { // 업로드된 이미지 파일이 없는 경우
+            formData.append('newImages', null);
+        }
+
         formData.append('storeName', uStoreName);
         formData.append('roadAddress', uRoadAddress);
         formData.append('detailAddress', uDetailAddress);
         formData.append('ownerName', uOwnerName);
         formData.append('phoneNumber', uPhoneNumber);
-        formData.append('newImages', uFormImages);
+        // formData.append('newImages', uFormImages);
         formData.append('subText', uSubText);
         formData.append('openHour', uOpenHour);
 
-        console.log("newImages>>"+formData.get("newImages"));
+        // console.log("newImages>>"+formData.get("newImages"));
 
         try {
             await axios
                 .post('/edit/store', formData, {
-                    headers: {'content-type': 'multipart/form-data'}
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
                 })
                 .then((res) => {
-                    alert(res.data.massage);
+                    // console.log(JSON.stringify(res.data));
+                    alert('수정되었습니다.');
+                    navigate('/myPageOwner');
                 });
         } catch (e) {
             console.log(e);
@@ -329,12 +356,13 @@ const StoreInfoEdit = () => {
                     <span style={{fontSize: "15px"}}>&#40;최대 3장&#41;</span>:</div>
                     <div className="edit-box">
                         <input style={{display: "none"}}
+                            type="file"
                             name="images"
                             id="images"
-                            type="file"
                             multiple
                             accept="image/jpg, image/jpeg, image/png"
                             onChange={onChangeImage}
+                            ref={fileRef}
                         />
                         <div style={{display: "flex", marginBottom: "6px"}}>
                             <label htmlFor="images">
