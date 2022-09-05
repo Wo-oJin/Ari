@@ -15,7 +15,6 @@ const Detail = () => {
   const [data, setData] = useState(null);
   const { storeId } = useParams();
   const navigate = useNavigate();
-  console.log(storeId);
   useEffect(() => {
     const getDetailData = async () => {
       axios.get(`/map/store/${storeId}`).then((response) => {

@@ -8,6 +8,7 @@ import axios from "axios";
 
 const BoardWrite = () => {
   const [imageUrl, setImageUrl] = useState([]);
+  const [postImages, setPostImages] = useState();
   //업로드된 이미지를 확인하기 위한 변수
   const [title, setTitle] = useState("");
   const [period, setPeriod] = useState("");
@@ -22,19 +23,13 @@ const BoardWrite = () => {
 
   const sendData = async () => {
     let formData = new FormData();
-    formData.append("files", imageUrl);
+    postImages.map((item) => {
+      formData.append("files", item);
+    });
     formData.append("title", title);
     formData.append("content", content);
     formData.append("period", period);
-    // let data = {
-    //   title: title,
-    //   content: content,
-    //   period: period,
-    // };
-    // formData.append(
-    //   "data",
-    //   new Blob([JSON.stringify(data)], { type: "application/json" })
-    // );
+
     axios
       .post("/board/write", formData, {
         headers: {
@@ -68,6 +63,7 @@ const BoardWrite = () => {
       //업로드된 이미지가 3장 미만이라면 imageURL 배열에 추가
       if (imgRef.current.files.length > 0) {
         const imageFiles = [...imgRef.current.files];
+        setPostImages(imageFiles);
         imageFiles.map((item) => {
           const reader = new FileReader();
           reader.readAsDataURL(item);
