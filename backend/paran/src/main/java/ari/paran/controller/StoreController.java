@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -56,8 +58,10 @@ public class StoreController {
     }
 
     @PostMapping("/edit/store")
-    public ResponseEntity<?> editInfo(@ModelAttribute EditInfoDto editInfoDto, Principal principal) throws IOException {
-        return storeService.editInfo(editInfoDto, principal);
+    public ResponseEntity<?> editInfo(@ModelAttribute EditInfoDto editInfoDto,
+                                      @RequestParam(value = "newImages", required = false) List<MultipartFile> images,
+                                      Principal principal) throws IOException {
+        return storeService.editInfo(editInfoDto, images, principal);
     }
 
     @GetMapping("/edit/self-event")

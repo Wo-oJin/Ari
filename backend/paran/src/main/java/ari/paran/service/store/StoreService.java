@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +67,9 @@ public class StoreService {
     }
 
     @Transactional
-    public ResponseEntity<?> editInfo(EditInfoDto editInfoDto, Principal principal) throws IOException {
+    public ResponseEntity<?> editInfo(EditInfoDto editInfoDto,
+                                      List<MultipartFile> images,
+                                      Principal principal) throws IOException {
         //1. 우선 해당 가게의 기존 이미지 파일을 모두 삭제
         Long ownerId = Long.valueOf(principal.getName());
         Store store = memberRepository.findById(ownerId).get().getStores().get(0);
@@ -85,7 +88,7 @@ public class StoreService {
                 editInfoDto.getOwnerName(), editInfoDto.getPhoneNumber(), editInfoDto.getSubText(), editInfoDto.getOpenHour());
 
         //3. 이미지 새로 저장
-        fileService.saveImage(store.getId(), editInfoDto.getNewImages());
+        fileService.saveImage(store.getId(), images);
 
         storeRepository.save(store);
 
