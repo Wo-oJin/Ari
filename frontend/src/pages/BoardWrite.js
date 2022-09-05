@@ -23,22 +23,18 @@ const BoardWrite = () => {
   const sendData = async () => {
     let formData = new FormData();
     formData.append("files", imageUrl);
-    let data = {
-      title: title,
-      content: content,
-      period: period,
-    };
-    formData.append(
-      "data",
-      new Blob([JSON.stringify(data)], { type: "application/json" })
-    );
-    // await axios
-    //   .post("/board/write", formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then(console.log(formData));
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("period", period);
+    // let data = {
+    //   title: title,
+    //   content: content,
+    //   period: period,
+    // };
+    // formData.append(
+    //   "data",
+    //   new Blob([JSON.stringify(data)], { type: "application/json" })
+    // );
     axios
       .post("/board/write", formData, {
         headers: {
@@ -46,9 +42,11 @@ const BoardWrite = () => {
         },
       })
       .then((res) => {
-        console.log(formData);
+        for (var pair of formData.entries()) {
+          console.log(pair[0] + ", " + pair[1]);
+        }
+        console.log(res);
       });
-    console.log(formData);
   };
 
   const onChangeTitle = (e) => {
@@ -113,7 +111,11 @@ const BoardWrite = () => {
         </button>
       </div>
       <div className="writeContainer">
-        <form className="writeForm" onSubmit={submitHandler}>
+        <form
+          className="writeForm"
+          onSubmit={submitHandler}
+          encType="multipart/form-data"
+        >
           <div className="uploadPhotoBox">
             <label htmlFor="uploadPhotoInput" className="uploadPhotoBtn">
               <HiOutlineCamera size={"1.7em"}></HiOutlineCamera>
