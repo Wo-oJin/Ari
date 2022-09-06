@@ -10,6 +10,7 @@ const BoardListView = () => {
   const [data, setData] = useState();
   const { articleId } = useParams();
   let isLiked = true;
+  let authority = true;
   const getBoardData = async () => {
     axios.get(`/board/list/${articleId}`).then((response) => {
       console.log(response.data);
@@ -34,7 +35,7 @@ const BoardListView = () => {
   } else {
     return (
       <>
-        <Header text={"제휴 맺기 게시판"}></Header>
+        <Header text={"제휴 맺기 게시판"} back={true}></Header>
         <div className="viewContainer">
           <img
             className="viewImg"
@@ -72,10 +73,12 @@ const BoardListView = () => {
               </div>
               <button className="chatBtn">채팅하기</button>
             </div>
-            <div className="btnBox">
-              <button className="modifyBtn">수정</button>
-              <button className="deleteBtn">삭제</button>
-            </div>
+            {authority ? (
+              <div className="btnBox">
+                <button className="modifyBtn">수정</button>
+                <button className="deleteBtn">삭제</button>
+              </div>
+            ) : null}
           </div>
         </div>
       </>

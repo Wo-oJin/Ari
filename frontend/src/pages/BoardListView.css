@@ -68,7 +68,7 @@
   justify-content: center;
   align-items: flex-start;
   padding-left: 10px;
-  width: 55%;
+  width: 52%;
 }
 .periodContainer > span {
   font-size: 12px;
@@ -94,6 +94,8 @@
   height: 37px;
 }
 .modifyBtn {
+  width: 70px;
+  height: 32px;
   background-color: #386ffe;
   padding: 5px 15px;
   border-radius: 10px;
@@ -102,8 +104,11 @@
 }
 
 .deleteBtn {
+  width: 70px;
+  height: 32px;
   background-color: #d86f6f;
   padding: 5px 15px;
   border-radius: 10px;
   color: white;
+  margin: 0;
 }
