@@ -68,6 +68,7 @@ public class BoardService {
                     .storeId(store.getId())
                     .period(article.getPeriod())
                     .favorite(memberService.getMemberInfoById(memberId).favoriteStore(store))
+                    .authority(store.getMember().getId() == memberId ? true : false)
                     .createDate(article.getCreateDate())
                     .images(fileService.getArticleImage(article, article.getImgFiles().size()))
                     .build();
