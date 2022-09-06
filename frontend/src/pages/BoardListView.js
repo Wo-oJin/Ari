@@ -5,30 +5,38 @@ import Header from "../components/Header";
 import "./BoardListView.css";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 const BoardListView = () => {
-  const [imageURL, setImageUrl] = useState([]);
-  const [load, setLoad] = useState(true);
+  //좋아요 유무를 확인하기 위한 변수
+  const [isFavorited, setIsfavorited] = useState(false);
+  //작성자 확인을 위한 변수
+  const [authority, setAuthority] = useState(false);
+  //서버로부터 받아오는 게시물 데이터를 위한 변수
   const [data, setData] = useState();
+  //게시글 id
   const { articleId } = useParams();
-  let isLiked = true;
-  let authority = true;
+
   const getBoardData = async () => {
     axios.get(`/board/list/${articleId}`).then((response) => {
       console.log(response.data);
       setData(response.data);
+      setIsfavorited(response.data.favorite);
+      setAuthority(response.data.authority);
     });
   };
 
   useEffect(() => {
-    console.log(articleId);
-    setLoad(true);
     getBoardData();
-    setLoad(false);
-    console.log(data);
   }, []);
 
-  const onLikeClick = () => {
-    isLiked = !isLiked;
+  //찜 버튼 클릭 함수
+  const onLikeClick = async () => {
+    await axios
+      .post(`/member/favorite/add?storeId=${data.storeId}`)
+      .then((res) => {
+        setIsfavorited(!isFavorited);
+        console.log("찜 성공");
+      });
   };
+
   //아직 데이터가 들어오기 전이면 로딩 중 출력
   if (!data) {
     return <h1>로딩 중...</h1>;
@@ -57,7 +65,7 @@ const BoardListView = () => {
             </div>
             <div className="viewContentFooter">
               <div className="likeContainer">
-                {isLiked ? (
+                {isFavorited ? (
                   <button className="UnLikeBtn" onClick={onLikeClick}>
                     <FcLike size={"1.8em"}></FcLike>
                   </button>
