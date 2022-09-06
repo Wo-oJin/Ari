@@ -46,10 +46,6 @@ public class Store implements Serializable{
     @JoinColumn(name = "private_event")
     private boolean privateEvent;
 
-    @Column
-    @ColumnDefault("0")
-    private boolean stamp;
-
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -86,10 +82,6 @@ public class Store implements Serializable{
 
     public boolean getPrivateEvent(){
         return this.privateEvent;
-    }
-
-    public boolean getStamp(){
-        return this.stamp;
     }
 
     public void setMember(Member member){

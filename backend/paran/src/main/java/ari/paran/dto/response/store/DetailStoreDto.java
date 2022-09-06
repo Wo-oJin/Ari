@@ -39,7 +39,6 @@ public class DetailStoreDto {
         this.subText = store.getSubText();
         this.phoneNumber = store.getPhoneNumber();
         this.privateEvent = store.getPrivateEvent();
-        this.stamp = store.getStamp();
         this.events = store.getEventList();
 
         List<Partnership> partners = store.getPartnershipList();

@@ -28,6 +28,7 @@ import java.util.*;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final StoreService storeService;
     private final FileService fileService;
     private final MemberService memberService;
 
@@ -55,17 +56,19 @@ public class BoardService {
         });
     }
 
-    public DetailArticleDto findArticle(Long id) throws IOException {
+    public DetailArticleDto findArticle(Long id, Long memberId) throws IOException {
         Article article = boardRepository.findById(id).orElseGet(null);
+        Store store = memberService.getMemberInfoById(article.getMember().getId()).getStore();
 
         if(article != null){
             return DetailArticleDto.builder()
                     .title(article.getTitle())
                     .content(article.getContent())
                     .author(article.getMember().getStore().getName())
+                    .storeId(store.getId())
                     .period(article.getPeriod())
+                    .favorite(memberService.getMemberInfoById(memberId).favoriteStore(store))
                     .createDate(article.getCreateDate())
-                    .updateDate(article.getUpdateDate())
                     .images(fileService.getArticleImage(article, article.getImgFiles().size()))
                     .build();
         }

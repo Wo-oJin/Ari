@@ -22,7 +22,6 @@ public class SimpleStoreDto {
         this.name = store.getName();
         this.address = store.getAddress();
         this.privateEvent = store.getPrivateEvent();
-        this.stamp = store.getStamp();
     }
 
     public void setPartnersName(List<String> partnersName) {
