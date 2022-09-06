@@ -58,9 +58,6 @@ const StoreModal = ({
                 <span className="Label">이벤트 중</span>
               ) : null}
             </>
-            <>
-              {data.stamp ? <span className="Label">스탬프 가능</span> : null}
-            </>
           </div>
         </div>
       </div>

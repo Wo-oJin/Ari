@@ -13,25 +13,31 @@ import axios from "axios";
 
 const Detail = () => {
   const [data, setData] = useState(null);
+  //좋아요 유무를 확인하기 위한 변수
+  const [isFavorited, setIsfavorited] = useState(false);
   const { storeId } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
     const getDetailData = async () => {
       axios.get(`/map/store/${storeId}`).then((response) => {
-        setData(response.data.storeList);
+        console.log("asdasd", response.data);
+        setData(response.data);
+        setIsfavorited(response.data.favorite);
       });
     };
     getDetailData();
   }, [storeId]);
   console.log("in Detail ", data);
-  //좋아요 유무를 확인하기 위한 테스트용 변수
-  const [isLiked, setIsLiked] = useState(false);
+
   //클릭한 탭의 인덱스를 관리하기 위한 변수 선언
   const [tapIndex, setTapIndex] = useState("0");
 
   //좋아요 클릭 함수
-  const onLikeClick = () => {
-    setIsLiked(!isLiked);
+  const onLikeClick = async () => {
+    await axios.post(`/member/favorite/add?storeId=${data.id}`).then((res) => {
+      setIsfavorited(!isFavorited);
+      console.log("찜 성공");
+    });
   };
   //탭 클릭 함수
   const onTapClick = (e) => {
@@ -78,9 +84,9 @@ const Detail = () => {
       </button>
 
       <div className="DetailContentModal">
-        <span className="ContentTitle">{data[0].name}</span>
+        <span className="ContentTitle">{data.ownerName}</span>
         <div key={0} className="LikeContainer">
-          {isLiked ? (
+          {isFavorited ? (
             <button className="UnLikeBtn" onClick={onLikeClick}>
               <FcLike size={"1.2em"}></FcLike>
             </button>
@@ -92,14 +98,12 @@ const Detail = () => {
           <span className="LikeText">찜 목록에 추가</span>
         </div>
         <div className="LabelContainer">
-          {data[0].partners.length > 0 ? (
+          {data.partners.length > 0 ? (
             <span className="Label">
-              {data[0].partners[0].partnerName} +{data[0].partners.length} 제휴
-              중
+              {data.partners[0].partnerName} +{data.partners.length} 제휴 중
             </span>
           ) : null}
-          {data[0].private_event ? <span>이벤트 중</span> : null}
-          {data[0].stamp ? <span>스탬프 가능</span> : null}
+          {data.private_event ? <span>이벤트 중</span> : null}
         </div>
       </div>
       <div className="BottomContainer">

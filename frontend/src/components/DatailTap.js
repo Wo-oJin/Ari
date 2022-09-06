@@ -15,7 +15,7 @@ export const DetailCoopTap = ({ data }) => {
     const map = new kakao.maps.Map(container, options);
     let geoCoder = new kakao.maps.services.Geocoder();
     geoCoder.addressSearch(
-      data[0].partners[index].roadAddress,
+      data.partners[index].roadAddress,
       function (result, status) {
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
@@ -30,7 +30,7 @@ export const DetailCoopTap = ({ data }) => {
 
           // 인포윈도우로 장소에 대한 설명을 표시합니다
           var customOverlay = new kakao.maps.CustomOverlay({
-            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data[0].partners[index].partnerName}</div>`,
+            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.partners[index].partnerName}</div>`,
             removable: false,
             position: coords,
           });
@@ -43,13 +43,12 @@ export const DetailCoopTap = ({ data }) => {
       }
     );
   }, [index]);
-  console.log("in Tapㅁ ", data[0].partners);
   return (
     <div className="TapContainer">
       <div className="CoopStoreListContainer">
         <span>협력 중인 가게:</span>
         <div className="CoopStoreList">
-          {data[0].partners.map((item, i) => {
+          {data.partners.map((item, i) => {
             return index === `${i}` ? (
               <span
                 className="SelectedStoreTag"
@@ -68,7 +67,7 @@ export const DetailCoopTap = ({ data }) => {
                 }}
                 key={i}
               >
-                {item.partnerName}{" "}
+                {item.partnerName}
               </span>
             );
           })}
@@ -76,7 +75,7 @@ export const DetailCoopTap = ({ data }) => {
       </div>
       <div className="EventContent">
         <span className="EventTitle">이벤트 내용:</span>
-        {data[0].partners[index].infos.map((item, i) => {
+        {data.partners[index].infos.map((item, i) => {
           return (
             <span key={i} className="EventSubText">
               {item.eventInfo}
@@ -102,42 +101,39 @@ export const PrivateEventTap = ({ data }) => {
     };
     const map = new kakao.maps.Map(container, options);
     let geoCoder = new kakao.maps.services.Geocoder();
-    geoCoder.addressSearch(
-      data[0].address.roadAddress,
-      function (result, status) {
-        // 정상적으로 검색이 완료됐으면
-        if (status === kakao.maps.services.Status.OK) {
-          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+    geoCoder.addressSearch(data.address.roadAddress, function (result, status) {
+      // 정상적으로 검색이 완료됐으면
+      if (status === kakao.maps.services.Status.OK) {
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          var marker = new kakao.maps.Marker({
-            map: map,
-            position: coords,
-            clickable: true,
-          });
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: coords,
+          clickable: true,
+        });
 
-          // 인포윈도우로 장소에 대한 설명을 표시합니다
-          var customOverlay = new kakao.maps.CustomOverlay({
-            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data[0].name}</div>`,
-            removable: false,
-            position: coords,
-          });
-          customOverlay.setMap(map);
-          map.panTo(coords);
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        } else {
-          console.log("error");
-        }
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var customOverlay = new kakao.maps.CustomOverlay({
+          content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.ownerName}</div>`,
+          removable: false,
+          position: coords,
+        });
+        customOverlay.setMap(map);
+        map.panTo(coords);
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+      } else {
+        console.log("error");
       }
-    );
+    });
   }, []);
   console.log("in private ", data);
   return (
     <div className="TapContainer">
       <div className="PrivateEventContent">
         <span className="EventTitle">이벤트 내용:</span>
-        {data[0].events.length > 0 ? (
-          data[0].events.map((item, i) => {
+        {data.events.length > 0 ? (
+          data.events.map((item, i) => {
             return (
               <span className="PrivateEventSubText" key={i}>
                 {i + 1}. {item.info}
@@ -165,34 +161,31 @@ export const StoreInfoTap = ({ data }) => {
     };
     const map = new kakao.maps.Map(container, options);
     let geoCoder = new kakao.maps.services.Geocoder();
-    geoCoder.addressSearch(
-      data[0].address.roadAddress,
-      function (result, status) {
-        // 정상적으로 검색이 완료됐으면
-        if (status === kakao.maps.services.Status.OK) {
-          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+    geoCoder.addressSearch(data.address.roadAddress, function (result, status) {
+      // 정상적으로 검색이 완료됐으면
+      if (status === kakao.maps.services.Status.OK) {
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-          // 결과값으로 받은 위치를 마커로 표시합니다
-          var marker = new kakao.maps.Marker({
-            map: map,
-            position: coords,
-            clickable: true,
-          });
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: coords,
+          clickable: true,
+        });
 
-          // 인포윈도우로 장소에 대한 설명을 표시합니다
-          var customOverlay = new kakao.maps.CustomOverlay({
-            content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data[0].name}</div>`,
-            removable: false,
-            position: coords,
-          });
-          customOverlay.setMap(map);
-          map.panTo(coords);
-          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        } else {
-          console.log("error");
-        }
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var customOverlay = new kakao.maps.CustomOverlay({
+          content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.ownerName}</div>`,
+          removable: false,
+          position: coords,
+        });
+        customOverlay.setMap(map);
+        map.panTo(coords);
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+      } else {
+        console.log("error");
       }
-    );
+    });
   }, []);
   return (
     <div className="TapContainer">
@@ -205,19 +198,19 @@ export const StoreInfoTap = ({ data }) => {
           <span className="StoreInfo">한 줄 소개: </span>
         </div>
         <div className="StoreContentR">
-          <span className="StoreInfo">{data[0].name} </span>
-          {data[0].openHour ? (
-            <span className="StoreInfo">{data[0].openHour} </span>
+          <span className="StoreInfo">{data.ownerName} </span>
+          {data.openHour ? (
+            <span className="StoreInfo">{data.openHour} </span>
           ) : (
             <span>아직 등록된 정보가 없습니다.</span>
           )}
-          {data[0].phoneNumber ? (
-            <span className="StoreInfo">{data[0].phoneNumber} </span>
+          {data.phoneNumber ? (
+            <span className="StoreInfo">{data.phoneNumber} </span>
           ) : (
             <span>아직 등록된 정보가 없습니다.</span>
           )}
-          {data[0].subText ? (
-            <span className="StoreInfo">{data[0].subText} </span>
+          {data.subText ? (
+            <span className="StoreInfo">{data.subText} </span>
           ) : (
             <span>아직 등록된 정보가 없습니다.</span>
           )}
