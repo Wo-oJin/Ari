@@ -39,8 +39,9 @@ public class BoardController {
 
     @GetMapping("/list/{id}")
     @ResponseBody
-    public DetailArticleDto detailArticle(@PathVariable Long id) throws IOException {
-        return boardService.findArticle(id);
+    public DetailArticleDto detailArticle(@PathVariable Long id, Principal principal) throws IOException {
+        Long memberId = Long.parseLong(principal.getName());
+        return boardService.findArticle(id, memberId);
     }
 
     /*
