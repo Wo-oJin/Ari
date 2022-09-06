@@ -18,7 +18,8 @@ const Detail = () => {
   useEffect(() => {
     const getDetailData = async () => {
       axios.get(`/map/store/${storeId}`).then((response) => {
-        setData(response.data.storeList);
+        console.log("asdasd", response.data);
+        setData(response.data);
       });
     };
     getDetailData();
@@ -78,7 +79,7 @@ const Detail = () => {
       </button>
 
       <div className="DetailContentModal">
-        <span className="ContentTitle">{data[0].name}</span>
+        <span className="ContentTitle">{data.ownerName}</span>
         <div key={0} className="LikeContainer">
           {isLiked ? (
             <button className="UnLikeBtn" onClick={onLikeClick}>
@@ -92,14 +93,13 @@ const Detail = () => {
           <span className="LikeText">찜 목록에 추가</span>
         </div>
         <div className="LabelContainer">
-          {data[0].partners.length > 0 ? (
+          {data.partners.length > 0 ? (
             <span className="Label">
-              {data[0].partners[0].partnerName} +{data[0].partners.length} 제휴
-              중
+              {data.partners[0].partnerName} +{data.partners.length} 제휴 중
             </span>
           ) : null}
-          {data[0].private_event ? <span>이벤트 중</span> : null}
-          {data[0].stamp ? <span>스탬프 가능</span> : null}
+          {data.private_event ? <span>이벤트 중</span> : null}
+          {data.stamp ? <span>스탬프 가능</span> : null}
         </div>
       </div>
       <div className="BottomContainer">
