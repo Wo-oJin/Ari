@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const BoardItem = ({ boardId, img, title, author, date }) => {
   return (
-    <Link to={`/board/${boardId}`}>
+    <Link to={`/board/list/${boardId}`}>
       <div className="itemContainer">
         <div className="itemBox">
           <img className="itemImg" src={"/images/photo.png"}></img>

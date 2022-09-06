@@ -13,8 +13,6 @@ import Detail from "./pages/Detail";
 
 import { reissue } from "./services/jwt/reissue";
 
-import RedirectLogin from "./pages/RedirectLogin";
-
 import Board from "./pages/Board";
 import BoardWrite from "./pages/BoardWrite";
 import MyPageOwner from './pages/MyPageOwner';
@@ -25,6 +23,8 @@ import StorePrivateEventList from './pages/StorePrivateEventList';
 import StoreAddPrivateEvent from './pages/StoreAddPrivateEvent';
 import StoreEditPrivateEvent from './pages/StoreEditPrivateEvent';
 
+import RedirectLogin from "./pages/RedirectLogin";
+import BoardListView from "./pages/BoardListView";
 
 function App() {
   useEffect(() => {
@@ -66,6 +66,11 @@ function App() {
           <Route path="/storePrivateEventList" element={<StorePrivateEventList />} />
           <Route path="/storeAddPrivateEvent" element={<StoreAddPrivateEvent />} />
           <Route path="/storeEditPrivateEvent" element={<StoreEditPrivateEvent />} />
+
+          <Route
+            path="board/list/:articleId"
+            element={<BoardListView />}
+          ></Route>
 
         </Routes>
       </BrowserRouter>
