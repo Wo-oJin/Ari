@@ -54,23 +54,23 @@ const Login = () => {
       password: password,
     });
     console.log("로그인>>"+JSON.stringify(result));
-    if (result.result === "fail") { // 로그인 실패
-        alert(result.massage);
-    } else { // 로그인 성공
+    // if (result.result === "fail") { // 로그인 실패
+    //     alert(result.massage);
+    // } else { // 로그인 성공
 
-      // 사용자 권한을 recoil 변수에 저장
-      if (result.data.authority === "ROLE_USER") { // 손님
-        setAuth(1);
-      } else if (result.data.authority === "ROLE_OWNER") { // 사장
-        setAuth(2);
-      } else if (result.data.authority === "ROLE_ADMIN") { // 관리자
-        setAuth(3);
-      }
+    //   // 사용자 권한을 recoil 변수에 저장
+    //   if (result.data.authority === "ROLE_USER") { // 손님
+    //     setAuth(1);
+    //   } else if (result.data.authority === "ROLE_OWNER") { // 사장
+    //     setAuth(2);
+    //   } else if (result.data.authority === "ROLE_ADMIN") { // 관리자
+    //     setAuth(3);
+    //   }
 
-      setName(result.data.info); // recoil
-      alert(result.massage);
-      navigate("/"); // 메인 페이지로 이동
-    }
+    //   setName(result.data.info); // recoil
+    //   alert(result.massage);
+    //   navigate("/"); // 메인 페이지로 이동
+    // }
   };
 
   return (

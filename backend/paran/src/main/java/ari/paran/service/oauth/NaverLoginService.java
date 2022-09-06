@@ -12,9 +12,14 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpSession;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -102,6 +107,14 @@ public class NaverLoginService {
                     .build();
 
             memberService.signupUser(form);
+        }else {
+            String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin/")
+                    .queryParam("loginFail", "{lf}")
+                    .encode()
+                    .buildAndExpand(true)
+                    .toUriString();
+
+            profile.put("fail", redirectUrl);
         }
 
         return profile;

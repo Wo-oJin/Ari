@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -92,6 +93,7 @@ public class KakaoLoginService {
         String password = nickname+gender+email+age;
         profile.put("password", password);
 
+        log.info("00000000");
         if(!memberRepository.existsByEmail(email)) {
             SignupDto form = SignupDto.builder()
                     .email(email)
@@ -102,6 +104,14 @@ public class KakaoLoginService {
                     .build();
 
             memberService.signupUser(form);
+        }else {
+            String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
+                    .queryParam("loginFail", "{lf}")
+                    .encode()
+                    .buildAndExpand(true)
+                    .toUriString();
+            
+            profile.put("fail", redirectUrl);
         }
 
         return profile;

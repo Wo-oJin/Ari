@@ -15,14 +15,13 @@ import { reissue } from "./services/jwt/reissue";
 
 import RedirectLogin from "./pages/RedirectLogin";
 
-import { reissue } from './services/jwt/reissue';
 import Board from "./pages/Board";
 import BoardWrite from "./pages/BoardWrite";
 import MyPageOwner from './pages/MyPageOwner';
 import { StoreInfoTap } from './components/DatailTap';
 import StoreInfoEdit from './pages/StoreInfoEdit';
 import StorePrivateEventList from './pages/StorePrivateEventList';
-import RedirectLogin from './pages/RedirectLogin';
+
 import StoreAddPrivateEvent from './pages/StoreAddPrivateEvent';
 import StoreEditPrivateEvent from './pages/StoreEditPrivateEvent';
 

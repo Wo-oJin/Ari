@@ -4,8 +4,9 @@ import Header from "../components/Header";
 import "./Board.css";
 import { FiSearch } from "react-icons/fi";
 import { IoMdCloseCircle } from "react-icons/io";
-import { Link } from "react-router-dom";
+
 import { useInView } from "react-intersection-observer";
+import { Link } from "react-router-dom";
 
 const BoardItem = ({ boardId, img, title, author, date }) => {
   return (
