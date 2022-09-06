@@ -25,7 +25,7 @@ public class MemberController {
     @PostMapping("/favorite/add")
     public ResponseEntity<?> addMemberFavoriteStore(@RequestParam Long storeId, Principal principal){
         Long memberId = Long.parseLong(principal.getName());
-        return memberService.addMemberFavoriteStore(memberId, storeId);
+        return memberService.toggleMemberFavoriteStore(memberId, storeId);
     }
 
     @GetMapping("/favorite_list")

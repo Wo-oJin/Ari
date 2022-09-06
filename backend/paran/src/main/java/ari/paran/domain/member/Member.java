@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Slf4j
 public class Member {
 
     @Id
@@ -81,12 +83,16 @@ public class Member {
                 .collect(Collectors.toList());
     }
 
-    public boolean favoriteStore(Store store){
+    public boolean isFavoriteStore(Store store){
         return favorites.stream().map(Favorite :: getStore)
                 .anyMatch(findStore->  findStore.getId() == store.getId());
     }
 
     public void addFavorite(Favorite favorite) {
         this.favorites.add(favorite);
+    }
+
+    public void deleteFavorite(Favorite favorite){
+        this.favorites.remove(favorite);
     }
 }

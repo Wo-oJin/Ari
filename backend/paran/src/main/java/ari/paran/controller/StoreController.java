@@ -53,7 +53,7 @@ public class StoreController {
 
         DetailStoreDto detailStoreDto = new DetailStoreDto(store);
         detailStoreDto.setStoreImages(fileService.loadImage(store));
-        detailStoreDto.setFavorite(member.favoriteStore(store));
+        detailStoreDto.setFavorite(member.isFavoriteStore(store));
 
         return detailStoreDto;
     }

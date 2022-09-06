@@ -67,7 +67,7 @@ public class BoardService {
                     .author(article.getMember().getStore().getName())
                     .storeId(store.getId())
                     .period(article.getPeriod())
-                    .favorite(memberService.getMemberInfoById(memberId).favoriteStore(store))
+                    .favorite(memberService.getMemberInfoById(memberId).isFavoriteStore(store))
                     .authority(store.getMember().getId() == memberId ? true : false)
                     .createDate(article.getCreateDate())
                     .images(fileService.getArticleImage(article, article.getImgFiles().size()))

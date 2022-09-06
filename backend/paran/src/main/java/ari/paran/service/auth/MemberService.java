@@ -63,14 +63,22 @@ public class MemberService {
     private final JavaMailSender javaMailSender;
 
     @Transactional
-    public ResponseEntity<?> addMemberFavoriteStore(Long memberId, Long storeId){
+    public ResponseEntity<?> toggleMemberFavoriteStore(Long memberId, Long storeId){
         Member member = getMemberInfoById(memberId);
         Store store = storeService.findStore(storeId);
 
-        Favorite favorite = new Favorite(member, store);
-        if(member.favoriteStore(store)) {
-            return response.fail("이미 찜 목록에 저장되어 있습니다.", HttpStatus.BAD_REQUEST);
+        Favorite favorite;
+
+        if(member.isFavoriteStore(store)) {
+            favorite = favoriteRepository.findFavoriteByMemberAndStore(member, store).orElseGet(null);
+
+            member.deleteFavorite(favorite);
+            favoriteRepository.delete(favorite);
+
+            return response.success("찜 목록에서 성공적으로 제거했습니다.");
         }
+
+        favorite = new Favorite(member, store);
 
         member.addFavorite(favorite);
         store.addFavorite(favorite);

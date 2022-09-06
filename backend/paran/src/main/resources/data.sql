@@ -31,12 +31,6 @@ INSERT INTO partnership (from_store_id, to_store_name, info, start_date, finish_
 INSERT INTO partnership (from_store_id, to_store_name, info, start_date, finish_date) VALUES (2, "미스터쉐프", "미스터쉐프에서 5000원 이상 구매 시 전 메뉴 100원 할인", "2022-09-01","2022-10-01");
 INSERT INTO partnership (from_store_id, to_store_name, info, start_date, finish_date) VALUES (1, "맥도날드", "미스터쉐프에서 7000원 이상 구매 시 전 메뉴 500원 할인", "2022-08-01","2022-09-01");
 
-INSERT INTO favorite (favorite_id, member_id, store_id) VALUES (1, 1, 2);
-INSERT INTO favorite (favorite_id, member_id, store_id) VALUES (2, 2, 1);
-INSERT INTO favorite (favorite_id, member_id, store_id) VALUES (3, 1, 2);
-INSERT INTO favorite (favorite_id, member_id, store_id) VALUES (4, 2, 1);
-INSERT INTO favorite (favorite_id, member_id, store_id) VALUES (5, 5, 1);
-INSERT INTO favorite (favorite_id, member_id, store_id) VALUES (6, 5, 2);
 
 INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목1", "내용1", 1, "3달", now(), now());
 INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목2", "내용2", 2, "3달", now(), now());
