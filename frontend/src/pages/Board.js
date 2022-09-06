@@ -13,7 +13,7 @@ const BoardItem = ({ boardId, img, title, author, date }) => {
     <Link to={`/board/list/${boardId}`}>
       <div className="itemContainer">
         <div className="itemBox">
-          <img className="itemImg" src={"/images/photo.png"}></img>
+          <img className="itemImg" src={`data:image/jpg;base64, ${img}`}></img>
           <div className="itemContent">
             <span className="itemTitle">{title}</span>
             <span className="itemAuthor">{author}</span>
@@ -34,12 +34,14 @@ const Board = () => {
   const getBoardData = async () => {
     if (!endPage) {
       axios.get(`/board/list?page=${page}`).then((response) => {
+        //마지막 페이지가 아니라면
         if (response.data.last === false) {
           setData((prev) => [...prev, ...response.data.content]);
+          console.log(`${page}번째 페이지 렌더링 `, data);
         } else {
           setData((prev) => [...prev, ...response.data.content]);
           setEndPage(true);
-          console.log("페이지 끝임");
+          console.log("페이지 끝임", data);
         }
       });
     }
@@ -78,7 +80,6 @@ const Board = () => {
   if (load) {
     return <h1>로딩 중</h1>;
   }
-  console.log(data);
 
   //onChange 이벤트 발생할 때마다 검색어 최신화
   const onChangeSearch = (e) => {
@@ -123,7 +124,7 @@ const Board = () => {
             <BoardItem
               key={index}
               boardId={item.id}
-              img={""}
+              img={item.image}
               title={item.title}
               author={item.author}
               date={item.createDate}

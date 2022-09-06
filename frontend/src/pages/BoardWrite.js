@@ -17,10 +17,6 @@ const BoardWrite = () => {
   const imgRef = useRef();
   let newImageURL = [];
 
-  useEffect(() => {
-    console.log("현재 상태: ", imageUrl);
-  }, [imageUrl]);
-
   const sendData = async () => {
     let formData = new FormData();
     postImages.map((item) => {
@@ -37,24 +33,19 @@ const BoardWrite = () => {
         },
       })
       .then((res) => {
-        for (var pair of formData.entries()) {
-          console.log(pair[0] + ", " + pair[1]);
-        }
-        console.log(res);
+        //작성 완료되면 게시물 리스트 페이지로 리다이렉트
+        navigate("/board/list");
       });
   };
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
-    console.log("제목: ", title);
   };
   const onChangePeriod = (e) => {
     setPeriod(e.target.value);
-    console.log("기간: ", period);
   };
   const onChangeContent = (e) => {
     setcContent(e.target.value);
-    console.log("내용: ", content);
   };
   const onChangeImage = () => {
     if (imageUrl.length >= 3) {
@@ -86,7 +77,6 @@ const BoardWrite = () => {
       setImageUrl(newImageURL);
     }
   };
-  console.log("저장된 이미지 배열", imageUrl);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -130,7 +120,7 @@ const BoardWrite = () => {
             <div className="photoContainer">
               {imageUrl.map((item, index) => {
                 return (
-                  <div>
+                  <div key={index}>
                     <img alt={index} className="uploadedPhoto" src={item}></img>
                     <button id={index} className="deletePhotoBtn">
                       <IoMdCloseCircle
