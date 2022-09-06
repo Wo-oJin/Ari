@@ -45,7 +45,7 @@ public class BoardService {
                 return SimpleArticleDto.builder()
                                 .id(article.getId())
                                 .title(article.getTitle())
-                                .author(article.getMember().getStores().get(0).getName())
+                                .author(article.getMember().getStore().getName())
                                 .createDate(article.getCreateDate())
                                 .image(article.getImgFiles().isEmpty() ? null : fileService.getArticleImage(article, 1).get(0))
                                 .build();
@@ -62,7 +62,7 @@ public class BoardService {
             return DetailArticleDto.builder()
                     .title(article.getTitle())
                     .content(article.getContent())
-                    .author(article.getMember().getStores().get(0).getName())
+                    .author(article.getMember().getStore().getName())
                     .period(article.getPeriod())
                     .createDate(article.getCreateDate())
                     .updateDate(article.getUpdateDate())

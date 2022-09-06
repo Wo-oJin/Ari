@@ -34,8 +34,8 @@ public class Member {
     private Authority authority;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Store> stores = new ArrayList<>();
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    private Store store;
 
     @JsonIgnore
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
@@ -56,7 +56,7 @@ public class Member {
     }
 
     public void addStore(Store store){
-        this.stores.add(store);
+        this.store = store;
         store.setMember(this);
     }
 

@@ -110,7 +110,7 @@ public class KakaoLoginService {
                     .encode()
                     .buildAndExpand(true)
                     .toUriString();
-            
+
             profile.put("fail", redirectUrl);
         }
 

@@ -253,7 +253,7 @@ public class MemberService {
         if (member.get().getAuthority() == Authority.ROLE_USER) {
             tokenDto.setInfo(member.get().getNickname()); // 닉네임
         } else {
-            tokenDto.setInfo(member.get().getStores().get(0).getName()); // 가게이름
+            tokenDto.setInfo(member.get().getStore().getName()); // 가게이름
         }
 
         String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin/")
