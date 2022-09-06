@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { loginData } from "../services/login/loginData";
 import { authState, nameState } from "../state";
 import "../pages/Login.css";
-import Header from '../components/Header';
+import Header from "../components/Header";
 
 const Formbox = styled.div`
   position: relative;
@@ -53,7 +53,7 @@ const Login = () => {
       email: email,
       password: password,
     });
-    console.log("로그인>>"+JSON.stringify(result));
+    console.log("로그인>>" + JSON.stringify(result));
     // if (result.result === "fail") { // 로그인 실패
     //     alert(result.massage);
     // } else { // 로그인 성공
@@ -75,12 +75,13 @@ const Login = () => {
 
   return (
     <>
-      <Header text="로그인" link="/loginRegister"></Header>
+      <Header text="로그인" back={true}></Header>
       <div className="logoContainer"></div>
       <form onSubmit={onSubmit}>
         <div className="inputContainer">
           <Formbox>
-            <input className="inputBox"
+            <input
+              className="inputBox"
               name="email"
               value={email}
               type="email"
@@ -91,7 +92,8 @@ const Login = () => {
             />
           </Formbox>
           <Formbox>
-            <input className="inputBox"
+            <input
+              className="inputBox"
               name="password"
               value={password}
               type="password"
@@ -103,9 +105,11 @@ const Login = () => {
           </Formbox>
         </div>
         <div className="buttonContainer">
-          <button className="loginButton"
+          <button
+            className="loginButton"
             type="submit"
-            disabled={email !== "" && password !== "" ? false : true}>
+            disabled={email !== "" && password !== "" ? false : true}
+          >
             로그인
           </button>
         </div>

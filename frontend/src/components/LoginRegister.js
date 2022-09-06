@@ -14,7 +14,7 @@ const LoginRegister = () => {
   };
   return (
     <div style={style}>
-      <Header text="로그인/회원가입" link="/"></Header>
+      <Header text="로그인/회원가입" back={true}></Header>
       <div className=" loginRegisterContainer flexBox">
         <div className="loginRegisterContent">
           <div className="loginRegisterText">
