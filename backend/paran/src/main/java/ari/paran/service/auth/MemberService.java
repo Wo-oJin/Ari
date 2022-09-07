@@ -378,6 +378,7 @@ public class MemberService {
         for (Favorite favorite : favorites) {
             data.add(LikeListDto.builder()
                             .name(favorite.getStore().getName())
+                            .storeId(favorite.getStore().getId())
                             .address(favorite.getStore().getAddress().getRoadAddress())
                             .image(fileService.getMainImage(favorite.getStore()))
                     .build());
