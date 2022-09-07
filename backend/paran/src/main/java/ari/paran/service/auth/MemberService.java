@@ -111,26 +111,26 @@ public class MemberService {
     /**
      * 일반 사용자 회원가입 메소드
      */
-    public ResponseEntity<?> signupUser(SignupDto signUp) {
+    public boolean signupUser(SignupDto signUp) {
         /* 해당 이메일 계정이 이미 존재하는지 확인*/
         if (memberRepository.existsByEmail(signUp.getEmail())) {
-            return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
+            return false;
         }
 
         /* SignupDto를 통해 추가할 Member 객체 생성 및 저장 */
         Member member = signUp.toMember(passwordEncoder);
         memberRepository.save(member);
 
-        return response.success("회원가입에 성공했습니다.");
+        return true;
     }
 
     /**
      * 사장님 회원가입 메소드
      */
-    public ResponseEntity<?> signupOwner(SignupDto signUp) {
+    public boolean signupOwner(SignupDto signUp) {
         /* 해당 이메일 계정이 이미 존재하는지 확인*/
         if (memberRepository.existsByEmail(signUp.getEmail())) {
-            return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
+            return false;
         }
 
         /* SignupDto를 통해 추가할 Member 객체 생성 및 저장 */
@@ -143,7 +143,7 @@ public class MemberService {
 
         storeService.save(store);
 
-        return response.success("회원가입에 성공했습니다.");
+        return true;
     }
 
     /**
