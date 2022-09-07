@@ -1,3 +1,21 @@
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 1px solid #868585;
+}
+select:hover {
+  border: 1px solid #386ffe;
+}
+select:focus {
+  border-color: #aaa;
+  box-shadow: 0 0 1px 3px rgba(59, 153, 252, 0.7);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #222;
+  outline: none;
+}
 .writeForm {
   width: 100%;
   height: 100vh;
@@ -104,6 +122,18 @@
 .writeContent::placeholder {
   color: #868585;
 }
+.writeAuthor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  border-bottom: 1px solid #d9d9d9;
+  width: 325px;
+  height: 60px;
+  padding-left: 10px;
+  font-size: 16px;
+  color: #868585;
+}
 input:focus {
   outline: none;
 }
@@ -117,4 +147,7 @@ input[type="file"] {
   padding: 0;
   overflow: hidden;
   border: 0;
+}
+
+.writeSelect {
 }

@@ -17,7 +17,9 @@ const BoardItem = ({ boardId, img, title, author, date }) => {
           <div className="itemContent">
             <span className="itemTitle">{title}</span>
             <span className="itemAuthor">{author}</span>
-            <span className="itemDate">{date}</span>
+            <span className="itemDate">
+              {date[0] + "/" + "0" + date[1] + "/" + "0" + date[2]}
+            </span>
           </div>
         </div>
       </div>
@@ -38,7 +40,9 @@ const Board = () => {
         if (response.data.last === false) {
           setData((prev) => [...prev, ...response.data.content]);
           console.log(`${page}번째 페이지 렌더링 `, data);
-        } else {
+        }
+        //마지막 페이지라면
+        else {
           setData((prev) => [...prev, ...response.data.content]);
           setEndPage(true);
           console.log("페이지 끝임", data);
@@ -52,18 +56,24 @@ const Board = () => {
       setEndPage(true);
     });
   };
-  //page 바뀔 때마다 데이터 불러오기
+  //맨 처음에 게시판 리스트 렌더링
   useEffect(() => {
     setLoad(true);
     getBoardData();
+    console.log("맨 처음에 렌더링 page: ", page, inView);
     setLoad(false);
   }, [page]);
 
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
     if (inView && !load) {
+      console.log("invView: ", inView, "load: ", load);
+      console.log("page 업뎃 전", page);
       setPage((prevState) => prevState + 1);
+      //getBoardData();
+      console.log("인뷰 렌더링 page: ", page);
     }
+    console.log("page 업뎃 후", page);
   }, [inView, load]);
 
   const handleOnKeyPress = (e) => {
@@ -77,7 +87,7 @@ const Board = () => {
     }
   };
 
-  if (load) {
+  if (!data) {
     return <h1>로딩 중</h1>;
   }
 
@@ -134,7 +144,7 @@ const Board = () => {
       ) : (
         <span>data 없음</span>
       )}
-      <div ref={ref}> </div>
+      {data ? <div ref={ref}> </div> : null}
     </>
   );
 };
