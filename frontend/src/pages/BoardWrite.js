@@ -13,10 +13,30 @@ const BoardWrite = () => {
   const [title, setTitle] = useState("");
   const [period, setPeriod] = useState("");
   const [content, setcContent] = useState("");
+  const [authorStore, setAuthorStore] = useState("");
+  const [selected, setSelected] = useState();
+  const [authorStoreList, setAuthorStoreList] = useState();
   const navigate = useNavigate();
   const imgRef = useRef();
   let newImageURL = [];
 
+  //작성자 가게를 선택하기 위한 임시 데이터 변수
+  let authorList = [
+    { storeName: "미스터쉐프", id: 4 },
+    { storeName: "미스터쉐프포차", id: 2 },
+    { storeName: "쉐프의 포차", id: 6 },
+  ];
+
+  //처음 페이지에 접근하면 작성자의 가게들을 받아오기
+  // useEffect(()=>{
+  //   const getStoreData = async () => {
+  //     await axios.get("/board/write/getAuthorStore").then((res)=> {
+  //       setAuthorStoreList(res.data);
+  //     })
+  //   }
+  // },[])
+
+  //작성한 내용을 POST
   const sendData = async () => {
     let formData = new FormData();
     postImages.map((item) => {
@@ -25,6 +45,7 @@ const BoardWrite = () => {
     formData.append("title", title);
     formData.append("content", content);
     formData.append("period", period);
+    //formData.append("authorStore", authorStore);
 
     axios
       .post("/board/write", formData, {
@@ -81,6 +102,11 @@ const BoardWrite = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     sendData();
+  };
+
+  const changeSelectHandler = (e) => {
+    setAuthorStore(authorList[e.target.value].id);
+    setSelected(authorList[e.target.value].name);
   };
   return (
     <>
@@ -140,6 +166,24 @@ const BoardWrite = () => {
             placeholder="글 제목 (ex.[요청 업종]~와 제휴 원합니다.)"
             onChange={onChangeTitle}
           ></input>
+          <div className="writeAuthor" placeholder="작성자 가게 선택">
+            <span>작성자 가게 선택</span>
+            <select
+              className="writeSelect"
+              onChange={changeSelectHandler}
+              value={selected}
+            >
+              <option value={"--선택하세요--"}>--선택하세요--</option>
+              {authorList.map((item, index) => {
+                return (
+                  <option key={index} value={index}>
+                    {item.storeName}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
           <input
             className="writeDuration"
             placeholder="제휴기간 (일주일/한 달/1년)"

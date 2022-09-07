@@ -26,8 +26,8 @@ const Map = ({ onClick, name }) => {
         .catch((e) => console.log("something went wrong :(", e));
     };
     getMarkerData();
+    console.log("여긴 Map ", data);
   }, []);
-  console.log("여긴 Map ", data);
 
   return (
     <>
@@ -48,4 +48,3 @@ const Map = ({ onClick, name }) => {
 };
 
 export default Map;
-
