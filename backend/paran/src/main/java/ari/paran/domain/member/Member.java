@@ -31,12 +31,13 @@ public class Member {
     private String nickname;
     private String gender;
     private int age;
+    private int fromOauth;
 
     @Enumerated(EnumType.STRING) // enum 이름을 DB에 저장
     private Authority authority;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, orphanRemoval = true)
     private Store store;
 
     @JsonIgnore
@@ -48,12 +49,14 @@ public class Member {
     private List<Article> articles = new ArrayList<>();
 
     @Builder
-    public Member(String email, String password, String nickname, String gender, int age, Authority authority) {
+    public Member(String email, String password, String nickname, String gender,
+                  int age, int fromOauth, Authority authority) {
         this.password = password;
         this.email = email;
         this.nickname = nickname;
         this.gender = gender;
         this.age = age;
+        this.fromOauth = fromOauth;
         this.authority = authority;
     }
 

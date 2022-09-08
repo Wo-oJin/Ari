@@ -1,8 +1,8 @@
-INSERT INTO member (member_id, password, email, age, nickname, gender, authority) VALUES (1, '$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi', 'abc123@cdf.com', 20,'admin', 'male', 'ROLE_ADMIN');
-INSERT INTO member (member_id, password, email, age, nickname, gender, authority) VALUES (2, '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'cdf456@efg.com', 30,'user', 'female', 'ROLE_USER');
-INSERT INTO member (member_id, password, email, age, nickname, gender, authority) VALUES (3, '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'ghi789@efg.com', 30, null, 'female', 'ROLE_OWNER');
-INSERT INTO member (member_id, password, email, age, nickname, gender, authority) VALUES (4, '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'jkl101@efg.com', 30, null, 'male', 'ROLE_OWNER');
-INSERT INTO member (member_id, password, email, age, nickname, gender, authority) VALUES (5, '$2a$10$Pqli0r4TwDdi7Fd2RPL9SOKTvmTru121x6loQryHplGMuKg8wWnJu', 'dnwls813@ajou.ac.kr', 20, null, 'M', 'ROLE_USER');
+INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (1, '$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi', 'abc123@cdf.com', 0, 20,'admin', 'male', 'ROLE_ADMIN');
+INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (2, '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'cdf456@efg.com', 0, 30,'user', 'female', 'ROLE_USER');
+INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (3, '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'ghi789@efg.com', 0, 30, null, 'female', 'ROLE_OWNER');
+INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (4, '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC', 'jkl101@efg.com', 0, 30, null, 'male', 'ROLE_OWNER');
+INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (5, '$2a$10$Pqli0r4TwDdi7Fd2RPL9SOKTvmTru121x6loQryHplGMuKg8wWnJu', 'dnwls813@ajou.ac.kr', 0, 20, null, 'M', 'ROLE_USER');
 
 INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event)
     VALUES ("경기 수원시 팔달구 아주로 47번길 16", 1, "1층", "오전 9시 ~ 오후 9시", "미스터쉐프 한 줄 소개", "미스터쉐프", "우영우", "010-1234-5678", true);

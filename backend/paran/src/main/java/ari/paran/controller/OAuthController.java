@@ -53,6 +53,8 @@ public class OAuthController {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setLocation(redirectUri);
 
+            log.info("리다이렉트 = {}", redirectUri.toString());
+
             return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
         }else {
             LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
@@ -73,6 +75,8 @@ public class OAuthController {
 
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setLocation(redirectUri);
+
+            log.info("리다이렉트 = {}", redirectUri.toString());
 
             return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
         }

@@ -1,5 +1,6 @@
 package ari.paran.service.oauth;
 
+import ari.paran.domain.member.Member;
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.dto.request.SignupDto;
 import ari.paran.service.auth.MemberService;
@@ -97,18 +98,22 @@ public class NaverLoginService {
         String password = nickname+gender+email+age;
         profile.put("password", password);
 
-        if(!memberRepository.existsByEmail(email)) {
+        Member member = memberRepository.findByEmail(email).orElse(null);
+        if(member == null || member.getFromOauth() == 2) {
+            log.info("네이버 로그인 성공!");
             SignupDto form = SignupDto.builder()
                     .email(email)
                     .password(password)
                     .nickname(nickname)
                     .gender(gender)
                     .age(Integer.valueOf(age))
+                    .fromOauth(2)
                     .build();
 
             memberService.signupUser(form);
         }else {
-            String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin/")
+            log.info("네이버 로그인 실패!");
+            String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
                     .queryParam("loginFail", "{lf}")
                     .encode()
                     .buildAndExpand(true)

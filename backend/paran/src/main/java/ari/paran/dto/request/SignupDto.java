@@ -41,7 +41,7 @@ public class SignupDto {
 
     private Authority authority = Authority.ROLE_USER;
 
-    private boolean fromOauth = false;
+    private int fromOauth = 0;
 
     private String storeName;
     private String ownerName;
@@ -56,12 +56,14 @@ public class SignupDto {
     private Address address;
 
     @Builder
-    public SignupDto(String username, String password, String email, String nickname, int age, String gender){
+    public SignupDto(String username, String password, String email, String nickname,
+                     int age, String gender, int fromOauth){
         this.username = username;
         this.password = password;
         this.email = email;
         this.nickname = nickname;
         this.age = age;
+        this.fromOauth = fromOauth;
         this.gender = gender;
     }
 
@@ -74,6 +76,7 @@ public class SignupDto {
                 .nickname(nickname)
                 .gender(gender)
                 .age(age)
+                .fromOauth(fromOauth)
                 .authority(Authority.ROLE_USER)
                 .build();
     }

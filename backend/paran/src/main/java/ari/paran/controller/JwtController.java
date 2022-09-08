@@ -57,7 +57,7 @@ public class JwtController {
             return response.invalidFields(Helper.refineErrors(errors));
         }
 
-        if (memberService.signupOwner(signupDto)) {
+        if (memberService.signupOwner(signupDto, 0)) {
             return response.success("회원가입에 성공했습니다.");
         }
         else{

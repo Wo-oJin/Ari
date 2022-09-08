@@ -1,5 +1,6 @@
 package ari.paran.service.oauth;
 
+import ari.paran.domain.member.Member;
 import ari.paran.domain.repository.MemberRepository;
 import ari.paran.dto.request.SignupDto;
 import ari.paran.service.auth.MemberService;
@@ -93,18 +94,21 @@ public class KakaoLoginService {
         String password = nickname+gender+email+age;
         profile.put("password", password);
 
-        log.info("00000000");
-        if(!memberRepository.existsByEmail(email)) {
+        Member member = memberRepository.findByEmail(email).orElse(null);
+        if(member == null || member.getFromOauth() == 1) {
+            log.info("카카오 로그인 성공!");
             SignupDto form = SignupDto.builder()
                     .email(email)
                     .password(password)
                     .nickname(nickname)
                     .gender(gender)
                     .age(Integer.valueOf(age))
+                    .fromOauth(1)
                     .build();
 
             memberService.signupUser(form);
         }else {
+            log.info("카카오 로그인 실패!");
             String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
                     .queryParam("loginFail", "{lf}")
                     .encode()

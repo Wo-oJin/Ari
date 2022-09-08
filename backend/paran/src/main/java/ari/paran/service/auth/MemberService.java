@@ -112,6 +112,7 @@ public class MemberService {
      * 일반 사용자 회원가입 메소드
      */
     public boolean signupUser(SignupDto signUp) {
+
         /* 해당 이메일 계정이 이미 존재하는지 확인*/
         if (memberRepository.existsByEmail(signUp.getEmail())) {
             return false;
@@ -127,7 +128,8 @@ public class MemberService {
     /**
      * 사장님 회원가입 메소드
      */
-    public boolean signupOwner(SignupDto signUp) {
+    public boolean signupOwner(SignupDto signUp, int fromOauth) {
+
         /* 해당 이메일 계정이 이미 존재하는지 확인*/
         if (memberRepository.existsByEmail(signUp.getEmail())) {
             return false;
@@ -264,7 +266,7 @@ public class MemberService {
             tokenDto.setInfo(member.get().getStore().getName()); // 가게이름
         }
 
-        String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin/")
+        String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
                 .queryParam("accessToken", "{at}")
                 .queryParam("refreshToken", "{rt}")
                 .queryParam("authority", "{authority}")
@@ -279,6 +281,8 @@ public class MemberService {
         URI redirectUri = new URI(redirectUrl);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(redirectUri);
+
+        log.info("리다이렉트 토큰 = {}", redirectUri.toString());
 
         return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
