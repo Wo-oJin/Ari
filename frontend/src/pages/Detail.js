@@ -34,7 +34,7 @@ const Detail = () => {
 
   //좋아요 클릭 함수
   const onLikeClick = async () => {
-    await axios.post(`/member/favorite/add?storeId=${data.id}`).then((res) => {
+    await axios.post(`/member/favorite/toggle?storeId=${data.id}`).then((res) => {
       setIsfavorited(!isFavorited);
       console.log("찜 성공");
     });

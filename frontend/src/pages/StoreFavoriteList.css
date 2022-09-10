@@ -1,0 +1,33 @@
+.fav-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 7px;
+}
+
+.fav-list-box {
+    display: flex;
+    align-items: center;
+    width: 347px;
+    height: 73px;
+    border-bottom: 1px solid #DBDBDB;
+    border-radius: 10px;
+    margin-bottom: 7px;
+}
+
+.fav-store-img {
+    width: 51px;
+    height: 51px;
+    border-radius: 10px;
+    margin-left: 12px;
+    margin-right: 10px;
+}
+
+.fav-store-name {
+    font-weight: 600;
+    margin: 0;
+}
+
+.fav-store-address {
+    font-size: 14px;
+}

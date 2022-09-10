@@ -1,5 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RecoilRoot } from "recoil";
+import { reissue } from "./services/jwt/reissue";
+
 import Main from "./components/Main";
 import LoginRegister from "./components/LoginRegister";
 import Login from "./pages/Login";
@@ -8,11 +11,8 @@ import LoginOwner from "./pages/LoginOwner";
 import SignupUser from "./pages/SignupUser";
 import SignupOwner from "./pages/SignupOwner";
 import SignupOwner2 from "./pages/SignupOwner2";
-import { RecoilRoot } from "recoil";
+
 import Detail from "./pages/Detail";
-
-import { reissue } from "./services/jwt/reissue";
-
 import Board from "./pages/Board";
 import BoardWrite from "./pages/BoardWrite";
 import MyPageOwner from './pages/MyPageOwner';
@@ -22,6 +22,7 @@ import StorePrivateEventList from './pages/StorePrivateEventList';
 
 import StoreAddPrivateEvent from './pages/StoreAddPrivateEvent';
 import StoreEditPrivateEvent from './pages/StoreEditPrivateEvent';
+import StoreFavoriteList from './pages/StoreFavoriteList';
 
 import RedirectLogin from "./pages/RedirectLogin";
 import BoardListView from "./pages/BoardListView";
@@ -66,6 +67,7 @@ function App() {
           <Route path="/storePrivateEventList" element={<StorePrivateEventList />} />
           <Route path="/storeAddPrivateEvent" element={<StoreAddPrivateEvent />} />
           <Route path="/storeEditPrivateEvent" element={<StoreEditPrivateEvent />} />
+          <Route path="/storeFavoriteList" element={<StoreFavoriteList />} />
 
           <Route
             path="board/list/:articleId"
