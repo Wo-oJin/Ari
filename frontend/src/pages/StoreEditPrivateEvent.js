@@ -78,7 +78,7 @@ const StoreEditPrivateEvent = () => {
       </div>
       <div style={{ width: "327px", margin: "0 auto", marginTop: "16px" }}>
         <div className="edit-buttonContainer">
-          <button className="deleteBtn" type="button" onClick={onDelete}>
+          <button className="event-deleteBtn" type="button" onClick={onDelete}>
             삭제
           </button>
           <button className="event-editBtn" type="submit" onClick={onEdit}>

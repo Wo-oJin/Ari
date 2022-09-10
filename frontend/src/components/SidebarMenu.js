@@ -47,7 +47,7 @@ const SidebarMenu = (userState) => {
   ];
   const menuForBusiness = [
     { title: "공지사항", url: "/" },
-    { title: "내 가게 정보 관리", url: "/" },
+    { title: "내 가게 정보 관리", url: "/storeInfoEdit" },
     { title: "제휴 맺기 게시판", url: "/board/list" },
     { title: "채팅 목록", url: "/" },
     { title: "문의하기", url: "/" },

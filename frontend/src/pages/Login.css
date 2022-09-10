@@ -24,7 +24,7 @@
     color: #4e514f;
 }
 
-.subAlign {
+.login-subAlign {
     display: flex;
     justify-content: center;
 }
@@ -37,10 +37,12 @@
     color: #ffffff;
     margin-bottom: 10px;
     background: #386ffe;
+    cursor: pointer;
 }
 
 .loginButton:disabled {
   background: #dcdcdc;
+  cursor: default;
 }
 
 .inputContainer {

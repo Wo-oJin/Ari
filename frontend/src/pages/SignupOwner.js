@@ -210,7 +210,7 @@ const SignupOwner = () => {
         <Formbox>
           <div className="intro">메일 인증</div>
           <div>
-            <input
+            <input style={{textTransform: "uppercase"}}
               className="certificationInput"
               name="certificationNumber"
               value={certificationNumber}

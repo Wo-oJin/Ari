@@ -77,14 +77,16 @@ const MyPageOwner = () => {
             ></img>
           </div>
         </Link>
-        <div className="sub-info">
-          <p style={{ marginLeft: "28px" }}>찜 목록</p>
-          <img
-            style={{ marginRight: "20px" }}
-            alt=""
-            src="images/arrow_right.png"
-          ></img>
-        </div>
+        <Link to="/storeFavoriteList">
+          <div className="sub-info">
+            <p style={{ marginLeft: "28px" }}>찜 목록</p>
+            <img
+              style={{ marginRight: "20px" }}
+              alt=""
+              src="images/arrow_right.png"
+            ></img>
+          </div>
+        </Link>
         <div className="sub-info">
           <p style={{ marginLeft: "28px" }}>채팅 목록</p>
           <img
