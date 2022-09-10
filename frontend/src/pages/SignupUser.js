@@ -139,7 +139,7 @@ const SignupUser = () => {
     try {
       await axios
         .post("/auth/email-auth", {
-          code: certificationNumber,
+          code: certificationNumber.toUpperCase(),
         })
         .then((res) => {
           if (res.data.state === 200) {
