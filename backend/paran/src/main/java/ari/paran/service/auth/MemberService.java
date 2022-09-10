@@ -49,7 +49,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-
     private final MemberRepository memberRepository;
     private final FavoriteRepository favoriteRepository;
     private final StoreService storeService;
@@ -128,7 +127,7 @@ public class MemberService {
     /**
      * 사장님 회원가입 메소드
      */
-    public boolean signupOwner(SignupDto signUp, int fromOauth) {
+    public boolean signupOwner(SignupDto signUp) {
 
         /* 해당 이메일 계정이 이미 존재하는지 확인*/
         if (memberRepository.existsByEmail(signUp.getEmail())) {
@@ -227,18 +226,30 @@ public class MemberService {
      */
     public ResponseEntity<?> login(LoginDto loginDto) throws URISyntaxException {
 
-        Optional<Member> member = memberRepository.findByEmail(loginDto.getEmail());
+        log.info(loginDto.toString());
+        Member member = memberRepository.findByEmail(loginDto.getEmail()).orElse(null);
 
-        if (member.orElse(null) == null || !passwordEncoder.matches(loginDto.getPassword(), member.get().getPassword())) {
-            return null;
+        if (member == null || !passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
+            URI redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
+                    .queryParam("loginFail", "{lf}")
+                    .encode()
+                    .buildAndExpand(true)
+                    .toUri();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setLocation(redirectUrl);
+
+            if(member.getFromOauth() == 0)
+                return response.fail("일반 이메일 로그인 실패", HttpStatus.BAD_REQUEST);
+            else
+                return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
         }
 
-        Member findMember = member.orElseGet(null);
         Store store = Store.builder()
                 .name("우진이의 가게")
-                .member(findMember)
+                .member(member)
                 .build();
-        findMember.addStore(store);
+        member.addStore(store);
         storeService.save(store);
 
         //1. Login id/pw를 기반으로 Authentication 객체 생성
@@ -260,10 +271,10 @@ public class MemberService {
                         tokenDto.getRefreshTokenExpiresIn(), TimeUnit.MILLISECONDS);
 
         /* user/owner에 따라 닉네임or가게이름 tokenDto에 추가 */
-        if (member.get().getAuthority() == Authority.ROLE_USER) {
-            tokenDto.setInfo(member.get().getNickname()); // 닉네임
+        if (member.getAuthority() == Authority.ROLE_USER) {
+            tokenDto.setInfo(member.getNickname()); // 닉네임
         } else {
-            tokenDto.setInfo(member.get().getStore().getName()); // 가게이름
+            tokenDto.setInfo(member.getStores().get(0).getName()); // 가게이름
         }
 
         String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
@@ -284,7 +295,10 @@ public class MemberService {
 
         log.info("리다이렉트 토큰 = {}", redirectUri.toString());
 
-        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+        if(member.getFromOauth() == 0)
+            return response.success(tokenDto, "로그인 성공!", HttpStatus.OK);
+        else
+            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
 
     public ResponseEntity<?> reissue(TokenRequestDto reissue) {
@@ -373,6 +387,7 @@ public class MemberService {
         return response.success(data, "좋아요 가게 목록", HttpStatus.OK);
     }
 
+    /*
     public ResponseEntity<?> addLike(String storeName, Principal principal) {
         Member member = memberRepository.findById(Long.valueOf(principal.getName())).get();
         Store store = storeService.findByName(storeName);
@@ -394,5 +409,6 @@ public class MemberService {
 
         return response.success();
     }
+    */
 
 }

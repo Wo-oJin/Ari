@@ -1,6 +1,7 @@
 package ari.paran.dto.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,7 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginDto {

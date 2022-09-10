@@ -61,7 +61,7 @@ public class StoreService {
     public ResponseEntity<?> existingInfo(Principal principal) throws IOException {
 
         Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStore();
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
         List<String> existingImages = fileService.loadImage(store);
 
 
@@ -78,7 +78,7 @@ public class StoreService {
                                       Principal principal) throws IOException {
         //1. 우선 해당 가게의 기존 이미지 파일을 모두 삭제
         Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStore();
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
         //1-1. 이미지 파일을 삭제. 파일 경로 정해야 함
         for (StoreImgFile imgFile : store.getStoreImgFiles()) {
             File file = new File(imgFile.getFileUrl() + imgFile.getFilename());
@@ -103,7 +103,7 @@ public class StoreService {
 
     public ResponseEntity<?> existingEvent(Principal principal) {
         Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStore();
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
         List<String> eventInfo = new ArrayList<>();
 
         List<Event> eventList = store.getEventList();
@@ -115,7 +115,7 @@ public class StoreService {
 
     public ResponseEntity<?> editEvent(int eventNum, String newInfo, Principal principal) {
         Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStore();
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
         Event event = store.getEventList().get(eventNum);
         event.changeInfo(newInfo);
 
@@ -126,7 +126,7 @@ public class StoreService {
 
     public ResponseEntity<?> addEvent(String info, Principal principal) {
         Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStore();
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
 
         Event newEvent = Event.builder().store(store).info(info).build();
         eventRepository.save(newEvent);
@@ -143,7 +143,7 @@ public class StoreService {
 
     public ResponseEntity<?> deleteEvent(int eventNum, Principal principal) {
         Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStore();
+        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
         Event event = store.getEventList().get(eventNum);
 
         store.getEventList().remove(event);

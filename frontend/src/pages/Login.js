@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { loginData } from "../services/login/loginData";
 import { authState, nameState } from "../state";
 import "../pages/Login.css";
-import Header from "../components/Header";
+import Header from '../components/Header';
 
 const Formbox = styled.div`
   position: relative;
@@ -53,35 +53,34 @@ const Login = () => {
       email: email,
       password: password,
     });
-    console.log("로그인>>" + JSON.stringify(result));
-    // if (result.result === "fail") { // 로그인 실패
-    //     alert(result.massage);
-    // } else { // 로그인 성공
+    console.log("로그인>>"+JSON.stringify(result));
+    if (result.result === "fail") { // 로그인 실패
+        alert(result.massage);
+    } else { // 로그인 성공
 
-    //   // 사용자 권한을 recoil 변수에 저장
-    //   if (result.data.authority === "ROLE_USER") { // 손님
-    //     setAuth(1);
-    //   } else if (result.data.authority === "ROLE_OWNER") { // 사장
-    //     setAuth(2);
-    //   } else if (result.data.authority === "ROLE_ADMIN") { // 관리자
-    //     setAuth(3);
-    //   }
+      // 사용자 권한을 recoil 변수에 저장
+      if (result.data.authority === "ROLE_USER") { // 손님
+        setAuth(1);
+      } else if (result.data.authority === "ROLE_OWNER") { // 사장
+        setAuth(2);
+      } else if (result.data.authority === "ROLE_ADMIN") { // 관리자
+        setAuth(3);
+      }
 
-    //   setName(result.data.info); // recoil
-    //   alert(result.massage);
-    //   navigate("/"); // 메인 페이지로 이동
-    // }
+      setName(result.data.info); // recoil
+      alert(result.massage);
+      navigate("/"); // 메인 페이지로 이동
+    }
   };
 
   return (
     <>
-      <Header text="로그인" back={true}></Header>
+      <Header text="로그인" link="/loginRegister"></Header>
       <div className="logoContainer"></div>
       <form onSubmit={onSubmit}>
         <div className="inputContainer">
           <Formbox>
-            <input
-              className="inputBox"
+            <input className="inputBox"
               name="email"
               value={email}
               type="email"
@@ -92,8 +91,7 @@ const Login = () => {
             />
           </Formbox>
           <Formbox>
-            <input
-              className="inputBox"
+            <input className="inputBox"
               name="password"
               value={password}
               type="password"
@@ -105,19 +103,18 @@ const Login = () => {
           </Formbox>
         </div>
         <div className="buttonContainer">
-          <button
-            className="loginButton"
+          <button className="loginButton"
             type="submit"
-            disabled={email !== "" && password !== "" ? false : true}
-          >
+            disabled={email !== "" && password !== "" ? false : true}>
             로그인
           </button>
         </div>
         <div className="subContainer">
           <div className="subAlign">
             <Link to="/loginRegister">
-              <span style={{ marginRight: "16px" }}>이메일 회원가입</span>
+              <span>이메일 회원가입</span>
             </Link>
+            <span>이메일 찾기</span>
             <span>비밀번호 찾기</span>
           </div>
         </div>

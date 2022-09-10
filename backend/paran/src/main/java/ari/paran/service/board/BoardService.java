@@ -46,7 +46,7 @@ public class BoardService {
                 return SimpleArticleDto.builder()
                                 .id(article.getId())
                                 .title(article.getTitle())
-                                .author(article.getMember().getStore().getName())
+                                .author(article.getMember().getStores().get(0).getName())
                                 .createDate(article.getCreateDate())
                                 .image(article.getImgFiles().isEmpty() ? null : fileService.getArticleImage(article, 1).get(0))
                                 .build();
@@ -58,13 +58,13 @@ public class BoardService {
 
     public DetailArticleDto findArticle(Long id, Long memberId) throws IOException {
         Article article = boardRepository.findById(id).orElseGet(null);
-        Store store = memberService.getMemberInfoById(article.getMember().getId()).getStore();
+        Store store = memberService.getMemberInfoById(article.getMember().getId()).getStores().get(0);
 
         if(article != null){
             return DetailArticleDto.builder()
                     .title(article.getTitle())
                     .content(article.getContent())
-                    .author(article.getMember().getStore().getName())
+                    .author(article.getMember().getStores().get(0).getName())
                     .storeId(store.getId())
                     .period(article.getPeriod())
                     .favorite(memberService.getMemberInfoById(memberId).isFavoriteStore(store))

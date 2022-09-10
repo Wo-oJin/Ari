@@ -1,6 +1,7 @@
 package ari.paran.controller.board;
 
 import ari.paran.domain.board.Article;
+import ari.paran.domain.store.Store;
 import ari.paran.dto.response.board.DetailArticleDto;
 import ari.paran.dto.response.board.SimpleArticleDto;
 import ari.paran.dto.response.board.UpdateForm;

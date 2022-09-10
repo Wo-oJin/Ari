@@ -1,8 +1,10 @@
 package ari.paran.controller;
 
 import ari.paran.domain.member.Member;
+import ari.paran.domain.store.Store;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
+import ari.paran.dto.response.board.MemberToStoreDto;
 import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -22,7 +25,17 @@ public class MemberController {
     private final MemberService memberService;
     private final Response response;
 
-    @PostMapping("/favorite/add")
+    @GetMapping("/member/getAuthorStore")
+    public List<MemberToStoreDto> getAuthorStore(Principal principal){
+        Long memberId = Long.parseLong(principal.getName());
+        Member member = memberService.getMemberInfoById(memberId);
+
+        return member.getStores().stream()
+                .map(store -> new MemberToStoreDto(store.getOwnerName(), store.getName()))
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping("/favorite/toggle")
     public ResponseEntity<?> addMemberFavoriteStore(@RequestParam Long storeId, Principal principal){
         Long memberId = Long.parseLong(principal.getName());
         return memberService.toggleMemberFavoriteStore(memberId, storeId);
@@ -72,6 +85,7 @@ public class MemberController {
         return memberService.showLikeList(principal);
     }
 
+    /*
     @PostMapping("/like/add/{store_name}")
     public ResponseEntity<?> addLike(@PathVariable String store_name, Principal principal) {
 
@@ -81,4 +95,5 @@ public class MemberController {
     public ResponseEntity<?> deleteLike(@PathVariable String store_name, Principal principal) {
         return memberService.deleteLike(store_name, principal);
     }
+    */
 }
