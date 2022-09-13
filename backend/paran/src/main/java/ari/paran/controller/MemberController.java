@@ -87,13 +87,13 @@ public class MemberController {
 
     /*
     @PostMapping("/like/add/{store_name}")
-    public ResponseEntity<?> addLike(@PathVariable String store_name, Principal principal) {
+    public ResponseEntity<?> addLike(@PathVariable Long storeId, Principal principal) {
 
-        return memberService.addLike(store_name, principal);
+        return memberService.addLike(storeId, principal);
     }
     @PostMapping("/like/delete/{store_name}")
-    public ResponseEntity<?> deleteLike(@PathVariable String store_name, Principal principal) {
-        return memberService.deleteLike(store_name, principal);
+    public ResponseEntity<?> deleteLike(@PathVariable Long storeId, Principal principal) {
+        return memberService.deleteLike(storeId, principal);
     }
     */
 }
