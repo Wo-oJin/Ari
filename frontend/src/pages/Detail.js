@@ -84,7 +84,7 @@ const Detail = () => {
       </button>
 
       <div className="DetailContentModal">
-        <span className="ContentTitle">{data.ownerName}</span>
+        <span className="ContentTitle">{data.name}</span>
         <div key={0} className="LikeContainer">
           {isFavorited ? (
             <button className="UnLikeBtn" onClick={onLikeClick}>
