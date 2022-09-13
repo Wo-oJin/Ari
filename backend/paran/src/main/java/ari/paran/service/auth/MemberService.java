@@ -289,8 +289,10 @@ public class MemberService {
 
         log.info("리다이렉트 토큰 = {}", redirectUri.toString());
 
-        if(member.getFromOauth() == 0)
+        if(member.getFromOauth() == 0) {
+            log.info("sdfdsfsd");
             return response.success(tokenDto, "로그인 성공!", HttpStatus.OK);
+        }
         else
             return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
