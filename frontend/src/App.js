@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import { reissue } from "./services/jwt/reissue";
 import axios from "axios";
-import { CookiesProvider } from "react-cookie";
 
 import Main from "./components/Main";
 import LoginRegister from "./components/LoginRegister";
@@ -49,48 +48,46 @@ function App() {
 
   return (
     <RecoilRoot>
-      <CookiesProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Main />}></Route>
-            <Route path="/loginRegister" element={<LoginRegister />}></Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/loginUser" element={<LoginUser />} />
-            <Route path="/loginOwner" element={<LoginOwner />} />
-            <Route path="/redirectLogin" element={<RedirectLogin />} />
-            <Route path="/signupUser" element={<SignupUser />} />
-            <Route path="/detail/:storeId" element={<Detail />} />
-            <Route path="/signupOwner" element={<SignupOwner />} />
-            <Route path="/signupOwner2" element={<SignupOwner2 />} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main />}></Route>
+          <Route path="/loginRegister" element={<LoginRegister />}></Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/loginUser" element={<LoginUser />} />
+          <Route path="/loginOwner" element={<LoginOwner />} />
+          <Route path="/redirectLogin" element={<RedirectLogin />} />
+          <Route path="/signupUser" element={<SignupUser />} />
+          <Route path="/detail/:storeId" element={<Detail />} />
+          <Route path="/signupOwner" element={<SignupOwner />} />
+          <Route path="/signupOwner2" element={<SignupOwner2 />} />
 
-            <Route path="/board/list" element={<Board />}></Route>
-            <Route path="/board/:boardId" element={<Board />}></Route>
-            <Route path="/board/write" element={<BoardWrite />}></Route>
-            <Route path="/redirectLogin" element={<RedirectLogin />}></Route>
+          <Route path="/board/list" element={<Board />}></Route>
+          <Route path="/board/:boardId" element={<Board />}></Route>
+          <Route path="/board/write" element={<BoardWrite />}></Route>
+          <Route path="/redirectLogin" element={<RedirectLogin />}></Route>
 
-            <Route path="/myPageOwner" element={<MyPageOwner />} />
-            <Route path="/storeInfoEdit" element={<StoreInfoEdit />} />
-            <Route
-              path="/storePrivateEventList"
-              element={<StorePrivateEventList />}
-            />
-            <Route
-              path="/storeAddPrivateEvent"
-              element={<StoreAddPrivateEvent />}
-            />
-            <Route
-              path="/storeEditPrivateEvent"
-              element={<StoreEditPrivateEvent />}
-            />
-            <Route path="/storeFavoriteList" element={<StoreFavoriteList />} />
+          <Route path="/myPageOwner" element={<MyPageOwner />} />
+          <Route path="/storeInfoEdit" element={<StoreInfoEdit />} />
+          <Route
+            path="/storePrivateEventList"
+            element={<StorePrivateEventList />}
+          />
+          <Route
+            path="/storeAddPrivateEvent"
+            element={<StoreAddPrivateEvent />}
+          />
+          <Route
+            path="/storeEditPrivateEvent"
+            element={<StoreEditPrivateEvent />}
+          />
+          <Route path="/storeFavoriteList" element={<StoreFavoriteList />} />
 
-            <Route
-              path="board/list/:articleId"
-              element={<BoardListView />}
-            ></Route>
-          </Routes>
-        </BrowserRouter>
-      </CookiesProvider>
+          <Route
+            path="board/list/:articleId"
+            element={<BoardListView />}
+          ></Route>
+        </Routes>
+      </BrowserRouter>
     </RecoilRoot>
   );
 }
