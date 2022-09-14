@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 const SidebarMenu = (userState) => {
   const [auth, setAuth] = useRecoilState(authState);
@@ -14,15 +17,14 @@ const SidebarMenu = (userState) => {
     try {
       await axios
         .post("/auth/logout", {
-          accessToken: localStorage.getItem("accessToken"),
-          refreshToken: localStorage.getItem("refreshToken"),
+          //accessToken: localStorage.getItem("accessToken"),
+          refreshToken: cookies.get("refreshToken"),
         })
         .then((res) => {
           if (res.data.result === "success") {
             // 로그아웃 성공
-            // localStorage에 저장된 토큰 삭제
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
+            // 쿠키에 저장된 토큰 삭제
+            cookies.remove("refreshToken");
 
             // recoil persist로 저장된 변수 초기화
             setAuth(0);
