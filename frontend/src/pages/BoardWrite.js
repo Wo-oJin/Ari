@@ -45,6 +45,7 @@ const BoardWrite = () => {
     formData.append("title", title);
     formData.append("content", content);
     formData.append("period", period);
+    formData.append("author", authorList[0]);
     //formData.append("authorStore", authorStore);
 
     axios
