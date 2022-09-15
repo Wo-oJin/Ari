@@ -7,23 +7,24 @@ import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
 import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
-
 const SidebarMenu = (userState) => {
   const [auth, setAuth] = useRecoilState(authState);
   const [name, setName] = useRecoilState(nameState);
+
+  const cookies = new Cookies();
 
   const onLogout = async () => {
     try {
       await axios
         .post("/auth/logout", {
-          //accessToken: localStorage.getItem("accessToken"),
+          accessToken: cookies.get("accessToken"),
           refreshToken: cookies.get("refreshToken"),
         })
         .then((res) => {
           if (res.data.result === "success") {
             // 로그아웃 성공
             // 쿠키에 저장된 토큰 삭제
+            cookies.remove("accessToken");
             cookies.remove("refreshToken");
 
             // recoil persist로 저장된 변수 초기화
@@ -43,8 +44,7 @@ const SidebarMenu = (userState) => {
 
   const menuForCustomer = [
     { title: "공지사항", url: "/" },
-    { title: "즐겨찾기", url: "/" },
-    { title: "마이페이지", url: "/" },
+    { title: "찜 목록", url: "/userFavoriteList" },
     { title: "문의하기", url: "/" },
   ];
   const menuForBusiness = [

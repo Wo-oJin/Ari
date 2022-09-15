@@ -6,6 +6,7 @@ import styled from "styled-components";
 import "../pages/StoreInfoEdit.css";
 import DaumPostcode from "react-daum-postcode";
 import axios from "axios";
+import { token } from "../services/jwt/token";
 
 const Formbox = styled.div`
   margin-bottom: 36px;
@@ -37,13 +38,15 @@ const StoreInfoEdit = () => {
 
   const navigate = useNavigate();
 
+  const { getRefreshToken } = token;
+
   useEffect(() => {
     const initialEdit = async () => {
       try {
         await axios
           .get("/edit/store", {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              Authorization: `Bearer ${getRefreshToken}`,
             },
           })
           .then((res) => {
