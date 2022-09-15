@@ -229,6 +229,13 @@ public class MemberService {
         log.info(loginDto.toString());
         Member member = memberRepository.findByEmail(loginDto.getEmail()).orElse(null);
 
+        Store store = Store.builder()
+                .name("우진이의 가게")
+                .member(member)
+                .build();
+        member.addStore(store);
+        storeService.save(store);
+
         if (member == null || !passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
             URI redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
                     .queryParam("loginFail", "{lf}")

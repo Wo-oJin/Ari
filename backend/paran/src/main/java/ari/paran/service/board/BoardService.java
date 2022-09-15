@@ -64,7 +64,7 @@ public class BoardService {
             return DetailArticleDto.builder()
                     .title(article.getTitle())
                     .content(article.getContent())
-                    .author(article.getMember().getStores().get(0).getName())
+                    .author(article.getMember().getStoresName())
                     .storeId(store.getId())
                     .period(article.getPeriod())
                     .favorite(memberService.getMemberInfoById(memberId).isFavoriteStore(store))

@@ -46,6 +46,10 @@ dependencies {
 	implementation 'junit:junit:4.13.1'
 	implementation 'org.springframework.session:spring-session-jdbc:2.1.6.RELEASE'
 	implementation 'org.mariadb.jdbc:mariadb-java-client'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
