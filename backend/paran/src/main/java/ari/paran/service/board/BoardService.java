@@ -2,7 +2,6 @@ package ari.paran.service.board;
 
 import ari.paran.domain.board.Article;
 import ari.paran.domain.repository.BoardRepository;
-import ari.paran.domain.repository.StoreRepository;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.response.board.DetailArticleDto;
 import ari.paran.dto.response.board.SimpleArticleDto;
@@ -11,7 +10,6 @@ import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.FileService;
 import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -64,7 +62,7 @@ public class BoardService {
             return DetailArticleDto.builder()
                     .title(article.getTitle())
                     .content(article.getContent())
-                    .author(article.getMember().getStoresName())
+                    .author(article.getMember().getStores().get(0).getName())
                     .storeId(store.getId())
                     .period(article.getPeriod())
                     .favorite(memberService.getMemberInfoById(memberId).isFavoriteStore(store))

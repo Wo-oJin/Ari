@@ -25,13 +25,13 @@ public class MemberController {
     private final MemberService memberService;
     private final Response response;
 
-    @GetMapping("/member/getAuthorStore")
-    public List<MemberToStoreDto> getAuthorStore(Principal principal){
+    @GetMapping("/stores")
+    public List<String> getAuthorStore(Principal principal){
         Long memberId = Long.parseLong(principal.getName());
         Member member = memberService.getMemberInfoById(memberId);
 
         return member.getStores().stream()
-                .map(store -> new MemberToStoreDto(store.getOwnerName(), store.getName()))
+                .map(Store :: getName)
                 .collect(Collectors.toList());
     }
 
