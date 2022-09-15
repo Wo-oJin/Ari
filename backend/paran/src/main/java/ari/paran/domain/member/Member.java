@@ -91,6 +91,12 @@ public class Member {
                 .anyMatch(findStore->  findStore.getId() == store.getId());
     }
 
+    public List<String> getStoresName(){
+        return stores.stream()
+                .map(Store :: getName)
+                .collect(Collectors.toList());
+    }
+
     public void addFavorite(Favorite favorite) {
         this.favorites.add(favorite);
     }

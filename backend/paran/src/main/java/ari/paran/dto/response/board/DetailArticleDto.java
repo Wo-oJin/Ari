@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class DetailArticleDto {
 
     private String title;
-    private String author;
+    private List<String> author;
     private Long storeId;
     private String content;
     private String period;
@@ -21,7 +21,7 @@ public class DetailArticleDto {
     private List<String> images;
 
     @Builder
-    public DetailArticleDto(String title, String author, Long storeId, String content, String period, boolean favorite,
+    public DetailArticleDto(String title, List<String> author, Long storeId, String content, String period, boolean favorite,
                             boolean authority, LocalDate createDate, LocalDate updateDate, List<String> images){
 
         this.title = title;

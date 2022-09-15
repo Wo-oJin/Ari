@@ -56,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/edit/**").permitAll()
                 .antMatchers("/add/**").permitAll()
                 .antMatchers("/delete/**").permitAll()
+                .antMatchers("/chat/**").permitAll()
                 .antMatchers("/member/favorite/add").permitAll()
 
                 //권한 테스트
