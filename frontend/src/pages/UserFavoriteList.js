@@ -5,7 +5,7 @@ import "../pages/StoreFavoriteList.css";
 import axios from "axios";
 import { token } from "../services/jwt/token";
 
-const StoreFavoriteList = () => {
+const UserFavoriteList = () => {
   const [likeStores, setLikeStores] = useState([]); // 객체를 요소로 갖는 배열
 
   const { getRefreshToken } = token;
@@ -71,4 +71,4 @@ const StoreFavoriteList = () => {
   }
 };
 
-export default StoreFavoriteList;
+export default UserFavoriteList;
