@@ -6,7 +6,7 @@ import styled from "styled-components";
 import "../pages/StoreInfoEdit.css";
 import DaumPostcode from "react-daum-postcode";
 import axios from "axios";
-import { token } from "../services/jwt/token";
+import Cookies from "universal-cookie";
 
 const Formbox = styled.div`
   margin-bottom: 36px;
@@ -38,7 +38,7 @@ const StoreInfoEdit = () => {
 
   const navigate = useNavigate();
 
-  const { getRefreshToken } = token;
+  const cookies = new Cookies();
 
   useEffect(() => {
     const initialEdit = async () => {
@@ -46,7 +46,7 @@ const StoreInfoEdit = () => {
         await axios
           .get("/edit/store", {
             headers: {
-              Authorization: `Bearer ${getRefreshToken}`,
+              Authorization: `Bearer ${cookies.get("accessToken")}`,
             },
           })
           .then((res) => {
