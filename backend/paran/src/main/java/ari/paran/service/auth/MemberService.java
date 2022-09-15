@@ -245,12 +245,6 @@ public class MemberService {
                 return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
         }
 
-        Store store = Store.builder()
-                .name("우진이의 가게")
-                .member(member)
-                .build();
-        member.addStore(store);
-        storeService.save(store);
 
         //1. Login id/pw를 기반으로 Authentication 객체 생성
         //이때 authentication는 인증 여부를 확인하는 authenticated 값이 false
@@ -295,8 +289,10 @@ public class MemberService {
 
         log.info("리다이렉트 토큰 = {}", redirectUri.toString());
 
-        if(member.getFromOauth() == 0)
+        if(member.getFromOauth() == 0) {
+            log.info("sdfdsfsd");
             return response.success(tokenDto, "로그인 성공!", HttpStatus.OK);
+        }
         else
             return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
@@ -378,6 +374,7 @@ public class MemberService {
         for (Favorite favorite : favorites) {
             data.add(LikeListDto.builder()
                             .name(favorite.getStore().getName())
+                            .storeId(favorite.getStore().getId())
                             .address(favorite.getStore().getAddress().getRoadAddress())
                             .image(fileService.getMainImage(favorite.getStore()))
                     .build());
@@ -387,10 +384,14 @@ public class MemberService {
         return response.success(data, "좋아요 가게 목록", HttpStatus.OK);
     }
 
+
     /*
     public ResponseEntity<?> addLike(String storeName, Principal principal) {
+=======
+    public ResponseEntity<?> addLike(Long storeId, Principal principal) {
+>>>>>>> 2633ea33 (Etc : 코드 최신화를 위한 커밋)
         Member member = memberRepository.findById(Long.valueOf(principal.getName())).get();
-        Store store = storeService.findByName(storeName);
+        Store store = storeService.findStore(storeId);
 
         Favorite like = new Favorite(member, store);
 
@@ -400,9 +401,9 @@ public class MemberService {
         return response.success();
     }
 
-    public ResponseEntity<?> deleteLike(String storeName, Principal principal) {
+    public ResponseEntity<?> deleteLike(Long storeId, Principal principal) {
         Member member = memberRepository.findById(Long.valueOf(principal.getName())).get();
-        Store store = storeService.findByName(storeName);
+        Store store = storeService.findStore(storeId);
         Favorite like = favoriteRepository.findFavoriteByMemberAndStore(member, store).get();
 
         favoriteRepository.delete(like);

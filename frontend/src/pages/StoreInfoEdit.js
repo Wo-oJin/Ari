@@ -21,6 +21,7 @@ const Formbox = styled.div`
 
 const StoreInfoEdit = () => {
   // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
+  const [uStoreId, setuStoreId] = useState(null);
   const [uStoreName, setuStoreName] = useState("");
   const [uRoadAddress, setuRoadAddress] = useState("");
   const [uDetailAddress, setuDetailAddress] = useState("");
@@ -48,6 +49,7 @@ const StoreInfoEdit = () => {
           .then((res) => {
             // console.log("res.data.data", res.data.data);
             const {
+              storeId,
               storeName,
               roadAddress,
               detailAddress,
@@ -59,6 +61,7 @@ const StoreInfoEdit = () => {
             } = res.data.data;
 
             // 처음 페이지 렌더링되었을 때 받아온 데이터로 초기값 세팅
+            setuStoreId(storeId);
             setuStoreName(storeName);
             setuRoadAddress(roadAddress);
             setuDetailAddress(detailAddress);
@@ -79,7 +82,7 @@ const StoreInfoEdit = () => {
               existingImages.forEach((image, index) => {
                 decodeFilesArr[index] = base64ToFile(
                   `data:image/;base64,${image}`,
-                  `${storeName}_${index}.png`
+                  `${storeId}_${index}.png`
                 );
               });
 

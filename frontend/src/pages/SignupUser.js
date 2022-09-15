@@ -35,6 +35,7 @@ const SignupUser = () => {
 
   // 입력한 인증번호
   const [certificationNumber, setCertificationNumber] = useState("");
+  const [sendText, setSendText] = useState("전송");
 
   // 오류 메세지 상태 저장
   const [emailMessage, setEmailMessage] = useState("");
@@ -124,7 +125,10 @@ const SignupUser = () => {
       alert("이메일 주소를 확인해주세요.");
       return false;
     }
-    alert("전송되었습니다.");
+
+    alert("전송되었습니다."); // 전송까지 시간이 좀 걸리지만 일단 전송 확인 메세지부터 띄움
+    setSendText("재전송");
+
     try {
       await axios.post("/auth/email", {
         email: email,
@@ -212,7 +216,7 @@ const SignupUser = () => {
               autoComplete="off"
             />
             <button className="sendBtn" onClick={sendEmailCode}>
-              전송
+              {sendText}
             </button>
           </div>
           <MainButton
