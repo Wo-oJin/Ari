@@ -3,21 +3,21 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/StoreFavoriteList.css";
 import axios from "axios";
-import { token } from "../services/jwt/token";
+import Cookies from "universal-cookie";
 
 const StoreFavoriteList = () => {
   const [likeStores, setLikeStores] = useState([]); // 객체를 요소로 갖는 배열
 
-  const { getRefreshToken } = token;
+  const cookies = new Cookies();
 
   // 페이지 처음 렌더링될 때 찜한 가게 리스트 받아오기
   useEffect(() => {
     const initialFavoriteStore = async () => {
       try {
         await axios
-          .get("/member/favorite_list", {
+          .get("/member/like", {
             headers: {
-              Authorization: `Bearer ${getRefreshToken}`,
+              Authorization: `Bearer ${cookies.get("accessToken")}`,
             },
           })
           .then((res) => {

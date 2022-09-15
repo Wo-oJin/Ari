@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/StorePrivateEventList.css";
 import axios from "axios";
-import { token } from "../services/jwt/token";
+import Cookies from "universal-cookie";
 
 const StorePrivateEventList = () => {
   const [privateEvents, setPrivateEvents] = useState([]); // 개인 이벤트
 
-  const { getRefreshToken } = token;
+  const cookies = new Cookies();
 
   // 페이지 처음 렌더링될 때 개인 이벤트 리스트 받아오기
   useEffect(() => {
@@ -18,7 +18,7 @@ const StorePrivateEventList = () => {
         await axios
           .get("/edit/self-event", {
             headers: {
-              Authorization: `Bearer ${getRefreshToken}`,
+              Authorization: `Bearer ${cookies.get("accessToken")}`,
             },
           })
           .then((res) => {
