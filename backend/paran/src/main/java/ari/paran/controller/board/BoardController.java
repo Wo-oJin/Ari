@@ -1,13 +1,13 @@
 package ari.paran.controller.board;
 
 import ari.paran.domain.board.Article;
-import ari.paran.domain.store.Store;
 import ari.paran.dto.response.board.DetailArticleDto;
 import ari.paran.dto.response.board.SimpleArticleDto;
 import ari.paran.dto.response.board.UpdateForm;
+import ari.paran.service.auth.MemberService;
 import ari.paran.service.board.BoardService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,11 +23,11 @@ import java.util.*;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/board")
 public class BoardController {
 
-    @Autowired
-    BoardService boardService;
+    private final BoardService boardService;
 
     @GetMapping("/list")
     @ResponseBody
@@ -57,7 +57,7 @@ public class BoardController {
     }
      */
 
-    @PostMapping("/write") // update로도 쓸 수 있음
+    @PostMapping("/write")
     @ResponseBody
     public void ArticleWrite(@ModelAttribute Article article, List<MultipartFile> files, Principal principal) throws IOException {
         Long memberId = Long.parseLong(principal.getName());
@@ -65,7 +65,7 @@ public class BoardController {
         boardService.saveArticle(article, files, memberId);
     }
 
-    @PostMapping("/update/{id}") // update로도 쓸 수 있음
+    @PostMapping("/update/{id}")
     @ResponseBody
     public void ArticleUpdate(@PathVariable Long id, @ModelAttribute Article article, List<MultipartFile> files) throws IOException {
         UpdateForm updateForm = UpdateForm.builder()
