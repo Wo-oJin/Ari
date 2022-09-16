@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import Header from "../components/Header";
 import "../pages/StoreAddPrivateEvent.css";
-import axios from "axios";
+import { customAxios } from "./customAxios";
 import { useNavigate } from "react-router-dom";
 
 const StoreAddPrivateEvent = () => {
@@ -11,7 +11,7 @@ const StoreAddPrivateEvent = () => {
 
   const onAdd = async () => {
     try {
-      await axios
+      await customAxios
         .post("/add/self-event", {
           info: newInfo,
         })

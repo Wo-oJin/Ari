@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
 import axios from "axios";
-import { reissue } from "../services/jwt/reissue";
+import { Reissue } from "../services/jwt/Reissue";
 import Cookies from "universal-cookie";
 
 const RedirectLogin = () => {
@@ -34,7 +34,7 @@ const RedirectLogin = () => {
     // 쿠키 사용 설정
     axios.defaults.withCredentials = true;
 
-    // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+    // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정 : 모든 컴포넌트의 요청에서 전역으로 설정되지 않고 있음
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
 
     // 토큰을 http only 쿠키에 저장
@@ -57,8 +57,7 @@ const RedirectLogin = () => {
     });
 
     // accessToken 만료하기 1분 전에 로그인 연장
-    const a = setTimeout(reissue, parseInt(accessTokenExpireIn - 60000));
-    clearTimeout(a);
+    setTimeout(() => Reissue, parseInt(accessTokenExpireIn - 60000));
 
     // 사용자 권한을 recoil 변수에 저장
     if (authority === "ROLE_USER") {
