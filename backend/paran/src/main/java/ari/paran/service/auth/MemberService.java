@@ -1,11 +1,10 @@
 package ari.paran.service.auth;
 
 import ari.paran.Util.SecurityUtil;
+import ari.paran.domain.SignupCode;
 import ari.paran.domain.member.Member;
 import ari.paran.domain.member.Authority;
-import ari.paran.domain.repository.FavoriteRepository;
-import ari.paran.domain.repository.MemberRepository;
-import ari.paran.domain.repository.SignupCodeRepository;
+import ari.paran.domain.repository.*;
 import ari.paran.domain.store.Favorite;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.MemberResponseDto;
@@ -53,6 +52,8 @@ public class MemberService {
     private final FavoriteRepository favoriteRepository;
     private final StoreService storeService;
     private final SignupCodeRepository signupCodeRepository;
+    private final EventRepository eventRepository;
+    private final PartnershipRepository partnershipRepository;
     private final Response response;
     private final FileService fileService;
     private final PasswordEncoder passwordEncoder;
@@ -142,7 +143,12 @@ public class MemberService {
         /* SignupDto를 통해 추가할 Store 객체 생성 및 저장 */
         Store store = signUp.toStore(member, signUp.toAddress(signUp.getStoreRoadAddress(), signUp.getStoreDetailAddress()));
 
+        SignupCode signupCode = signupCodeRepository.findByCode(signUp.getSignupCode()).get();
+        signupCode.setActivatedTrue();
+        signupCode.setStore(store);
+
         storeService.save(store);
+        signupCodeRepository.save(signupCode);
 
         return true;
     }
@@ -152,10 +158,20 @@ public class MemberService {
      */
     public ResponseEntity<?> authSignupCode(String code) {
 
-        if (signupCodeRepository.existsByCode(code) == false ) {
+        if (signupCodeRepository.existsByCode(code) == false || signupCodeRepository.findByCode(code).get().isActivated()) {
             return response.fail("유효하지 않은 가입코드 입니다.", HttpStatus.BAD_REQUEST);
         }
 
+        return response.success();
+    }
+
+    /**
+     * 이메일 중복 확인
+     */
+    public ResponseEntity<?> checkDupEmail(String email) {
+        if (memberRepository.existsByEmail(email)) {
+            return response.fail("이미 가입된 이메일입니다.", HttpStatus.OK);
+        }
         return response.success();
     }
 
@@ -228,24 +244,7 @@ public class MemberService {
 
         log.info(loginDto.toString());
         Member member = memberRepository.findByEmail(loginDto.getEmail()).orElse(null);
-
-        log.info("sdfsdf");
-        Store store1 = Store.builder()
-                .name("우진이의 가게1")
-                .member(member)
-                .build();
-        member.addStore(store1);
-
-        Store store2 = Store.builder()
-                .name("우진이의 가게2")
-                .member(member)
-                .build();
-        member.addStore(store2);
-
-        storeService.save(store1);
-        storeService.save(store2);
-
-        log.info("sdfsdf");
+        
 
         if (member == null || !passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
             URI redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
@@ -400,6 +399,25 @@ public class MemberService {
         log.info("좋아요 가게 개수: {}", data.size());
 
         return response.success(data, "좋아요 가게 목록", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getEventNum(Principal principal) {
+
+        Member owner = memberRepository.findById(Long.valueOf(principal.getName())).get();
+        List<Long> result = new ArrayList<>();
+        Long eventNum = 0L;
+        Long partnershipNum = 0L;
+
+        List<Store> stores = owner.getStores();
+        for (Store store : stores) {
+            eventNum += eventRepository.countByStore(store);
+            partnershipNum = partnershipRepository.countByStore(store);
+        }
+
+        result.add(partnershipNum);
+        result.add(eventNum);
+
+        return response.success(result, "이벤트 갯수", HttpStatus.OK);
     }
 
 

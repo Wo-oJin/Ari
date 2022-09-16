@@ -39,14 +39,15 @@ public class MemberController {
         return new MainResult(result);
     }
 
+
     @PostMapping("/favorite/toggle")
-    public ResponseEntity<?> addMemberFavoriteStore(@RequestParam Long storeId, Principal principal){
+    public ResponseEntity<?> addMemberFavoriteStore(@RequestParam Long storeId, Principal principal) {
         Long memberId = Long.parseLong(principal.getName());
         return memberService.toggleMemberFavoriteStore(memberId, storeId);
     }
 
     @GetMapping("/favorite_list")
-    public List<Long> getMemberFavoriteStore(Principal principal){
+    public List<Long> getMemberFavoriteStore(Principal principal) {
         Long memberId = Long.parseLong(principal.getName());
         Member member = memberService.getMemberInfoById(memberId);
 
@@ -54,12 +55,12 @@ public class MemberController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberResponseDto> getMyMemberInfo(){
+    public ResponseEntity<MemberResponseDto> getMyMemberInfo() {
         return ResponseEntity.ok(memberService.getMyInfo());
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<MemberResponseDto> getMemberInfo(@PathVariable String email){
+    public ResponseEntity<MemberResponseDto> getMemberInfo(@PathVariable String email) {
         System.out.println("email: " + email);
         return ResponseEntity.ok(memberService.getMemberInfoByEmail(email));
     }
@@ -89,6 +90,10 @@ public class MemberController {
         return memberService.showLikeList(principal);
     }
 
+    @GetMapping("/event-num")
+    public ResponseEntity<?> getEventNum(Principal principal) {
+        return memberService.getEventNum(principal);
+    }
     /*
     @PostMapping("/like/add/{store_name}")
     public ResponseEntity<?> addLike(@PathVariable Long storeId, Principal principal) {

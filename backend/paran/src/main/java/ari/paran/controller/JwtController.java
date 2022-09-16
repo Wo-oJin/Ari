@@ -93,6 +93,13 @@ public class JwtController {
         return memberService.authSignupCode(code);
     }
 
+    @PostMapping("check-email")
+    public ResponseEntity<?> emailDupCheck(@RequestBody Map<String, String> param) {
+        String email = param.get("email");
+
+        return memberService.checkDupEmail(email);
+    }
+
     @PostMapping("/email")
     public ResponseEntity<?> sendEmail(@RequestBody Map<String, String> param) {
         String email = param.get("email");
@@ -122,6 +129,7 @@ public class JwtController {
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
+
         return memberService.reissue(reissue);
     }
 
