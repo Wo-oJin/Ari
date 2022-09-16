@@ -1,27 +1,34 @@
 package ari.paran.domain;
 
+import ari.paran.domain.store.Store;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Entity
 public class SignupCode {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @NotNull
-    String code;
-//    @ColumnDefault("0")
-//    boolean activated;
+    private String code;
+    @ColumnDefault("0")
+    private boolean activated;
 
-//    public void setActivatedTrue() {
-//        this.activated = true;
-//    }
+    @OneToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
+
+    public void setActivatedTrue() {
+
+        this.activated = true;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
 }
 

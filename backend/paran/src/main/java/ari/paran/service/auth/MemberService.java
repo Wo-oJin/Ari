@@ -1,6 +1,7 @@
 package ari.paran.service.auth;
 
 import ari.paran.Util.SecurityUtil;
+import ari.paran.domain.SignupCode;
 import ari.paran.domain.member.Member;
 import ari.paran.domain.member.Authority;
 import ari.paran.domain.repository.FavoriteRepository;
@@ -142,7 +143,12 @@ public class MemberService {
         /* SignupDto를 통해 추가할 Store 객체 생성 및 저장 */
         Store store = signUp.toStore(member, signUp.toAddress(signUp.getStoreRoadAddress(), signUp.getStoreDetailAddress()));
 
+        SignupCode signupCode = signupCodeRepository.findByCode(signUp.getSignupCode()).get();
+        signupCode.setActivatedTrue();
+        signupCode.setStore(store);
+
         storeService.save(store);
+        signupCodeRepository.save(signupCode);
 
         return true;
     }
@@ -152,7 +158,7 @@ public class MemberService {
      */
     public ResponseEntity<?> authSignupCode(String code) {
 
-        if (signupCodeRepository.existsByCode(code) == false ) {
+        if (signupCodeRepository.existsByCode(code) == false || signupCodeRepository.findByCode(code).get().isActivated()) {
             return response.fail("유효하지 않은 가입코드 입니다.", HttpStatus.BAD_REQUEST);
         }
 

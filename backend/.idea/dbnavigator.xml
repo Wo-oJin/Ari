@@ -55,6 +55,9 @@ drop table store]]></console>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
   </component>
+  <component name="DBNavigator.Project.FileConnectionMappingManager">
+    <mapping file-url="file://$APPLICATION_CONFIG_DIR$/consoles/db/9f607637-c411-4f21-bafa-c873970fbc05/console_1.sql" connection-id="2d897372-393b-4437-9dce-942408b46272" session-id="MAIN" current-schema="ari_dev" />
+  </component>
   <component name="DBNavigator.Project.MethodExecutionManager">
     <method-browser />
     <execution-history>
@@ -74,7 +77,9 @@ drop table store]]></console>
     <diagnostics-history />
   </component>
   <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
-    <recently-used-interfaces />
+    <recently-used-interfaces>
+      <mapping database-type="MYSQL" interface-id="DEFAULT" />
+    </recently-used-interfaces>
   </component>
   <component name="DBNavigator.Project.Settings">
     <connections>

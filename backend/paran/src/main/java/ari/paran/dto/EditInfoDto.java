@@ -1,5 +1,7 @@
 package ari.paran.dto;
 
+import ari.paran.domain.store.Address;
+import ari.paran.domain.store.Store;
 import lombok.Data;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Data
 public class EditInfoDto {
+
+    private Long id;
     private String storeName;
     private String roadAddress;
     private String detailAddress;
@@ -19,7 +23,9 @@ public class EditInfoDto {
     private String subText;
     private String openHour;
 
-    public EditInfoDto(String storeName, String roadAddress, String detailAddress, String ownerName, String phoneNumber, List<String> existingImages, String subText, String openHour) {
+    public EditInfoDto(Long id, String storeName, String roadAddress, String detailAddress, String ownerName, String phoneNumber, List<String> existingImages, String subText, String openHour) {
+
+        this.id = id;
         this.storeName = storeName;
         this.roadAddress = roadAddress;
         this.detailAddress = detailAddress;
@@ -29,4 +35,5 @@ public class EditInfoDto {
         this.subText = subText;
         this.openHour = openHour;
     }
+
 }

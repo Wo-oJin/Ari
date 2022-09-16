@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Entity
 public class Store implements Serializable{
 
