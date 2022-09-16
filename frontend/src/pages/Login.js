@@ -6,7 +6,7 @@ import axios from "axios";
 import { authState, nameState } from "../state";
 import "../pages/Login.css";
 import Header from "../components/Header";
-import { reissue } from "../services/jwt/reissue";
+import { Reissue } from "../services/jwt/Reissue";
 import Cookies from "universal-cookie";
 
 const Formbox = styled.div`
@@ -92,8 +92,7 @@ const Login = () => {
           });
 
           // accessToken 만료하기 1분 전에 로그인 연장
-          const a = setTimeout(reissue, parseInt(accessTokenExpireIn - 60000));
-          clearTimeout(a);
+          setTimeout(() => Reissue, parseInt(accessTokenExpireIn - 60000));
 
           console.log("로그인>>" + JSON.stringify(res.data));
           if (res.data.result === "fail") {

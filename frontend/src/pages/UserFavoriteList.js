@@ -2,28 +2,20 @@ import { React, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/StoreFavoriteList.css";
-import axios from "axios";
-import Cookies from "universal-cookie";
+import { customAxios } from "./customAxios";
 
 const UserFavoriteList = () => {
   const [likeStores, setLikeStores] = useState([]); // 객체를 요소로 갖는 배열
-
-  const cookies = new Cookies();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // 페이지 처음 렌더링될 때 찜한 가게 리스트 받아오기
   useEffect(() => {
     const initialFavoriteStore = async () => {
       try {
-        await axios
-          .get("/member/like", {
-            headers: {
-              Authorization: `Bearer ${cookies.get("accessToken")}`,
-            },
-          })
-          .then((res) => {
-            // console.log("res.data.data>>"+res.data.data);
-            setLikeStores(res.data.data);
-          });
+        await customAxios.get("/member/like").then((res) => {
+          setLikeStores(res.data.data);
+          setIsLoaded(true);
+        });
       } catch (e) {
         console.log(e);
       }
@@ -31,7 +23,7 @@ const UserFavoriteList = () => {
     initialFavoriteStore();
   }, []);
 
-  if (!likeStores) {
+  if (!isLoaded) {
     return <h1>로딩 중</h1>;
   } else {
     return (

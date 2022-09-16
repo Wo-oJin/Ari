@@ -2,7 +2,7 @@ import { React, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/StoreEditPrivateEvent.css";
-import axios from "axios";
+import { customAxios } from "./customAxios";
 
 const StoreEditPrivateEvent = () => {
   const [newInfo, setNewInfo] = useState("");
@@ -21,7 +21,7 @@ const StoreEditPrivateEvent = () => {
 
   const onDelete = async () => {
     try {
-      await axios
+      await customAxios
         .post("/delete/self-event", {
           eventNum: index,
         })
@@ -36,7 +36,7 @@ const StoreEditPrivateEvent = () => {
 
   const onEdit = async () => {
     try {
-      await axios
+      await customAxios
         .post("/edit/self-event", {
           newInfo: newInfo,
           eventNum: index,
