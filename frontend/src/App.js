@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import { reissue } from "./services/jwt/reissue";
 
 import Main from "./components/Main";
 import LoginRegister from "./components/LoginRegister";
@@ -29,23 +27,9 @@ import RedirectLogin from "./pages/RedirectLogin";
 import BoardListView from "./pages/BoardListView";
 
 function App() {
-  // 처음 렌더링될 때 한 번 실행
-  useEffect(() => {
-    const a = async () => {
-      const result = await reissue(); // 토큰 갱신 요청
-      // console.log("result>>" + JSON.stringify(result));
-      if (result.result === "fail") {
-        console.log(result.massage);
-      } else {
-        console.log(result.massage);
-      }
-    };
-    a();
-  }, []);
-
   return (
-    <RecoilRoot>
-      <BrowserRouter>
+    <BrowserRouter>
+      <RecoilRoot>
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/loginRegister" element={<LoginRegister />}></Route>
@@ -85,8 +69,8 @@ function App() {
             element={<BoardListView />}
           ></Route>
         </Routes>
-      </BrowserRouter>
-    </RecoilRoot>
+      </RecoilRoot>
+    </BrowserRouter>
   );
 }
 
