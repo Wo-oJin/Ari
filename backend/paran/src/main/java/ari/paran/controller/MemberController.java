@@ -5,6 +5,7 @@ import ari.paran.domain.store.Store;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.dto.response.board.MemberToStoreDto;
+import ari.paran.dto.response.store.MainResult;
 import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +27,16 @@ public class MemberController {
     private final Response response;
 
     @GetMapping("/stores")
-    public List<String> getAuthorStore(Principal principal){
+    public MainResult getAuthorStore(Principal principal){
         Long memberId = Long.parseLong(principal.getName());
         Member member = memberService.getMemberInfoById(memberId);
 
-        return member.getStores().stream()
-                .map(Store :: getName)
+        List<MemberToStoreDto> result =
+                member.getStores().stream()
+                .map(store -> new MemberToStoreDto(store.getId(), store.getName()))
                 .collect(Collectors.toList());
+
+        return new MainResult(result);
     }
 
     @PostMapping("/favorite/toggle")

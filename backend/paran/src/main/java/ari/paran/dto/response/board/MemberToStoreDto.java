@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class MemberToStoreDto {
 
-    private String owner;
+    private Long id;
     private String storeName;
 
 }

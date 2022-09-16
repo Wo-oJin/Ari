@@ -109,13 +109,26 @@ public class FileService {
         List<StoreImgFile> storeImages = store.getStoreImgFiles();
         List<String> base64Images = new ArrayList<>();
 
-        for(StoreImgFile imgFile : storeImages) {
-            FileInputStream imageStream = new FileInputStream(imgFile.getFileUrl() + imgFile.getFilename());
+        if(base64Images.isEmpty()){
+            String fileUrl = System.getProperty("user.dir") + detailUrl;
+            String fileName = "default.jpg";
+
+            FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
             byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());
             String result = new String(bytes, "UTF-8");
             imageStream.close();
 
             base64Images.add(result);
+        }
+        else {
+            for (StoreImgFile imgFile : storeImages) {
+                FileInputStream imageStream = new FileInputStream(imgFile.getFileUrl() + imgFile.getFilename());
+                byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());
+                String result = new String(bytes, "UTF-8");
+                imageStream.close();
+
+                base64Images.add(result);
+            }
         }
 
         return base64Images;
@@ -125,15 +138,31 @@ public class FileService {
         List<String> base64Images = new ArrayList<>();
         List<ArticleImgFile> articleImages = article.getImgFiles();
 
-        for(int i=0;i<count;i++) {
-            ArticleImgFile articleImgFile = articleImages.get(i);
-            FileInputStream imageStream = new FileInputStream(articleImgFile.getFileUrl() + articleImgFile.getFilename());
+        log.info("article image start");
 
-            byte[] imgBytes = imageStream.readAllBytes();
-            byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
-            String imgStr = new String(byteEnc64, "UTF-8");
+        if(articleImages.isEmpty()){
+            log.info("11111");
+            String fileUrl = System.getProperty("user.dir") + detailUrl;
+            String fileName = "default.png";
 
-            base64Images.add(imgStr);
+            FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
+            byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());
+            String result = new String(bytes, "UTF-8");
+            imageStream.close();
+
+            base64Images.add(result);
+        }else {
+            log.info("22222");
+            for (int i = 0; i < count; i++) {
+                ArticleImgFile articleImgFile = articleImages.get(i);
+                FileInputStream imageStream = new FileInputStream(articleImgFile.getFileUrl() + articleImgFile.getFilename());
+
+                byte[] imgBytes = imageStream.readAllBytes();
+                byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
+                String imgStr = new String(byteEnc64, "UTF-8");
+
+                base64Images.add(imgStr);
+            }
         }
 
         return base64Images;

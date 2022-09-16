@@ -46,7 +46,7 @@ public class BoardService {
                                 .title(article.getTitle())
                                 .author(article.getMember().getStores().get(0).getName())
                                 .createDate(article.getCreateDate())
-                                .image(article.getImgFiles().isEmpty() ? null : fileService.getArticleImage(article, 1).get(0))
+                                .image(fileService.getArticleImage(article, 1).get(0))
                                 .build();
             } catch (IOException e) {
                 throw new RuntimeException(e);
