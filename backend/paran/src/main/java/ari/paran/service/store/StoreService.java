@@ -64,10 +64,12 @@ public class StoreService {
 
         Long ownerId = Long.valueOf(principal.getName());
         List<Store> stores = memberRepository.findById(ownerId).get().getStores();
+        log.info("stores 정보: {}", stores.isEmpty());
         List<EditInfoDto> existingInfos = new ArrayList<>();
 
         for (Store store : stores) {
             List<String> existingImages = fileService.loadImage(store);
+            log.info("store 정보: {}", store.getName());
             EditInfoDto existingInfo = new EditInfoDto(store.getId(), store.getName(), store.getAddress().getRoadAddress(), store.getAddress().getDetailAddress(),
                     store.getOwnerName(), store.getPhoneNumber(), existingImages, store.getSubText(), store.getOpenTime());
 
@@ -85,7 +87,7 @@ public class StoreService {
                                       Principal principal) throws IOException {
         //1. 우선 해당 가게의 기존 이미지 파일을 모두 삭제
         //Long ownerId = Long.valueOf(principal.getName());
-        Store store = storeRepository.findById(editInfoDto.getId()).get();
+        Store store = storeRepository.findById(editInfoDto.getStoreId()).get();
         //1-1. 이미지 파일을 삭제. 파일 경로 정해야 함
         for (StoreImgFile imgFile : store.getStoreImgFiles()) {
             File file = new File(imgFile.getFileUrl() + imgFile.getFilename());
@@ -180,7 +182,7 @@ public class StoreService {
         Store newStore = new Store();
         newStore.setMember(memberRepository.findById(ownerId).get());
         storeRepository.save(newStore);
-        editInfoDto.setId(newStore.getId());
+        editInfoDto.setStoreId(newStore.getId());
 
         return editInfo(editInfoDto, images, principal);
     }

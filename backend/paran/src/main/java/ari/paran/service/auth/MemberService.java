@@ -234,24 +234,7 @@ public class MemberService {
 
         log.info(loginDto.toString());
         Member member = memberRepository.findByEmail(loginDto.getEmail()).orElse(null);
-
-        log.info("sdfsdf");
-        Store store1 = Store.builder()
-                .name("우진이의 가게1")
-                .member(member)
-                .build();
-        member.addStore(store1);
-
-        Store store2 = Store.builder()
-                .name("우진이의 가게2")
-                .member(member)
-                .build();
-        member.addStore(store2);
-
-        storeService.save(store1);
-        storeService.save(store2);
-
-        log.info("sdfsdf");
+        
 
         if (member == null || !passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
             URI redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")

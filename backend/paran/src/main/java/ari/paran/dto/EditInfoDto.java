@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class EditInfoDto {
 
-    private Long id;
+    private Long storeId;
     private String storeName;
     private String roadAddress;
     private String detailAddress;
@@ -25,7 +25,7 @@ public class EditInfoDto {
 
     public EditInfoDto(Long id, String storeName, String roadAddress, String detailAddress, String ownerName, String phoneNumber, List<String> existingImages, String subText, String openHour) {
 
-        this.id = id;
+        this.storeId = id;
         this.storeName = storeName;
         this.roadAddress = roadAddress;
         this.detailAddress = detailAddress;

@@ -122,6 +122,7 @@ public class JwtController {
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
+
         return memberService.reissue(reissue);
     }
 
