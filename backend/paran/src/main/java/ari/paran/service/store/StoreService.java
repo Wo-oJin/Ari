@@ -142,7 +142,6 @@ public class StoreService {
     }
 
     public ResponseEntity<?> addEvent(Long storeId, String info, Principal principal) {
-        Long ownerId = Long.valueOf(principal.getName());
         Store store = storeRepository.findById(storeId).get();
 
         Event newEvent = Event.builder().store(store).info(info).build();
@@ -186,6 +185,8 @@ public class StoreService {
 
         return editInfo(editInfoDto, images, principal);
     }
+
+
 
     public Store findByName(String storeName) {
         return storeRepository.findByName(storeName).orElse(null);

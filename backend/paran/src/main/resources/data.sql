@@ -17,8 +17,8 @@ INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text,
     VALUES ("경기 수원시 영통구 아주로 18", 4, "1층", "오전 9시 ~ 오후 9시", "카리스마 한 줄 소개", "카리스마 아주대점", "한수연", "010-5678-1234", 0);
 
 
-INSERT INTO signup_code (ID, CODE) VALUES (1, '11111');
-INSERT INTO signup_code (ID, CODE) VALUES (2, '22222');
+INSERT INTO signup_code (id, code) VALUES (1, '11111');
+INSERT INTO signup_code (id, code) VALUES (2, '22222');
 
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사1", "2022-08-01","2022-09-01");
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사2", "2022-09-01","2022-10-01");
