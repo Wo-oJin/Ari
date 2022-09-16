@@ -56,6 +56,7 @@ public class DetailStoreDto {
 
     public void setFavorite(boolean favorite){
         this.favorite = favorite;
+
     }
 
 }
