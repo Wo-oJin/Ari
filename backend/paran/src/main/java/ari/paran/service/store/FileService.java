@@ -111,7 +111,7 @@ public class FileService {
 
         if(base64Images.isEmpty()){
             String fileUrl = System.getProperty("user.dir") + detailUrl;
-            String fileName = "default.jpg";
+            String fileName = "default.png";
 
             FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
             byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());
@@ -138,10 +138,7 @@ public class FileService {
         List<String> base64Images = new ArrayList<>();
         List<ArticleImgFile> articleImages = article.getImgFiles();
 
-        log.info("article image start");
-
         if(articleImages.isEmpty()){
-            log.info("11111");
             String fileUrl = System.getProperty("user.dir") + detailUrl;
             String fileName = "default.png";
 
@@ -152,7 +149,6 @@ public class FileService {
 
             base64Images.add(result);
         }else {
-            log.info("22222");
             for (int i = 0; i < count; i++) {
                 ArticleImgFile articleImgFile = articleImages.get(i);
                 FileInputStream imageStream = new FileInputStream(articleImgFile.getFileUrl() + articleImgFile.getFilename());
