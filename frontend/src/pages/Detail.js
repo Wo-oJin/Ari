@@ -63,7 +63,7 @@ const Detail = () => {
   return (
     <div className="DetailContainer">
       <div className="Wrapper">
-        <img src="../images/detail.png" alt="이미지"></img>
+        <img className="StoreImg" src={`data:image/jpg;base64, ${data.images}`} alt="이미지"></img>
       </div>
       <button
         className="BackBtn"
