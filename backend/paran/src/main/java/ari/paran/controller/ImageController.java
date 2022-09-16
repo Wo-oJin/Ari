@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.*;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/image")
 public class ImageController {
 
@@ -29,7 +29,7 @@ public class ImageController {
     @GetMapping("/get/{store_id}")
     public String getImage(@PathVariable Long store_id, Model model) throws IOException {
         Store store = storeService.findStore(store_id);
-        List<String> fileImg = fileService.getImage(store);
+        List<String> fileImg = fileService.loadImage(store);
 
         System.out.println(fileImg.size());
 
@@ -40,8 +40,7 @@ public class ImageController {
     @PostMapping("/upload")
     public String saveImage(HttpServletRequest request, @RequestParam List<MultipartFile> images) throws IOException {
 
-        System.out.println("sdfsdfsdfdsf");
-        fileService.saveImage(1L, images);
+        fileService.saveStoreImage(1L, images);
 
         return "upload";
     }

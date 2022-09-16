@@ -1,39 +1,45 @@
 package ari.paran.dto.response.store;
 
 import ari.paran.domain.Event;
-import ari.paran.domain.Partnership;
+import ari.paran.domain.member.Member;
+import ari.paran.domain.store.Partnership;
 import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
 import ari.paran.service.store.FileService;
-import lombok.Data;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 public class DetailStoreDto {
 
-    private final List<DetailStore> storeList;
+    private Long id;
+    private String name;
+    private String ownerName;
+    private Address address;
+    private String phoneNumber;
+    private String openHour;
+    private String subText;
+    private boolean favorite;
+    private List<Store.Partner> partners;
+    private List<Event> events;
+    private List<String> images;
+    private boolean privateEvent;
+    private boolean stamp;
 
-    public DetailStoreDto(){
-        this.storeList = new ArrayList<DetailStore>();
-    }
+    public DetailStoreDto(Store store) throws IOException {
 
-    public void addStore(Store store, FileService fileService) throws IOException {
-        DetailStore detailStore = new DetailStore();
-
-        detailStore.setId(store.getId());
-        detailStore.setName(store.getName());
-        detailStore.setOwnerName(store.getOwnerName());
-        detailStore.setAddress(store.getAddress());
-        detailStore.setOpenHour(store.getOpenTime());
-        detailStore.setSubText(store.getSubText());
-        detailStore.setPhoneNumber(store.getPhoneNumber());
-        detailStore.setImage(fileService.getImage(store));
-        detailStore.setPrivateEvent(store.getPrivateEvent());
-        detailStore.setStamp(store.getStamp());
+        this.id = store.getId();
+        this.name = store.getName();
+        this.ownerName = store.getOwnerName();
+        this.address = store.getAddress();
+        this.openHour = store.getOpenTime();
+        this.subText = store.getSubText();
+        this.phoneNumber = store.getPhoneNumber();
+        this.privateEvent = store.getPrivateEvent();
+        this.events = store.getEventList();
 
         List<Partnership> partners = store.getPartnershipList();
 
@@ -41,55 +47,15 @@ public class DetailStoreDto {
             partner.setPartnerLocation(store.getAddress().getRoadAddress());
         }
 
-        detailStore.setPartners(store.getPartners());
-        detailStore.setEvents(store.getEventList());
-
-        storeList.add(detailStore);
+        this.partners = store.getPartners();
     }
 
-    public DetailStoreDto.DetailStore makeDetailStoreDto(Store store, FileService fileService) throws  IOException{
-        DetailStore detailStore = new DetailStore();
-
-        detailStore.setId(store.getId());
-        detailStore.setName(store.getName());
-        detailStore.setOwnerName(store.getOwnerName());
-        detailStore.setAddress(store.getAddress());
-        detailStore.setOpenHour(store.getOpenTime());
-        detailStore.setSubText(store.getSubText());
-        detailStore.setPhoneNumber(store.getPhoneNumber());
-        detailStore.setImage(fileService.getImage(store));
-        detailStore.setPrivateEvent(store.getPrivateEvent());
-        detailStore.setStamp(store.getStamp());
-
-        return detailStore;
+    public void setStoreImages(List<String> images){
+        this.images = images;
     }
 
-    @Data
-    private static class DetailStore{
-
-        private Long id;
-        private String name;
-        private String ownerName;
-        private Address address;
-        private String phoneNumber;
-        private String openHour;
-        private String subText;
-        private List<Store.Partner> partners;
-        private List<Event> events;
-        private List<String> image;
-        private boolean privateEvent;
-        private boolean stamp;
-
-        public Store toStore() {
-            return Store.builder()
-                    .name(getName())
-                    .address(getAddress())
-                    .ownerName(getOwnerName())
-                    .phoneNumber(getPhoneNumber())
-                    .subText(getSubText())
-                    .openTime(getOpenHour())
-                    .build();
-        }
+    public void setFavorite(boolean favorite){
+        this.favorite = favorite;
 
     }
 

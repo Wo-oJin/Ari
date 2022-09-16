@@ -1,6 +1,5 @@
 package ari.paran.dto.response;
 
-import ari.paran.domain.Authority;
 import lombok.*;
 
 @Getter

@@ -10,6 +10,7 @@ const StoreModal = ({
 }) => {
   //영역 바깥을 클릭하면 모달창이 꺼지도록 모달 컴포넌트를 ref로 지정
   const modalRef = useRef();
+
   useEffect(() => {
     //컴포넌트가 생성된 시점에 mousedown이벤트를 추가하고 clickModalOutside 호출
     document.addEventListener("mousedown", clickModalOutside);
@@ -30,7 +31,7 @@ const StoreModal = ({
   };
 
   return (
-    <Link to={`/detail/${data.store_id}`}>
+    <Link to={`/detail/${data.storeId}`}>
       <div
         className="StoreModal SlideAnimation"
         ref={modalRef}
@@ -40,14 +41,15 @@ const StoreModal = ({
           className="StoreImg"
           src={`data:image/jpg;base64, ${data.image}`}
           width={"100%"}
+          alt="images"
         ></img>
         <div className="StoreModalContent">
           <span className="StoreModalTitle">{data.name}</span>
           <div className="StoreModalLabels">
             <>
-              {data.partners_name.length > 0 ? (
+              {data.partnersName.length > 0 ? (
                 <span className="Label">
-                  {data.partners_name[0]} +{data.partners_name.length} 제휴 중
+                  {data.partnersName[0]} +{data.partnersName.length} 제휴 중
                 </span>
               ) : null}
             </>
@@ -55,9 +57,6 @@ const StoreModal = ({
               {data.private_event ? (
                 <span className="Label">이벤트 중</span>
               ) : null}
-            </>
-            <>
-              {data.stamp ? <span className="Label">스탬프 가능</span> : null}
             </>
           </div>
         </div>

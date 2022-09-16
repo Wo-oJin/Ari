@@ -34,10 +34,10 @@ public class JwtFilter extends OncePerRequestFilter {
         String jwt = resolveToken(request);
 
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            // (추가) Redis 에 해당 accessToken logout 여부 확인
+            /*1. Redis 에 해당 accessToken logout 여부 확인 */
             String isLogout = (String)redisTemplate.opsForValue().get(jwt);
             if (ObjectUtils.isEmpty(isLogout)) {
-                // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
+                /*2. 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장 */
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
@@ -47,11 +47,14 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     public String resolveToken(HttpServletRequest request) {
-
+        /*1. 헤더에서 토큰을 꺼냄*/
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+
+        /*2. 토큰이 담겨 있을 시, 앞의 "Bearer " 제거*/
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
+
         return null;
     }
 }

@@ -1,6 +1,5 @@
 package ari.paran.jwt;
 
-import ari.paran.domain.Authority;
 import ari.paran.dto.response.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -30,7 +29,6 @@ public class TokenProvider {
     private static final String BEARER_TYPE = "bearer"; // token type
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
-
     private final Key private_key;
 
     public TokenProvider(@Value("${jwt.secret}") String secretKey) {

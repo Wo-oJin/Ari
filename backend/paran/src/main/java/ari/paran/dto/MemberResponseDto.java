@@ -1,6 +1,6 @@
 package ari.paran.dto;
 
-import ari.paran.domain.Member;
+import ari.paran.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

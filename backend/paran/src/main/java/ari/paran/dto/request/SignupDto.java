@@ -1,19 +1,21 @@
 package ari.paran.dto.request;
 
-import ari.paran.domain.Authority;
-import ari.paran.domain.Member;
+import ari.paran.domain.member.Authority;
+import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Store;
 import ari.paran.domain.store.Address;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-@Data
-@Slf4j
+@Getter
+@NoArgsConstructor
 public class SignupDto {
 
     @NotBlank(message = "아이디를 입력해주세요")
@@ -32,13 +34,14 @@ public class SignupDto {
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z]{2,30}$", message = "숫자 또는 특수문자를 제외한 2자이상 입력해주세요")
     private String nickname;
 
+    @NotBlank
     private int age;
 
     private String gender;
 
     private Authority authority = Authority.ROLE_USER;
 
-    private boolean fromOauth = false;
+    private int fromOauth = 0;
 
     private String storeName;
     private String ownerName;
@@ -49,18 +52,31 @@ public class SignupDto {
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "휴대폰번호를 확인해 주세요")
     private String phoneNumber;
 
+    @NotBlank
+    private Address address;
 
-    public boolean getFromAuth(){
-        return this.fromOauth;
+    @Builder
+    public SignupDto(String username, String password, String email, String nickname,
+                     int age, String gender, int fromOauth){
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.nickname = nickname;
+        this.age = age;
+        this.fromOauth = fromOauth;
+        this.gender = gender;
     }
 
     public Member toMember(PasswordEncoder passwordEncoder) {
+        //log.info("비밀번호 = {}", passwordEncoder.encode(password));
+
         return Member.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .nickname(nickname)
                 .gender(gender)
                 .age(age)
+                .fromOauth(fromOauth)
                 .authority(Authority.ROLE_USER)
                 .build();
     }

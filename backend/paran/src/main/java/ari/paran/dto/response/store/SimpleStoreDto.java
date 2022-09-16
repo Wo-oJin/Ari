@@ -2,50 +2,34 @@ package ari.paran.dto.response.store;
 
 import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
-import ari.paran.service.store.FileService;
-import ari.paran.service.store.StoreService;
-import lombok.Data;
 import lombok.Getter;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 public class SimpleStoreDto {
 
-    private final List<SimpleStore> storeList;
+    private Long storeId;
+    private String name;
+    private Address address;
+    private List<String> partnersName;
+    private List<String> images;
+    private boolean privateEvent;
+    private boolean stamp;
 
-    public SimpleStoreDto(){
-        this.storeList = new ArrayList<SimpleStore>();
+    public SimpleStoreDto(Store store){
+        this.storeId = store.getId();
+        this.name = store.getName();
+        this.address = store.getAddress();
+        this.privateEvent = store.getPrivateEvent();
     }
 
-    public void addStore(Store store, FileService fileService, StoreService storeService) throws IOException {
-        SimpleStore simpleStore = new SimpleStore();
-
-        simpleStore.setStoreId(store.getId());
-        simpleStore.setName(store.getName());
-        simpleStore.setAddress(store.getAddress());
-        simpleStore.setPartnersName(storeService.getPartnersName(store.getName()));
-        simpleStore.setImage(fileService.getImage(store));
-        simpleStore.setPrivateEvent(store.getPrivateEvent());
-        simpleStore.setStamp(store.getStamp());
-
-        // 가게 주소 // 가게 사진, 가게 이름, 협력 가게 목록, 협력/개인/스탬프 이벤트 진행 여부가 표시된다.
-
-        storeList.add(simpleStore);
+    public void setPartnersName(List<String> partnersName) {
+        this.partnersName = partnersName;
     }
 
-    @Data
-    public class SimpleStore{
-
-        private Long storeId;
-        private String name;
-        private Address address;
-        private List<String> partnersName;
-        private List<String> image;
-        private boolean privateEvent;
-        private boolean stamp;
+    public void setImage(List<String> images){
+        this.images = images;
     }
 
 }

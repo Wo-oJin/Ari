@@ -4,15 +4,22 @@ import ari.paran.dto.*;
 import ari.paran.dto.request.LoginDto;
 import ari.paran.dto.request.SignupDto;
 import ari.paran.dto.request.TokenRequestDto;
-import ari.paran.service.Helper;
-import ari.paran.service.MemberService;
+import ari.paran.service.auth.Helper;
+import ari.paran.service.auth.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -27,7 +34,26 @@ public class JwtController {
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-        return memberService.signupUser(signupDto);
+
+        if(memberService.signupUser(signupDto)){
+            return response.success("회원가입에 성공했습니다.");
+        }
+        else{
+            if(signupDto.getFromOauth() == 0)
+                return response.fail("입력하신 이메일은 사용 중입니다.", HttpStatus.BAD_REQUEST);
+            else {
+                URI redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
+                        .queryParam("loginFail", "{lf}")
+                        .encode()
+                        .buildAndExpand(true)
+                        .toUri();
+
+                HttpHeaders httpHeaders = new HttpHeaders();
+                httpHeaders.setLocation(redirectUrl);
+
+                return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+            }
+        }
     }
 
     @PostMapping("/signup-owner")
@@ -36,7 +62,26 @@ public class JwtController {
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-        return memberService.signupOwner(signupDto);
+
+        if (memberService.signupOwner(signupDto)) {
+            return response.success("회원가입에 성공했습니다.");
+        }
+        else{
+            if(signupDto.getFromOauth() == 0)
+                return response.fail("입력하신 이메일은 사용 중입니다.", HttpStatus.BAD_REQUEST);
+            else {
+                URI redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
+                        .queryParam("loginFail", "{lf}")
+                        .encode()
+                        .buildAndExpand(true)
+                        .toUri();
+
+                HttpHeaders httpHeaders = new HttpHeaders();
+                httpHeaders.setLocation(redirectUrl);
+
+                return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+            }
+        }
     }
 
     @PostMapping("/signup-code")
@@ -61,11 +106,13 @@ public class JwtController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto loginDto, Errors errors) {
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto, Errors errors) throws URISyntaxException {
         //validation check
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
+
+        log.info("일반 로그인 성공");
         return memberService.login(loginDto);
     }
 

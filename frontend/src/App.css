@@ -17,6 +17,14 @@ body {
   letter-spacing: 0.2px;
 }
 
+textarea {
+  font-family: work-sans, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 24px;
+  letter-spacing: 0.2px;
+}
+
 a {
   text-decoration: none;
   color: inherit;
@@ -111,8 +119,16 @@ button {
   border-bottom: 1px solid #9b9b9b;
 }
 
-.header button {
+.backBtn {
   position: absolute;
   top: 20px;
+  left: 20px;
+  cursor: pointer;
+}
+.rightBtn {
+  position: absolute;
   right: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
 }

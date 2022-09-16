@@ -129,7 +129,7 @@
     width: 142px
 }
 
-.flex-align {
+.flexContainer {
     display: flex;
     justify-content: center;
     align-items: center;

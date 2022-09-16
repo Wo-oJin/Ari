@@ -1,0 +1,153 @@
+.viewContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+.viewImg {
+  width: 330px;
+  height: 220px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0px 4px 4px rgb(174, 174, 174);
+}
+.viewContentBox {
+  width: 320px;
+}
+.viewContentHeader {
+  margin-top: 10px;
+  width: 100%;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border-bottom: 1px solid #dbdbdb;
+}
+.location {
+  font-size: 11px;
+}
+.viewContentTop {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.title {
+  font-size: 18px;
+  font-weight: 700;
+}
+.writeDate {
+  font-size: 14px;
+  color: #757474;
+}
+.content {
+  margin-bottom: 10px;
+}
+
+.viewContentMiddle {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.viewContentFooter {
+  display: flex;
+}
+.likeContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-right: 1px solid #dbdbdb;
+}
+.periodContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 10px;
+  width: 52%;
+}
+.periodContainer > span {
+  font-size: 12px;
+  line-height: 1.2;
+}
+.label {
+  color: #3d3d3d;
+}
+
+.chatBtn {
+  background-color: #386ffe;
+  padding: 5px 15px;
+  color: white;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.btnBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 100px;
+  height: 37px;
+}
+.modifyBtn {
+  width: 70px;
+  height: 32px;
+  background-color: #386ffe;
+  padding: 5px 15px;
+  border-radius: 10px;
+  color: white;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.deleteBtn {
+  width: 70px;
+  height: 32px;
+  background-color: #d86f6f;
+  padding: 5px 15px;
+  border-radius: 10px;
+  color: white;
+  margin: 0;
+}
+.deletePopUp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #757474;
+  border-radius: 20px;
+  background-color: white;
+  width: 300px;
+  height: 120px;
+  z-index: 20;
+  position: absolute;
+  top: 40%;
+  left: 12%;
+}
+.deletePopUp span {
+  font-weight: 600;
+}
+.popUpBtnBox {
+  margin-top: 10px;
+}
+.popUpBtnBox button {
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 10px;
+  width: auto;
+  padding: 5px 10px;
+}
+.popUpDeleteBtn {
+  color: white;
+  background-color: #d86f6f;
+  margin-left: 20px;
+}
+.popUpCancleBtn {
+  color: #757474;
+  background-color: #dbdbdb;
+  margin-right: 20px;
+}

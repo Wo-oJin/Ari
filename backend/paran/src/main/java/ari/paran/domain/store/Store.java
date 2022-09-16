@@ -1,9 +1,8 @@
 package ari.paran.domain.store;
 
 import ari.paran.domain.Event;
-import ari.paran.domain.Member;
-import ari.paran.domain.Partnership;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import ari.paran.domain.member.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.util.LinkedMultiValueMap;
@@ -14,20 +13,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Store implements Serializable{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
 
     @Column(name = "store_name")
     private String name;
@@ -42,94 +35,119 @@ public class Store implements Serializable{
     @Column(name = "phone")
     private String phoneNumber;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private List<ImgFile> imgFile = new ArrayList<>();
-
     @Column(name = "open_time")
     private String openTime;
 
     @Column(name = "sub_text")
     private String subText;
 
-    @ColumnDefault("0")
     @Column
+    @ColumnDefault("0")
+    @JoinColumn(name = "private_event")
     private boolean privateEvent;
 
-    @ColumnDefault("0")
-    @Column
-    private boolean stamp;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<StoreImgFile> storeImgFiles = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<Partnership> partnershipList = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<Event> eventList = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<Favorite> favorites = new ArrayList<>();
 
     @Builder
-    public Store(String name, String ownerName, Address address, String phoneNumber, Member member, List<ImgFile> imgFile,
+    public Store(String name, String ownerName, Address address, String phoneNumber, Member member, List<StoreImgFile> storeImgFile,
                  String subText, String openTime) {
         this.name = name;
         this.ownerName = ownerName;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.member = member;
-        this.imgFile = imgFile;
+        this.storeImgFiles = storeImgFile;
         this.subText = subText;
         this.openTime = openTime;
-
     }
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private List<Partnership> partnershipList;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private List<Event> eventList;
 
     public boolean getPrivateEvent(){
         return this.privateEvent;
     }
 
-    public boolean getStamp(){
-        return this.stamp;
+    public void setMember(Member member){
+        this.member = member;
     }
 
+    public void addFavorite(Favorite favorite) {
+        this.favorites.add(favorite);
+    }
 
     // 비즈니스 로직
     public List<Partner> getPartners(){
 
         List<Partner> partners = new ArrayList<>();
-        MultiValueMap<String, EventInfo> partners_info = new LinkedMultiValueMap<>();
+        MultiValueMap<String, EventInfo> partnersInfo = new LinkedMultiValueMap<>();
 
         for(Partnership partnership : partnershipList){
             String partnerName = partnership.getPartnerName();
             String info = partnership.getInfo();
-            LocalDate startDate = partnership.getStart_date();
-            LocalDate finishDate = partnership.getFinish_date();
+            LocalDate startDate = partnership.getStartDate();
+            LocalDate finishDate = partnership.getFinishDate();
 
-            partners_info.add(partnerName, new EventInfo(info, startDate, finishDate));
+            partnersInfo.add(partnerName, new EventInfo(info, startDate, finishDate));
         }
 
-        Set<String> keys = partners_info.keySet();
+        Set<String> keys = partnersInfo.keySet();
         for(String key : keys){
-            Partner partner = new Partner(key, address.getRoadAddress(), partners_info.get(key));
+            Partner partner = new Partner(key, address.getRoadAddress(), partnersInfo.get(key));
             partners.add(partner);
         }
 
         return partners;
     }
 
+    public void updateInfo(String name, Address address, String ownerName, String phoneNumber, String subText, String openTime) {
+        this.name = name;
+        this.address = address;
+        this.ownerName = ownerName;
+        this.phoneNumber = phoneNumber;
+        this.subText = subText;
+        this.openTime = openTime;
+    }
+
     @Getter
     @AllArgsConstructor
-    public class EventInfo{
+    public static class Partner{
+        private String partnerName;
+        private String roadAddress;
+        private List<EventInfo> infos;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    private static class EventInfo{
         private String eventInfo;
         private LocalDate startDate;
         private LocalDate finishDate;
 
     }
 
-    @Getter
-    @AllArgsConstructor
-    public class Partner{
-        private String partnerName;
-        private String roadAddress;
-        private List<EventInfo> infos = new ArrayList<>();
+    public void addImgFile(StoreImgFile storeImgFile){
+        this.storeImgFiles.add(storeImgFile);
+    }
+
+    public void changeEventStatus(boolean status) {
+        this.privateEvent = status;
     }
 
 }
