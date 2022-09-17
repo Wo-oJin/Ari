@@ -4,7 +4,7 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { IoMdCloseCircle } from "react-icons/io";
 import { HiOutlineCamera } from "react-icons/hi";
 import "./BoardWrite.css";
-import axios from "axios";
+import { customAxios } from "./customAxios";
 
 const BoardWrite = () => {
   const [imageUrl, setImageUrl] = useState([]);
@@ -47,7 +47,7 @@ const BoardWrite = () => {
     formData.append("period", period);
     //formData.append("authorStore", authorStore);
 
-    axios
+    customAxios
       .post("/board/write", formData, {
         headers: {
           "Content-Type": "multipart/form-data",

@@ -1,4 +1,4 @@
-import axios from "axios";
+import { customAxios } from "./customAxios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
@@ -18,7 +18,7 @@ const BoardListView = () => {
   const [isDeletePopUpOpend, setIsDeletePopUpOpend] = useState(false);
 
   const getBoardData = async () => {
-    axios.get(`/board/list/${articleId}`).then((response) => {
+    customAxios.get(`/board/list/${articleId}`).then((response) => {
       console.log(response.data);
       setData(response.data);
       setIsfavorited(response.data.favorite);
@@ -32,7 +32,7 @@ const BoardListView = () => {
 
   //찜 버튼 클릭 함수
   const onLikeClick = async () => {
-    await axios
+    await customAxios
       .post(`/member/favorite/toggle?storeId=${data.storeId}`)
       .then((res) => {
         setIsfavorited(!isFavorited);
@@ -50,7 +50,7 @@ const BoardListView = () => {
 
   //게시글 삭제 함수
   const deleteHandler = async () => {
-    await axios.post(`/board/delete/${articleId}`).then((res) => {
+    await customAxios.post(`/board/delete/${articleId}`).then((res) => {
       alert("삭제되었습니다.");
     });
     //팝업 닫기
