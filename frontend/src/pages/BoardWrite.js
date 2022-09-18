@@ -43,7 +43,7 @@ const BoardWrite = () => {
     formData.append("period", period);
     formData.append("author", authorStore);
 
-    console.log("dddd", authorStore)
+    console.log("dddd", authorStore);
 
     customAxios
       .post("/board/write", formData, {
@@ -105,6 +105,7 @@ const BoardWrite = () => {
   const changeSelectHandler = (e) => {
     setAuthorStore(authorList[e.target.value].storeName);
     setSelected(authorList[e.target.value].storeName);
+    console.log(authorStore, selected);
   };
   return (
     <>
@@ -166,11 +167,7 @@ const BoardWrite = () => {
           ></input>
           <div className="writeAuthor" placeholder="작성자 가게 선택">
             <span>작성자 가게 선택</span>
-            <select
-              className="writeSelect"
-              onChange={changeSelectHandler}
-              value={selected}
-            >
+            <select className="writeSelect" onChange={changeSelectHandler}>
               <option value={"--선택하세요--"}>--선택하세요--</option>
               {authorList &&
                 authorList.map((item, index) => {
