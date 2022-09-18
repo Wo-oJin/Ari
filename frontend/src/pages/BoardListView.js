@@ -80,7 +80,15 @@ const BoardListView = () => {
             <div className="viewContentMiddle">
               <div className="viewContentTop">
                 <span className="title">{data.title}</span>
-                <span className="writeDate">{data.createDate}</span>
+                <span className="writeDate">
+                  {data.createDate[0] +
+                    "/" +
+                    "0" +
+                    data.createDate[1] +
+                    "/" +
+                    "0" +
+                    data.createDate[2]}
+                </span>
               </div>
 
               <span className="content">{data.content}</span>

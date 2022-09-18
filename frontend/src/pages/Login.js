@@ -6,7 +6,7 @@ import axios from "axios";
 import { authState, nameState } from "../state";
 import "../pages/Login.css";
 import Header from "../components/Header";
-import { Reissue } from "../services/jwt/Reissue";
+import { Reissue } from "../services/jwt/reissue";
 import Cookies from "universal-cookie";
 
 const Formbox = styled.div`
