@@ -4,7 +4,6 @@ import ari.paran.domain.board.Article;
 import ari.paran.dto.response.board.DetailArticleDto;
 import ari.paran.dto.response.board.SimpleArticleDto;
 import ari.paran.dto.response.board.UpdateForm;
-import ari.paran.service.auth.MemberService;
 import ari.paran.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,18 +44,6 @@ public class BoardController {
         return boardService.findArticle(id, memberId);
     }
 
-    /*
-    @GetMapping("/write")
-    public String returnWritePage(){
-        return "boardwrite";
-    }
-
-    @GetMapping("/update/{id}")
-    public String returnUpdatePage(@PathVariable Long id){
-        return "boardupdate";
-    }
-     */
-
     @PostMapping("/write")
     @ResponseBody
     public void ArticleWrite(@ModelAttribute Article article,
@@ -76,7 +63,7 @@ public class BoardController {
         return boardService.findArticle(id, memberId);
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     @ResponseBody
     public void ArticleUpdate(@PathVariable Long id, @ModelAttribute Article article, List<MultipartFile> files) throws IOException {
         UpdateForm updateForm = UpdateForm.builder()
@@ -90,7 +77,7 @@ public class BoardController {
         boardService.updateArticle(updateForm, files);
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseBody
     public void ArticleDelete(@PathVariable Long id){
         boardService.deleteArticle(id);
