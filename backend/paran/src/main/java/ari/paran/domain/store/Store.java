@@ -96,10 +96,12 @@ public class Store implements Serializable{
     public List<Partner> getPartners(){
 
         List<Partner> partners = new ArrayList<>();
+        Map<String, String> partnerLocations = new HashMap<>();
         MultiValueMap<String, EventInfo> partnersInfo = new LinkedMultiValueMap<>();
 
         for(Partnership partnership : partnershipList){
             String partnerName = partnership.getPartnerName();
+            partnerLocations.put(partnerName, partnership.getPartnerLocation());
             String info = partnership.getInfo();
             LocalDate startDate = partnership.getStartDate();
             LocalDate finishDate = partnership.getFinishDate();
@@ -109,7 +111,7 @@ public class Store implements Serializable{
 
         Set<String> keys = partnersInfo.keySet();
         for(String key : keys){
-            Partner partner = new Partner(key, address.getRoadAddress(), partnersInfo.get(key));
+            Partner partner = new Partner(key, partnerLocations.get(key), partnersInfo.get(key));
             partners.add(partner);
         }
 
@@ -148,6 +150,10 @@ public class Store implements Serializable{
 
     public void changeEventStatus(boolean status) {
         this.privateEvent = status;
+    }
+
+    public String getFullAddress(){
+        return address.getRoadAddress() + " " + address.getDetailAddress();
     }
 
 }

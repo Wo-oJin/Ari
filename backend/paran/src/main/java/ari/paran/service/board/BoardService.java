@@ -44,7 +44,7 @@ public class BoardService {
                 return SimpleArticleDto.builder()
                                 .id(article.getId())
                                 .title(article.getTitle())
-                                .author(article.getMember().getStores().get(0).getName())
+                                .author(article.getAuthor())
                                 .createDate(article.getCreateDate())
                                 .image(fileService.getArticleImage(article, 1).get(0))
                                 .build();
@@ -66,6 +66,7 @@ public class BoardService {
                     .period(article.getPeriod())
                     .favorite(memberService.getMemberInfoById(memberId).isFavoriteStore(store))
                     .authority(article.getMember().getId() == memberId ? true : false)
+                    .location(store.getFullAddress())
                     .createDate(article.getCreateDate())
                     .images(fileService.getArticleImage(article, article.getImgFiles().size()))
                     .build();

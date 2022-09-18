@@ -75,7 +75,7 @@ const BoardListView = () => {
           <div className="viewContentBox">
             <div className="viewContentHeader">
               <span className="author">{data.author}</span>
-              <span className="location">어쩌구 저쩌구</span>
+              <span className="location">{data.location}</span>
             </div>
             <div className="viewContentMiddle">
               <div className="viewContentTop">

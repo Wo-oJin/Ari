@@ -14,6 +14,7 @@ public class SimpleStoreDto {
     private Address address;
     private List<String> partnersName;
     private String image;
+    
     private boolean privateEvent;
     private boolean stamp;
 

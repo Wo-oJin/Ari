@@ -24,7 +24,7 @@ public class Partnership {
     private Store store;
     @Column(name = "to_store_name")
     private String partnerName;
-    private transient String partnerLocation;
+    private String partnerLocation;
     private String info; // 제휴 정보
     private LocalDate startDate;
     private LocalDate finishDate;
