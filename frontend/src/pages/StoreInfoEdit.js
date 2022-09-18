@@ -40,6 +40,95 @@ const StoreInfoEdit = () => {
 
   const [storeIndex, setStoreIndex] = useState("0"); // 가게 탭 인덱스
 
+  // responseBody 임시 데이터 변수
+  // const dataArr = [
+  //   {
+  //     storeId: "1",
+  //     storeName: "미스터쉐프",
+  //     roadAddress: "원천동 월드컵로 206",
+  //     detailAddress: "7층",
+  //     ownerName: "이사장",
+  //     phoneNumber: "010-1111-1111",
+  //     subText: "안녕하세요. 미스터쉐픕니다",
+  //     openHour: "오전 9시 ~ 오후 6시",
+  //   },
+  //   {
+  //     storeId: "2",
+  //     storeName: "맥도날드",
+  //     roadAddress: "아리단길",
+  //     detailAddress: "3층",
+  //     ownerName: "박사장",
+  //     phoneNumber: "010-2222-2222",
+  //     subText: "맥도날드입니다!!",
+  //     openHour: "오전 10시 ~ 오후 7시",
+  //   },
+  //   {
+  //     storeId: "3",
+  //     storeName: "에그드랍",
+  //     roadAddress: "수원시 영통구 원천동",
+  //     detailAddress: "33층",
+  //     ownerName: "김사장",
+  //     phoneNumber: "010-3333-3333",
+  //     subText: "에그드랍입니다~!",
+  //     openHour: "오후 4시 ~ 오전 3시",
+  //   },
+  //   {
+  //     storeId: "4",
+  //     storeName: "아맛집",
+  //     roadAddress: "수원시 영통구 원천동",
+  //     detailAddress: "9층",
+  //     ownerName: "봉사장",
+  //     phoneNumber: "010-4444-4444",
+  //     subText: "아맛집입니다!!!",
+  //     openHour: "오후 2시 ~ 오전 5시",
+  //   },
+  // ];
+
+  // useEffect(() => {
+  //   setStoreInfoArr(dataArr);
+
+  //   // 처음 페이지 렌더링되었을 때 첫 번째 가게에 대한 초기값 세팅
+  //   setuStoreId(dataArr[0].storeId);
+  //   setuStoreName(dataArr[0].storeName);
+  //   setuRoadAddress(dataArr[0].roadAddress);
+  //   setuDetailAddress(dataArr[0].detailAddress);
+  //   setuOwnerName(dataArr[0].ownerName);
+  //   setuPhoneNumber(dataArr[0].phoneNumber);
+  //   setuSubText(dataArr[0].subText || "");
+  //   setuOpenHour(dataArr[0].openHour || "");
+
+  //   if (dataArr[0].existingImages !== undefined) {
+  //     setuImages(
+  //       dataArr[0].existingImages.map((image) => `data:image/;base64,${image}`)
+  //     ); // 미리보기 이미지
+  //     setuCurrentImagesLength(dataArr[0].existingImages.length); // 현재 업로드된 이미지 개수
+
+  //     // input[type="file"] 요소에 files props 할당하기
+  //     // 1. base64 이미지 url을 file 객체로 디코딩
+  //     let decodeFilesArr = [];
+  //     dataArr[0].existingImages.forEach((image, index) => {
+  //       decodeFilesArr[index] = base64ToFile(
+  //         `data:image/;base64,${image}`,
+  //         `${dataArr[0].storeId}_${index}.png`
+  //       );
+  //     });
+
+  //     setuFormImages(decodeFilesArr);
+
+  //     // 2. DataTransfer 객체를 이용하여 FileList의 값을 변경
+  //     const dataTranster = new DataTransfer();
+
+  //     decodeFilesArr.forEach((file) => {
+  //       dataTranster.items.add(file);
+  //     });
+
+  //     // 2-1. document.getElementById('images').prop("files", setFilesArr);
+  //     fileRef.current.files = dataTranster.files;
+  //     // console.log(fileRef.current.files);
+  //   }
+  //   setIsLoaded(true);
+  // }, []);
+
   useEffect(() => {
     const initialEdit = async () => {
       try {
@@ -103,7 +192,7 @@ const StoreInfoEdit = () => {
     setStoreIndex(e.target.id);
 
     // 처음 페이지 렌더링되었을 때 첫 번째 가게에 대한 초기값 세팅
-    let currentStore = storeInfoArr[storeIndex];
+    let currentStore = storeInfoArr[e.target.id];
     setuStoreId(currentStore.storeId);
     setuStoreName(currentStore.storeName);
     setuRoadAddress(currentStore.roadAddress);
@@ -312,6 +401,7 @@ const StoreInfoEdit = () => {
       formData.append("newImages", null);
     }
 
+    formData.append("storeId", storeInfoArr[storeIndex].storeId);
     formData.append("storeName", uStoreName);
     formData.append("roadAddress", uRoadAddress);
     formData.append("detailAddress", uDetailAddress);
@@ -346,19 +436,30 @@ const StoreInfoEdit = () => {
     return (
       <>
         <Header text="내 가게 정보 수정" back={true}></Header>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          {storeInfoArr.map((store, index) => {
-            return (
-              <div
-                key={index}
-                id={index}
-                className="edit-store-tap"
-                onClick={onClickStore}
-              >
-                {store.storeName}
-              </div>
-            );
-          })}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ width: "312px", marginTop: "26px" }}>
+            {storeInfoArr.map((store, index) => {
+              return index === parseInt(storeIndex) ? (
+                <button
+                  key={index}
+                  id={index}
+                  className="edit-store-tap-active"
+                  onClick={onClickStore}
+                >
+                  {store.storeName}
+                </button>
+              ) : (
+                <button
+                  key={index}
+                  id={index}
+                  className="edit-store-tap"
+                  onClick={onClickStore}
+                >
+                  {store.storeName}
+                </button>
+              );
+            })}
+          </div>
         </div>
         <div className="inputContainer">
           <Formbox>

@@ -125,7 +125,7 @@ const SignupOwner2 = () => {
       storeRoadAddress: storeRoadAddress,
       storeDetailAddress: storeDetailAddress,
       phoneNumber: phoneNumber,
-      signCode: certificationNumber,
+      signupCode: certificationNumber,
     });
 
     // console.log(JSON.stringify(result));
