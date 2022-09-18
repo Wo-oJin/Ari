@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
 import axios from "axios";
-import { Reissue } from "../services/jwt/Reissue";
+import { Reissue } from "../services/jwt/reissue";
 import Cookies from "universal-cookie";
 
 const RedirectLogin = () => {
