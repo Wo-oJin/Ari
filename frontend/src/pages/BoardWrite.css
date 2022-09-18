@@ -61,7 +61,7 @@ select:focus {
 .deletePhotoBtn {
   position: relative;
   right: 20px;
-  top: -45px;
+  top: -40px;
   cursor: pointer;
 }
 

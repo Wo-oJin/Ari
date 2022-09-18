@@ -41,7 +41,9 @@ const BoardListView = () => {
   };
 
   //수정 버튼 클릭 함수
-  const modifyHandler = () => {};
+  const modifyHandler = () => {
+    navigate(`/board/update/${articleId}`);
+  };
 
   //삭제 버튼 클릭시 팝업 토글 함수
   const togglePopUp = () => {

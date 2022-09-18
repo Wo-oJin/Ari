@@ -147,7 +147,7 @@ const BoardWrite = () => {
                 return (
                   <div key={index}>
                     <img alt={index} className="uploadedPhoto" src={item}></img>
-                    <button id={index} className="deletePhotoBtn">
+                    <button id={index} className="deletePhotoBtn" type="button">
                       <IoMdCloseCircle
                         id={index}
                         size={"1.5em"}

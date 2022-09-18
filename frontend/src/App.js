@@ -25,6 +25,7 @@ import UserFavoriteList from "./pages/UserFavoriteList";
 
 import RedirectLogin from "./pages/RedirectLogin";
 import BoardListView from "./pages/BoardListView";
+import BoardModify from "./pages/BoardModify";
 
 function App() {
   return (
@@ -67,6 +68,10 @@ function App() {
           <Route
             path="board/list/:articleId"
             element={<BoardListView />}
+          ></Route>
+          <Route
+            path="board/update/:articleId"
+            element={<BoardModify />}
           ></Route>
         </Routes>
       </RecoilRoot>
