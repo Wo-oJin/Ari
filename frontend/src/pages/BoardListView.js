@@ -52,7 +52,7 @@ const BoardListView = () => {
 
   //게시글 삭제 함수
   const deleteHandler = async () => {
-    await customAxios.post(`/board/delete/${articleId}`).then((res) => {
+    await customAxios.delete(`/board/delete/${articleId}`).then((res) => {
       alert("삭제되었습니다.");
     });
     //팝업 닫기

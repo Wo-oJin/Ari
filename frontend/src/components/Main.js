@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../App.css";
 import Map from "../services/map/Map";
 import SideBar from "./SideBar";

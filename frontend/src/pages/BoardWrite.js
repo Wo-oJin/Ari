@@ -73,6 +73,7 @@ const BoardWrite = () => {
       //업로드된 이미지가 3장 미만이라면 imageURL 배열에 추가
       if (imgRef.current.files.length > 0) {
         const imageFiles = [...imgRef.current.files];
+        console.log(imageFiles);
         setPostImages(imageFiles);
         imageFiles.map((item) => {
           const reader = new FileReader();

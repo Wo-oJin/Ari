@@ -27,6 +27,9 @@ const BoardModify = () => {
       await customAxios.get(`/board/update/${articleId}`).then((res) => {
         console.log(res.data);
         setData(res.data);
+        setTitle(res.data.title);
+        setPeriod(res.data.period);
+        setcContent(res.data.content);
       });
     };
     const getStoreData = async () => {
@@ -179,7 +182,7 @@ const BoardModify = () => {
               className="writeTitle"
               placeholder="글 제목 (ex.[요청 업종]~와 제휴 원합니다.)"
               onChange={onChangeTitle}
-              value={data.title}
+              value={title}
             ></input>
             <div className="writeAuthor" placeholder="작성자 가게 선택">
               <span>작성자 가게 선택</span>
@@ -192,13 +195,13 @@ const BoardModify = () => {
               className="writeDuration"
               placeholder="제휴기간 (일주일/한 달/1년)"
               onChange={onChangePeriod}
-              value={data.period}
+              value={period}
             ></input>
             <textarea
               className="writeContent"
               placeholder="제휴를 함께하고 싶은 가게에게 요청하는 글을 작성해주세요."
               onChange={onChangeContent}
-              value={data.content}
+              value={content}
             ></textarea>
             <button className="completeBtn" type="submit">
               완료
