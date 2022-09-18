@@ -11,7 +11,7 @@ export const Reissue = async () => {
   // console.log("refreshToken>>" + cookies.get("refreshToken"));
   try {
     await axios
-      .post("/auth/reissue", {
+      .post("/auth/Reissue", {
         accessToken: cookies.get("accessToken"),
         refreshToken: cookies.get("refreshToken"),
       })

@@ -62,11 +62,10 @@ public class BoardService {
             return DetailArticleDto.builder()
                     .title(article.getTitle())
                     .content(article.getContent())
-                    .author(article.getMember().getStores().get(0).getName())
-                    .storeId(store.getId())
+                    .author(article.getAuthor())
                     .period(article.getPeriod())
                     .favorite(memberService.getMemberInfoById(memberId).isFavoriteStore(store))
-                    .authority(store.getMember().getId() == memberId ? true : false)
+                    .authority(article.getMember().getId() == memberId ? true : false)
                     .createDate(article.getCreateDate())
                     .images(fileService.getArticleImage(article, article.getImgFiles().size()))
                     .build();

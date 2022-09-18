@@ -43,6 +43,8 @@ const BoardWrite = () => {
     formData.append("period", period);
     formData.append("author", authorStore);
 
+    console.log("dddd", authorStore)
+
     customAxios
       .post("/board/write", formData, {
         headers: {
@@ -101,8 +103,8 @@ const BoardWrite = () => {
   };
 
   const changeSelectHandler = (e) => {
-    setAuthorStore(authorList[e.target.value].name);
-    setSelected(authorList[e.target.value].name);
+    setAuthorStore(authorList[e.target.value].storeName);
+    setSelected(authorList[e.target.value].storeName);
   };
   return (
     <>

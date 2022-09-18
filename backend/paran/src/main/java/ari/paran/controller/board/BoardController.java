@@ -59,10 +59,21 @@ public class BoardController {
 
     @PostMapping("/write")
     @ResponseBody
-    public void ArticleWrite(@ModelAttribute Article article, List<MultipartFile> files, Principal principal) throws IOException {
+    public void ArticleWrite(@ModelAttribute Article article,
+                             List<MultipartFile> files, Principal principal) throws IOException {
         Long memberId = Long.parseLong(principal.getName());
 
+        log.info("storeName = {}", article.getAuthor());
+
         boardService.saveArticle(article, files, memberId);
+    }
+
+    @GetMapping("/update/{id}")
+    @ResponseBody
+    public DetailArticleDto ArticleUpdate(@PathVariable Long id, Principal principal) throws IOException {
+        Long memberId = Long.parseLong(principal.getName());
+
+        return boardService.findArticle(id, memberId);
     }
 
     @PostMapping("/update/{id}")

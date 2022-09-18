@@ -24,6 +24,9 @@ public class Article {
     @Column
     private String content;
 
+    @Column
+    private String author;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
@@ -45,11 +48,12 @@ public class Article {
     private List<ArticleImgFile> imgFiles = new ArrayList<>();
 
     @Builder
-    public Article(String title, String content, Member member,
+    public Article(String title, String content, Member member, String author,
                    LocalDate createDate, LocalDate updateDate, String period){
         this.title = title;
         this.content = content;
         this.member = member;
+        this.author = author;
         this.createDate = createDate;
         this.updateDate = updateDate;
         this.period = period;
