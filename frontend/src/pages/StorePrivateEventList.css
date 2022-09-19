@@ -1,36 +1,56 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .event-list-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 327px;
-    height: 60px;
-    border: 0.7px solid #D7D7D7;
-    border-radius: 15px;
-    margin-bottom: 17px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 327px;
+  height: 60px;
+  border: 0.7px solid #d7d7d7;
+  border-radius: 15px;
+  margin-bottom: 17px;
+  cursor: pointer;
 }
 
-.text-ellipsis {
-    width: 250px;
-    padding-left: 28px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.event-text-ellipsis {
+  width: 250px;
+  padding-left: 28px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .addList {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 327px;
-    height: 60px;
-    border: 0.7px dashed #D7D7D7;
-    border-radius: 15px;
-    cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 327px;
+  height: 60px;
+  border: 0.7px dashed #d7d7d7;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.edit-store-tap {
+  width: 96px;
+  line-height: 26px;
+  border-radius: 20px;
+  background-color: #c7c7ca;
+  color: #ffffff;
+  cursor: pointer;
+  margin: 8px 4px 0 4px;
+}
+
+.edit-store-tap-active {
+  width: 96px;
+  line-height: 26px;
+  border-radius: 20px;
+  background-color: #386ffe;
+  color: #ffffff;
+  cursor: pointer;
+  margin: 8px 4px 0 4px;
 }
