@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 public class EventListDto {
     Long storeId;
+    String storeName;
 
     List<String> eventList = new ArrayList<>();
 }
