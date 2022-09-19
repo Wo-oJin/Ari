@@ -316,15 +316,15 @@ public class MemberService {
 
     public ResponseEntity<?> reissue(TokenRequestDto reissue) {
 
-        //1. refresh token 검증
+        /*1. refresh token 검증*/
         if (!tokenProvider.validateToken(reissue.getRefreshToken())) {
             return response.fail("Refresh Token 정보가 유효하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        //2. Access Token에서 User id을 가져옴
+        /*2. Access Token에서 User id을 가져옴*/
         Authentication authentication = tokenProvider.getAuthentication(reissue.getAccessToken());
 
-        //3. redis에서 user id를 기반으로 저장된 refresh token 값을 가져옴
+        /*3. redis에서 user id를 기반으로 저장된 refresh token 값을 가져옴*/
         String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + authentication.getName());
 
         log.info("refresh Token: {}", refreshToken);
@@ -337,10 +337,10 @@ public class MemberService {
             return response.fail("Refresh Token 정보가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
-        //4. 새로운 토큰 생성
+        /*4. 새로운 토큰 생성*/
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
-        //5. refresh token Redis 업데이트
+        /*5. refresh token Redis 업데이트*/
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), tokenDto.getRefreshToken(),
                         tokenDto.getRefreshTokenExpiresIn(), TimeUnit.MILLISECONDS);
@@ -349,21 +349,21 @@ public class MemberService {
     }
 
     public ResponseEntity<?> logout(TokenRequestDto logout) {
-        //1. Access Token 검증
+        /*1. Access Token 검증*/
         if (!tokenProvider.validateToken(logout.getAccessToken())) {
             return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        //2. Access Token에서 User email을 가져옴
+        /*2. Access Token에서 User id을 가져옴*/
         Authentication authentication = tokenProvider.getAuthentication(logout.getAccessToken());
 
-        //3. Redis에서 해당 User email로 저장된 refresh token이 있는지 여부를 확인 후, 있을 경우 삭제
+        /*3. Redis에서 해당 User id로 저장된 refresh token이 있는지 여부를 확인 후, 있을 경우 삭제*/
         if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
             //refresh token 삭제
             redisTemplate.delete("RT:" + authentication.getName());
         }
 
-        //4. 해당 access token 유효시간 가지고 와서 BlackList로 저장
+        /*4. 해당 access token 유효시간 가지고 와서 BlackList로 저장*/
         Long expiration = tokenProvider.getExpiration(logout.getAccessToken());
         redisTemplate.opsForValue()
                 .set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);

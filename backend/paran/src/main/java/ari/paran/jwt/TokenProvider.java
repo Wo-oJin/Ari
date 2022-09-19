@@ -127,7 +127,9 @@ public class TokenProvider {
         }
     }
 
-    //accessToken의 남은 유효시간 얻기
+    /**
+     * accessToken의 남은 유효시간 얻기
+     */
     public Long getExpiration(String accessToken) {
         Date expiration = Jwts.parserBuilder().setSigningKey(private_key)
                 .build().parseClaimsJws(accessToken).getBody().getExpiration();
