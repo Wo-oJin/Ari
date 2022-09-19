@@ -11,6 +11,7 @@ const StoreEditPrivateEvent = () => {
 
   const { state } = useLocation(); // StorePrivateEventList.js에서 Link로 전달한 데이터 받아오기
   const index = state.index;
+  const storeId = state.storeId;
   const info = state.info;
 
   useEffect(() => {
@@ -23,11 +24,12 @@ const StoreEditPrivateEvent = () => {
     try {
       await customAxios
         .post("/delete/self-event", {
+          storeId: storeId,
           eventNum: index,
         })
         .then((res) => {
           alert(res.data.massage);
-          navigate("/storePrivateEventList");
+          navigate(`/storePrivateEventList?storeId=${storeId}`);
         });
     } catch (e) {
       console.log(e);
@@ -38,12 +40,18 @@ const StoreEditPrivateEvent = () => {
     try {
       await customAxios
         .post("/edit/self-event", {
-          newInfo: newInfo,
+          storeId: storeId,
           eventNum: index,
+          newInfo: newInfo,
         })
         .then((res) => {
-          alert(res.data.massage);
-          navigate("/storePrivateEventList");
+          if (res.data.result === "success") {
+            alert("수정에 성공하였습니다.");
+            navigate(`/storePrivateEventList?storeId=${storeId}`);
+          } else {
+            alert("수정에 실패하였습니다.");
+            navigate(`/storePrivateEventList?storeId=${storeId}`);
+          }
         });
     } catch (e) {
       console.log(e);
