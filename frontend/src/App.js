@@ -9,6 +9,7 @@ import LoginOwner from "./pages/LoginOwner";
 import SignupUser from "./pages/SignupUser";
 import SignupOwner from "./pages/SignupOwner";
 import SignupOwner2 from "./pages/SignupOwner2";
+import FindPassword from "./pages/FindPassword";
 
 import Detail from "./pages/Detail";
 import Board from "./pages/Board";
@@ -42,6 +43,7 @@ function App() {
           <Route path="/detail/:storeId" element={<Detail />} />
           <Route path="/signupOwner" element={<SignupOwner />} />
           <Route path="/signupOwner2" element={<SignupOwner2 />} />
+          <Route path="/findPassword" element={<FindPassword />} />
 
           <Route path="/board/list" element={<Board />}></Route>
           <Route path="/board/:boardId" element={<Board />}></Route>

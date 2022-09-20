@@ -173,7 +173,7 @@ const SignupOwner2 = () => {
         <Formbox>
           <div className="intro">가게 주소</div>
           <input
-            className="inputBox roadAddress"
+            className="roadAddress"
             name="storeRoadAddress"
             value={storeRoadAddress}
             type="text"

@@ -163,12 +163,14 @@ const Login = () => {
             로그인
           </button>
         </div>
-        <div className="subContainer">
-          <div className="login-subAlign">
+        <div className="login-subAlign">
+          <div className="login-sub-menu">
             <Link to="/loginRegister">
-              <span style={{ marginRight: "16px" }}>이메일 회원가입</span>
+              <span>이메일 회원가입</span>
             </Link>
-            <span>비밀번호 찾기</span>
+            <Link to="/findPassword">
+              <span>비밀번호 찾기</span>
+            </Link>
           </div>
         </div>
       </form>

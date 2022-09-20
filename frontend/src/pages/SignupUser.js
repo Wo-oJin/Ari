@@ -303,7 +303,6 @@ const SignupUser = () => {
           )}
         </Formbox>
         <Formbox>
-          {/* 닉네임 중복 확인도 넣어야 할 듯 */}
           <div className="intro">닉네임</div>
           <input
             className="inputBox"
