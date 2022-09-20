@@ -1,4 +1,4 @@
-import { React, Fragment, useState } from "react";
+import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -181,182 +181,180 @@ const SignupOwner = () => {
   return (
     <>
       <Header text="회원가입" back={true}></Header>
-      <Fragment>
-        <div className="inputContainer">
-          <Formbox>
-            <div className="intro">이메일 주소</div>
-            <div>
-              <input
-                className="emailInput"
-                name="email"
-                value={email}
-                type="email"
-                onChange={onChangeEmail}
-                placeholder="이메일 주소 입력"
-                required
-                autoComplete="off"
-              />
-              <button
-                className="sendBtn"
-                onClick={checkEmail}
-                disabled={isEmail ? false : true}
-              >
-                중복 확인
-              </button>
-            </div>
-            {email.length > 0 && (
-              <p className={`message ${isEmail ? "success" : "error"}`}>
-                {emailMessage}
-              </p>
-            )}
-          </Formbox>
-          <Formbox>
-            <div className="intro">메일 인증</div>
-            <div>
-              <input
-                style={{ textTransform: "uppercase" }}
-                className="certificationInput"
-                name="certificationNumber"
-                value={certificationNumber}
-                type="text"
-                onChange={(e) => setCertificationNumber(e.target.value)}
-                placeholder="인증번호 입력"
-                required
-                autoComplete="off"
-              />
-              <button
-                className="sendBtn"
-                onClick={sendEmailCode}
-                disabled={isEmail && isUniqueEmail ? false : true}
-              >
-                {sendText}
-              </button>
-            </div>
-            <MainButton
-              radius="5px"
-              color="#FFFFFF"
-              background="#386FFE;"
-              onClick={onEmailCheck}
-              disabled={
-                certificationNumber.length > 0 && !isEmailCheck ? false : true
-              }
-              text="인증 확인"
-            />
-            {certificationNumber.length > 0 && (
-              <p className={`message ${isEmailCheck ? "success" : "error"}`}>
-                {emailCheckMessage}
-              </p>
-            )}
-          </Formbox>
-          <Formbox>
-            <div className="intro">비밀번호</div>
+      <div className="inputContainer">
+        <Formbox>
+          <div className="intro">이메일 주소</div>
+          <div>
             <input
-              className="inputBox"
-              name="password"
-              value={password}
-              type="password"
-              onChange={onChangePassword}
-              placeholder="비밀번호 입력"
+              className="emailInput"
+              name="email"
+              value={email}
+              type="email"
+              onChange={onChangeEmail}
+              placeholder="이메일 주소 입력"
               required
               autoComplete="off"
             />
-            {password.length > 0 && (
-              <p className={`message ${isPassword ? "success" : "error"}`}>
-                {passwordMessage}
-              </p>
-            )}
-          </Formbox>
-          <Formbox>
-            <div className="intro">비밀번호 확인</div>
+            <button
+              className="sendBtn"
+              onClick={checkEmail}
+              disabled={isEmail ? false : true}
+            >
+              중복 확인
+            </button>
+          </div>
+          {email.length > 0 && (
+            <p className={`message ${isEmail ? "success" : "error"}`}>
+              {emailMessage}
+            </p>
+          )}
+        </Formbox>
+        <Formbox>
+          <div className="intro">메일 인증</div>
+          <div>
             <input
-              className="inputBox"
-              name="passwordCheck"
-              value={passwordCheck}
-              type="password"
-              onChange={onChangePasswordCheck}
-              placeholder="비밀번호 재입력"
+              style={{ textTransform: "uppercase" }}
+              className="certificationInput"
+              name="certificationNumber"
+              value={certificationNumber}
+              type="text"
+              onChange={(e) => setCertificationNumber(e.target.value)}
+              placeholder="인증번호 입력"
               required
               autoComplete="off"
             />
-            {passwordCheck.length > 0 && (
-              <p className={`message ${isPasswordCheck ? "success" : "error"}`}>
-                {passwordCheckMessage}
-              </p>
-            )}
-          </Formbox>
-
-          <Formbox>
-            <div className="intro">연령대</div>
-            <div style={{ width: "260px" }}>
-              <select
-                name="age"
-                onChange={(e) => setAge(e.target.value)}
-                className="select-age"
-                defaultValue={age}
-              >
-                <option value="10">10대</option>
-                <option value="20">20대</option>
-                <option value="30">30대</option>
-                <option value="40">40대</option>
-                <option value="50">50대</option>
-                <option value="60">60대</option>
-                <option value="70">70대 이상</option>
-              </select>
-            </div>
-          </Formbox>
-          <Formbox>
-            <div className="intro">성별</div>
-            <div className="genderContainer">
-              <div className="gender-wrap">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  id="male"
-                  onChange={(e) => setGender(e.target.value)}
-                  defaultChecked={gender === "male" ? true : false}
-                ></input>
-                <label htmlFor="male">남</label>
-              </div>
-              <div className="gender-wrap">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  id="female"
-                  onChange={(e) => setGender(e.target.value)}
-                  defaultChecked={gender === "female" ? true : false}
-                ></input>
-                <label htmlFor="female">여</label>
-              </div>
-            </div>
-          </Formbox>
-        </div>
-        <div className="flexContainer">
-          <div className="current"></div>
-          <div className="normal"></div>
-        </div>
-        <div className="buttonContainer">
+            <button
+              className="sendBtn"
+              onClick={sendEmailCode}
+              disabled={isEmail && isUniqueEmail ? false : true}
+            >
+              {sendText}
+            </button>
+          </div>
           <MainButton
-            radius="15px"
+            radius="5px"
             color="#FFFFFF"
             background="#386FFE;"
-            type="submit"
-            onClick={onNext}
+            onClick={onEmailCheck}
             disabled={
-              isEmail &&
-              isUniqueEmail &&
-              isPassword &&
-              isPasswordCheck &&
-              isEmailCheck
-                ? false
-                : true
+              certificationNumber.length > 0 && !isEmailCheck ? false : true
             }
-            // disabled={(isEmail && isPassword && isPasswordCheck) ? false : true}
-            text="다음"
+            text="인증 확인"
           />
-        </div>
-      </Fragment>
+          {certificationNumber.length > 0 && (
+            <p className={`message ${isEmailCheck ? "success" : "error"}`}>
+              {emailCheckMessage}
+            </p>
+          )}
+        </Formbox>
+        <Formbox>
+          <div className="intro">비밀번호</div>
+          <input
+            className="inputBox"
+            name="password"
+            value={password}
+            type="password"
+            onChange={onChangePassword}
+            placeholder="비밀번호 입력"
+            required
+            autoComplete="off"
+          />
+          {password.length > 0 && (
+            <p className={`message ${isPassword ? "success" : "error"}`}>
+              {passwordMessage}
+            </p>
+          )}
+        </Formbox>
+        <Formbox>
+          <div className="intro">비밀번호 확인</div>
+          <input
+            className="inputBox"
+            name="passwordCheck"
+            value={passwordCheck}
+            type="password"
+            onChange={onChangePasswordCheck}
+            placeholder="비밀번호 재입력"
+            required
+            autoComplete="off"
+          />
+          {passwordCheck.length > 0 && (
+            <p className={`message ${isPasswordCheck ? "success" : "error"}`}>
+              {passwordCheckMessage}
+            </p>
+          )}
+        </Formbox>
+
+        <Formbox>
+          <div className="intro">연령대</div>
+          <div style={{ width: "260px" }}>
+            <select
+              name="age"
+              onChange={(e) => setAge(e.target.value)}
+              className="select-age"
+              defaultValue={age}
+            >
+              <option value="10">10대</option>
+              <option value="20">20대</option>
+              <option value="30">30대</option>
+              <option value="40">40대</option>
+              <option value="50">50대</option>
+              <option value="60">60대</option>
+              <option value="70">70대 이상</option>
+            </select>
+          </div>
+        </Formbox>
+        <Formbox>
+          <div className="intro">성별</div>
+          <div className="genderContainer">
+            <div className="gender-wrap">
+              <input
+                type="radio"
+                name="gender"
+                value="male"
+                id="male"
+                onChange={(e) => setGender(e.target.value)}
+                defaultChecked={gender === "male" ? true : false}
+              ></input>
+              <label htmlFor="male">남</label>
+            </div>
+            <div className="gender-wrap">
+              <input
+                type="radio"
+                name="gender"
+                value="female"
+                id="female"
+                onChange={(e) => setGender(e.target.value)}
+                defaultChecked={gender === "female" ? true : false}
+              ></input>
+              <label htmlFor="female">여</label>
+            </div>
+          </div>
+        </Formbox>
+      </div>
+      <div className="flexContainer">
+        <div className="current"></div>
+        <div className="normal"></div>
+      </div>
+      <div className="buttonContainer">
+        <MainButton
+          radius="15px"
+          color="#FFFFFF"
+          background="#386FFE;"
+          type="submit"
+          onClick={onNext}
+          disabled={
+            isEmail &&
+            isUniqueEmail &&
+            isPassword &&
+            isPasswordCheck &&
+            isEmailCheck
+              ? false
+              : true
+          }
+          // disabled={(isEmail && isPassword && isPasswordCheck) ? false : true}
+          text="다음"
+        />
+      </div>
     </>
   );
 };

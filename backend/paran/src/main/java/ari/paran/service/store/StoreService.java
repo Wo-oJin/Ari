@@ -123,7 +123,7 @@ public class StoreService {
                 eventInfo.add(event.getInfo());
             }
 
-            EventListDto eventListDto = new EventListDto(store.getId(), eventInfo);
+            EventListDto eventListDto = new EventListDto(store.getId(), store.getName(), eventInfo);
             result.add(eventListDto);
         }
 

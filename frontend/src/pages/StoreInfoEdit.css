@@ -106,7 +106,7 @@
 
 .edit-store-tap {
   width: 96px;
-  height: 26px;
+  line-height: 26px;
   border-radius: 20px;
   background-color: #c7c7ca;
   color: #ffffff;
@@ -116,7 +116,7 @@
 
 .edit-store-tap-active {
   width: 96px;
-  height: 26px;
+  line-height: 26px;
   border-radius: 20px;
   background-color: #386ffe;
   color: #ffffff;

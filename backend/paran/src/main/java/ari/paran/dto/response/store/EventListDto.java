@@ -12,5 +12,7 @@ import java.util.List;
 public class EventListDto {
     Long storeId;
 
+    String storeName;
+
     List<String> eventList = new ArrayList<>();
 }

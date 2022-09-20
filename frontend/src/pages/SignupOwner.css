@@ -35,8 +35,18 @@
   padding: 9px 14px;
 }
 
+.roadAddress {
+  width: 142px;
+  line-height: 22px;
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+  padding: 9px 14px;
+}
+
 .inputBox::placeholder,
-.certificationInput::placeholder .emailInput::placeholder {
+.certificationInput::placeholder,
+.emailInput::placeholder,
+.roadAddress::placeholder {
   color: #a3a3a3;
 }
 
@@ -141,10 +151,6 @@
 
 .detailAddress {
   margin-top: 10px;
-}
-
-.roadAddress {
-  width: 142px;
 }
 
 .flexContainer {

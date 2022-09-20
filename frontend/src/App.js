@@ -9,6 +9,7 @@ import LoginOwner from "./pages/LoginOwner";
 import SignupUser from "./pages/SignupUser";
 import SignupOwner from "./pages/SignupOwner";
 import SignupOwner2 from "./pages/SignupOwner2";
+import FindPassword from "./pages/FindPassword";
 
 import Detail from "./pages/Detail";
 import Board from "./pages/Board";
@@ -25,6 +26,7 @@ import UserFavoriteList from "./pages/UserFavoriteList";
 
 import RedirectLogin from "./pages/RedirectLogin";
 import BoardListView from "./pages/BoardListView";
+import BoardModify from "./pages/BoardModify";
 
 function App() {
   return (
@@ -41,6 +43,7 @@ function App() {
           <Route path="/detail/:storeId" element={<Detail />} />
           <Route path="/signupOwner" element={<SignupOwner />} />
           <Route path="/signupOwner2" element={<SignupOwner2 />} />
+          <Route path="/findPassword" element={<FindPassword />} />
 
           <Route path="/board/list" element={<Board />}></Route>
           <Route path="/board/:boardId" element={<Board />}></Route>
@@ -67,6 +70,10 @@ function App() {
           <Route
             path="board/list/:articleId"
             element={<BoardListView />}
+          ></Route>
+          <Route
+            path="board/update/:articleId"
+            element={<BoardModify />}
           ></Route>
         </Routes>
       </RecoilRoot>

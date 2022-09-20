@@ -6,7 +6,7 @@ import axios from "axios";
 import { authState, nameState } from "../state";
 import "../pages/Login.css";
 import Header from "../components/Header";
-import { Reissue } from "../services/jwt/Reissue";
+import { Reissue } from "../services/jwt/reissue";
 import Cookies from "universal-cookie";
 
 const Formbox = styled.div`
@@ -67,7 +67,10 @@ const Login = () => {
             accessTokenExpireIn,
           } = res.data.data;
 
-          // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
+          // 쿠키 사용 설정
+          axios.defaults.withCredentials = true;
+
+          // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정 : 모든 컴포넌트의 요청에서 전역으로 설정되지 않고 있음
           axios.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${accessToken}`;
@@ -76,8 +79,8 @@ const Login = () => {
           cookies.set("refreshToken", refreshToken, {
             path: "/", // 모든 페이지에서 쿠키 사용
             maxAge: refreshTokenExpireIn, // 쿠키의 만료 시간을 밀리초 단위로 설정
-            sameSite: "none", // 모든 도메인에서 쿠키를 전송하고 사용
-            secure: true, // HTTPS를 통해서만 접근
+            // sameSite: "none", // 모든 도메인에서 쿠키를 전송하고 사용
+            // secure: true, // HTTPS를 통해서만 접근
             domain: "localhost", // secure 옵션을 사용하면 같은 도메인을 공유해야 함
             // httpOnly: true, // 서버에서만 쿠키에 접근, 브라우저에서 접근 불가
           });
@@ -85,8 +88,8 @@ const Login = () => {
           cookies.set("accessToken", accessToken, {
             path: "/", // 모든 페이지에서 쿠키 사용
             maxAge: accessTokenExpireIn, // 쿠키의 만료 시간을 밀리초 단위로 설정
-            sameSite: "none", // 모든 도메인에서 쿠키를 전송하고 사용
-            secure: true, // HTTPS를 통해서만 접근
+            // sameSite: "none", // 모든 도메인에서 쿠키를 전송하고 사용
+            // secure: true, // HTTPS를 통해서만 접근
             domain: "localhost", // secure 옵션을 사용하면 같은 도메인을 공유해야 함
             // httpOnly: true, // 서버에서만 쿠키에 접근, 브라우저에서 접근 불가
           });
@@ -115,6 +118,7 @@ const Login = () => {
             setName(res.data.data.info); // recoil
             alert(res.data.massage);
             navigate("/"); // 메인 페이지로 이동
+            window.location.reload();
           }
         });
     } catch (e) {
@@ -162,12 +166,14 @@ const Login = () => {
             로그인
           </button>
         </div>
-        <div className="subContainer">
-          <div className="login-subAlign">
+        <div className="login-subAlign">
+          <div className="login-sub-menu">
             <Link to="/loginRegister">
-              <span style={{ marginRight: "16px" }}>이메일 회원가입</span>
+              <span>이메일 회원가입</span>
             </Link>
-            <span>비밀번호 찾기</span>
+            <Link to="/findPassword">
+              <span>비밀번호 찾기</span>
+            </Link>
           </div>
         </div>
       </form>

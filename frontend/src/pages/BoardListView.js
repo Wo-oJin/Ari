@@ -41,7 +41,9 @@ const BoardListView = () => {
   };
 
   //수정 버튼 클릭 함수
-  const modifyHandler = () => {};
+  const modifyHandler = () => {
+    navigate(`/board/update/${articleId}`);
+  };
 
   //삭제 버튼 클릭시 팝업 토글 함수
   const togglePopUp = () => {
@@ -50,7 +52,7 @@ const BoardListView = () => {
 
   //게시글 삭제 함수
   const deleteHandler = async () => {
-    await customAxios.post(`/board/delete/${articleId}`).then((res) => {
+    await customAxios.delete(`/board/delete/${articleId}`).then((res) => {
       alert("삭제되었습니다.");
     });
     //팝업 닫기
