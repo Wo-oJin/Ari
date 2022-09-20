@@ -1,7 +1,9 @@
 .logoContainer {
   width: 170px;
   height: 75px;
-  background: #D9D9D9;
+  background-image: url("../../public/images/ari_logo.png");
+  background-size: cover;
+  background-position: center;
   margin: 100px auto;
 }
 
