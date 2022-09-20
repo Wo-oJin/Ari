@@ -109,7 +109,7 @@ public class FileService {
         List<StoreImgFile> storeImages = store.getStoreImgFiles();
         List<String> base64Images = new ArrayList<>();
 
-        if(base64Images.isEmpty()){
+        if(storeImages.isEmpty()){
             String fileUrl = System.getProperty("user.dir") + detailUrl;
             String fileName = "default.png";
 
