@@ -1,7 +1,8 @@
 package ari.paran.domain.member;
 
 import ari.paran.domain.board.Article;
-import ari.paran.domain.store.Favorite;
+import ari.paran.domain.board.FavoriteArticle;
+import ari.paran.domain.store.FavoriteStore;
 import ari.paran.domain.store.Store;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
@@ -42,7 +43,11 @@ public class Member {
 
     @JsonIgnore
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Favorite> favorites = new ArrayList<>();
+    private List<FavoriteStore> favoriteStores = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<FavoriteArticle> favoriteArticles = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
@@ -80,15 +85,20 @@ public class Member {
 
     // 비즈니스 메서드
     public List<Long> getFavoriteStoreId(){
-        return this.favorites.stream()
-                .map(Favorite :: getStore)
+        return this.favoriteStores.stream()
+                .map(FavoriteStore :: getStore)
                 .map(Store :: getId)
                 .collect(Collectors.toList());
     }
 
     public boolean isFavoriteStore(Store store){
-        return favorites.stream().map(Favorite :: getStore)
+        return favoriteStores.stream().map(FavoriteStore :: getStore)
                 .anyMatch(findStore->  findStore.getId() == store.getId());
+    }
+
+    public boolean isFavoriteArticle(Article article){
+        return favoriteArticles.stream().map(FavoriteArticle :: getArticle)
+                .anyMatch(findArticle->  findArticle.getId() == article.getId());
     }
 
     public List<String> getStoresName(){
@@ -97,11 +107,19 @@ public class Member {
                 .collect(Collectors.toList());
     }
 
-    public void addFavorite(Favorite favorite) {
-        this.favorites.add(favorite);
+    public void addFavorite(FavoriteStore favorite) {
+        this.favoriteStores.add(favorite);
     }
 
-    public void deleteFavorite(Favorite favorite){
-        this.favorites.remove(favorite);
+    public void addFavoriteArticle(FavoriteArticle article) {
+        this.favoriteArticles.add(article);
+    }
+
+    public void deleteFavorite(FavoriteStore favorite){
+        this.favoriteStores.remove(favorite);
+    }
+
+    public void deleteFavoriteArticle(FavoriteArticle article) {
+        this.favoriteArticles.remove(article);
     }
 }

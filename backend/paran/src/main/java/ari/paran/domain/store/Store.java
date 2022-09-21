@@ -65,7 +65,7 @@ public class Store implements Serializable{
 
     @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private List<Favorite> favorites = new ArrayList<>();
+    private List<FavoriteStore> favorites = new ArrayList<>();
 
     @Builder
     public Store(String name, String ownerName, Address address, String phoneNumber, Member member, List<StoreImgFile> storeImgFile,
@@ -88,7 +88,7 @@ public class Store implements Serializable{
         this.member = member;
     }
 
-    public void addFavorite(Favorite favorite) {
+    public void addFavorite(FavoriteStore favorite) {
         this.favorites.add(favorite);
     }
 

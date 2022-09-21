@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Favorite {
+public class FavoriteStore {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Favorite {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    public Favorite(Member member, Store store){
+    public FavoriteStore(Member member, Store store){
         this.member = member;
         this.store = store;
     }
