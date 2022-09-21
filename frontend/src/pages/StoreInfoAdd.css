@@ -36,18 +36,7 @@
   justify-content: space-between;
 }
 
-.cancelBtn {
-  width: 140px;
-  height: 36px;
-  color: #fbfbfb;
-  background: #a3a3a3;
-  border: 0.7px solid #d7d7d7;
-  border-radius: 15px;
-  cursor: pointer;
-  margin-bottom: 57px;
-}
-
-.editBtn {
+.store-addBtn {
   width: 140px;
   height: 36px;
   color: #fbfbfb;
@@ -58,7 +47,7 @@
   margin-bottom: 57px;
 }
 
-.editBtn:disabled {
+.store-addBtn:disabled {
   background: #dcdcdc;
   cursor: default;
 }
@@ -102,34 +91,4 @@
   color: #ffffff;
   text-align: center;
   line-height: 17px;
-}
-
-.edit-store-tap {
-  width: 96px;
-  line-height: 26px;
-  border-radius: 20px;
-  background-color: #c7c7ca;
-  color: #ffffff;
-  cursor: pointer;
-  margin: 8px 4px 0 4px;
-}
-
-.edit-store-tap-active {
-  width: 96px;
-  line-height: 26px;
-  border-radius: 20px;
-  background-color: #386ffe;
-  color: #ffffff;
-  cursor: pointer;
-  margin: 8px 4px 0 4px;
-}
-
-.add-store-tap {
-  width: 96px;
-  line-height: 26px;
-  border-radius: 20px;
-  border: 0.7px dashed #c7c7ca;
-  color: #ffffff;
-  cursor: pointer;
-  margin: 8px 4px 0 4px;
 }

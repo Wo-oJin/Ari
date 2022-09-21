@@ -18,7 +18,7 @@ import BoardWrite from "./pages/BoardWrite";
 import MyPageOwner from "./pages/MyPageOwner";
 import { StoreInfoTap } from "./components/DatailTap";
 import StoreInfoEdit from "./pages/StoreInfoEdit";
-// import StoreInfoAdd from "./pages/StoreInfoAdd";
+import StoreInfoAdd from "./pages/StoreInfoAdd";
 import StorePrivateEventList from "./pages/StorePrivateEventList";
 
 import StoreAddPrivateEvent from "./pages/StoreAddPrivateEvent";
@@ -56,7 +56,7 @@ function App() {
 
           <Route path="/myPageOwner" element={<MyPageOwner />} />
           <Route path="/storeInfoEdit" element={<StoreInfoEdit />} />
-          {/* <Route path="/storeInfoAdd" element={<StoreInfoAdd />} /> */}
+          <Route path="/storeInfoAdd" element={<StoreInfoAdd />} />
           <Route
             path="/storePrivateEventList"
             element={<StorePrivateEventList />}
