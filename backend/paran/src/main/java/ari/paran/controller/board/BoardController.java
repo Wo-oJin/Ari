@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,7 +80,19 @@ public class BoardController {
 
     @DeleteMapping("/delete/{id}")
     @ResponseBody
-    public void ArticleDelete(@PathVariable Long id){
+    public void ArticleDelete(@PathVariable Long id) {
         boardService.deleteArticle(id);
+    }
+
+    @GetMapping("/like")
+    public ResponseEntity<?> likeArticleList(Principal principal) throws IOException {
+        Long memberId = Long.parseLong(principal.getName());
+        return boardService.likeArticleList(memberId);
+    }
+
+    @PostMapping("/favorite/toggle")
+    public ResponseEntity<?> toggleFavoriteArticle(@RequestParam Long articleId, Principal principal) {
+        Long memberId = Long.parseLong(principal.getName());
+        return boardService.toggleFavoriteArticle(articleId, memberId);
     }
 }
