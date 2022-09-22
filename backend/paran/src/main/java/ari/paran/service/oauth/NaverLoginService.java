@@ -54,8 +54,8 @@ public class NaverLoginService {
 
     // access token 발급
     public OAuth2AccessToken getAccessToken(HttpSession session, String code, String state) throws Exception {
-        String sessionState = getSession(session);
-        if (sessionState.equals(state)) {
+        //String sessionState = getSession(session);
+        //if (sessionState.equals(state)) {
             OAuth20Service oauthService = new ServiceBuilder()
                     .apiKey(NAVER_CLIENT_ID)
                     .callback(NAVER_REDIRECT_URI)
@@ -64,9 +64,9 @@ public class NaverLoginService {
 
             OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
             return accessToken;
-        }
+       // }
 
-        return null;
+        //return null;
     }
 
     public Map<String, String> getUserProfile(OAuth2AccessToken oauthToken) throws Exception {

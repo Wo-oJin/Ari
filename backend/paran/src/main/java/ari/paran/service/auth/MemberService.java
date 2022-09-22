@@ -288,6 +288,7 @@ public class MemberService {
             tokenDto.setInfo(member.getStores().get(0).getName()); // 가게이름
         }
 
+        /*
         String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
                 .queryParam("accessToken", "{at}")
                 .queryParam("refreshToken", "{rt}")
@@ -312,6 +313,10 @@ public class MemberService {
         }
         else
             return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+         */
+
+        return response.success(tokenDto, "로그인 성공!", HttpStatus.OK);
+
     }
 
     public ResponseEntity<?> reissue(TokenRequestDto reissue) {
