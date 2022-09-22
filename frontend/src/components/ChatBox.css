@@ -1,0 +1,82 @@
+.chatBoxContainer {
+  display: flex;
+  width: 100%;
+  min-height: 40px;
+  margin-bottom: 15px;
+}
+.otherChatBoxContainer {
+  display: flex;
+  width: 100%;
+  min-height: 40px;
+  margin-bottom: 15px;
+}
+.chatBox {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.otherChatBox {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+.leftBox {
+  width: 100px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: 100%;
+}
+.otherLeftBox {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+}
+.rightBox {
+  display: flex;
+  margin-right: 15px;
+}
+.otherRightBox {
+  width: 100px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  height: 100%;
+}
+.content {
+  vertical-align: middle;
+  font-size: 14px;
+  color: white;
+  max-width: 245px;
+  min-height: 18px;
+  padding: 7px 15px;
+  background-color: #386ffe;
+  border-radius: 20px 20px 0 20px;
+}
+.otherContent {
+  vertical-align: middle;
+  font-size: 14px;
+  color: #000000;
+  max-width: 245px;
+  min-height: 18px;
+  padding: 7px 15px;
+  background-color: #e6e6e6;
+  border-radius: 20px 20px 20px 0px;
+}
+.createTime {
+  text-align: end;
+  width: 100px;
+  font-size: 12px;
+  padding-bottom: 5px;
+  margin-right: 5px;
+}
+.otherCreateTime {
+  text-align: start;
+  width: 100px;
+  font-size: 12px;
+  margin-left: 5px;
+}
+.sender {
+  margin-bottom: 2px;
+  font-size: 14px;
+}
