@@ -39,13 +39,14 @@ public class FileService {
     private String localDetailUrl;
 
     @Transactional
-    public void saveStoreImage(Long store_id, List<MultipartFile> images) throws IOException{
+    public void saveStoreImage(Long storeId, List<MultipartFile> images) throws IOException{
 
         if(images == null)
             return;
 
-        String fileUrl = "/Users/jsc/ari_files/";
-        Store store = storeRepository.findById(store_id).orElseGet(null);
+        //String fileUrl = "/Users/jsc/ari_files/";
+        String fileUrl = System.getProperty("user.dir") + localDetailUrl;
+        Store store = storeRepository.findById(storeId).orElseGet(null);
 
         for(MultipartFile image : images) {
             String originalFileName = image.getOriginalFilename();
@@ -76,7 +77,7 @@ public class FileService {
         if(images == null)
             return;
 
-        String fileUrl = "/Users/jsc/ari_files/";
+        String fileUrl = System.getProperty("user.dir") + localDetailUrl;
         Article article = boardRepository.findById(articleId).orElse(null);
 
         if(images!=null) {
@@ -112,9 +113,9 @@ public class FileService {
         List<String> base64Images = new ArrayList<>();
 
         if(storeImages.isEmpty()){
-            String fileUrl = System.getProperty("user.dir") + detailUrl;
+            String fileUrl = System.getProperty("user.dir") + localDetailUrl;
 
-            String fileName = "default.png";
+            String fileName = "ari.PNG";
 
             FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
             byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());

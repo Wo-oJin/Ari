@@ -69,7 +69,7 @@ public class ChatRoomController {
         MessageDto messageDto = MessageDto.createMessageDto(message.getSender(), message.getCreateTime(),
                 message.getContent(), ChatMessage.MessageType.JOIN);
 
-        sendingOperations.convertAndSend("/topic/public", message);
+        sendingOperations.convertAndSend("/topic/public", messageDto);
     }
 
     // 채팅방 생성
