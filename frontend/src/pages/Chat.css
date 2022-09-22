@@ -1,0 +1,53 @@
+.chatContainer {
+  width: 100%;
+  height: 750px;
+  overflow: auto;
+}
+
+/* 스크롤바 숨기기 */
+.chatContainer::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.dateContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 26px;
+  margin-bottom: 10px;
+}
+
+.date {
+  text-align: center;
+  color: #7f7f7f;
+  font-size: 14px;
+  background-color: #f5f5f5;
+  padding: 1px 15px;
+  border-radius: 20px;
+}
+
+.sendMessageContainer {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-top: 1px solid #c1c1c1;
+}
+.sendBox {
+  display: flex;
+  align-items: center;
+}
+
+.sendInput {
+  width: 210px;
+  height: 30px;
+  border: 1px solid #c1c1c1;
+  border-radius: 20px;
+  padding-left: 20px;
+}
+.chatSendBtn {
+  margin-left: 10px;
+  cursor: pointer;
+}
