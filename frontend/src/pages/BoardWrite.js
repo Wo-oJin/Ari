@@ -41,12 +41,7 @@ const BoardWrite = () => {
     formData.append("title", title);
     formData.append("content", content);
     formData.append("period", period);
-<<<<<<< HEAD
-    formData.append("author", authorList[0]);
-    //formData.append("authorStore", authorStore);
-=======
     formData.append("author", authorStore);
->>>>>>> 45fd5fcf39298a80bf60d2e7fd7ad7e3b5aa9a06
 
     console.log("dddd", authorStore);
 
