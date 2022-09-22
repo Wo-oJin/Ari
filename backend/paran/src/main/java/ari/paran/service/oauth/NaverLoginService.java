@@ -33,7 +33,7 @@ public class NaverLoginService {
 
     private final static String NAVER_CLIENT_ID = "upEgP9hrTubxfYE6rikh";
     private final static String NAVER_CLIENT_SECRET = "kUoimNInKY";
-    private final static String NAVER_REDIRECT_URI = "http://localhost:8080/auth/naver/login"; //Redirect URL
+    private final static String NAVER_REDIRECT_URI = "http://13.209.105.171/auth/naver/login"; //Redirect URL
     private final static String RESOURCE_SERVER_URL = "https://openapi.naver.com/v1/nid/me";
     private final static String SESSION_STATE = "naver_oauth_state";
     private final MemberService memberService;
