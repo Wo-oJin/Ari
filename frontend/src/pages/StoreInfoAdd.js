@@ -2,7 +2,7 @@ import { React, useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import styled from "styled-components";
-import "../pages/StoreInfoEdit.css";
+import "../pages/StoreInfoAdd.css";
 import DaumPostcode from "react-daum-postcode";
 import { customAxios } from "./customAxios";
 
@@ -18,10 +18,9 @@ const Formbox = styled.div`
   }
 `;
 
-const StoreInfoEdit = () => {
+const StoreInfoAdd = () => {
   // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
   const [storeInfoArr, setStoreInfoArr] = useState([]);
-  const [uStoreId, setuStoreId] = useState(null);
   const [uStoreName, setuStoreName] = useState("");
   const [uRoadAddress, setuRoadAddress] = useState("");
   const [uDetailAddress, setuDetailAddress] = useState("");
@@ -39,8 +38,6 @@ const StoreInfoEdit = () => {
 
   const navigate = useNavigate();
 
-  const [storeIndex, setStoreIndex] = useState("0"); // 가게 탭 인덱스
-
   useEffect(() => {
     const initialEdit = async () => {
       try {
@@ -49,16 +46,7 @@ const StoreInfoEdit = () => {
           const dataArr = res.data.data;
           setStoreInfoArr(dataArr);
 
-          // 처음 페이지 렌더링되었을 때 첫 번째 가게에 대한 초기값 세팅
-          setuStoreId(dataArr[0].storeId);
-          setuStoreName(dataArr[0].storeName || "");
-          setuRoadAddress(dataArr[0].roadAddress || "");
-          setuDetailAddress(dataArr[0].detailAddress || "");
-          setuOwnerName(dataArr[0].ownerName || "");
-          setuPhoneNumber(dataArr[0].phoneNumber || "");
-          setuSubText(dataArr[0].subText || "");
-          setuOpenHour(dataArr[0].openHour || "");
-
+          // 기본 이미지 설정
           if (dataArr[0].existingImages !== undefined) {
             setuImages(
               dataArr[0].existingImages.map(
@@ -99,59 +87,11 @@ const StoreInfoEdit = () => {
     initialEdit();
   }, []);
 
-  // 가게 탭 바뀌었을 때 입력폼 초기값 설정
-  const onClickStore = (e) => {
-    setStoreIndex(e.target.id);
-
-    // 처음 페이지 렌더링되었을 때 첫 번째 가게에 대한 초기값 세팅
-    let currentStore = storeInfoArr[e.target.id];
-    setuStoreId(currentStore.storeId);
-    setuStoreName(currentStore.storeName || "");
-    setuRoadAddress(currentStore.roadAddress || "");
-    setuDetailAddress(currentStore.detailAddress || "");
-    setuOwnerName(currentStore.ownerName || "");
-    setuPhoneNumber(currentStore.phoneNumber || "");
-    setuSubText(currentStore.subText || "");
-    setuOpenHour(currentStore.openHour || "");
-
-    if (currentStore.existingImages !== undefined) {
-      setuImages(
-        currentStore.existingImages.map(
-          (image) => `data:image/;base64,${image}`
-        )
-      ); // 미리보기 이미지
-      setuCurrentImagesLength(currentStore.existingImages.length); // 현재 업로드된 이미지 개수
-
-      // input[type="file"] 요소에 files props 할당하기
-      // 1. base64 이미지 url을 file 객체로 디코딩
-      let decodeFilesArr = [];
-      currentStore.existingImages.forEach((image, index) => {
-        decodeFilesArr[index] = base64ToFile(
-          `data:image/;base64,${image}`,
-          `${currentStore.storeId}_${index}.png`
-        );
-      });
-
-      setuFormImages(decodeFilesArr);
-
-      // 2. DataTransfer 객체를 이용하여 FileList의 값을 변경
-      const dataTranster = new DataTransfer();
-
-      decodeFilesArr.forEach((file) => {
-        dataTranster.items.add(file);
-      });
-
-      // 2-1. document.getElementById('images').prop("files", setFilesArr);
-      fileRef.current.files = dataTranster.files;
-      // console.log(fileRef.current.files);
-    }
-  };
-
   // 유효성 검사
-  const [isStoreName, setIsStoreName] = useState(true);
-  const [isAddress, setIsAddress] = useState(true);
-  const [isOwnerName, setIsOwnerName] = useState(true);
-  const [isPhoneNumber, setIsPhoneNumber] = useState(true);
+  const [isStoreName, setIsStoreName] = useState(false);
+  const [isAddress, setIsAddress] = useState(false);
+  const [isOwnerName, setIsOwnerName] = useState(false);
+  const [isPhoneNumber, setIsPhoneNumber] = useState(false);
 
   const [isOpenPost, setIsOpenPost] = useState(false); // daum-postcode api를 팝업처럼 관리하기 위함
 
@@ -314,7 +254,6 @@ const StoreInfoEdit = () => {
       formData.append("newImages", null);
     }
 
-    formData.append("storeId", storeInfoArr[storeIndex].storeId);
     formData.append("storeName", uStoreName);
     formData.append("roadAddress", uRoadAddress);
     formData.append("detailAddress", uDetailAddress);
@@ -328,15 +267,15 @@ const StoreInfoEdit = () => {
 
     try {
       await customAxios
-        .post("/edit/store", formData, {
+        .post("/add/store", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((res) => {
-          // console.log(JSON.stringify(res.data));
-          alert("수정되었습니다.");
-          navigate("/myPageOwner");
+          console.log(JSON.stringify(res.data));
+          alert("추가되었습니다.");
+          navigate("/storeInfoEdit");
         });
     } catch (e) {
       console.log(e);
@@ -348,37 +287,7 @@ const StoreInfoEdit = () => {
   } else {
     return (
       <>
-        <Header text="내 가게 정보 수정" back={true}></Header>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <div style={{ width: "312px", marginTop: "26px" }}>
-            {storeInfoArr.map((store, index) => {
-              return index === parseInt(storeIndex) ? (
-                <button
-                  key={index}
-                  id={index}
-                  className="edit-store-tap-active"
-                  onClick={onClickStore}
-                >
-                  {store.storeName}
-                </button>
-              ) : (
-                <button
-                  key={index}
-                  id={index}
-                  className="edit-store-tap"
-                  onClick={onClickStore}
-                >
-                  {store.storeName}
-                </button>
-              );
-            })}
-            <Link to="/storeInfoAdd">
-              <button className="add-store-tap">
-                <img alt="" src="images/add_icon.png"></img>
-              </button>
-            </Link>
-          </div>
-        </div>
+        <Header text="내 가게 추가" back={true}></Header>
         <div className="inputContainer">
           <Formbox>
             <div className="edit-intro">가게 이름:</div>
@@ -565,31 +474,24 @@ const StoreInfoEdit = () => {
             </div>
           </Formbox>
         </div>
-        <div style={{ width: "304px", margin: "0 auto" }}>
-          <div className="edit-buttonContainer">
-            <Link to="/myPageOwner">
-              <button className="cancelBtn" type="button">
-                취소
-              </button>
-            </Link>
-            <form onSubmit={onSubmit}>
-              <button
-                className="editBtn"
-                type="submit"
-                disabled={
-                  isStoreName && isAddress && isOwnerName && isPhoneNumber
-                    ? false
-                    : true
-                }
-              >
-                수정
-              </button>
-            </form>
-          </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <form onSubmit={onSubmit}>
+            <button
+              className="store-addBtn"
+              type="submit"
+              disabled={
+                isStoreName && isAddress && isOwnerName && isPhoneNumber
+                  ? false
+                  : true
+              }
+            >
+              추가
+            </button>
+          </form>
         </div>
       </>
     );
   }
 };
 
-export default StoreInfoEdit;
+export default StoreInfoAdd;

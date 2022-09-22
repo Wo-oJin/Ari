@@ -10,6 +10,7 @@ import SignupUser from "./pages/SignupUser";
 import SignupOwner from "./pages/SignupOwner";
 import SignupOwner2 from "./pages/SignupOwner2";
 import FindPassword from "./pages/FindPassword";
+import Kakao from "./services/oauth/Kakao";
 
 import Detail from "./pages/Detail";
 import Board from "./pages/Board";
@@ -17,6 +18,7 @@ import BoardWrite from "./pages/BoardWrite";
 import MyPageOwner from "./pages/MyPageOwner";
 import { StoreInfoTap } from "./components/DatailTap";
 import StoreInfoEdit from "./pages/StoreInfoEdit";
+import StoreInfoAdd from "./pages/StoreInfoAdd";
 import StorePrivateEventList from "./pages/StorePrivateEventList";
 
 import StoreAddPrivateEvent from "./pages/StoreAddPrivateEvent";
@@ -45,6 +47,8 @@ function App() {
           <Route path="/signupOwner2" element={<SignupOwner2 />} />
           <Route path="/findPassword" element={<FindPassword />} />
 
+          <Route path="/auth/code/kakao" element={<Kakao />} />
+
           <Route path="/board/list" element={<Board />}></Route>
           <Route path="/board/:boardId" element={<Board />}></Route>
           <Route path="/board/write" element={<BoardWrite />}></Route>
@@ -52,6 +56,7 @@ function App() {
 
           <Route path="/myPageOwner" element={<MyPageOwner />} />
           <Route path="/storeInfoEdit" element={<StoreInfoEdit />} />
+          <Route path="/storeInfoAdd" element={<StoreInfoAdd />} />
           <Route
             path="/storePrivateEventList"
             element={<StorePrivateEventList />}
