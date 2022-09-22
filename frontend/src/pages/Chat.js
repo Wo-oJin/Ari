@@ -1,24 +1,33 @@
 import { Stomp } from "@stomp/stompjs";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import SockJS from "sockjs-client";
+import { MyChatBox, OtherChatBox } from "../components/ChatBox";
+import Header from "../components/Header";
 import { authState, nameState } from "../state";
 import { customAxios } from "./customAxios";
+import "./Chat.css";
+import { Link, useNavigate } from "react-router-dom";
+import { AiOutlineClose } from "react-icons/ai";
+import { MdArrowBackIosNew } from "react-icons/md";
 
-//웹소켓 end point 설정
-let socket = new SockJS("http://localhost:8080/ws");
-let stompClient = Stomp.over(socket);
+import { IoSendSharp } from "react-icons/io5";
 
+let socket;
+let stompClient;
 const Chat = () => {
   const [name, setName] = useRecoilState(nameState);
   const [auth, setAuth] = useRecoilState(authState);
   const [chat, setChat] = useState("");
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState("");
+  const navigate = useNavigate();
+  //웹소켓 end point 설정
 
   //페이지 렌더링 되기 전에 웹소켓 connect
   useEffect(() => {
+    socket = new SockJS("http://localhost:8080/ws");
+    stompClient = Stomp.over(socket);
     connect();
   }, []);
 
@@ -31,6 +40,8 @@ const Chat = () => {
 
   //websocket connet
   const connect = () => {
+    console.log("여기까지 옴");
+
     stompClient.connect({}, onConnected, () => {
       console.log("Error");
     });
@@ -38,7 +49,6 @@ const Chat = () => {
 
   //connect 되면 채팅 기록 받아오고 subscribe 열기
   const onConnected = async () => {
-    console.log("ㅎㅇㅎㅇ");
     await customAxios.get("/chat/room").then((res) => {
       //여기서 채팅 기록 받아오기
       console.log(res.data);
@@ -63,15 +73,135 @@ const Chat = () => {
     var message = JSON.parse(payload.body);
 
     if (message.type === "JOIN") {
-      console.log("Join " + message.sender);
+      console.log("JOIN!!!");
+      setMessageList((prev) => [...prev, message.content]);
     } else if (message.type === "LEAVE") {
-      console.log("Leave ", message.sender);
+      console.log("LEAVE!!");
+      setMessageList((prev) => [...prev, message.content]);
     } else {
       console.log("Chatting: ", message.content);
-      setMessage((prev) => [...prev, message.content]);
+      setMessageList((prev) => [...prev, message.content]);
+      console.log("채팅 받은 이후", messageList);
     }
   };
-  return <div> chat </div>;
+
+  const sendMessage = () => {
+    if (chat && stompClient) {
+      console.log("send 실행됨, chat: ", chat);
+      let chatMessage = {
+        sender: name,
+        content: chat,
+        type: "CHAT",
+      };
+      stompClient.send(
+        "/app/chat/sendMessage",
+        {},
+        JSON.stringify(chatMessage)
+      );
+      setChat("");
+    }
+  };
+
+  const onSubmit = () => {
+    sendMessage();
+  };
+
+  const onChange = (e) => {
+    setChat(e.target.value);
+  };
+
+  if (!messageList) {
+    return <div>로딩 중</div>;
+  } else {
+    return (
+      <>
+        <div className="header">
+          <span>채팅</span>
+          <button
+            className="backBtn"
+            onClick={() => {
+              //뒤로 가기 클릭 시, Leave 메시지 날리기
+              let chatMessage = {
+                sender: name,
+                type: "LEAVE",
+              };
+              stompClient.send(
+                "/app/chat/sendMessage",
+                {},
+                JSON.stringify(chatMessage)
+              );
+              //back btn 클릭 시, 뒤로 가기
+              navigate(-1);
+            }}
+          >
+            <MdArrowBackIosNew size={"1.3em"} color="black"></MdArrowBackIosNew>
+          </button>
+
+          <button className="rightBtn">
+            <Link to={"/"}>
+              <AiOutlineClose size={"1.3em"}></AiOutlineClose>
+            </Link>
+          </button>
+        </div>
+        <div className="chatContainer">
+          {messageList &&
+            messageList.map((item, key) => {
+              return (
+                <div>
+                  <div className="dateContainer">
+                    <span className="date">{item.date}</span>
+                  </div>
+                  {item.messages &&
+                    item.messages.map((item, key) => {
+                      if (item.type === "JOIN") {
+                        return (
+                          <div className="dateContainer">
+                            <span className="date">{item.content}</span>
+                          </div>
+                        );
+                      } else if (item.type === "Leave") {
+                        return (
+                          <div className="dateContainer">
+                            <span className="date">{item.content}</span>
+                          </div>
+                        );
+                      } else if (item.sender === name) {
+                        return (
+                          <MyChatBox
+                            createTime={item.createTime}
+                            content={item.content}
+                          ></MyChatBox>
+                        );
+                      } else {
+                        return (
+                          <OtherChatBox
+                            createTime={item.createTime}
+                            content={item.content}
+                            sender={item.sender}
+                          ></OtherChatBox>
+                        );
+                      }
+                    })}
+                </div>
+              );
+            })}
+        </div>
+        <div className="sendMessageContainer">
+          <div className="sendBox">
+            <input
+              className="sendInput"
+              onChange={onChange}
+              value={chat}
+              type="text"
+            ></input>
+            <button className="chatSendBtn" type="submit" onClick={onSubmit}>
+              <IoSendSharp size={"2.0em"} color={"#727171"}></IoSendSharp>
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
 };
 
 export default Chat;
