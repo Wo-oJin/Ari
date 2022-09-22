@@ -1,8 +1,5 @@
-import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import { reissue } from "./services/jwt/reissue";
-import axios from "axios";
 
 import Main from "./components/Main";
 import LoginRegister from "./components/LoginRegister";
@@ -12,6 +9,8 @@ import LoginOwner from "./pages/LoginOwner";
 import SignupUser from "./pages/SignupUser";
 import SignupOwner from "./pages/SignupOwner";
 import SignupOwner2 from "./pages/SignupOwner2";
+import FindPassword from "./pages/FindPassword";
+import Kakao from "./services/oauth/Kakao";
 
 import Detail from "./pages/Detail";
 import Board from "./pages/Board";
@@ -19,36 +18,22 @@ import BoardWrite from "./pages/BoardWrite";
 import MyPageOwner from "./pages/MyPageOwner";
 import { StoreInfoTap } from "./components/DatailTap";
 import StoreInfoEdit from "./pages/StoreInfoEdit";
+import StoreInfoAdd from "./pages/StoreInfoAdd";
 import StorePrivateEventList from "./pages/StorePrivateEventList";
 
 import StoreAddPrivateEvent from "./pages/StoreAddPrivateEvent";
 import StoreEditPrivateEvent from "./pages/StoreEditPrivateEvent";
 import StoreFavoriteList from "./pages/StoreFavoriteList";
+import UserFavoriteList from "./pages/UserFavoriteList";
 
 import RedirectLogin from "./pages/RedirectLogin";
 import BoardListView from "./pages/BoardListView";
-
-// 모든 요청에 withCredentials = true 전역 설정
-axios.defaults.withCredentials = true;
+import BoardModify from "./pages/BoardModify";
 
 function App() {
-  // 처음 렌더링될 때 한 번 실행
-  useEffect(() => {
-    const a = async () => {
-      const result = await reissue(); // 토큰 갱신 요청
-      // console.log("result>>" + JSON.stringify(result));
-      if (result.result === "fail") {
-        console.log(result.massage);
-      } else {
-        console.log(result.massage);
-      }
-    };
-    a();
-  }, []);
-
   return (
-    <RecoilRoot>
-      <BrowserRouter>
+    <BrowserRouter>
+      <RecoilRoot>
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="/loginRegister" element={<LoginRegister />}></Route>
@@ -60,6 +45,9 @@ function App() {
           <Route path="/detail/:storeId" element={<Detail />} />
           <Route path="/signupOwner" element={<SignupOwner />} />
           <Route path="/signupOwner2" element={<SignupOwner2 />} />
+          <Route path="/findPassword" element={<FindPassword />} />
+
+          <Route path="/auth/code/kakao" element={<Kakao />} />
 
           <Route path="/board/list" element={<Board />}></Route>
           <Route path="/board/:boardId" element={<Board />}></Route>
@@ -68,6 +56,7 @@ function App() {
 
           <Route path="/myPageOwner" element={<MyPageOwner />} />
           <Route path="/storeInfoEdit" element={<StoreInfoEdit />} />
+          <Route path="/storeInfoAdd" element={<StoreInfoAdd />} />
           <Route
             path="/storePrivateEventList"
             element={<StorePrivateEventList />}
@@ -81,14 +70,19 @@ function App() {
             element={<StoreEditPrivateEvent />}
           />
           <Route path="/storeFavoriteList" element={<StoreFavoriteList />} />
+          <Route path="/userFavoriteList" element={<UserFavoriteList />} />
 
           <Route
             path="board/list/:articleId"
             element={<BoardListView />}
           ></Route>
+          <Route
+            path="board/update/:articleId"
+            element={<BoardModify />}
+          ></Route>
         </Routes>
-      </BrowserRouter>
-    </RecoilRoot>
+      </RecoilRoot>
+    </BrowserRouter>
   );
 }
 

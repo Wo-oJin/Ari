@@ -1,4 +1,4 @@
-import { React, Fragment, useState } from "react";
+import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -47,6 +47,7 @@ const SignupOwner = () => {
 
   // 유효성 검사
   const [isEmail, setIsEmail] = useHistoryState(false, "isEmail");
+  const [isUniqueEmail, setIsUniqueEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordCheck, setIsPasswordCheck] = useState(false);
 
@@ -66,6 +67,27 @@ const SignupOwner = () => {
     } else {
       setEmailMessage("올바른 이메일 형식입니다.");
       setIsEmail(true);
+    }
+  };
+
+  // 이메일 중복 확인
+  const checkEmail = async () => {
+    try {
+      await axios
+        .post("/auth/check-email", {
+          email: email,
+        })
+        .then((res) => {
+          if (res.data.result === "success") {
+            setEmailMessage("사용 가능한 이메일입니다.");
+            setIsUniqueEmail(true);
+          } else {
+            setEmailMessage(res.data.massage);
+            setIsUniqueEmail(false);
+          }
+        });
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -110,11 +132,6 @@ const SignupOwner = () => {
 
   // 이메일로 인증번호 보내기
   const sendEmailCode = async () => {
-    if (!isEmail) {
-      alert("이메일 주소를 확인해주세요.");
-      return false;
-    }
-
     alert("전송되었습니다."); // 전송까지 시간이 좀 걸리지만 일단 전송 확인 메세지부터 띄움
     setSendText("재전송");
 
@@ -164,12 +181,12 @@ const SignupOwner = () => {
   return (
     <>
       <Header text="회원가입" back={true}></Header>
-      <Fragment>
-        <div className="inputContainer">
-          <Formbox>
-            <div className="intro">이메일 주소</div>
+      <div className="inputContainer">
+        <Formbox>
+          <div className="intro">이메일 주소</div>
+          <div>
             <input
-              className="inputBox"
+              className="emailInput"
               name="email"
               value={email}
               type="email"
@@ -178,151 +195,166 @@ const SignupOwner = () => {
               required
               autoComplete="off"
             />
-            {email.length > 0 && (
-              <p className={`message ${isEmail ? "success" : "error"}`}>
-                {emailMessage}
-              </p>
-            )}
-          </Formbox>
-          <Formbox>
-            <div className="intro">메일 인증</div>
-            <div>
-              <input
-                style={{ textTransform: "uppercase" }}
-                className="certificationInput"
-                name="certificationNumber"
-                value={certificationNumber}
-                type="text"
-                onChange={(e) => setCertificationNumber(e.target.value)}
-                placeholder="인증번호 입력"
-                required
-                autoComplete="off"
-              />
-              <button className="sendBtn" onClick={sendEmailCode}>
-                {sendText}
-              </button>
-            </div>
-            <MainButton
-              radius="5px"
-              color="#FFFFFF"
-              background="#386FFE;"
-              onClick={onEmailCheck}
-              disabled={
-                certificationNumber.length > 0 && !isEmailCheck ? false : true
-              }
-              text="인증 확인"
-            />
-            {certificationNumber.length > 0 && (
-              <p className={`message ${isEmailCheck ? "success" : "error"}`}>
-                {emailCheckMessage}
-              </p>
-            )}
-          </Formbox>
-          <Formbox>
-            <div className="intro">비밀번호</div>
+            <button
+              className="sendBtn"
+              onClick={checkEmail}
+              disabled={isEmail ? false : true}
+            >
+              중복 확인
+            </button>
+          </div>
+          {email.length > 0 && (
+            <p className={`message ${isEmail ? "success" : "error"}`}>
+              {emailMessage}
+            </p>
+          )}
+        </Formbox>
+        <Formbox>
+          <div className="intro">메일 인증</div>
+          <div>
             <input
-              className="inputBox"
-              name="password"
-              value={password}
-              type="password"
-              onChange={onChangePassword}
-              placeholder="비밀번호 입력"
+              style={{ textTransform: "uppercase" }}
+              className="certificationInput"
+              name="certificationNumber"
+              value={certificationNumber}
+              type="text"
+              onChange={(e) => setCertificationNumber(e.target.value)}
+              placeholder="인증번호 입력"
               required
               autoComplete="off"
             />
-            {password.length > 0 && (
-              <p className={`message ${isPassword ? "success" : "error"}`}>
-                {passwordMessage}
-              </p>
-            )}
-          </Formbox>
-          <Formbox>
-            <div className="intro">비밀번호 확인</div>
-            <input
-              className="inputBox"
-              name="passwordCheck"
-              value={passwordCheck}
-              type="password"
-              onChange={onChangePasswordCheck}
-              placeholder="비밀번호 재입력"
-              required
-              autoComplete="off"
-            />
-            {passwordCheck.length > 0 && (
-              <p className={`message ${isPasswordCheck ? "success" : "error"}`}>
-                {passwordCheckMessage}
-              </p>
-            )}
-          </Formbox>
-
-          <Formbox>
-            <div className="intro">연령대</div>
-            <div style={{ width: "260px" }}>
-              <select
-                name="age"
-                onChange={(e) => setAge(e.target.value)}
-                className="select-age"
-                defaultValue={age}
-              >
-                <option value="10">10대</option>
-                <option value="20">20대</option>
-                <option value="30">30대</option>
-                <option value="40">40대</option>
-                <option value="50">50대</option>
-                <option value="60">60대</option>
-                <option value="70">70대 이상</option>
-              </select>
-            </div>
-          </Formbox>
-          <Formbox>
-            <div className="intro">성별</div>
-            <div className="genderContainer">
-              <div className="gender-wrap">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  id="male"
-                  onChange={(e) => setGender(e.target.value)}
-                  defaultChecked={gender === "male" ? true : false}
-                ></input>
-                <label htmlFor="male">남</label>
-              </div>
-              <div className="gender-wrap">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  id="female"
-                  onChange={(e) => setGender(e.target.value)}
-                  defaultChecked={gender === "female" ? true : false}
-                ></input>
-                <label htmlFor="female">여</label>
-              </div>
-            </div>
-          </Formbox>
-        </div>
-        <div className="flexContainer">
-          <div className="current"></div>
-          <div className="normal"></div>
-        </div>
-        <div className="buttonContainer">
+            <button
+              className="sendBtn"
+              onClick={sendEmailCode}
+              disabled={isEmail && isUniqueEmail ? false : true}
+            >
+              {sendText}
+            </button>
+          </div>
           <MainButton
-            radius="15px"
+            radius="5px"
             color="#FFFFFF"
             background="#386FFE;"
-            type="submit"
-            onClick={onNext}
+            onClick={onEmailCheck}
             disabled={
-              isEmail && isPassword && isPasswordCheck && isEmailCheck
-                ? false
-                : true
+              certificationNumber.length > 0 && !isEmailCheck ? false : true
             }
-            // disabled={(isEmail && isPassword && isPasswordCheck) ? false : true}
-            text="다음"
+            text="인증 확인"
           />
-        </div>
-      </Fragment>
+          {certificationNumber.length > 0 && (
+            <p className={`message ${isEmailCheck ? "success" : "error"}`}>
+              {emailCheckMessage}
+            </p>
+          )}
+        </Formbox>
+        <Formbox>
+          <div className="intro">비밀번호</div>
+          <input
+            className="inputBox"
+            name="password"
+            value={password}
+            type="password"
+            onChange={onChangePassword}
+            placeholder="비밀번호 입력"
+            required
+            autoComplete="off"
+          />
+          {password.length > 0 && (
+            <p className={`message ${isPassword ? "success" : "error"}`}>
+              {passwordMessage}
+            </p>
+          )}
+        </Formbox>
+        <Formbox>
+          <div className="intro">비밀번호 확인</div>
+          <input
+            className="inputBox"
+            name="passwordCheck"
+            value={passwordCheck}
+            type="password"
+            onChange={onChangePasswordCheck}
+            placeholder="비밀번호 재입력"
+            required
+            autoComplete="off"
+          />
+          {passwordCheck.length > 0 && (
+            <p className={`message ${isPasswordCheck ? "success" : "error"}`}>
+              {passwordCheckMessage}
+            </p>
+          )}
+        </Formbox>
+
+        <Formbox>
+          <div className="intro">연령대</div>
+          <div style={{ width: "260px" }}>
+            <select
+              name="age"
+              onChange={(e) => setAge(e.target.value)}
+              className="select-age"
+              defaultValue={age}
+            >
+              <option value="10">10대</option>
+              <option value="20">20대</option>
+              <option value="30">30대</option>
+              <option value="40">40대</option>
+              <option value="50">50대</option>
+              <option value="60">60대</option>
+              <option value="70">70대 이상</option>
+            </select>
+          </div>
+        </Formbox>
+        <Formbox>
+          <div className="intro">성별</div>
+          <div className="genderContainer">
+            <div className="gender-wrap">
+              <input
+                type="radio"
+                name="gender"
+                value="male"
+                id="male"
+                onChange={(e) => setGender(e.target.value)}
+                defaultChecked={gender === "male" ? true : false}
+              ></input>
+              <label htmlFor="male">남</label>
+            </div>
+            <div className="gender-wrap">
+              <input
+                type="radio"
+                name="gender"
+                value="female"
+                id="female"
+                onChange={(e) => setGender(e.target.value)}
+                defaultChecked={gender === "female" ? true : false}
+              ></input>
+              <label htmlFor="female">여</label>
+            </div>
+          </div>
+        </Formbox>
+      </div>
+      <div className="flexContainer">
+        <div className="current"></div>
+        <div className="normal"></div>
+      </div>
+      <div className="buttonContainer">
+        <MainButton
+          radius="15px"
+          color="#FFFFFF"
+          background="#386FFE;"
+          type="submit"
+          onClick={onNext}
+          disabled={
+            isEmail &&
+            isUniqueEmail &&
+            isPassword &&
+            isPasswordCheck &&
+            isEmailCheck
+              ? false
+              : true
+          }
+          // disabled={(isEmail && isPassword && isPasswordCheck) ? false : true}
+          text="다음"
+        />
+      </div>
     </>
   );
 };

@@ -27,6 +27,7 @@ public class OAuthController {
     private final KakaoLoginService kakaoLoginService;
     private final NaverLoginService naverLoginService;
     private final MemberService memberService;
+    private final Response response;
 
     @GetMapping("/auth/login")
     public Map<String, String> oauthLogin(HttpSession httpSession){
@@ -40,14 +41,17 @@ public class OAuthController {
         return urlMap;
     }
 
-    @GetMapping("/auth/kakao/login")
-    public ResponseEntity<?> kakaoCallback(HttpSession session, @RequestParam String code, @RequestParam String state, RedirectAttributes redirectAttributes) throws Exception {
+    @PostMapping("/auth/kakao/login")
+    public ResponseEntity<?> kakaoCallback(HttpSession session, @RequestBody Map<String,Object> paramMap) throws Exception {
 
+        String code = String.valueOf(paramMap.get("code"));
+        String state = String.valueOf(paramMap.get("state"));
         OAuth2AccessToken token = kakaoLoginService.getAccessToken(session, code, state);
 
         Map<String, String> apiResult = kakaoLoginService.getUserProfile(token);
 
         if(apiResult.containsKey("fail")) {
+            /*
             URI redirectUri = new URI(apiResult.get("fail"));
 
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -55,22 +59,30 @@ public class OAuthController {
 
             log.info("리다이렉트 = {}", redirectUri.toString());
 
+
             return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-        }else {
+             */
+
+            return response.fail("로그인 실패(중복된 이메일이 존재)", HttpStatus.BAD_REQUEST);
+        }
+        else {
             LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
 
             return memberService.login(loginDto);
         }
     }
 
-    @GetMapping("/auth/naver/login")
-    public ResponseEntity<?> NaverCallback(HttpSession session, @RequestParam String code, @RequestParam String state) throws Exception {
+    @PostMapping("/auth/naver/login")
+    public ResponseEntity<?> NaverCallback(HttpSession session, @RequestBody Map<String, Object> paramMap) throws Exception {
 
+        String code = String.valueOf(paramMap.get("code"));
+        String state = String.valueOf(paramMap.get("state"));
         OAuth2AccessToken token = naverLoginService.getAccessToken(session, code, state);
 
         Map<String, String> apiResult = naverLoginService.getUserProfile(token);
 
         if(apiResult.containsKey("fail")) {
+            /*
             URI redirectUri = new URI(apiResult.get("fail"));
 
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -78,12 +90,17 @@ public class OAuthController {
 
             log.info("리다이렉트 = {}", redirectUri.toString());
 
+
             return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+             */
+
+            return response.fail("로그인 실패(중복된 이메일이 존재)", HttpStatus.BAD_REQUEST);
         }
+        else {
+            LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
 
-        LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
-
-        return memberService.login(loginDto);
+            return memberService.login(loginDto);
+        }
     }
 
 }

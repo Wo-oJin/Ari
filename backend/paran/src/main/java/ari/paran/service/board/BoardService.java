@@ -1,34 +1,54 @@
 package ari.paran.service.board;
 
 import ari.paran.domain.board.Article;
+import ari.paran.domain.board.FavoriteArticle;
+import ari.paran.domain.member.Member;
 import ari.paran.domain.repository.BoardRepository;
+import ari.paran.domain.repository.FavoriteArticleRepository;
+import ari.paran.domain.repository.MemberRepository;
+import ari.paran.domain.store.FavoriteStore;
 import ari.paran.domain.store.Store;
+import ari.paran.dto.Response;
 import ari.paran.dto.response.board.DetailArticleDto;
+import ari.paran.dto.response.board.LikeArticleListDto;
 import ari.paran.dto.response.board.SimpleArticleDto;
 import ari.paran.dto.response.board.UpdateForm;
+import ari.paran.dto.response.store.LikeStoreListDto;
 import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.FileService;
 import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final FavoriteArticleRepository favoriteArticleRepository;
+    private final MemberRepository memberRepository;
     private final StoreService storeService;
     private final FileService fileService;
     private final MemberService memberService;
+    private final Response response;
+
+    public Article findArticle(Long articleId){
+        return boardRepository.findById(articleId).orElse(null);
+    }
 
     public Page<SimpleArticleDto> getArticleList(Pageable pageable, String keyword) throws IOException{
 
@@ -44,9 +64,9 @@ public class BoardService {
                 return SimpleArticleDto.builder()
                                 .id(article.getId())
                                 .title(article.getTitle())
-                                .author(article.getMember().getStores().get(0).getName())
+                                .author(article.getAuthor())
                                 .createDate(article.getCreateDate())
-                                .image(article.getImgFiles().isEmpty() ? null : fileService.getArticleImage(article, 1).get(0))
+                                .image(fileService.getArticleImage(article, 1).get(0))
                                 .build();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -62,11 +82,12 @@ public class BoardService {
             return DetailArticleDto.builder()
                     .title(article.getTitle())
                     .content(article.getContent())
-                    .author(article.getMember().getStores().get(0).getName())
                     .storeId(store.getId())
+                    .author(article.getAuthor())
                     .period(article.getPeriod())
                     .favorite(memberService.getMemberInfoById(memberId).isFavoriteStore(store))
-                    .authority(store.getMember().getId() == memberId ? true : false)
+                    .authority(article.getMember().getId() == memberId ? true : false)
+                    .location(store.getFullAddress())
                     .createDate(article.getCreateDate())
                     .images(fileService.getArticleImage(article, article.getImgFiles().size()))
                     .build();
@@ -105,5 +126,50 @@ public class BoardService {
     @Transactional
     public void deleteArticle(Long articleId){
         boardRepository.deleteById(articleId);
+    }
+
+    public ResponseEntity<?> likeArticleList(Long memberId) throws IOException {
+        Member member = memberRepository.findById(memberId).orElse(null);
+        List<FavoriteArticle> favorites = member.getFavoriteArticles();
+        List<LikeArticleListDto> data = new ArrayList<>();
+        for (FavoriteArticle favorite : favorites) {
+            Article article = favorite.getArticle();
+            data.add(LikeArticleListDto.builder()
+                    .name(article.getTitle())
+                    .articleId(article.getId())
+                    .updateDate(article.getUpdateDate())
+                    .image(fileService.getMainArticleImage(article))
+                    .isCompleted(article.isCompleted())
+                    .build());
+        }
+        log.info("좋아요 게시글 개수: {}", data.size());
+
+        return response.success(data, "좋아요 게시글 목록", HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> toggleFavoriteArticle(Long articleId, Long memberId) {
+        Member member = memberService.getMemberInfoById(memberId);
+        Article article = findArticle(articleId);
+
+        FavoriteArticle favorite;
+
+        if(member.isFavoriteArticle(article)) {
+            favorite = favoriteArticleRepository.findFavoriteArticleByMemberAndArticle(member, article).orElseGet(null);
+
+            member.deleteFavoriteArticle(favorite);
+            favoriteArticleRepository.delete(favorite);
+
+            return response.success("좋아요 목록에서 성공적으로 제거했습니다.");
+        }
+
+        favorite = new FavoriteArticle(member, article);
+
+        member.addFavoriteArticle(favorite);
+        article.addFavorite(favorite);
+
+        favoriteArticleRepository.save(favorite);
+
+        return response.success("좋아요 목록에 성공적으로 저장했습니다.");
     }
 }

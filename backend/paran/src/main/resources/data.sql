@@ -17,19 +17,19 @@ INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text,
     VALUES ("경기 수원시 영통구 아주로 18", 4, "1층", "오전 9시 ~ 오후 9시", "카리스마 한 줄 소개", "카리스마 아주대점", "한수연", "010-5678-1234", 0);
 
 
-INSERT INTO signup_code (ID, CODE) VALUES (1, '11111');
-INSERT INTO signup_code (ID, CODE) VALUES (2, '22222');
+INSERT INTO signup_code (id, code) VALUES (1, '11111');
+INSERT INTO signup_code (id, code) VALUES (2, '22222');
 
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사1", "2022-08-01","2022-09-01");
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사2", "2022-09-01","2022-10-01");
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (2, "아맛집 할인 행사1", "2022-08-01","2022-09-01");
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (2, "아맛집 할인 행사2", "2022-09-01","2022-10-01");
 
-INSERT INTO partnership (from_store_id, to_store_name, info, start_date, finish_date) VALUES (1, "아맛집", "아맛집에서 10000원 이상 구매 시 전 메뉴 500원 할인", "2022-08-01","2022-09-01");
-INSERT INTO partnership (from_store_id, to_store_name, info, start_date, finish_date) VALUES (2, "미스터쉐프", "미스터쉐프에서 10000원 이상 구매 시 전 메뉴 500원 할인", "2022-08-01","2022-09-01");
-INSERT INTO partnership (from_store_id, to_store_name, info, start_date, finish_date) VALUES (1, "아맛집", "아맛집에서 5000원 이상 구매 시 전 메뉴 100원 할인", "2022-09-01","2022-10-01");
-INSERT INTO partnership (from_store_id, to_store_name, info, start_date, finish_date) VALUES (2, "미스터쉐프", "미스터쉐프에서 5000원 이상 구매 시 전 메뉴 100원 할인", "2022-09-01","2022-10-01");
-INSERT INTO partnership (from_store_id, to_store_name, info, start_date, finish_date) VALUES (1, "맥도날드", "미스터쉐프에서 7000원 이상 구매 시 전 메뉴 500원 할인", "2022-08-01","2022-09-01");
+INSERT INTO partnership (from_store_id, to_store_name, partner_location, info, start_date, finish_date) VALUES (1, "아맛집", "경기 수원시 팔달구 아주로13번길 19 골든파크", "아맛집에서 10000원 이상 구매 시 전 메뉴 500원 할인", "2022-08-01","2022-09-01");
+INSERT INTO partnership (from_store_id, to_store_name, partner_location, info, start_date, finish_date) VALUES (2, "미스터쉐프", "경기 수원시 팔달구 아주로47번길 16", "미스터쉐프에서 10000원 이상 구매 시 전 메뉴 500원 할인", "2022-08-01","2022-09-01");
+INSERT INTO partnership (from_store_id, to_store_name, partner_location, info, start_date, finish_date) VALUES (1, "아맛집", "경기 수원시 팔달구 아주로13번길 19 골든파크", "아맛집에서 5000원 이상 구매 시 전 메뉴 100원 할인", "2022-09-01","2022-10-01");
+INSERT INTO partnership (from_store_id, to_store_name, partner_location, info, start_date, finish_date) VALUES (2, "미스터쉐프", "경기 수원시 팔달구 아주로47번길 16", "미스터쉐프에서 5000원 이상 구매 시 전 메뉴 100원 할인", "2022-09-01","2022-10-01");
+INSERT INTO partnership (from_store_id, to_store_name, partner_location, info, start_date, finish_date) VALUES (1, "맥도날드", "경기 수원시 영통구 아주로 46 아록빌딩 1층", "미스터쉐프에서 7000원 이상 구매 시 전 메뉴 500원 할인", "2022-08-01","2022-09-01");
 
 
 INSERT INTO board(title, content, writer_id, partnership_period, create_date, update_date) VALUES("제목1", "내용1", 1, "3달", now(), now());

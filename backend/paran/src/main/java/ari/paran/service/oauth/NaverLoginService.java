@@ -33,7 +33,7 @@ public class NaverLoginService {
 
     private final static String NAVER_CLIENT_ID = "upEgP9hrTubxfYE6rikh";
     private final static String NAVER_CLIENT_SECRET = "kUoimNInKY";
-    private final static String NAVER_REDIRECT_URI = "http://localhost:8080/auth/naver/login"; //Redirect URL
+    private final static String NAVER_REDIRECT_URI = "http://13.209.105.171/auth/naver/login"; //Redirect URL
     private final static String RESOURCE_SERVER_URL = "https://openapi.naver.com/v1/nid/me";
     private final static String SESSION_STATE = "naver_oauth_state";
     private final MemberService memberService;
@@ -54,8 +54,8 @@ public class NaverLoginService {
 
     // access token 발급
     public OAuth2AccessToken getAccessToken(HttpSession session, String code, String state) throws Exception {
-        String sessionState = getSession(session);
-        if (sessionState.equals(state)) {
+        //String sessionState = getSession(session);
+        //if (sessionState.equals(state)) {
             OAuth20Service oauthService = new ServiceBuilder()
                     .apiKey(NAVER_CLIENT_ID)
                     .callback(NAVER_REDIRECT_URI)
@@ -64,9 +64,9 @@ public class NaverLoginService {
 
             OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
             return accessToken;
-        }
+       // }
 
-        return null;
+        //return null;
     }
 
     public Map<String, String> getUserProfile(OAuth2AccessToken oauthToken) throws Exception {

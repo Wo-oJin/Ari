@@ -1,23 +1,27 @@
 import { React, useState } from "react";
 import Header from "../components/Header";
 import "../pages/StoreAddPrivateEvent.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { customAxios } from "./customAxios";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const StoreAddPrivateEvent = () => {
   const [newInfo, setNewInfo] = useState("");
 
   const navigate = useNavigate();
 
+  const { state } = useLocation(); // StorePrivateEventList.js에서 Link로 전달한 데이터 받아오기
+  const storeId = state.storeId;
+
   const onAdd = async () => {
     try {
-      await axios
+      await customAxios
         .post("/add/self-event", {
+          storeId: storeId,
           info: newInfo,
         })
         .then((res) => {
           alert(res.data.massage);
-          navigate("/storePrivateEventList");
+          navigate(`/storePrivateEventList?storeId=${storeId}`);
         });
     } catch (e) {
       console.log(e);

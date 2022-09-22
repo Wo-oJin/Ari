@@ -1,11 +1,10 @@
 import { React, useEffect, useState, useRef } from "react";
-// import { useLocation } from "react-router";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import styled from "styled-components";
 import "../pages/StoreInfoEdit.css";
 import DaumPostcode from "react-daum-postcode";
-import axios from "axios";
+import { customAxios } from "./customAxios";
 
 const Formbox = styled.div`
   margin-bottom: 36px;
@@ -21,6 +20,7 @@ const Formbox = styled.div`
 
 const StoreInfoEdit = () => {
   // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
+  const [storeInfoArr, setStoreInfoArr] = useState([]);
   const [uStoreId, setuStoreId] = useState(null);
   const [uStoreName, setuStoreName] = useState("");
   const [uRoadAddress, setuRoadAddress] = useState("");
@@ -32,80 +32,120 @@ const StoreInfoEdit = () => {
   const [uCurrentImagesLength, setuCurrentImagesLength] = useState(0); // 현재 업로드한 이미지 개수
   const [uSubText, setuSubText] = useState("");
   const [uOpenHour, setuOpenHour] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const fileRef = useRef(null); // input[type="file"] DOM 요소에 접근하기 위함
+  const fileRef = useRef([]); // input[type="file"] DOM 요소에 접근하기 위함
+  // useRef(null)이면 렌더링 시간차로 인해 스크립트가 먼저 실행되고 DOM 요소를 참조하지 못해서 Cannot read properties of undefined 에러날 수 있음
 
   const navigate = useNavigate();
+
+  const [storeIndex, setStoreIndex] = useState("0"); // 가게 탭 인덱스
 
   useEffect(() => {
     const initialEdit = async () => {
       try {
-        await axios
-          .get("/edit/store", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          })
-          .then((res) => {
-            // console.log("res.data.data", res.data.data);
-            const {
-              storeId,
-              storeName,
-              roadAddress,
-              detailAddress,
-              ownerName,
-              phoneNumber,
-              existingImages,
-              subText,
-              openHour,
-            } = res.data.data;
+        await customAxios.get("/edit/store").then((res) => {
+          console.log("res.data.data", res.data.data);
+          const dataArr = res.data.data;
+          setStoreInfoArr(dataArr);
 
-            // 처음 페이지 렌더링되었을 때 받아온 데이터로 초기값 세팅
-            setuStoreId(storeId);
-            setuStoreName(storeName);
-            setuRoadAddress(roadAddress);
-            setuDetailAddress(detailAddress);
-            setuOwnerName(ownerName);
-            setuPhoneNumber(phoneNumber);
-            setuSubText(subText || "");
-            setuOpenHour(openHour || "");
+          // 처음 페이지 렌더링되었을 때 첫 번째 가게에 대한 초기값 세팅
+          setuStoreId(dataArr[0].storeId);
+          setuStoreName(dataArr[0].storeName || "");
+          setuRoadAddress(dataArr[0].roadAddress || "");
+          setuDetailAddress(dataArr[0].detailAddress || "");
+          setuOwnerName(dataArr[0].ownerName || "");
+          setuPhoneNumber(dataArr[0].phoneNumber || "");
+          setuSubText(dataArr[0].subText || "");
+          setuOpenHour(dataArr[0].openHour || "");
 
-            if (existingImages !== undefined) {
-              setuImages(
-                existingImages.map((image) => `data:image/;base64,${image}`)
-              ); // 미리보기 이미지
-              setuCurrentImagesLength(existingImages.length); // 현재 업로드된 이미지 개수
+          if (dataArr[0].existingImages !== undefined) {
+            setuImages(
+              dataArr[0].existingImages.map(
+                (image) => `data:image/;base64,${image}`
+              )
+            ); // 미리보기 이미지
+            setuCurrentImagesLength(dataArr[0].existingImages.length); // 현재 업로드된 이미지 개수
 
-              // input[type="file"] 요소에 files props 할당하기
-              // 1. base64 이미지 url을 file 객체로 디코딩
-              let decodeFilesArr = [];
-              existingImages.forEach((image, index) => {
-                decodeFilesArr[index] = base64ToFile(
-                  `data:image/;base64,${image}`,
-                  `${storeId}_${index}.png`
-                );
-              });
+            // input[type="file"] 요소에 files props 할당하기
+            // 1. base64 이미지 url을 file 객체로 디코딩
+            let decodeFilesArr = [];
+            dataArr[0].existingImages.forEach((image, index) => {
+              decodeFilesArr[index] = base64ToFile(
+                `data:image/;base64,${image}`,
+                `${dataArr[0].storeId}_${index}.png`
+              );
+            });
 
-              setuFormImages(decodeFilesArr);
+            setuFormImages(decodeFilesArr);
 
-              // 2. DataTransfer 객체를 이용하여 FileList의 값을 변경
-              const dataTranster = new DataTransfer();
+            // 2. DataTransfer 객체를 이용하여 FileList의 값을 변경
+            const dataTranster = new DataTransfer();
 
-              decodeFilesArr.forEach((file) => {
-                dataTranster.items.add(file);
-              });
+            decodeFilesArr.forEach((file) => {
+              dataTranster.items.add(file);
+            });
 
-              // 2-1. document.getElementById('images').prop("files", setFilesArr);
-              fileRef.current.files = dataTranster.files;
-              // console.log(fileRef.current.files);
-            }
-          });
+            // 2-1. document.getElementById('images').prop("files", setFilesArr);
+            fileRef.current.files = dataTranster.files;
+            // console.log(fileRef.current.files);
+          }
+          setIsLoaded(true);
+        });
       } catch (e) {
         console.log(e);
       }
     };
     initialEdit();
   }, []);
+
+  // 가게 탭 바뀌었을 때 입력폼 초기값 설정
+  const onClickStore = (e) => {
+    setStoreIndex(e.target.id);
+
+    // 처음 페이지 렌더링되었을 때 첫 번째 가게에 대한 초기값 세팅
+    let currentStore = storeInfoArr[e.target.id];
+    setuStoreId(currentStore.storeId);
+    setuStoreName(currentStore.storeName || "");
+    setuRoadAddress(currentStore.roadAddress || "");
+    setuDetailAddress(currentStore.detailAddress || "");
+    setuOwnerName(currentStore.ownerName || "");
+    setuPhoneNumber(currentStore.phoneNumber || "");
+    setuSubText(currentStore.subText || "");
+    setuOpenHour(currentStore.openHour || "");
+
+    if (currentStore.existingImages !== undefined) {
+      setuImages(
+        currentStore.existingImages.map(
+          (image) => `data:image/;base64,${image}`
+        )
+      ); // 미리보기 이미지
+      setuCurrentImagesLength(currentStore.existingImages.length); // 현재 업로드된 이미지 개수
+
+      // input[type="file"] 요소에 files props 할당하기
+      // 1. base64 이미지 url을 file 객체로 디코딩
+      let decodeFilesArr = [];
+      currentStore.existingImages.forEach((image, index) => {
+        decodeFilesArr[index] = base64ToFile(
+          `data:image/;base64,${image}`,
+          `${currentStore.storeId}_${index}.png`
+        );
+      });
+
+      setuFormImages(decodeFilesArr);
+
+      // 2. DataTransfer 객체를 이용하여 FileList의 값을 변경
+      const dataTranster = new DataTransfer();
+
+      decodeFilesArr.forEach((file) => {
+        dataTranster.items.add(file);
+      });
+
+      // 2-1. document.getElementById('images').prop("files", setFilesArr);
+      fileRef.current.files = dataTranster.files;
+      // console.log(fileRef.current.files);
+    }
+  };
 
   // 유효성 검사
   const [isStoreName, setIsStoreName] = useState(true);
@@ -259,6 +299,8 @@ const StoreInfoEdit = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    console.log(uFormImages);
+
     // 이미지와 json 데이터를 함께 전달하기 위해 FormData 객체에 담아서 전달
     const formData = new FormData();
 
@@ -272,6 +314,7 @@ const StoreInfoEdit = () => {
       formData.append("newImages", null);
     }
 
+    formData.append("storeId", storeInfoArr[storeIndex].storeId);
     formData.append("storeName", uStoreName);
     formData.append("roadAddress", uRoadAddress);
     formData.append("detailAddress", uDetailAddress);
@@ -281,10 +324,10 @@ const StoreInfoEdit = () => {
     formData.append("subText", uSubText);
     formData.append("openHour", uOpenHour);
 
-    // console.log("newImages>>"+formData.get("newImages"));
+    // console.log(formData.get("newImages"));
 
     try {
-      await axios
+      await customAxios
         .post("/edit/store", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -300,219 +343,253 @@ const StoreInfoEdit = () => {
     }
   };
 
-  return (
-    <>
-      <Header text="내 가게 정보 수정" back={true}></Header>
-      <div className="inputContainer">
-        <Formbox>
-          <div className="edit-intro">가게 이름:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
-              name="storeName"
-              value={uStoreName || ""}
-              type="text"
-              onChange={onChangeStoreName}
-              placeholder="가게 이름 입력"
-              required
-              autoComplete="off"
-              maxLength="20"
-            />
-            <img alt="" src="images/edit_icon.png"></img>
+  if (!isLoaded) {
+    return <h1>로딩 중</h1>;
+  } else {
+    return (
+      <>
+        <Header text="내 가게 정보 수정" back={true}></Header>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ width: "312px", marginTop: "26px" }}>
+            {storeInfoArr.map((store, index) => {
+              return index === parseInt(storeIndex) ? (
+                <button
+                  key={index}
+                  id={index}
+                  className="edit-store-tap-active"
+                  onClick={onClickStore}
+                >
+                  {store.storeName}
+                </button>
+              ) : (
+                <button
+                  key={index}
+                  id={index}
+                  className="edit-store-tap"
+                  onClick={onClickStore}
+                >
+                  {store.storeName}
+                </button>
+              );
+            })}
+            <Link to="/storeInfoAdd">
+              <button className="add-store-tap">
+                <img alt="" src="images/add_icon.png"></img>
+              </button>
+            </Link>
           </div>
-        </Formbox>
-        <Formbox>
-          <div className="edit-intro">가게 주소:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
-              name="roadAddress"
-              value={uRoadAddress || ""}
-              type="text"
-              onChange={(e) => setuRoadAddress(e.target.value)}
-              placeholder="도로명 주소 검색"
-              required
-              autoComplete="off"
-            />
-            <img
-              style={{ cursor: "pointer" }}
-              alt=""
-              src="images/edit_icon.png"
-              onClick={onChangeOpenPost}
-            ></img>
-          </div>
-          <div style={{ width: "260px" }}>
-            {isOpenPost ? (
-              <DaumPostcode
-                className="daumPost"
-                autoClose
-                onComplete={onCompletePost}
-              />
-            ) : null}
-          </div>
-        </Formbox>
-        <Formbox>
-          <div className="edit-intro">상세 주소:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
-              name="detailAddress"
-              value={uDetailAddress || ""}
-              type="text"
-              onChange={(e) => setuDetailAddress(e.target.value)}
-              placeholder="상세 주소 입력"
-              autoComplete="off"
-              maxLength="20"
-            />
-            <img alt="" src="images/edit_icon.png"></img>
-          </div>
-        </Formbox>
-        <Formbox>
-          <div className="edit-intro">사장님 성함:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
-              name="ownerName"
-              value={uOwnerName || ""}
-              type="text"
-              onChange={onChangeOwnerName}
-              placeholder="사장님 성함 입력"
-              autoComplete="off"
-              maxLength="16"
-            />
-            <img alt="" src="images/edit_icon.png"></img>
-          </div>
-        </Formbox>
-        <Formbox>
-          <div className="edit-intro">가게 전화번호:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
-              name="phoneNumber"
-              value={uPhoneNumber || ""}
-              type="text"
-              onChange={onChangePhoneNumner}
-              placeholder="010-xxxx-xxxx"
-              autoComplete="off"
-            />
-            <img alt="" src="images/edit_icon.png"></img>
-          </div>
-        </Formbox>
-        <Formbox>
-          <div className="edit-intro">
-            가게 대표 사진
-            <span style={{ fontSize: "15px" }}>&#40;최대 3장&#41;</span>:
-          </div>
-          <div className="edit-box">
-            <input
-              style={{ display: "none" }}
-              type="file"
-              name="images"
-              id="images"
-              multiple
-              accept="image/jpg, image/jpeg, image/png"
-              onChange={onChangeImage}
-              ref={fileRef}
-            />
-            <div style={{ display: "flex", marginBottom: "6px" }}>
-              <label htmlFor="images">
-                <div className="uploadImage" style={{ cursor: "pointer" }}>
-                  <img
-                    style={{ paddingTop: "3px" }}
-                    alt=""
-                    src="images/camera.png"
-                  ></img>
-                  <span style={{ fontSize: "14px" }}>
-                    <span style={{ color: "#386FFE" }}>
-                      {uCurrentImagesLength}
-                    </span>
-                    /3
-                  </span>
-                </div>
-              </label>
-              {uImages &&
-                uImages.map((image, index) => (
-                  <div
-                    key={index}
-                    style={{ position: "relative", marginRight: "9px" }}
-                  >
-                    <img
-                      className="edit-image"
-                      alt=""
-                      src={image}
-                      id={index}
-                    ></img>
-                    {index === 0 && <div className="mainPick">대표 사진</div>}
-                    <label htmlFor={index}></label>
-                    <img
-                      className="delete-image"
-                      alt=""
-                      src="images/img_delete.png"
-                      name={index}
-                      onClick={deleteImage}
-                    ></img>
-                  </div>
-                ))}
-            </div>
-          </div>
-        </Formbox>
-        <Formbox>
-          <div className="edit-intro">가게 한 줄 소개:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
-              name="subText"
-              value={uSubText || ""}
-              type="text"
-              onChange={(e) => setuSubText(e.target.value)}
-              placeholder="가게 한 줄 소개 입력"
-              autoComplete="off"
-              maxLength="40"
-            />
-            <img alt="" src="images/edit_icon.png"></img>
-          </div>
-        </Formbox>
-        <Formbox>
-          <div className="edit-intro">영업 시간:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
-              name="openHour"
-              value={uOpenHour || ""}
-              type="text"
-              onChange={(e) => setuOpenHour(e.target.value)}
-              placeholder="오전 9:00 ~ 오후 9:00 (연중무휴)"
-              autoComplete="off"
-              maxLength="30"
-            />
-            <img alt="" src="images/edit_icon.png"></img>
-          </div>
-        </Formbox>
-      </div>
-      <div style={{ width: "304px", margin: "0 auto" }}>
-        <div className="edit-buttonContainer">
-          <Link to="/myPageOwner">
-            <button className="cancelBtn" type="button">
-              취소
-            </button>
-          </Link>
-          <form onSubmit={onSubmit}>
-            <button
-              className="editBtn"
-              type="submit"
-              disabled={
-                isStoreName && isAddress && isOwnerName && isPhoneNumber
-                  ? false
-                  : true
-              }
-            >
-              수정
-            </button>
-          </form>
         </div>
-      </div>
-    </>
-  );
+        <div className="inputContainer">
+          <Formbox>
+            <div className="edit-intro">가게 이름:</div>
+            <div className="edit-box">
+              <input
+                className="edit-input"
+                name="storeName"
+                value={uStoreName || ""}
+                type="text"
+                onChange={onChangeStoreName}
+                placeholder="가게 이름 입력"
+                required
+                autoComplete="off"
+                maxLength="20"
+              />
+              <img alt="" src="images/edit_icon.png"></img>
+            </div>
+          </Formbox>
+          <Formbox>
+            <div className="edit-intro">가게 주소:</div>
+            <div className="edit-box">
+              <input
+                className="edit-input"
+                name="roadAddress"
+                value={uRoadAddress || ""}
+                type="text"
+                onChange={(e) => setuRoadAddress(e.target.value)}
+                placeholder="도로명 주소 검색"
+                required
+                autoComplete="off"
+              />
+              <img
+                style={{ cursor: "pointer" }}
+                alt=""
+                src="images/edit_icon.png"
+                onClick={onChangeOpenPost}
+              ></img>
+            </div>
+            <div style={{ width: "260px" }}>
+              {isOpenPost ? (
+                <DaumPostcode
+                  className="daumPost"
+                  autoClose
+                  onComplete={onCompletePost}
+                />
+              ) : null}
+            </div>
+          </Formbox>
+          <Formbox>
+            <div className="edit-intro">상세 주소:</div>
+            <div className="edit-box">
+              <input
+                className="edit-input"
+                name="detailAddress"
+                value={uDetailAddress || ""}
+                type="text"
+                onChange={(e) => setuDetailAddress(e.target.value)}
+                placeholder="상세 주소 입력"
+                autoComplete="off"
+                maxLength="20"
+              />
+              <img alt="" src="images/edit_icon.png"></img>
+            </div>
+          </Formbox>
+          <Formbox>
+            <div className="edit-intro">사장님 성함:</div>
+            <div className="edit-box">
+              <input
+                className="edit-input"
+                name="ownerName"
+                value={uOwnerName || ""}
+                type="text"
+                onChange={onChangeOwnerName}
+                placeholder="사장님 성함 입력"
+                autoComplete="off"
+                maxLength="16"
+              />
+              <img alt="" src="images/edit_icon.png"></img>
+            </div>
+          </Formbox>
+          <Formbox>
+            <div className="edit-intro">가게 전화번호:</div>
+            <div className="edit-box">
+              <input
+                className="edit-input"
+                name="phoneNumber"
+                value={uPhoneNumber || ""}
+                type="text"
+                onChange={onChangePhoneNumner}
+                placeholder="010-xxxx-xxxx"
+                autoComplete="off"
+              />
+              <img alt="" src="images/edit_icon.png"></img>
+            </div>
+          </Formbox>
+          <Formbox>
+            <div className="edit-intro">
+              가게 대표 사진
+              <span style={{ fontSize: "15px" }}>&#40;최대 3장&#41;</span>:
+            </div>
+            <div className="edit-box">
+              <input
+                style={{ display: "none" }}
+                type="file"
+                name="images"
+                id="images"
+                multiple
+                accept="image/jpg, image/jpeg, image/png"
+                onChange={onChangeImage}
+                ref={fileRef}
+              />
+              <div style={{ display: "flex", marginBottom: "6px" }}>
+                <label htmlFor="images">
+                  <div className="uploadImage" style={{ cursor: "pointer" }}>
+                    <img
+                      style={{ paddingTop: "3px" }}
+                      alt=""
+                      src="images/camera.png"
+                    ></img>
+                    <span style={{ fontSize: "14px" }}>
+                      <span style={{ color: "#386FFE" }}>
+                        {uCurrentImagesLength}
+                      </span>
+                      /3
+                    </span>
+                  </div>
+                </label>
+                {uImages &&
+                  uImages.map((image, index) => (
+                    <div
+                      key={index}
+                      style={{ position: "relative", marginRight: "9px" }}
+                    >
+                      <img
+                        className="edit-image"
+                        alt=""
+                        src={image}
+                        id={index}
+                      ></img>
+                      {index === 0 && <div className="mainPick">대표 사진</div>}
+                      <label htmlFor={index}></label>
+                      <img
+                        className="delete-image"
+                        alt=""
+                        src="images/img_delete.png"
+                        name={index}
+                        onClick={deleteImage}
+                      ></img>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </Formbox>
+          <Formbox>
+            <div className="edit-intro">가게 한 줄 소개:</div>
+            <div className="edit-box">
+              <input
+                className="edit-input"
+                name="subText"
+                value={uSubText || ""}
+                type="text"
+                onChange={(e) => setuSubText(e.target.value)}
+                placeholder="가게 한 줄 소개 입력"
+                autoComplete="off"
+                maxLength="40"
+              />
+              <img alt="" src="images/edit_icon.png"></img>
+            </div>
+          </Formbox>
+          <Formbox>
+            <div className="edit-intro">영업 시간:</div>
+            <div className="edit-box">
+              <input
+                className="edit-input"
+                name="openHour"
+                value={uOpenHour || ""}
+                type="text"
+                onChange={(e) => setuOpenHour(e.target.value)}
+                placeholder="오전 9:00 ~ 오후 9:00 (연중무휴)"
+                autoComplete="off"
+                maxLength="30"
+              />
+              <img alt="" src="images/edit_icon.png"></img>
+            </div>
+          </Formbox>
+        </div>
+        <div style={{ width: "304px", margin: "0 auto" }}>
+          <div className="edit-buttonContainer">
+            <Link to="/myPageOwner">
+              <button className="cancelBtn" type="button">
+                취소
+              </button>
+            </Link>
+            <form onSubmit={onSubmit}>
+              <button
+                className="editBtn"
+                type="submit"
+                disabled={
+                  isStoreName && isAddress && isOwnerName && isPhoneNumber
+                    ? false
+                    : true
+                }
+              >
+                수정
+              </button>
+            </form>
+          </div>
+        </div>
+      </>
+    );
+  }
 };
 
 export default StoreInfoEdit;

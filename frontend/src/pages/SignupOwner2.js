@@ -125,6 +125,7 @@ const SignupOwner2 = () => {
       storeRoadAddress: storeRoadAddress,
       storeDetailAddress: storeDetailAddress,
       phoneNumber: phoneNumber,
+      signupCode: certificationNumber,
     });
 
     // console.log(JSON.stringify(result));
@@ -172,7 +173,7 @@ const SignupOwner2 = () => {
         <Formbox>
           <div className="intro">가게 주소</div>
           <input
-            className="inputBox roadAddress"
+            className="roadAddress"
             name="storeRoadAddress"
             value={storeRoadAddress}
             type="text"

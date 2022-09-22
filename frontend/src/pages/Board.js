@@ -1,4 +1,4 @@
-import axios from "axios";
+import { customAxios } from "./customAxios";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import "./Board.css";
@@ -35,7 +35,7 @@ const Board = () => {
   const [search, setSearch] = useState("");
   const getBoardData = async () => {
     if (!endPage) {
-      axios.get(`/board/list?page=${page}`).then((response) => {
+      customAxios.get(`/board/list?page=${page}`).then((response) => {
         //마지막 페이지가 아니라면
         if (response.data.last === false) {
           setData((prev) => [...prev, ...response.data.content]);
@@ -51,7 +51,7 @@ const Board = () => {
     }
   };
   const searchBoardData = async (keyword) => {
-    axios.get(`/board/list?keyword=${keyword}`).then((res) => {
+    customAxios.get(`/board/list?keyword=${keyword}`).then((res) => {
       setData(res.data.content);
       setEndPage(true);
     });

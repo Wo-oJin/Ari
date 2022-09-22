@@ -1,0 +1,94 @@
+.mainPage-intro {
+  font-weight: 600;
+  font-size: 24px;
+  margin: 0 0 8px 0;
+}
+
+.mainPage-store-search {
+  box-sizing: border-box;
+  width: 315px;
+  height: 52px;
+  padding: 19px 25px;
+  border: 0.5px solid #c5c5c5;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  margin: 25px 0;
+}
+
+.mainPage-store-search::placeholder {
+  font-size: 13px;
+  color: #a3a3a3;
+}
+
+.mainPage-subIntro {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+
+.mainPage-select-intro {
+  background: #386ffe;
+  border-radius: 10px;
+  color: #ffffff;
+  padding: 4px 6px;
+  margin-right: 3px;
+}
+
+.mainPage-flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mainPage-flex-column-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.mainPage-banner-box {
+  position: relative;
+}
+
+.mainPage-banner-intro {
+  position: absolute;
+  left: 15px;
+  bottom: 11px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 28px;
+  margin: 0;
+  color: #ffffff;
+}
+
+.mainPage-banner-num {
+  position: absolute;
+  right: 15px;
+  bottom: 11px;
+  border: 1px solid #ffffff;
+  border-radius: 20px;
+  padding: 3px 6px;
+  font-weight: 600;
+  font-size: 9px;
+  line-height: 11px;
+  margin: 0;
+  color: #ffffff;
+}
+
+.footer {
+  background: #f1f1f1;
+  color: #a2a2a2;
+  margin-top: 30px;
+  padding: 17px 23px;
+}
+
+.footer p {
+  font-size: 12px;
+  padding-bottom: 17px;
+  margin: 0;
+}
+
+.footer td {
+  font-size: 9px;
+  padding-right: 9px;
+}

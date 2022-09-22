@@ -5,6 +5,7 @@ import ari.paran.domain.store.Store;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
 import ari.paran.dto.response.board.MemberToStoreDto;
+import ari.paran.dto.response.store.MainResult;
 import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -26,23 +27,27 @@ public class MemberController {
     private final Response response;
 
     @GetMapping("/stores")
-    public List<String> getAuthorStore(Principal principal){
+    public MainResult getAuthorStore(Principal principal){
         Long memberId = Long.parseLong(principal.getName());
         Member member = memberService.getMemberInfoById(memberId);
 
-        return member.getStores().stream()
-                .map(Store :: getName)
+        List<MemberToStoreDto> result =
+                member.getStores().stream()
+                .map(store -> new MemberToStoreDto(store.getId(), store.getName()))
                 .collect(Collectors.toList());
+
+        return new MainResult(result);
     }
 
+
     @PostMapping("/favorite/toggle")
-    public ResponseEntity<?> addMemberFavoriteStore(@RequestParam Long storeId, Principal principal){
+    public ResponseEntity<?> addMemberFavoriteStore(@RequestParam Long storeId, Principal principal) {
         Long memberId = Long.parseLong(principal.getName());
         return memberService.toggleMemberFavoriteStore(memberId, storeId);
     }
 
     @GetMapping("/favorite_list")
-    public List<Long> getMemberFavoriteStore(Principal principal){
+    public List<Long> getMemberFavoriteStore(Principal principal) {
         Long memberId = Long.parseLong(principal.getName());
         Member member = memberService.getMemberInfoById(memberId);
 
@@ -50,12 +55,12 @@ public class MemberController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MemberResponseDto> getMyMemberInfo(){
+    public ResponseEntity<MemberResponseDto> getMyMemberInfo() {
         return ResponseEntity.ok(memberService.getMyInfo());
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<MemberResponseDto> getMemberInfo(@PathVariable String email){
+    public ResponseEntity<MemberResponseDto> getMemberInfo(@PathVariable String email) {
         System.out.println("email: " + email);
         return ResponseEntity.ok(memberService.getMemberInfoByEmail(email));
     }
@@ -85,6 +90,10 @@ public class MemberController {
         return memberService.showLikeList(principal);
     }
 
+    @GetMapping("/event-num")
+    public ResponseEntity<?> getEventNum(Principal principal) {
+        return memberService.getEventNum(principal);
+    }
     /*
     @PostMapping("/like/add/{store_name}")
     public ResponseEntity<?> addLike(@PathVariable Long storeId, Principal principal) {

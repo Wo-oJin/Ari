@@ -4,7 +4,7 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { IoMdCloseCircle } from "react-icons/io";
 import { HiOutlineCamera } from "react-icons/hi";
 import "./BoardWrite.css";
-import axios from "axios";
+import { customAxios } from "./customAxios";
 
 const BoardWrite = () => {
   const [imageUrl, setImageUrl] = useState([]);
@@ -15,40 +15,42 @@ const BoardWrite = () => {
   const [content, setcContent] = useState("");
   const [authorStore, setAuthorStore] = useState("");
   const [selected, setSelected] = useState();
-  const [authorStoreList, setAuthorStoreList] = useState();
+  const [authorList, setAuthorList] = useState();
   const navigate = useNavigate();
   const imgRef = useRef();
   let newImageURL = [];
 
-  //작성자 가게를 선택하기 위한 임시 데이터 변수
-  let authorList = [
-    { storeName: "미스터쉐프", id: 4 },
-    { storeName: "미스터쉐프포차", id: 2 },
-    { storeName: "쉐프의 포차", id: 6 },
-  ];
-
   //처음 페이지에 접근하면 작성자의 가게들을 받아오기
-  // useEffect(()=>{
-  //   const getStoreData = async () => {
-  //     await axios.get("/board/write/getAuthorStore").then((res)=> {
-  //       setAuthorStoreList(res.data);
-  //     })
-  //   }
-  // },[])
+  useEffect(() => {
+    const getStoreData = async () => {
+      await customAxios.get("/member/stores").then((res) => {
+        setAuthorList(res.data.storeList);
+      });
+    };
+    getStoreData();
+  }, []);
 
   //작성한 내용을 POST
   const sendData = async () => {
     let formData = new FormData();
-    postImages.map((item) => {
-      formData.append("files", item);
-    });
+    if (postImages) {
+      postImages.map((item) => {
+        formData.append("files", item);
+      });
+    }
     formData.append("title", title);
     formData.append("content", content);
     formData.append("period", period);
+<<<<<<< HEAD
     formData.append("author", authorList[0]);
     //formData.append("authorStore", authorStore);
+=======
+    formData.append("author", authorStore);
+>>>>>>> 45fd5fcf39298a80bf60d2e7fd7ad7e3b5aa9a06
 
-    axios
+    console.log("dddd", authorStore);
+
+    customAxios
       .post("/board/write", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -76,6 +78,7 @@ const BoardWrite = () => {
       //업로드된 이미지가 3장 미만이라면 imageURL 배열에 추가
       if (imgRef.current.files.length > 0) {
         const imageFiles = [...imgRef.current.files];
+        console.log(imageFiles);
         setPostImages(imageFiles);
         imageFiles.map((item) => {
           const reader = new FileReader();
@@ -106,8 +109,9 @@ const BoardWrite = () => {
   };
 
   const changeSelectHandler = (e) => {
-    setAuthorStore(authorList[e.target.value].id);
-    setSelected(authorList[e.target.value].name);
+    setAuthorStore(authorList[e.target.value].storeName);
+    setSelected(authorList[e.target.value].storeName);
+    console.log(authorStore, selected);
   };
   return (
     <>
@@ -149,7 +153,7 @@ const BoardWrite = () => {
                 return (
                   <div key={index}>
                     <img alt={index} className="uploadedPhoto" src={item}></img>
-                    <button id={index} className="deletePhotoBtn">
+                    <button id={index} className="deletePhotoBtn" type="button">
                       <IoMdCloseCircle
                         id={index}
                         size={"1.5em"}
@@ -169,19 +173,16 @@ const BoardWrite = () => {
           ></input>
           <div className="writeAuthor" placeholder="작성자 가게 선택">
             <span>작성자 가게 선택</span>
-            <select
-              className="writeSelect"
-              onChange={changeSelectHandler}
-              value={selected}
-            >
+            <select className="writeSelect" onChange={changeSelectHandler}>
               <option value={"--선택하세요--"}>--선택하세요--</option>
-              {authorList.map((item, index) => {
-                return (
-                  <option key={index} value={index}>
-                    {item.storeName}
-                  </option>
-                );
-              })}
+              {authorList &&
+                authorList.map((item, index) => {
+                  return (
+                    <option key={index} value={index}>
+                      {item.storeName}
+                    </option>
+                  );
+                })}
             </select>
           </div>
 

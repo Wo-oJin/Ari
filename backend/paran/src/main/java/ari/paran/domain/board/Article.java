@@ -1,8 +1,10 @@
 package ari.paran.domain.board;
 
 import ari.paran.domain.member.Member;
+import ari.paran.domain.store.FavoriteStore;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -24,6 +26,9 @@ public class Article {
     @Column
     private String content;
 
+    @Column
+    private String author;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
@@ -44,12 +49,21 @@ public class Article {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<ArticleImgFile> imgFiles = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    private List<FavoriteArticle> favorites = new ArrayList<>();
+
+    @Column(name = "is_completed")
+    @ColumnDefault("0")
+    private boolean isCompleted;
+
     @Builder
-    public Article(String title, String content, Member member,
+    public Article(String title, String content, Member member, String author,
                    LocalDate createDate, LocalDate updateDate, String period){
         this.title = title;
         this.content = content;
         this.member = member;
+        this.author = author;
         this.createDate = createDate;
         this.updateDate = updateDate;
         this.period = period;
@@ -70,6 +84,10 @@ public class Article {
     public void addImgFile(ArticleImgFile articleImgFile){
         this.imgFiles.add(articleImgFile);
         articleImgFile.setArticle(this);
+    }
+
+    public void addFavorite(FavoriteArticle favorite) {
+        this.favorites.add(favorite);
     }
 
 }

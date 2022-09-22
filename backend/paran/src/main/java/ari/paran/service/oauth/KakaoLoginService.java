@@ -26,7 +26,7 @@ public class KakaoLoginService {
 
     private final static String KAKAO_CLIENT_ID = "6ba9808d7a83807d2d0ddc97b41c8889";
     private final static String KAKAO_CLIENT_SECRET = "lNrtpw0rVlsGF3afrTh6xQdROxEp2fhC";
-    private final static String KAKAO_REDIRECT_URI = "http://localhost:8080/auth/kakao/login"; //Redirect URL
+    private final static String KAKAO_REDIRECT_URI = "http://13.209.105.171/auth/code/kakao"; //Redirect URL
     private final static String RESOURCE_SERVER_URL = "https://kapi.kakao.com/v2/user/me";
     private final static String SESSION_STATE = "kakao_oauth_state";
 
@@ -48,9 +48,9 @@ public class KakaoLoginService {
 
     // access token 발급
     public OAuth2AccessToken getAccessToken(HttpSession session, String code, String state) throws Exception {
-        String sessionState = getSession(session);
+        //String sessionState = getSession(session);
 
-        if (sessionState.equals(state)) {
+        //if (sessionState.equals(state)) {
             OAuth20Service oauthService = new ServiceBuilder()
                     .apiKey(KAKAO_CLIENT_ID)
                     .callback(KAKAO_REDIRECT_URI)
@@ -59,9 +59,9 @@ public class KakaoLoginService {
 
             OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
             return accessToken;
-        }
+        //}
 
-        return null;
+        //return null;
     }
 
     // user 정보 가져오기

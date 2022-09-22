@@ -55,6 +55,8 @@ public class SignupDto {
     @NotBlank
     private Address address;
 
+    private String signupCode;
+
     @Builder
     public SignupDto(String username, String password, String email, String nickname,
                      int age, String gender, int fromOauth){

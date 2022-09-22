@@ -37,7 +37,7 @@ public class StoreController {
         for(Store store : storeList){
             SimpleStoreDto simpleStoreDto = new SimpleStoreDto(store);
             simpleStoreDto.setPartnersName(storeService.getPartnersName(store.getName()));
-            simpleStoreDto.setImage(fileService.loadImage(store));
+            simpleStoreDto.setImage(fileService.loadImage(store).get(0));
 
             simpleStoreDtoList.add(simpleStoreDto);
         }
@@ -77,24 +77,34 @@ public class StoreController {
 
     @PostMapping("/edit/self-event")
     public ResponseEntity<?> editEvent(@RequestBody Map<String, String> param, Principal principal) {
+        Long storeId = Long.valueOf(param.get("storeId"));
         Integer eventNum = Integer.valueOf(param.get("eventNum"));
         String newInfo = param.get("newInfo");
 
-        return storeService.editEvent(eventNum, newInfo, principal);
+        return storeService.editEvent(storeId, eventNum, newInfo, principal);
     }
 
     @PostMapping("/add/self-event")
     public ResponseEntity<?> addEvent(@RequestBody Map<String, String> param, Principal principal) {
+        Long storeId = Long.valueOf(param.get("storeId"));
         String info = param.get("info");
 
-        return storeService.addEvent(info, principal);
+        return storeService.addEvent(storeId, info, principal);
     }
 
     @PostMapping("/delete/self-event")
     public ResponseEntity<?> deleteEvent(@RequestBody Map<String, String> param, Principal principal) {
+        Long storeId = Long.valueOf(param.get("storeId"));
         Integer eventNum = Integer.valueOf(param.get("eventNum"));
 
-        return storeService.deleteEvent(eventNum, principal);
+        return storeService.deleteEvent(storeId, eventNum, principal);
+    }
+
+    @PostMapping("/add/store")
+    public ResponseEntity<?> addStore(@ModelAttribute EditInfoDto editInfoDto,
+                                      @RequestParam(value = "newImages", required = false) List<MultipartFile> images,
+                                      Principal principal) throws IOException {
+        return storeService.addStore(editInfoDto, images, principal);
     }
 
 }

@@ -1,4 +1,4 @@
-import { React, useEffect } from "react";
+import { React, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MainButton from "../components/common/Mainbutton";
 import "./LoginUser.css";
@@ -6,31 +6,31 @@ import Header from "../components/Header";
 import axios from "axios";
 
 const LoginUser = () => {
-  let kakao;
-  let naver;
+  const [kakaoURL, setKakaoURL] = useState("");
+  const [naverURL, setNaverURL] = useState("");
 
-  // Oauth 로그인 요청 url 받아오기
-  const getOauthURL = async () => {
-    try {
-      await axios.get("/auth/login").then((res) => {
-        // console.log("res>>"+JSON.stringify(res));
-        kakao = res.data.kakao;
-        naver = res.data.naver;
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
   useEffect(() => {
+    // Oauth 로그인 요청 url 받아오기
+    const getOauthURL = async () => {
+      try {
+        await axios.get("/auth/login").then((res) => {
+          // console.log("res>>"+JSON.stringify(res));
+          setKakaoURL(res.data.kakao);
+          setNaverURL(res.data.naver);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
     getOauthURL();
   }, []);
 
   const onKakao = () => {
-    window.location.href = kakao;
+    window.location.href = kakaoURL;
   };
 
   const onNaver = () => {
-    window.location.href = naver;
+    window.location.href = naverURL;
   };
 
   return (

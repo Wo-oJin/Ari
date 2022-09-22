@@ -1,4 +1,5 @@
 package ari.paran.service.store;
+import ari.paran.domain.SignupCode;
 import ari.paran.domain.member.Member;
 import ari.paran.domain.Event;
 import ari.paran.domain.repository.*;
@@ -9,6 +10,7 @@ import ari.paran.domain.store.StoreImgFile;
 import ari.paran.dto.Response;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.EditInfoDto;
+import ari.paran.dto.response.store.EventListDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -61,14 +63,21 @@ public class StoreService {
     public ResponseEntity<?> existingInfo(Principal principal) throws IOException {
 
         Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
-        List<String> existingImages = fileService.loadImage(store);
+        List<Store> stores = memberRepository.findById(ownerId).get().getStores();
+        log.info("stores 정보: {}", stores.isEmpty());
+        List<EditInfoDto> existingInfos = new ArrayList<>();
+
+        for (Store store : stores) {
+            List<String> existingImages = fileService.loadImage(store);
+            log.info("store 정보: {}", store.getName());
+            EditInfoDto existingInfo = new EditInfoDto(store.getId(), store.getName(), store.getAddress().getRoadAddress(), store.getAddress().getDetailAddress(),
+                    store.getOwnerName(), store.getPhoneNumber(), existingImages, store.getSubText(), store.getOpenTime());
+
+            existingInfos.add(existingInfo);
+        }
 
 
-        EditInfoDto existingInfo = new EditInfoDto(store.getName(), store.getAddress().getRoadAddress(), store.getAddress().getDetailAddress(),
-                store.getOwnerName(), store.getPhoneNumber(), existingImages, store.getSubText(), store.getOpenTime());
-
-        return response.success(existingInfo, "기존 가게정보", HttpStatus.OK);
+        return response.success(existingInfos, "기존 가게정보", HttpStatus.OK);
 
     }
 
@@ -77,8 +86,8 @@ public class StoreService {
                                       List<MultipartFile> images,
                                       Principal principal) throws IOException {
         //1. 우선 해당 가게의 기존 이미지 파일을 모두 삭제
-        Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+        //Long ownerId = Long.valueOf(principal.getName());
+        Store store = storeRepository.findById(editInfoDto.getStoreId()).get();
         //1-1. 이미지 파일을 삭제. 파일 경로 정해야 함
         for (StoreImgFile imgFile : store.getStoreImgFiles()) {
             File file = new File(imgFile.getFileUrl() + imgFile.getFilename());
@@ -103,19 +112,27 @@ public class StoreService {
 
     public ResponseEntity<?> existingEvent(Principal principal) {
         Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
-        List<String> eventInfo = new ArrayList<>();
+        List<Store> stores = memberRepository.findById(ownerId).get().getStores();
+        List<EventListDto> result = new ArrayList<>();
 
-        List<Event> eventList = store.getEventList();
-        for (Event event : eventList) {
-            eventInfo.add(event.getInfo());
+        for (Store store : stores) {
+            List<Event> eventList = store.getEventList();
+            List<String> eventInfo = new ArrayList<>();
+
+            for (Event event : eventList) {
+                eventInfo.add(event.getInfo());
+            }
+
+            EventListDto eventListDto = new EventListDto(store.getId(), store.getName(), eventInfo);
+            result.add(eventListDto);
         }
-        return response.success(eventInfo, "기존 이벤트 정보", HttpStatus.OK);
+
+        return response.success(result, "기존 이벤트 정보", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> editEvent(int eventNum, String newInfo, Principal principal) {
+    public ResponseEntity<?> editEvent(Long storeId, int eventNum, String newInfo, Principal principal) {
         Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+        Store store = storeRepository.findById(storeId).get();
         Event event = store.getEventList().get(eventNum);
         event.changeInfo(newInfo);
 
@@ -124,9 +141,8 @@ public class StoreService {
         return response.success();
     }
 
-    public ResponseEntity<?> addEvent(String info, Principal principal) {
-        Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+    public ResponseEntity<?> addEvent(Long storeId, String info, Principal principal) {
+        Store store = storeRepository.findById(storeId).get();
 
         Event newEvent = Event.builder().store(store).info(info).build();
         eventRepository.save(newEvent);
@@ -141,9 +157,9 @@ public class StoreService {
         return response.success("", "성공적으로 이벤트가 추가되었습니다.", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> deleteEvent(int eventNum, Principal principal) {
+    public ResponseEntity<?> deleteEvent(Long storeId, int eventNum, Principal principal) {
         Long ownerId = Long.valueOf(principal.getName());
-        Store store = memberRepository.findById(ownerId).get().getStores().get(0);
+        Store store = storeRepository.findById(storeId).get();
         Event event = store.getEventList().get(eventNum);
 
         store.getEventList().remove(event);
@@ -155,8 +171,22 @@ public class StoreService {
 
         eventRepository.delete(event);
 
-        return response.success();
+        return response.success(null, "성공적으로 삭제되었습니다", HttpStatus.OK);
     }
+
+    public ResponseEntity<?> addStore(EditInfoDto editInfoDto,
+                                      List<MultipartFile> images,
+                                      Principal principal) throws IOException {
+        Long ownerId = Long.valueOf(principal.getName());
+        Store newStore = new Store();
+        newStore.setMember(memberRepository.findById(ownerId).get());
+        storeRepository.save(newStore);
+        editInfoDto.setStoreId(newStore.getId());
+
+        return editInfo(editInfoDto, images, principal);
+    }
+
+
 
     public Store findByName(String storeName) {
         return storeRepository.findByName(storeName).orElse(null);

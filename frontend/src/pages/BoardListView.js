@@ -1,4 +1,4 @@
-import axios from "axios";
+import { customAxios } from "./customAxios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
@@ -18,7 +18,7 @@ const BoardListView = () => {
   const [isDeletePopUpOpend, setIsDeletePopUpOpend] = useState(false);
 
   const getBoardData = async () => {
-    axios.get(`/board/list/${articleId}`).then((response) => {
+    customAxios.get(`/board/list/${articleId}`).then((response) => {
       console.log(response.data);
       setData(response.data);
       setIsfavorited(response.data.favorite);
@@ -32,7 +32,7 @@ const BoardListView = () => {
 
   //찜 버튼 클릭 함수
   const onLikeClick = async () => {
-    await axios
+    await customAxios
       .post(`/member/favorite/toggle?storeId=${data.storeId}`)
       .then((res) => {
         setIsfavorited(!isFavorited);
@@ -41,7 +41,9 @@ const BoardListView = () => {
   };
 
   //수정 버튼 클릭 함수
-  const modifyHandler = () => {};
+  const modifyHandler = () => {
+    navigate(`/board/update/${articleId}`);
+  };
 
   //삭제 버튼 클릭시 팝업 토글 함수
   const togglePopUp = () => {
@@ -50,7 +52,7 @@ const BoardListView = () => {
 
   //게시글 삭제 함수
   const deleteHandler = async () => {
-    await axios.post(`/board/delete/${articleId}`).then((res) => {
+    await customAxios.delete(`/board/delete/${articleId}`).then((res) => {
       alert("삭제되었습니다.");
     });
     //팝업 닫기
@@ -75,12 +77,20 @@ const BoardListView = () => {
           <div className="viewContentBox">
             <div className="viewContentHeader">
               <span className="author">{data.author}</span>
-              <span className="location">어쩌구 저쩌구</span>
+              <span className="location">{data.location}</span>
             </div>
             <div className="viewContentMiddle">
               <div className="viewContentTop">
                 <span className="title">{data.title}</span>
-                <span className="writeDate">{data.createDate}</span>
+                <span className="writeDate">
+                  {data.createDate[0] +
+                    "/" +
+                    "0" +
+                    data.createDate[1] +
+                    "/" +
+                    "0" +
+                    data.createDate[2]}
+                </span>
               </div>
 
               <span className="content">{data.content}</span>

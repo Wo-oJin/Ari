@@ -41,7 +41,7 @@ public class FileService {
         if(images == null)
             return;
 
-        String fileUrl = System.getProperty("user.dir") + detailUrl;
+        String fileUrl = "/Users/jsc/ari_files/";
         Store store = storeRepository.findById(store_id).orElseGet(null);
 
         for(MultipartFile image : images) {
@@ -62,7 +62,6 @@ public class FileService {
             store.addImgFile(storeImgFile);
 
             storeImgFileRepository.save(storeImgFile);
-            store.addImgFile(storeImgFile);
         }
 
         storeRepository.save(store);
@@ -74,7 +73,7 @@ public class FileService {
         if(images == null)
             return;
 
-        String fileUrl = System.getProperty("user.dir") + detailUrl;
+        String fileUrl = "/Users/jsc/ari_files/";
         Article article = boardRepository.findById(articleId).orElse(null);
 
         if(images!=null) {
@@ -109,13 +108,27 @@ public class FileService {
         List<StoreImgFile> storeImages = store.getStoreImgFiles();
         List<String> base64Images = new ArrayList<>();
 
-        for(StoreImgFile imgFile : storeImages) {
-            FileInputStream imageStream = new FileInputStream(imgFile.getFileUrl() + imgFile.getFilename());
+        if(storeImages.isEmpty()){
+            String fileUrl = System.getProperty("user.dir") + detailUrl;
+
+            String fileName = "default.png";
+
+            FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
             byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());
             String result = new String(bytes, "UTF-8");
             imageStream.close();
 
             base64Images.add(result);
+        }
+        else {
+            for (StoreImgFile imgFile : storeImages) {
+                FileInputStream imageStream = new FileInputStream(imgFile.getFileUrl() + imgFile.getFilename());
+                byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());
+                String result = new String(bytes, "UTF-8");
+                imageStream.close();
+
+                base64Images.add(result);
+            }
         }
 
         return base64Images;
@@ -125,23 +138,52 @@ public class FileService {
         List<String> base64Images = new ArrayList<>();
         List<ArticleImgFile> articleImages = article.getImgFiles();
 
-        for(int i=0;i<count;i++) {
-            ArticleImgFile articleImgFile = articleImages.get(i);
-            FileInputStream imageStream = new FileInputStream(articleImgFile.getFileUrl() + articleImgFile.getFilename());
+        if(articleImages.isEmpty()){
+            String fileUrl = "/Users/jsc/ari_files/";
+            String fileName = "default.png";
 
-            byte[] imgBytes = imageStream.readAllBytes();
-            byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
-            String imgStr = new String(byteEnc64, "UTF-8");
+            FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
+            byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());
+            String result = new String(bytes, "UTF-8");
+            imageStream.close();
 
-            base64Images.add(imgStr);
+            base64Images.add(result);
+        }else {
+            for (int i = 0; i < count; i++) {
+                ArticleImgFile articleImgFile = articleImages.get(i);
+                FileInputStream imageStream = new FileInputStream(articleImgFile.getFileUrl() + articleImgFile.getFilename());
+
+                byte[] imgBytes = imageStream.readAllBytes();
+                byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
+                String imgStr = new String(byteEnc64, "UTF-8");
+
+                base64Images.add(imgStr);
+            }
         }
 
         return base64Images;
     }
 
-    public String getMainImage(Store store) throws IOException{
+    public String getMainStoreImage(Store store) throws IOException{
         try {
             StoreImgFile mainImage = store.getStoreImgFiles().get(0);
+
+            FileInputStream imageStream = new FileInputStream(mainImage.getFileUrl() + mainImage.getFilename());
+
+            byte[] imgBytes = imageStream.readAllBytes();
+            byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
+            String imgStr = new String(byteEnc64, "UTF-8");
+
+            imageStream.close();
+            return imgStr;
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
+    public String getMainArticleImage(Article article) throws IOException{
+        try {
+            ArticleImgFile mainImage = article.getImgFiles().get(0);
 
             FileInputStream imageStream = new FileInputStream(mainImage.getFileUrl() + mainImage.getFilename());
 

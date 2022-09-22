@@ -18,7 +18,6 @@ import java.io.IOException;
 
 // JWT 인증 필터는 OncePerRequestFilter를 상속받아 작성. 해당 필터에서 토큰의 유효성 검사가 진행
 // 요청 받을 때 단 한번만 실행
-@Component
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
@@ -32,6 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
 
         String jwt = resolveToken(request);
+        log.info("jwt 토큰 = {}   {}", jwt, request.getRequestURI());
 
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
             /*1. Redis 에 해당 accessToken logout 여부 확인 */

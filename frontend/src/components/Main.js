@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../App.css";
-import Map from "../services/map/Map";
+// import Map from "../services/map/Map";
 import SideBar from "./SideBar";
 import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
+import MainPage from "./MainPage";
 
 const Main = () => {
   // 0:비회원 1:손님 2:사장님 3:관리자
@@ -19,15 +20,10 @@ const Main = () => {
     <>
       <div>
         {isOpend ? (
-          <Map
-            alt=""
-            name="darkImage"
-            onClick={onClick}
-            src="images/map.jpg"
-          ></Map>
+          <MainPage onClick={onClick}></MainPage>
         ) : (
           <>
-            <Map />
+            <MainPage />
           </>
         )}
       </div>

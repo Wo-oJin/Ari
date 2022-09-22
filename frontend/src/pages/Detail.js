@@ -9,7 +9,7 @@ import {
   StoreInfoTap,
 } from "../components/DatailTap";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { customAxios } from "./customAxios";
 
 const Detail = () => {
   const [data, setData] = useState(null);
@@ -19,7 +19,7 @@ const Detail = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const getDetailData = async () => {
-      axios.get(`/map/store/${storeId}`).then((response) => {
+      customAxios.get(`/map/store/${storeId}`).then((response) => {
         console.log("asdasd", response.data);
         setData(response.data);
         setIsfavorited(response.data.favorite);
@@ -34,10 +34,12 @@ const Detail = () => {
 
   //좋아요 클릭 함수
   const onLikeClick = async () => {
-    await axios.post(`/member/favorite/toggle?storeId=${data.id}`).then((res) => {
-      setIsfavorited(!isFavorited);
-      console.log("찜 성공");
-    });
+    await customAxios
+      .post(`/member/favorite/toggle?storeId=${data.id}`)
+      .then((res) => {
+        setIsfavorited(!isFavorited);
+        console.log("찜 성공");
+      });
   };
   //탭 클릭 함수
   const onTapClick = (e) => {
@@ -63,7 +65,11 @@ const Detail = () => {
   return (
     <div className="DetailContainer">
       <div className="Wrapper">
-        <img src="../images/detail.png" alt="이미지"></img>
+        <img
+          className="StoreImg"
+          src={`data:image/jpg;base64, ${data.images}`}
+          alt="이미지"
+        ></img>
       </div>
       <button
         className="BackBtn"

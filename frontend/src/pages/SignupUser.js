@@ -45,6 +45,7 @@ const SignupUser = () => {
 
   // 유효성 검사
   const [isEmail, setIsEmail] = useState(false);
+  const [isUniqueEmail, setIsUniqueEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordCheck, setIsPasswordCheck] = useState(false);
   const [isNickname, setIsNickname] = useState(false);
@@ -61,6 +62,27 @@ const SignupUser = () => {
     } else {
       setEmailMessage("올바른 이메일 형식입니다.");
       setIsEmail(true);
+    }
+  };
+
+  // 이메일 중복 확인
+  const checkEmail = async () => {
+    try {
+      await axios
+        .post("/auth/check-email", {
+          email: email,
+        })
+        .then((res) => {
+          if (res.data.result === "success") {
+            setEmailMessage("사용 가능한 이메일입니다.");
+            setIsUniqueEmail(true);
+          } else {
+            setEmailMessage(res.data.massage);
+            setIsUniqueEmail(false);
+          }
+        });
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -121,11 +143,6 @@ const SignupUser = () => {
 
   // 이메일로 인증번호 보내기
   const sendEmailCode = async () => {
-    if (!isEmail) {
-      alert("이메일 주소를 확인해주세요.");
-      return false;
-    }
-
     alert("전송되었습니다."); // 전송까지 시간이 좀 걸리지만 일단 전송 확인 메세지부터 띄움
     setSendText("재전송");
 
@@ -186,16 +203,25 @@ const SignupUser = () => {
       <div className="inputContainer">
         <Formbox>
           <div className="intro">이메일 주소</div>
-          <input
-            className="inputBox"
-            name="email"
-            value={email}
-            type="email"
-            onChange={onChangeEmail}
-            placeholder="이메일 주소 입력"
-            required
-            autoComplete="off"
-          />
+          <div>
+            <input
+              className="emailInput"
+              name="email"
+              value={email}
+              type="email"
+              onChange={onChangeEmail}
+              placeholder="이메일 주소 입력"
+              required
+              autoComplete="off"
+            />
+            <button
+              className="sendBtn"
+              onClick={checkEmail}
+              disabled={isEmail ? false : true}
+            >
+              중복 확인
+            </button>
+          </div>
           {email.length > 0 && (
             <p className={`message ${isEmail ? "success" : "error"}`}>
               {emailMessage}
@@ -205,7 +231,8 @@ const SignupUser = () => {
         <Formbox>
           <div className="intro">메일 인증</div>
           <div>
-            <input style={{textTransform: "uppercase"}}
+            <input
+              style={{ textTransform: "uppercase" }}
               className="certificationInput"
               name="certificationNumber"
               value={certificationNumber}
@@ -215,7 +242,11 @@ const SignupUser = () => {
               required
               autoComplete="off"
             />
-            <button className="sendBtn" onClick={sendEmailCode}>
+            <button
+              className="sendBtn"
+              onClick={sendEmailCode}
+              disabled={isEmail && isUniqueEmail ? false : true}
+            >
               {sendText}
             </button>
           </div>
@@ -272,7 +303,6 @@ const SignupUser = () => {
           )}
         </Formbox>
         <Formbox>
-          {/* 닉네임 중복 확인도 넣어야 할 듯 */}
           <div className="intro">닉네임</div>
           <input
             className="inputBox"
@@ -346,6 +376,7 @@ const SignupUser = () => {
             disabled={
               isNickname &&
               isEmail &&
+              isUniqueEmail &&
               isPassword &&
               isPasswordCheck &&
               isEmailCheck

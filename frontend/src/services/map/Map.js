@@ -1,6 +1,6 @@
 import KakaoMapScript from "./KakaoMapScript";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { customAxios } from "../../pages/customAxios";
 import StoreModal from "../../components/StoreModal";
 
 const Map = ({ onClick, name }) => {
@@ -17,7 +17,7 @@ const Map = ({ onClick, name }) => {
   //처음에 한 번만 데이터를 가져오는 작업 수행
   useEffect(() => {
     const getMarkerData = async () => {
-      axios
+      customAxios
         .get("/map/store")
         .then((response) => {
           setData(response.data.storeList);

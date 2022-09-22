@@ -1,12 +1,11 @@
 package ari.paran.service.auth;
 
 import ari.paran.Util.SecurityUtil;
+import ari.paran.domain.SignupCode;
 import ari.paran.domain.member.Member;
 import ari.paran.domain.member.Authority;
-import ari.paran.domain.repository.FavoriteRepository;
-import ari.paran.domain.repository.MemberRepository;
-import ari.paran.domain.repository.SignupCodeRepository;
-import ari.paran.domain.store.Favorite;
+import ari.paran.domain.repository.*;
+import ari.paran.domain.store.FavoriteStore;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
@@ -14,7 +13,7 @@ import ari.paran.dto.request.LoginDto;
 import ari.paran.dto.request.SignupDto;
 import ari.paran.dto.request.TokenRequestDto;
 import ari.paran.dto.response.TokenDto;
-import ari.paran.dto.response.store.LikeListDto;
+import ari.paran.dto.response.store.LikeStoreListDto;
 import ari.paran.jwt.TokenProvider;
 import ari.paran.service.store.StoreService;
 import ari.paran.service.store.FileService;
@@ -50,9 +49,11 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final FavoriteRepository favoriteRepository;
+    private final FavoriteStoreRepository favoriteRepository;
     private final StoreService storeService;
     private final SignupCodeRepository signupCodeRepository;
+    private final EventRepository eventRepository;
+    private final PartnershipRepository partnershipRepository;
     private final Response response;
     private final FileService fileService;
     private final PasswordEncoder passwordEncoder;
@@ -66,25 +67,25 @@ public class MemberService {
         Member member = getMemberInfoById(memberId);
         Store store = storeService.findStore(storeId);
 
-        Favorite favorite;
+        FavoriteStore favorite;
 
         if(member.isFavoriteStore(store)) {
-            favorite = favoriteRepository.findFavoriteByMemberAndStore(member, store).orElseGet(null);
+            favorite = favoriteRepository.findFavoriteStoreByMemberAndStore(member, store).orElseGet(null);
 
             member.deleteFavorite(favorite);
             favoriteRepository.delete(favorite);
 
-            return response.success("찜 목록에서 성공적으로 제거했습니다.");
+            return response.success("즐겨찾기 목록에서 성공적으로 제거했습니다.");
         }
 
-        favorite = new Favorite(member, store);
+        favorite = new FavoriteStore(member, store);
 
         member.addFavorite(favorite);
         store.addFavorite(favorite);
 
         favoriteRepository.save(favorite);
 
-        return response.success("찜 목록에 성공적으로 저장했습니다.");
+        return response.success("즐겨찾기 목록에 성공적으로 저장했습니다.");
     }
 
     @Transactional(readOnly = true)
@@ -142,7 +143,12 @@ public class MemberService {
         /* SignupDto를 통해 추가할 Store 객체 생성 및 저장 */
         Store store = signUp.toStore(member, signUp.toAddress(signUp.getStoreRoadAddress(), signUp.getStoreDetailAddress()));
 
+        SignupCode signupCode = signupCodeRepository.findByCode(signUp.getSignupCode()).get();
+        signupCode.setActivatedTrue();
+        signupCode.setStore(store);
+
         storeService.save(store);
+        signupCodeRepository.save(signupCode);
 
         return true;
     }
@@ -152,10 +158,20 @@ public class MemberService {
      */
     public ResponseEntity<?> authSignupCode(String code) {
 
-        if (signupCodeRepository.existsByCode(code) == false ) {
+        if (signupCodeRepository.existsByCode(code) == false || signupCodeRepository.findByCode(code).get().isActivated()) {
             return response.fail("유효하지 않은 가입코드 입니다.", HttpStatus.BAD_REQUEST);
         }
 
+        return response.success();
+    }
+
+    /**
+     * 이메일 중복 확인
+     */
+    public ResponseEntity<?> checkDupEmail(String email) {
+        if (memberRepository.existsByEmail(email)) {
+            return response.fail("이미 가입된 이메일입니다.", HttpStatus.OK);
+        }
         return response.success();
     }
 
@@ -228,13 +244,7 @@ public class MemberService {
 
         log.info(loginDto.toString());
         Member member = memberRepository.findByEmail(loginDto.getEmail()).orElse(null);
-
-        Store store = Store.builder()
-                .name("우진이의 가게")
-                .member(member)
-                .build();
-        member.addStore(store);
-        storeService.save(store);
+        
 
         if (member == null || !passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
             URI redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
@@ -278,6 +288,7 @@ public class MemberService {
             tokenDto.setInfo(member.getStores().get(0).getName()); // 가게이름
         }
 
+        /*
         String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
                 .queryParam("accessToken", "{at}")
                 .queryParam("refreshToken", "{rt}")
@@ -302,6 +313,10 @@ public class MemberService {
         }
         else
             return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+         */
+
+        return response.success(tokenDto, "로그인 성공!", HttpStatus.OK);
+
     }
 
     public ResponseEntity<?> reissue(TokenRequestDto reissue) {
@@ -376,19 +391,38 @@ public class MemberService {
 
     public ResponseEntity<?> showLikeList(Principal principal) throws IOException {
         Member member = memberRepository.findById(Long.valueOf(principal.getName())).get();
-        List<Favorite> favorites = member.getFavorites();
-        List<LikeListDto> data = new ArrayList<>();
-        for (Favorite favorite : favorites) {
-            data.add(LikeListDto.builder()
+        List<FavoriteStore> favorites = member.getFavoriteStores();
+        List<LikeStoreListDto> data = new ArrayList<>();
+        for (FavoriteStore favorite : favorites) {
+            data.add(LikeStoreListDto.builder()
                             .name(favorite.getStore().getName())
                             .storeId(favorite.getStore().getId())
                             .address(favorite.getStore().getAddress().getRoadAddress())
-                            .image(fileService.getMainImage(favorite.getStore()))
+                            .image(fileService.getMainStoreImage(favorite.getStore()))
                     .build());
         }
         log.info("좋아요 가게 개수: {}", data.size());
 
         return response.success(data, "좋아요 가게 목록", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getEventNum(Principal principal) {
+
+        Member owner = memberRepository.findById(Long.valueOf(principal.getName())).get();
+        List<Long> result = new ArrayList<>();
+        Long eventNum = 0L;
+        Long partnershipNum = 0L;
+
+        List<Store> stores = owner.getStores();
+        for (Store store : stores) {
+            eventNum += eventRepository.countByStore(store);
+            partnershipNum = partnershipRepository.countByStore(store);
+        }
+
+        result.add(partnershipNum);
+        result.add(eventNum);
+
+        return response.success(result, "이벤트 갯수", HttpStatus.OK);
     }
 
 

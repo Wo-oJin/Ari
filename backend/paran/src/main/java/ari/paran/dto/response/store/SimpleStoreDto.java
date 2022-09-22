@@ -13,7 +13,8 @@ public class SimpleStoreDto {
     private String name;
     private Address address;
     private List<String> partnersName;
-    private List<String> images;
+    private String image;
+    
     private boolean privateEvent;
     private boolean stamp;
 
@@ -28,8 +29,8 @@ public class SimpleStoreDto {
         this.partnersName = partnersName;
     }
 
-    public void setImage(List<String> images){
-        this.images = images;
+    public void setImage(String image){
+        this.image = image;
     }
 
 }

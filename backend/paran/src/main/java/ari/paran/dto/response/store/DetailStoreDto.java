@@ -40,13 +40,6 @@ public class DetailStoreDto {
         this.phoneNumber = store.getPhoneNumber();
         this.privateEvent = store.getPrivateEvent();
         this.events = store.getEventList();
-
-        List<Partnership> partners = store.getPartnershipList();
-
-        for(Partnership partner : partners){
-            partner.setPartnerLocation(store.getAddress().getRoadAddress());
-        }
-
         this.partners = store.getPartners();
     }
 
