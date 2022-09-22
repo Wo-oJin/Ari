@@ -16,7 +16,6 @@ import Detail from "./pages/Detail";
 import Board from "./pages/Board";
 import BoardWrite from "./pages/BoardWrite";
 import MyPageOwner from "./pages/MyPageOwner";
-import { StoreInfoTap } from "./components/DatailTap";
 import StoreInfoEdit from "./pages/StoreInfoEdit";
 import StoreInfoAdd from "./pages/StoreInfoAdd";
 import StorePrivateEventList from "./pages/StorePrivateEventList";
@@ -29,6 +28,7 @@ import UserFavoriteList from "./pages/UserFavoriteList";
 import RedirectLogin from "./pages/RedirectLogin";
 import BoardListView from "./pages/BoardListView";
 import BoardModify from "./pages/BoardModify";
+import Chat from "./pages/Chat";
 
 function App() {
   return (
@@ -80,6 +80,7 @@ function App() {
             path="board/update/:articleId"
             element={<BoardModify />}
           ></Route>
+          <Route path="/public/chat" element={<Chat />}></Route>
         </Routes>
       </RecoilRoot>
     </BrowserRouter>

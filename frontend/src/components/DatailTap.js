@@ -48,40 +48,42 @@ export const DetailCoopTap = ({ data }) => {
       <div className="CoopStoreListContainer">
         <span>협력 중인 가게:</span>
         <div className="CoopStoreList">
-          {data.partners.map((item, i) => {
-            return index === `${i}` ? (
-              <span
-                className="SelectedStoreTag"
-                onClick={() => {
-                  setIndex(`${i}`);
-                }}
-                key={i}
-              >
-                {item.partnerName}
-              </span>
-            ) : (
-              <span
-                className="UnSelectedStoreTag"
-                onClick={() => {
-                  setIndex(`${i}`);
-                }}
-                key={i}
-              >
-                {item.partnerName}
-              </span>
-            );
-          })}
+          {data.partners &&
+            data.partners.map((item, i) => {
+              return index === `${i}` ? (
+                <span
+                  className="SelectedStoreTag"
+                  onClick={() => {
+                    setIndex(`${i}`);
+                  }}
+                  key={i}
+                >
+                  {item.partnerName}
+                </span>
+              ) : (
+                <span
+                  className="UnSelectedStoreTag"
+                  onClick={() => {
+                    setIndex(`${i}`);
+                  }}
+                  key={i}
+                >
+                  {item.partnerName}
+                </span>
+              );
+            })}
         </div>
       </div>
       <div className="EventContent">
         <span className="EventTitle">이벤트 내용:</span>
-        {data.partners[index].infos.map((item, i) => {
-          return (
-            <span key={i} className="EventSubText">
-              {item.eventInfo}
-            </span>
-          );
-        })}
+        {data.partners.length > 0 &&
+          data.partners[index].infos.map((item, i) => {
+            return (
+              <span key={i} className="EventSubText">
+                {item.eventInfo}
+              </span>
+            );
+          })}
       </div>
       <div className="StoreLocation">
         <span>위치 안내:</span>
@@ -132,7 +134,7 @@ export const PrivateEventTap = ({ data }) => {
     <div className="TapContainer">
       <div className="PrivateEventContent">
         <span className="EventTitle">이벤트 내용:</span>
-        {data.events.length > 0 ? (
+        {data.events && data.events.length > 0 ? (
           data.events.map((item, i) => {
             return (
               <span className="PrivateEventSubText" key={i}>
