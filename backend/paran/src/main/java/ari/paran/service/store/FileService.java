@@ -35,6 +35,9 @@ public class FileService {
     @Value("${file.path}")
     private String detailUrl;
 
+    @Value("${local.path}")
+    private String localDetailUrl;
+
     @Transactional
     public void saveStoreImage(Long store_id, List<MultipartFile> images) throws IOException{
 
@@ -139,8 +142,8 @@ public class FileService {
         List<ArticleImgFile> articleImages = article.getImgFiles();
 
         if(articleImages.isEmpty()){
-            String fileUrl = "/Users/jsc/ari_files/";
-            String fileName = "default.png";
+            String fileUrl = System.getProperty("user.dir") + localDetailUrl;
+            String fileName = "ari.PNG";
 
             FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
             byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());

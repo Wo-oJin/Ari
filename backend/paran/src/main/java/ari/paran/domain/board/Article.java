@@ -54,7 +54,7 @@ public class Article {
     private List<FavoriteArticle> favorites = new ArrayList<>();
 
     @Column(name = "is_completed")
-    @ColumnDefault("0")
+    @ColumnDefault("false")
     private boolean isCompleted;
 
     @Builder

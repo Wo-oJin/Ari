@@ -33,7 +33,7 @@ const BoardListView = () => {
   //찜 버튼 클릭 함수
   const onLikeClick = async () => {
     await customAxios
-      .post(`/member/favorite/toggle?storeId=${data.storeId}`)
+      .post(`/board/favorite/toggle?articleId=${data.articleId}`)
       .then((res) => {
         setIsfavorited(!isFavorited);
         console.log("찜 성공");
