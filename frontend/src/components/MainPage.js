@@ -3,8 +3,12 @@ import "./MainPage.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { FiSearch } from "react-icons/fi";
+import { customAxios } from "../pages/customAxios";
 
 const MainPage = ({ onClick }) => {
+  const [keyword, setKeyword] = useState("");
+
   // 가게 카테고리
   const menuRow1 = [
     { name: "한식", image: "images/koreanFood.png" },
@@ -42,6 +46,17 @@ const MainPage = ({ onClick }) => {
     pauseOnHover: true, // hover시 정지
   };
 
+  const searchStore = () => {
+    // 가게 검색
+  };
+
+  const handleOnKeyPress = (e) => {
+    // 검색어 입력 후 엔터를 누른 경우
+    if (e.key === "Enter" && e.target.value !== "") {
+      searchStore();
+    }
+  };
+
   return (
     <>
       <div
@@ -56,10 +71,20 @@ const MainPage = ({ onClick }) => {
                 <span style={{ color: "#386FFE" }}>아리</span>에서
               </p>
             </div>
-            <input
-              className="mainPage-store-search"
-              placeholder="제휴 정보를 보고 싶은 가게명을 검색하세요!"
-            ></input>
+            <div style={{ position: "relative" }}>
+              <div className="mainPage-search-icon" onClick={searchStore}>
+                <FiSearch></FiSearch>
+              </div>
+              <input
+                onKeyPress={handleOnKeyPress}
+                className="mainPage-store-search"
+                type="text"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                placeholder="제휴 정보를 보고 싶은 가게명을 검색하세요!"
+                maxLength={20}
+              ></input>
+            </div>
           </div>
           <Slider {...settings}>
             {banner.map((event, index) => {
@@ -72,7 +97,7 @@ const MainPage = ({ onClick }) => {
                     제휴 이벤트 확인하기
                   </p>
                   <div className="mainPage-banner-num">
-                    {index}/{banner.length}
+                    {index + 1}/{banner.length}
                   </div>
                 </div>
               );

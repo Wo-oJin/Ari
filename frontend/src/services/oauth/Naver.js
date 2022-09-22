@@ -6,7 +6,7 @@ import { authState, nameState } from "../../state";
 import { Reissue } from "../jwt/reissue";
 import Cookies from "universal-cookie";
 
-const Kakao = () => {
+const Naver = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const [name, setName] = useRecoilState(nameState);
 
@@ -23,7 +23,7 @@ const Kakao = () => {
     const sendCode = async () => {
       try {
         await axios
-          .post("/auth/kakao/login", {
+          .post("/auth/naver/login", {
             code: code,
             state: state,
           })
@@ -97,4 +97,4 @@ const Kakao = () => {
   return <>로딩중...</>;
 };
 
-export default Kakao;
+export default Naver;
