@@ -41,6 +41,9 @@ public class Store implements Serializable{
     @Column(name = "sub_text")
     private String subText;
 
+    @Column(name = "category")
+    private String category;
+
     @Column
     @ColumnDefault("0")
     @JoinColumn(name = "private_event")
@@ -69,13 +72,14 @@ public class Store implements Serializable{
 
     @Builder
     public Store(String name, String ownerName, Address address, String phoneNumber, Member member, List<StoreImgFile> storeImgFile,
-                 String subText, String openTime) {
+                 String categoryCode, String subText, String openTime) {
         this.name = name;
         this.ownerName = ownerName;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.member = member;
         this.storeImgFiles = storeImgFile;
+        this.category = makeCategory(categoryCode);
         this.subText = subText;
         this.openTime = openTime;
     }
@@ -125,6 +129,19 @@ public class Store implements Serializable{
         this.phoneNumber = phoneNumber;
         this.subText = subText;
         this.openTime = openTime;
+    }
+
+    public String makeCategory(String code){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(code)
+                .append(makeNumberFormat(name.hashCode()%100))
+                .append(makeNumberFormat(ownerName.hashCode()%100));
+
+        return stringBuilder.toString();
+    }
+
+    public String makeNumberFormat(int num){
+        return num < 10 ? "0" + String.valueOf(num) : String.valueOf(num);
     }
 
     @Getter

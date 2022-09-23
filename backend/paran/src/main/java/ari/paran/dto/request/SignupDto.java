@@ -39,6 +39,8 @@ public class SignupDto {
 
     private String gender;
 
+    private String categoryCode;
+
     private Authority authority = Authority.ROLE_USER;
 
     private int fromOauth = 0;
@@ -88,6 +90,7 @@ public class SignupDto {
                 .name(storeName)
                 .ownerName(ownerName)
                 .address(address)
+                .categoryCode(categoryCode)
                 .phoneNumber(phoneNumber)
                 .member(member)
                 .build();

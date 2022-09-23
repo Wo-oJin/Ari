@@ -1,5 +1,6 @@
 package ari.paran.domain.repository;
 
+import ari.paran.domain.store.Partnership;
 import ari.paran.domain.store.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,4 +14,7 @@ import java.util.Optional;
 public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByName(String name);
     Optional<Store> findById(Long name);
+
+    @Query("SELECT s FROM Store s WHERE s.category like :category%")
+    List<Store> findByCategory(@Param("category") String category);
 }

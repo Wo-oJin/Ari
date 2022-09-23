@@ -13,6 +13,7 @@ export const signOwnerData = async (inputData) => {
                 gender: inputData.gender,
                 storeName: inputData.storeName,
                 ownerName: inputData.ownerName,
+                categoryCode: "01",
                 storeRoadAddress: inputData.storeRoadAddress,
                 storeDetailAddress: inputData.storeDetailAddress,
                 phoneNumber: inputData.phoneNumber,

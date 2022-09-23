@@ -187,8 +187,14 @@ public class StoreService {
     }
 
 
+    /* toy */
 
     public Store findByName(String storeName) {
         return storeRepository.findByName(storeName).orElse(null);
     }
+
+    public List<Store> findByCategory(String code){
+        return storeRepository.findByCategory(code);
+    }
+
 }
