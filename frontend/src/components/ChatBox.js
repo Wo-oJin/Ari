@@ -8,7 +8,7 @@ export const MyChatBox = ({ content, createTime }) => {
           <span className="createTime">{createTime}</span>
         </div>
         <div className="rightBox">
-          <span className="content">{content}</span>
+          <span className="myContent">{content}</span>
         </div>
       </div>
     </div>

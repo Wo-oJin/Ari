@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import "./BoardListView.css";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import ConvertDate from "../components/ConvertDate";
 const BoardListView = () => {
   const navigate = useNavigate();
   //좋아요 유무를 확인하기 위한 변수
@@ -17,12 +18,16 @@ const BoardListView = () => {
   //삭제 팝업 확인을 위한 변수
   const [isDeletePopUpOpend, setIsDeletePopUpOpend] = useState(false);
 
+  const [convertDate, setConvertDate] = useState("");
+
   const getBoardData = async () => {
     customAxios.get(`/board/list/${articleId}`).then((response) => {
       console.log(response.data);
       setData(response.data);
       setIsfavorited(response.data.favorite);
       setAuthority(response.data.authority);
+      setConvertDate(ConvertDate(response.data.createDate));
+      console.log("asdasdsd", convertDate);
     });
   };
 
@@ -82,15 +87,7 @@ const BoardListView = () => {
             <div className="viewContentMiddle">
               <div className="viewContentTop">
                 <span className="title">{data.title}</span>
-                <span className="writeDate">
-                  {data.createDate[0] +
-                    "/" +
-                    "0" +
-                    data.createDate[1] +
-                    "/" +
-                    "0" +
-                    data.createDate[2]}
-                </span>
+                <span className="writeDate">{convertDate}</span>
               </div>
 
               <span className="content">{data.content}</span>
