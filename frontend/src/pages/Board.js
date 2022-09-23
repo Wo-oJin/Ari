@@ -9,6 +9,17 @@ import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 
 const BoardItem = ({ boardId, img, title, author, date }) => {
+  //받아온 날짜를 보기 좋게 변환
+  let convertDate;
+  if (date[1] < 10 && date[2] < 10) {
+    convertDate = date[0] + "/" + "0" + date[1] + "/" + "0" + date[2];
+  } else if (date[1] < 10 && date[2] >= 10) {
+    convertDate = date[0] + "/" + "0" + date[1] + "/" + date[2];
+  } else if (date[1] >= 10 && date[2] < 10) {
+    convertDate = date[0] + "/" + date[1] + "/" + "0" + date[2];
+  } else {
+    convertDate = date[0] + "/" + date[1] + "/" + date[2];
+  }
   return (
     <Link to={`/board/list/${boardId}`}>
       <div className="itemContainer">
@@ -17,9 +28,7 @@ const BoardItem = ({ boardId, img, title, author, date }) => {
           <div className="itemContent">
             <span className="itemTitle">{title}</span>
             <span className="itemAuthor">{author}</span>
-            <span className="itemDate">
-              {date[0] + "/" + "0" + date[1] + "/" + "0" + date[2]}
-            </span>
+            <span className="itemDate">{convertDate}</span>
           </div>
         </div>
       </div>
