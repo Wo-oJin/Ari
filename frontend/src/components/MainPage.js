@@ -20,8 +20,8 @@ const MainPage = ({ onClick }) => {
   const menuRow2 = [
     { name: "카페", image: "images/cafe.png" },
     { name: "헤어", image: "images/hairshop.png" },
-    { name: "PC방", image: "images/pcBang.png" },
-    { name: "노래방", image: "images/karaoke.png" },
+    { name: "술집", image: "images/bar.png" },
+    { name: "놀이시설", image: "images/karaoke.png" },
   ];
 
   // 이벤트 배너
