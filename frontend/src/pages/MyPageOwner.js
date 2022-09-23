@@ -28,6 +28,14 @@ const MyPageOwner = () => {
     initialEventNum();
   }, []);
 
+  const menu = [
+    { title: "내 가게 정보 수정", url: "/storeInfoEdit" },
+    { title: "개인 이벤트 등록", url: "/storePrivateEventList" },
+    { title: "찜 목록", url: "/storeFavoriteList" },
+    { title: "협약 요청 목록 ", url: "/" },
+    { title: "사장님 단체 채팅방", url: "/" },
+  ];
+
   if (!isLoaded) {
     return <h1>로딩 중</h1>;
   } else {
@@ -53,71 +61,33 @@ const MyPageOwner = () => {
           <div className="flex-align">
             <div className="main-info">
               <div style={{ textAlign: "center" }}>
-                <p
-                  style={{
-                    fontSize: "12px",
-                    marginTop: "0",
-                    marginBottom: "3px",
-                  }}
-                >
-                  협력형 제휴
-                </p>
+                <p className="mid-card">협력형 제휴</p>
                 <span style={{ fontSize: "20px" }}>{coopEventNum}</span>
               </div>
             </div>
-            <div className="main-info">
-              <div style={{ textAlign: "center" }}>
-                <p
-                  style={{
-                    fontSize: "12px",
-                    marginTop: "0",
-                    marginBottom: "3px",
-                  }}
-                >
-                  개인 이벤트
-                </p>
-                <span style={{ fontSize: "20px" }}>{privateEventNum}</span>
+            <Link to="/storePrivateEventList">
+              <div className="main-info">
+                <div style={{ textAlign: "center" }}>
+                  <p className="mid-card">개인 이벤트</p>
+                  <span style={{ fontSize: "20px" }}>{privateEventNum}</span>
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
-          <Link to="/storeInfoEdit">
-            <div className="sub-info">
-              <p style={{ marginLeft: "28px" }}>내 가게 정보 수정</p>
-              <img
-                style={{ marginRight: "20px" }}
-                alt=""
-                src="images/arrow_right.png"
-              ></img>
-            </div>
-          </Link>
-          <Link to="/storePrivateEventList">
-            <div className="sub-info">
-              <p style={{ marginLeft: "28px" }}>개인 이벤트 등록</p>
-              <img
-                style={{ marginRight: "20px" }}
-                alt=""
-                src="images/arrow_right.png"
-              ></img>
-            </div>
-          </Link>
-          <Link to="/storeFavoriteList">
-            <div className="sub-info">
-              <p style={{ marginLeft: "28px" }}>찜 목록</p>
-              <img
-                style={{ marginRight: "20px" }}
-                alt=""
-                src="images/arrow_right.png"
-              ></img>
-            </div>
-          </Link>
-          <div className="sub-info">
-            <p style={{ marginLeft: "28px" }}>채팅 목록</p>
-            <img
-              style={{ marginRight: "20px" }}
-              alt=""
-              src="images/arrow_right.png"
-            ></img>
-          </div>
+          {menu.map((item, index) => {
+            return (
+              <Link to={item.url} key={index}>
+                <div className="sub-info">
+                  <p style={{ marginLeft: "28px" }}>{item.title}</p>
+                  <img
+                    style={{ marginRight: "20px" }}
+                    alt=""
+                    src="images/arrow_right.png"
+                  ></img>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </>
     );
