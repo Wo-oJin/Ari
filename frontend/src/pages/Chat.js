@@ -1,5 +1,5 @@
 import { Stomp } from "@stomp/stompjs";
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import SockJS from "sockjs-client";
 import { MyChatBox, OtherChatBox } from "../components/ChatBox";
@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { MdArrowBackIosNew } from "react-icons/md";
 
-import { IoSendSharp } from "react-icons/io5";
+import SendChatForm from "../components/SendChatForm";
 
 let socket;
 let stompClient;
@@ -19,19 +19,31 @@ const Chat = () => {
   const [name, setName] = useRecoilState(nameState);
   const [auth, setAuth] = useRecoilState(authState);
   const [chat, setChat] = useState("");
-  const [message, setMessage] = useState("");
+  const [recMessage, setRecMessage] = useState("");
   const [messageList, setMessageList] = useState("");
   const navigate = useNavigate();
-  //웹소켓 end point 설정
+  const myRef = useRef();
+  const scrollToElement = () =>
+    myRef.current.scrollIntoView({ behavior: "smooth" });
 
   //페이지 렌더링 되기 전에 웹소켓 connect
   useEffect(() => {
+    //웹소켓 end point 설정
     socket = new SockJS("http://localhost:8080/ws");
     stompClient = Stomp.over(socket);
     connect();
+    console.log("유즈 이펙트 실행");
+
+    return () => {
+      stompClient.disconnect();
+    };
   }, []);
 
-  console.log("name", name, auth);
+  useEffect(() => {
+    if (recMessage) {
+      scrollToElement();
+    }
+  }, [recMessage]);
 
   //사장님 권한으로만 접근 가능
   if (auth !== 2) {
@@ -40,8 +52,6 @@ const Chat = () => {
 
   //websocket connet
   const connect = () => {
-    console.log("여기까지 옴");
-
     stompClient.connect({}, onConnected, () => {
       console.log("Error");
     });
@@ -74,14 +84,14 @@ const Chat = () => {
 
     if (message.type === "JOIN") {
       console.log("JOIN!!!");
-      setMessageList((prev) => [...prev, message.content]);
+      setRecMessage((prev) => [...prev, message]);
     } else if (message.type === "LEAVE") {
       console.log("LEAVE!!");
-      setMessageList((prev) => [...prev, message.content]);
+      setRecMessage((prev) => [...prev, message]);
     } else {
-      console.log("Chatting: ", message.content);
-      setMessageList((prev) => [...prev, message.content]);
-      console.log("채팅 받은 이후", messageList);
+      console.log("Chatting: ", message);
+      setRecMessage((prev) => [...prev, message]);
+      console.log("채팅 받은 이후 e", recMessage);
     }
   };
 
@@ -114,7 +124,7 @@ const Chat = () => {
     return <div>로딩 중</div>;
   } else {
     return (
-      <>
+      <div className="allContainer">
         <div className="header">
           <span>채팅</span>
           <button
@@ -165,43 +175,69 @@ const Chat = () => {
                             <span className="date">{item.content}</span>
                           </div>
                         );
-                      } else if (item.sender === name) {
-                        return (
-                          <MyChatBox
-                            createTime={item.createTime}
-                            content={item.content}
-                          ></MyChatBox>
-                        );
-                      } else {
-                        return (
-                          <OtherChatBox
-                            createTime={item.createTime}
-                            content={item.content}
-                            sender={item.sender}
-                          ></OtherChatBox>
-                        );
+                      } else if (item.type === "CHAT") {
+                        if (item.sender === name) {
+                          console.log("내 채팅임 이거");
+                          return (
+                            <MyChatBox
+                              createTime={item.createTime}
+                              content={item.content}
+                            ></MyChatBox>
+                          );
+                        } else {
+                          return (
+                            <OtherChatBox
+                              createTime={item.createTime}
+                              content={item.content}
+                              sender={item.sender}
+                            ></OtherChatBox>
+                          );
+                        }
                       }
                     })}
                 </div>
               );
             })}
+          {recMessage &&
+            recMessage.map((item, key) => {
+              if (item.type === "JOIN") {
+                return (
+                  <div className="dateContainer">
+                    <span className="date">{item.content}</span>
+                  </div>
+                );
+              } else if (item.type === "Leave") {
+                return (
+                  <div className="dateContainer">
+                    <span className="date">{item.content}</span>
+                  </div>
+                );
+              } else if (item.type === "CHAT") {
+                if (item.sender === name) {
+                  console.log("내 채팅임 이거");
+                  return (
+                    <MyChatBox
+                      createTime={item.createTime}
+                      content={item.content}
+                    ></MyChatBox>
+                  );
+                } else {
+                  return (
+                    <OtherChatBox
+                      createTime={item.createTime}
+                      content={item.content}
+                      sender={item.sender}
+                    ></OtherChatBox>
+                  );
+                }
+              }
+            })}
+          <div className="lastElement" ref={myRef}></div>
         </div>
-        <div className="sendMessageContainer">
-          <div className="sendBox">
-            <input
-              className="sendInput"
-              onChange={onChange}
-              value={chat}
-              type="text"
-            ></input>
-            <button className="chatSendBtn" type="submit" onClick={onSubmit}>
-              <IoSendSharp size={"2.0em"} color={"#727171"}></IoSendSharp>
-            </button>
-          </div>
-        </div>
-      </>
+        <SendChatForm onChange={onChange} onSubmit={onSubmit} chat={chat} />
+      </div>
     );
   }
 };
 
-export default Chat;
+export default React.memo(Chat);

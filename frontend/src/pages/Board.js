@@ -7,8 +7,13 @@ import { IoMdCloseCircle } from "react-icons/io";
 
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
+import ConvertDate from "../components/ConvertDate";
 
 const BoardItem = ({ boardId, img, title, author, date }) => {
+  //받아온 날짜를 보기 좋게 변환
+  let convertDate;
+  convertDate = ConvertDate(date);
+
   return (
     <Link to={`/board/list/${boardId}`}>
       <div className="itemContainer">
@@ -17,9 +22,7 @@ const BoardItem = ({ boardId, img, title, author, date }) => {
           <div className="itemContent">
             <span className="itemTitle">{title}</span>
             <span className="itemAuthor">{author}</span>
-            <span className="itemDate">
-              {date[0] + "/" + "0" + date[1] + "/" + "0" + date[2]}
-            </span>
+            <span className="itemDate">{convertDate}</span>
           </div>
         </div>
       </div>
