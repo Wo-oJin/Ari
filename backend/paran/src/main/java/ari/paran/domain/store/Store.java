@@ -97,6 +97,11 @@ public class Store implements Serializable{
     }
 
     // 비즈니스 로직
+
+
+    /***************************************************************
+    * 가게 상세 정보를 조회할 때, 해당 가게가 어떤 가게들과 협약을 맺고 있는지 반환하는 메서드
+    ***************************************************************/
     public List<Partner> getPartners(){
 
         List<Partner> partners = new ArrayList<>();
@@ -122,6 +127,32 @@ public class Store implements Serializable{
         return partners;
     }
 
+    /***************************************************************
+     * 협약 가게의 이름, 도로명 주소, 협약 내용을 담고 있는 DTO라 생각해도 된다.
+     * FE에서 요구하는 데이터만 추출하기 위해 만들었음.
+     ***************************************************************/
+    @Getter
+    @AllArgsConstructor
+    public static class Partner{
+        private String partnerName;
+        private String roadAddress;
+        private List<EventInfo> infos;
+    }
+
+    /***************************************************************
+     * 1개의 이벤트 정보와 시작/종료 날짜를 담는 DTO라 생각해도 된다.
+     * FE에서 요구하는 데이터만 추출하기 위해 만들었음.
+     ***************************************************************/
+    @Getter
+    @AllArgsConstructor
+    private static class EventInfo{
+        private String eventInfo;
+        private LocalDate startDate;
+        private LocalDate finishDate;
+
+    }
+
+
     public void updateInfo(String name, Address address, String ownerName, String phoneNumber, String subText, String openTime) {
         this.name = name;
         this.address = address;
@@ -131,6 +162,11 @@ public class Store implements Serializable{
         this.openTime = openTime;
     }
 
+
+    /***************************************************************
+     * 2자리의 가게 카테고리 코드를 전달받은 후, 랜덤한 값 4자리를 더 붙여 총 6자리로 구성된 가게 분류 코드를 전달
+     * 가게 분류 코드는 카테코리별 가게 리스트를 가져오기 위해 만든 것임.
+     ***************************************************************/
     public String makeCategory(String code){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(code)
@@ -140,10 +176,19 @@ public class Store implements Serializable{
         return stringBuilder.toString();
     }
 
+    /***************************************************************
+     * makeCategory 메서드에서, 추출한 hash 값을 적절한 string format으로 바꾸기 위해 사용
+     ***************************************************************/
     public String makeNumberFormat(int num){
         return num < 10 ? "0" + String.valueOf(num) : String.valueOf(num);
     }
 
+    /***************************************************************
+     * 카테고리별 나눠지는 가게 페이지에서 사용될, 간단한 가게 정보를 보내줄 때 사용되는 메서드
+     * 해당 가게의 협약/개인 이벤트 정보를 모두 담은 map을 반환함
+     * key: 이벤트 내용, value: 이벤트 기간임.
+     * 이 map을 이용해 랜덤한 1개 이벤트의 내용, 기간을 추출할 수 있고 해당 가게가 가진 모든 이벤트 개수를 알 수 있음.
+     ***************************************************************/
     public Map<String, String> getRandomEvents(){
         Map<String, String> events = new HashMap<>();
 
@@ -155,23 +200,6 @@ public class Store implements Serializable{
         }
 
         return events;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public static class Partner{
-        private String partnerName;
-        private String roadAddress;
-        private List<EventInfo> infos;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    private static class EventInfo{
-        private String eventInfo;
-        private LocalDate startDate;
-        private LocalDate finishDate;
-
     }
 
     public void addImgFile(StoreImgFile storeImgFile){
