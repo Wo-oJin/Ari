@@ -85,7 +85,7 @@ public class BoardService {
                     .articleId(article.getId())
                     .author(article.getAuthor())
                     .period(article.getPeriod())
-                    .favorite(memberService.getMemberInfoById(memberId).isFavoriteStore(store))
+                    .favorite(memberService.getMemberInfoById(memberId).isFavoriteArticle(article))
                     .authority(article.getMember().getId() == memberId ? true : false)
                     .location(store.getFullAddress())
                     .createDate(article.getCreateDate())

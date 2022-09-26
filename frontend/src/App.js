@@ -14,19 +14,11 @@ import SignupOwner from "./pages/SignupOwner";
 import SignupOwner2 from "./pages/SignupOwner2";
 import FindPassword from "./pages/FindPassword";
 import Detail from "./pages/Detail";
-import Board from "./pages/Board";
-import BoardWrite from "./pages/BoardWrite";
 import MyPageOwner from "./pages/MyPageOwner";
 import StoreInfoEdit from "./pages/StoreInfoEdit";
 import StoreInfoAdd from "./pages/StoreInfoAdd";
 import StorePrivateEventList from "./pages/StorePrivateEventList";
-
 import UserFavoriteList from "./pages/UserFavoriteList";
-
-import MyPageOwner from "./pages/MyPageOwner";
-import StoreInfoAdd from "./pages/StoreInfoAdd";
-import StoreInfoEdit from "./pages/StoreInfoEdit";
-import StorePrivateEventList from "./pages/StorePrivateEventList";
 import StoreAddPrivateEvent from "./pages/StoreAddPrivateEvent";
 import StoreEditPrivateEvent from "./pages/StoreEditPrivateEvent";
 import StoreFavoriteList from "./pages/StoreFavoriteList";

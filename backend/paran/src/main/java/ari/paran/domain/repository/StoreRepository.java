@@ -23,5 +23,4 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query("SELECT s FROM Store s WHERE s.name LIKE CONCAT('%',:keyword,'%')")
     List<Store> findByKeyword(@Param("keyword") String keyword);
 
-    List<Store> findByNameContaining(String name);
 }
