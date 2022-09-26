@@ -105,22 +105,22 @@
 }
 
 .edit-store-tap {
-  width: 96px;
   line-height: 26px;
   border-radius: 20px;
   background-color: #c7c7ca;
   color: #ffffff;
   cursor: pointer;
+  padding: 0 8px;
   margin: 8px 4px 0 4px;
 }
 
 .edit-store-tap-active {
-  width: 96px;
   line-height: 26px;
   border-radius: 20px;
   background-color: #386ffe;
   color: #ffffff;
   cursor: pointer;
+  padding: 0 8px;
   margin: 8px 4px 0 4px;
 }
 

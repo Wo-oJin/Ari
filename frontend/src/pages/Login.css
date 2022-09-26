@@ -7,6 +7,12 @@
   margin: 72px auto;
 }
 
+.login-inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .inputBox {
   width: 230px;
   line-height: 22px;
@@ -19,17 +25,10 @@
   color: #a3a3a3;
 }
 
-.login-subAlign {
+.buttonContainer {
   display: flex;
-  justify-content: center;
-}
-
-.login-sub-menu {
-  display: flex;
-  justify-content: space-between;
-  width: 183px;
-  font-size: 12px;
-  color: #4e514f;
+  flex-direction: column;
+  align-items: center;
 }
 
 .loginButton {
@@ -48,14 +47,15 @@
   cursor: default;
 }
 
-.inputContainer {
+.login-subAlign {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
 }
 
-.buttonContainer {
+.login-sub-menu {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  width: 183px;
+  font-size: 12px;
+  color: #4e514f;
 }

@@ -1,15 +1,6 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 
-const NotFound = ({ link }) => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (link) {
-      navigate(link);
-    }
-  }, []);
-
+const NotFound = () => {
   return <>404 Not Found</>;
 };
 

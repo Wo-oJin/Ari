@@ -1,5 +1,6 @@
 import { useRecoilState } from "recoil";
 import { authState } from "./state";
+import LoginRequired from "./components/LoginRequired";
 import NotFound from "./pages/NotFound";
 
 export const AuthRoute = (target, Component) => {
@@ -11,7 +12,7 @@ export const AuthRoute = (target, Component) => {
     return Component;
   } else if (auth === 0) {
     // 비회원이 회원 페이지에 접근한 경우
-    return <NotFound link="/login" />;
+    return <LoginRequired />;
   } else {
     // 이외 권한이 없는 경우
     return <NotFound />;
