@@ -3,15 +3,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import SockJS from "sockjs-client";
 import { MyChatBox, OtherChatBox } from "../components/ChatBox";
-import Header from "../components/Header";
 import { authState, nameState } from "../state";
 import { customAxios } from "./customAxios";
 import "./Chat.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import { MdArrowBackIosNew } from "react-icons/md";
-
+import { BsArrowDownShort } from "react-icons/bs";
 import SendChatForm from "../components/SendChatForm";
+import { useInView } from "react-intersection-observer";
 
 let socket;
 let stompClient;
@@ -21,8 +21,12 @@ const Chat = () => {
   const [chat, setChat] = useState("");
   const [recMessage, setRecMessage] = useState("");
   const [messageList, setMessageList] = useState("");
+  const [newMessage, setNewMessage] = useState();
+  const [newMessageState, setNewMessageState] = useState(false);
+  const [scrollDownState, setScrollDownState] = useState(true);
   const navigate = useNavigate();
   const myRef = useRef();
+  const [ref, inView] = useInView();
   const scrollToElement = () =>
     myRef.current.scrollIntoView({ behavior: "smooth" });
 
@@ -32,18 +36,29 @@ const Chat = () => {
     socket = new SockJS("http://localhost:8080/ws");
     stompClient = Stomp.over(socket);
     connect();
-    console.log("유즈 이펙트 실행");
 
     return () => {
       stompClient.disconnect();
     };
   }, []);
 
+  //만약 맨 아래를 보고 있지 않을때, 채팅 메시지가 들어오면 new message 상태를 true로 변환하고 메시지를 팝업 띄워주기
   useEffect(() => {
-    if (recMessage) {
+    if (myRef.current && !inView && scrollDownState) {
       scrollToElement();
+      setScrollDownState(false);
     }
-  }, [recMessage]);
+    if (recMessage && !inView && newMessage && newMessage.type === "CHAT") {
+      console.log("메시지 들어왔고, 인뷰 안보는중");
+      //가장 최신 메시지로 설정
+      setNewMessageState(true);
+      //scrollToElement();
+    } else if (inView) {
+      console.log("인뷰 본느 중");
+      setNewMessageState(false);
+      setNewMessage(null);
+    }
+  }, [recMessage, inView, newMessage]);
 
   //사장님 권한으로만 접근 가능
   if (auth !== 2) {
@@ -91,7 +106,7 @@ const Chat = () => {
     } else {
       console.log("Chatting: ", message);
       setRecMessage((prev) => [...prev, message]);
-      console.log("채팅 받은 이후 e", recMessage);
+      setNewMessage(message);
     }
   };
 
@@ -114,10 +129,15 @@ const Chat = () => {
 
   const onSubmit = () => {
     sendMessage();
+    scrollToElement();
   };
 
   const onChange = (e) => {
     setChat(e.target.value);
+  };
+
+  const scrollDownHandler = () => {
+    scrollToElement();
   };
 
   if (!messageList) {
@@ -177,7 +197,6 @@ const Chat = () => {
                         );
                       } else if (item.type === "CHAT") {
                         if (item.sender === name) {
-                          console.log("내 채팅임 이거");
                           return (
                             <MyChatBox
                               createTime={item.createTime}
@@ -214,7 +233,6 @@ const Chat = () => {
                 );
               } else if (item.type === "CHAT") {
                 if (item.sender === name) {
-                  console.log("내 채팅임 이거");
                   return (
                     <MyChatBox
                       createTime={item.createTime}
@@ -233,6 +251,14 @@ const Chat = () => {
               }
             })}
           <div className="lastElement" ref={myRef}></div>
+          <div ref={ref}> </div>
+          {newMessageState && (
+            <div className="newMsgPopUp" onClick={scrollDownHandler}>
+              <span className="newMsgSender">{newMessage.sender}: </span>
+              <span className="newMsgContent">{newMessage.content}</span>
+              <BsArrowDownShort size={"1.5em"}></BsArrowDownShort>
+            </div>
+          )}
         </div>
         <SendChatForm onChange={onChange} onSubmit={onSubmit} chat={chat} />
       </div>

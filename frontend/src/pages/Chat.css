@@ -59,3 +59,33 @@
   margin-left: 10px;
   cursor: pointer;
 }
+.newMsgPopUp {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: fixed;
+  bottom: 75px;
+  background-color: #d4d4d4;
+  width: 90%;
+  height: 40px;
+  right: 5%;
+  cursor: pointer;
+  opacity: 0.8;
+  color: #3f3f3f;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.newMsgSender {
+  max-width: 100px;
+  padding-left: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.newMsgContent {
+  max-width: 58%;
+  padding-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
