@@ -170,16 +170,30 @@ public class FileService {
 
     public String getMainStoreImage(Store store) throws IOException{
         try {
-            StoreImgFile mainImage = store.getStoreImgFiles().get(0);
+            List<StoreImgFile> storeImages = store.getStoreImgFiles();
 
-            FileInputStream imageStream = new FileInputStream(mainImage.getFileUrl() + mainImage.getFilename());
+            if(storeImages.isEmpty()) {
+                String fileUrl = System.getProperty("user.dir") + localDetailUrl;
+                String fileName = "ari.PNG";
+                FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
 
-            byte[] imgBytes = imageStream.readAllBytes();
-            byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
-            String imgStr = new String(byteEnc64, "UTF-8");
+                byte[] byteEnc64 = Base64.encodeBase64(imageStream.readAllBytes());
+                String imgStr = new String(byteEnc64, "UTF-8");
+                imageStream.close();
 
-            imageStream.close();
-            return imgStr;
+                return imgStr;
+            }
+            else {
+                StoreImgFile mainImage = storeImages.get(0);
+                FileInputStream imageStream = new FileInputStream(mainImage.getFileUrl() + mainImage.getFilename());
+
+                byte[] imgBytes = imageStream.readAllBytes();
+                byte[] byteEnc64 = Base64.encodeBase64(imgBytes);
+                String imgStr = new String(byteEnc64, "UTF-8");
+
+                imageStream.close();
+                return imgStr;
+            }
         } catch (IndexOutOfBoundsException e) {
             return null;
         }

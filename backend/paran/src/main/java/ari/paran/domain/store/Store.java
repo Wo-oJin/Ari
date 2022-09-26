@@ -84,7 +84,7 @@ public class Store implements Serializable{
         this.openTime = openTime;
     }
 
-    public boolean getPrivateEvent(){
+    public boolean doPrivateEvent(){
         return this.privateEvent;
     }
 
@@ -142,6 +142,19 @@ public class Store implements Serializable{
 
     public String makeNumberFormat(int num){
         return num < 10 ? "0" + String.valueOf(num) : String.valueOf(num);
+    }
+
+    public Map<String, String> getRandomEvents(){
+        Map<String, String> events = new HashMap<>();
+
+        // 파트너쉽 추가해야함
+
+        for(Event event : eventList) {
+            String date = event.getStartDate() + " ~ " + event.getFinishDate();
+            events.put(event.getInfo(), date);
+        }
+
+        return events;
     }
 
     @Getter

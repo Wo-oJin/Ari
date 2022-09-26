@@ -1,6 +1,4 @@
 package ari.paran.service.store;
-import ari.paran.domain.SignupCode;
-import ari.paran.domain.member.Member;
 import ari.paran.domain.Event;
 import ari.paran.domain.repository.*;
 import ari.paran.domain.store.Address;
@@ -8,9 +6,9 @@ import ari.paran.domain.store.Partnership;
 import ari.paran.domain.store.Store;
 import ari.paran.domain.store.StoreImgFile;
 import ari.paran.dto.Response;
-import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.EditInfoDto;
 import ari.paran.dto.response.store.EventListDto;
+import ari.paran.dto.response.store.SimpleStoreDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -193,8 +191,30 @@ public class StoreService {
         return storeRepository.findByName(storeName).orElse(null);
     }
 
-    public List<Store> findByCategory(String code){
-        return storeRepository.findByCategory(code);
+    public List<SimpleStoreDto> findByCategory(String code) throws IOException {
+        List<SimpleStoreDto> simpleStoreDtoList = new ArrayList<>();
+        List<Store> stores =  storeRepository.findByCategory(code);
+
+        for(Store store : stores){
+
+            Map<String, String> eventMap = store.getRandomEvents(); // key = eventInfo, value = eventDate
+            List<String> eventInfos = new ArrayList<>(eventMap.keySet());
+
+            int randomId = (int)(Math.random() * eventMap.size());
+
+            SimpleStoreDto simpleStoreDto = SimpleStoreDto.builder()
+                    .storeId(store.getId())
+                    .name(store.getName())
+                    .image(fileService.getMainStoreImage(store))
+                    .eventContent(eventInfos.get(randomId))
+                    .eventPeriod(eventMap.get(eventInfos.get(randomId)))
+                    .eventLength(eventMap.size())
+                    .build();
+
+            simpleStoreDtoList.add(simpleStoreDto);
+        }
+
+        return simpleStoreDtoList;
     }
 
     public List<Store> findStoreByKeyword(String keyword) {

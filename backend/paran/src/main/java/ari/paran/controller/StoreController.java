@@ -35,9 +35,14 @@ public class StoreController {
         List<Store> storeList = storeService.findStores();
 
         for(Store store : storeList){
-            SimpleStoreDto simpleStoreDto = new SimpleStoreDto(store);
-            simpleStoreDto.setPartnersName(storeService.getPartnersName(store.getName()));
-            simpleStoreDto.setImage(fileService.loadImage(store).get(0));
+            SimpleStoreDto simpleStoreDto = SimpleStoreDto.builder()
+                    .storeId(store.getId())
+                    .name(store.getName())
+                    .address(store.getAddress())
+                    .partnersNames(storeService.getPartnersName(store.getName()))
+                    .image(fileService.getMainStoreImage(store))
+                    .privateEvent(store.doPrivateEvent())
+                    .build();
 
             simpleStoreDtoList.add(simpleStoreDto);
         }
@@ -108,7 +113,7 @@ public class StoreController {
     }
 
     @GetMapping("/map/category")
-    public List<Store> findCategory(@RequestParam String code){
+    public List<SimpleStoreDto> findCategory(@RequestParam String code) throws IOException{
         return storeService.findByCategory(code);
     }
 

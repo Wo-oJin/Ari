@@ -38,7 +38,7 @@ public class DetailStoreDto {
         this.openHour = store.getOpenTime();
         this.subText = store.getSubText();
         this.phoneNumber = store.getPhoneNumber();
-        this.privateEvent = store.getPrivateEvent();
+        this.privateEvent = store.doPrivateEvent();
         this.events = store.getEventList();
         this.partners = store.getPartners();
     }
