@@ -15,6 +15,13 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByName(String name);
     Optional<Store> findById(Long name);
 
-    @Query("SELECT s FROM Store s WHERE s.category like :category%")
+    // findByCategoryContaining으로 대체 가능
+    @Query("SELECT s FROM Store s WHERE s.category LIKE :category%")
     List<Store> findByCategory(@Param("category") String category);
+
+    // findByNameContaining으로 대체 가능
+    @Query("SELECT s FROM Store s WHERE s.name LIKE CONCAT('%',:keyword,'%')")
+    List<Store> findByKeyword(@Param("keyword") String keyword);
+
+    List<Store> findByNameContaining(String name);
 }

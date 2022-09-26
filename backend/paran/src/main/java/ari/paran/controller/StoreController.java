@@ -107,9 +107,14 @@ public class StoreController {
         return storeService.addStore(editInfoDto, images, principal);
     }
 
-    @GetMapping("/map/find")
-    public List<Store> findStores(@RequestParam String code){
+    @GetMapping("/map/category")
+    public List<Store> findCategory(@RequestParam String code){
         return storeService.findByCategory(code);
+    }
+
+    @GetMapping("/map/find")
+    public List<Store> findCategories(@RequestParam String keyword){
+        return storeService.findStoreByKeyword(keyword);
     }
 
 }

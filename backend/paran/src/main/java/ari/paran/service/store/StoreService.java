@@ -197,4 +197,7 @@ public class StoreService {
         return storeRepository.findByCategory(code);
     }
 
+    public List<Store> findStoreByKeyword(String keyword) {
+        return storeRepository.findByNameContaining(keyword);
+    }
 }
