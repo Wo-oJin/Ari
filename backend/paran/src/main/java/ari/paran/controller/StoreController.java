@@ -37,10 +37,10 @@ public class StoreController {
         for(Store store : storeList){
             SimpleStoreDto simpleStoreDto = SimpleStoreDto.builder()
                     .storeId(store.getId())
-                    .name(store.getName())
+                    .storeName(store.getName())
                     .address(store.getAddress())
                     .partnersNames(storeService.getPartnersName(store.getName()))
-                    .image(fileService.getMainStoreImage(store))
+                    .storeImage(fileService.getMainStoreImage(store))
                     .privateEvent(store.doPrivateEvent())
                     .build();
 

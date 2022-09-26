@@ -204,8 +204,8 @@ public class StoreService {
 
             SimpleStoreDto simpleStoreDto = SimpleStoreDto.builder()
                     .storeId(store.getId())
-                    .name(store.getName())
-                    .image(fileService.getMainStoreImage(store))
+                    .storeName(store.getName())
+                    .storeImage(fileService.getMainStoreImage(store))
                     .eventContent(eventInfos.get(randomId))
                     .eventPeriod(eventMap.get(eventInfos.get(randomId)))
                     .eventLength(eventMap.size())
