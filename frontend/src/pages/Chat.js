@@ -48,11 +48,16 @@ const Chat = () => {
       scrollToElement();
       setScrollDownState(false);
     }
-    if (recMessage && !inView && newMessage && newMessage.type === "CHAT") {
+    if (
+      recMessage &&
+      !inView &&
+      newMessage &&
+      newMessage.type === "CHAT" &&
+      newMessage.sender !== name
+    ) {
       console.log("메시지 들어왔고, 인뷰 안보는중");
       //가장 최신 메시지로 설정
       setNewMessageState(true);
-      //scrollToElement();
     } else if (inView) {
       console.log("인뷰 본느 중");
       setNewMessageState(false);
@@ -108,6 +113,9 @@ const Chat = () => {
       setRecMessage((prev) => [...prev, message]);
       setNewMessage(message);
     }
+    if (message.sender === name) {
+      scrollToElement();
+    }
   };
 
   const sendMessage = () => {
@@ -129,7 +137,6 @@ const Chat = () => {
 
   const onSubmit = () => {
     sendMessage();
-    scrollToElement();
   };
 
   const onChange = (e) => {
