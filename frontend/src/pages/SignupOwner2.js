@@ -229,7 +229,7 @@ const SignupOwner2 = () => {
           <div className="intro">가게 인증</div>
           <div>
             <input
-              className="certificationInput storeCertification"
+              className="storeCodeInput"
               name="certificationNumber"
               value={certificationNumber}
               type="text"

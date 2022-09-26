@@ -14,14 +14,17 @@ const LoginStore = () => {
             radius="15px"
             color="#FFFFFF"
             background="#4E514F"
+            marginBottom="0"
             text="이메일로 로그인"
           />
         </Link>
+        <div style={{ marginBottom: "11px" }}></div>
         <Link to="/signupOwner">
           <MainButton
             radius="15px"
             color="#FFFFFF"
             background="#4E514F"
+            marginBottom="0"
             text="이메일로 회원가입"
           />
         </Link>

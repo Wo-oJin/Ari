@@ -40,9 +40,15 @@ const LoginUser = () => {
 
       <div className="buttonContainer">
         <div className="kakao" onClick={onKakao}>
+          <img
+            style={{ margin: "0 5px" }}
+            alt=""
+            src="images/Kakao_Logo.png"
+          ></img>
           <span>카카오로 로그인</span>
         </div>
         <div className="naver" onClick={onNaver}>
+          <img alt="" src="images/Naver_Logo.png"></img>
           <span>네이버로 로그인</span>
         </div>
 

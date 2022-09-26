@@ -21,13 +21,14 @@
   color: white;
   font-size: 16px;
   border-radius: 24px;
-  margin-top: 10px;
+  cursor: pointer;
 }
 
 .loginRegisterText {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 35px;
 }
 
 .loginRegisterText > p {
@@ -42,4 +43,8 @@
 
 .loginRegisterContent:nth-child(2) {
   margin-top: 30px;
+}
+
+.mt-10 {
+  margin-top: 10px;
 }

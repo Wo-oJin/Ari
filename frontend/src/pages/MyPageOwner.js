@@ -59,33 +59,39 @@ const MyPageOwner = () => {
             </div>
           </div>
           <div className="flex-align">
-            <div className="main-info">
-              <div style={{ textAlign: "center" }}>
-                <p className="mid-card">협력형 제휴</p>
-                <span style={{ fontSize: "20px" }}>{coopEventNum}</span>
-              </div>
-            </div>
-            <Link to="/storePrivateEventList">
+            <div style={{ margin: "24px 0" }}>
               <div className="main-info">
                 <div style={{ textAlign: "center" }}>
-                  <p className="mid-card">개인 이벤트</p>
-                  <span style={{ fontSize: "20px" }}>{privateEventNum}</span>
+                  <p className="mid-card">협력형 제휴</p>
+                  <span style={{ fontSize: "20px" }}>{coopEventNum}</span>
                 </div>
               </div>
-            </Link>
+            </div>
+            <div style={{ margin: "24px 0" }}>
+              <Link to="/storePrivateEventList">
+                <div className="main-info">
+                  <div style={{ textAlign: "center" }}>
+                    <p className="mid-card">개인 이벤트</p>
+                    <span style={{ fontSize: "20px" }}>{privateEventNum}</span>
+                  </div>
+                </div>
+              </Link>
+            </div>
           </div>
           {menu.map((item, index) => {
             return (
-              <Link to={item.url} key={index}>
-                <div className="sub-info">
-                  <p style={{ marginLeft: "28px" }}>{item.title}</p>
-                  <img
-                    style={{ marginRight: "20px" }}
-                    alt=""
-                    src="images/arrow_right.png"
-                  ></img>
-                </div>
-              </Link>
+              <div style={{ marginBottom: "12px" }} key={index}>
+                <Link to={item.url}>
+                  <div className="sub-info">
+                    <p style={{ marginLeft: "28px" }}>{item.title}</p>
+                    <img
+                      style={{ marginRight: "20px" }}
+                      alt=""
+                      src="images/arrow_right.png"
+                    ></img>
+                  </div>
+                </Link>
+              </div>
             );
           })}
         </div>
