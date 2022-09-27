@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { throttle } from "../util/util";
@@ -14,6 +14,10 @@ const Category = () => {
   const scrollRef = useRef(null);
   const menuRef = useRef(null);
   const [data, setData] = useState();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  let code;
   let categoryArr = [
     "한식",
     "양식",
@@ -24,43 +28,27 @@ const Category = () => {
     "술집",
     "놀이시설",
   ];
-  let testData = [
-    {
-      storeId: 1,
-      storeImg: "/images/testImg.png",
-      storeName: "미스터쉐프",
-      eventContent: "학생증 제시하면 음료수 무료",
-      eventLength: 3,
-      eventPeriod: "2022/09/01 ~ 2022/10/01",
-    },
-    {
-      storeId: 2,
-      storeImg: "images/testImg.png",
-      storeName: "아주맛있는집",
-      eventContent: "학생증 제시하면 음료수 무료",
-      eventLength: 2,
-      eventPeriod: "2022/09/01 ~ 2022/10/01",
-    },
-    {
-      storeId: 3,
-      storeImg: "images/testImg.png",
-      storeName: "카리스마",
-      eventContent: "학생증 제시하면 음료수 무료",
-      eventLength: 1,
-      eventPeriod: "2022/09/01 ~ 2022/10/01",
-    },
-  ];
-  useEffect(() => {
-    if (categoryId < 10) {
-      categoryId = "0" + categoryId;
-    }
-    const getData = async () => {
-      await customAxios.get(`/map/category?code=${categoryId}`).then((res) => {
+
+  const getData = async (code) => {
+    setData("");
+    setLoading(true);
+    await customAxios
+      .get(`/map/category?code=${code}`)
+      .then((res) => {
         console.log(res.data);
         setData(res.data);
+      })
+      .catch((error) => {
+        console.log("error");
+        setData(null);
       });
-    };
-    getData();
+    setLoading(false);
+  };
+  useEffect(() => {
+    if (menuIndex < 10) {
+      code = "0" + menuIndex;
+    }
+    getData(code);
   }, []);
 
   useEffect(() => {
@@ -100,7 +88,11 @@ const Category = () => {
 
   //메뉴 클릭시 index 세팅
   const selectMenu = (e) => {
+    if (e.target.getAttribute("data-key") < 10) {
+      code = "0" + e.target.getAttribute("data-key");
+    }
     setMenuIndex(e.target.getAttribute("data-key"));
+    getData(code);
   };
 
   return (
@@ -142,29 +134,29 @@ const Category = () => {
         })}
       </div>
       <div className="storeContainer">
-        {data ? (
-          data.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="storeItem"
-                style={{
-                  backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
-                }}
-              >
-                <div className="ctContentBox">
-                  <span className="ctContentName">{item.storeName}</span>
-                  <span className="ctContentInfo">{item.eventContent}</span>
-                  <span className="ctContentPeriod">
-                    {testData[0].eventPeriod}
-                  </span>
+        {loading ? <Loading /> : null}
+        {data
+          ? data.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => {
+                    navigate(`/detail/${item.storeId}`);
+                  }}
+                  className="storeItem"
+                  style={{
+                    backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
+                  }}
+                >
+                  <div className="ctContentBox">
+                    <span className="ctContentName">{item.storeName}</span>
+                    <span className="ctContentInfo">{item.eventContent}</span>
+                    <span className="ctContentPeriod">{item.eventPeriod}</span>
+                  </div>
                 </div>
-              </div>
-            );
-          })
-        ) : (
-          <Loading />
-        )}
+              );
+            })
+          : null}
       </div>
     </>
   );

@@ -70,3 +70,11 @@
   font-size: 10px;
   font-weight: 500;
 }
+
+.noStoreDiv {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
