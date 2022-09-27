@@ -29,6 +29,7 @@ import BoardListView from "./pages/BoardListView";
 import BoardModify from "./pages/BoardModify";
 import Chat from "./pages/Chat";
 import { RecoilRoot } from "recoil";
+import Category from "./pages/Category";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/detail/:storeId" element={<Detail />} />
+        <Route path="/store/category/:categoryId" element={<Category />} />
 
         {/* 비회원 페이지 권한 설정 : auth=0 */}
         <Route
@@ -83,14 +85,8 @@ function App() {
           element={AuthRoute(2, <StoreFavoriteList />)}
         />
 
-        <Route
-          path="board/list/:articleId"
-          element={<BoardListView />}
-        ></Route>
-        <Route
-          path="board/update/:articleId"
-          element={<BoardModify />}
-        ></Route>
+        <Route path="board/list/:articleId" element={<BoardListView />}></Route>
+        <Route path="board/update/:articleId" element={<BoardModify />}></Route>
         <Route path="/public/chat" element={<Chat />}></Route>
         <Route path="/board/list" element={AuthRoute(2, <Board />)} />
         <Route path="/board/:boardId" element={AuthRoute(2, <Board />)} />
@@ -103,8 +99,7 @@ function App() {
           path="board/update/:articleId"
           element={AuthRoute(2, <BoardModify />)}
         />
-        </Routes>
-        
+      </Routes>
     </BrowserRouter>
   );
 }

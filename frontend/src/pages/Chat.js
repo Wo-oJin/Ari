@@ -12,6 +12,7 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { BsArrowDownShort } from "react-icons/bs";
 import SendChatForm from "../components/SendChatForm";
 import { useInView } from "react-intersection-observer";
+import Loading from "../components/Loading";
 
 let socket;
 let stompClient;
@@ -148,7 +149,7 @@ const Chat = () => {
   };
 
   if (!messageList) {
-    return <div>로딩 중</div>;
+    return <Loading />;
   } else {
     return (
       <div className="allContainer">

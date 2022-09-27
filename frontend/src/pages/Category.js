@@ -1,0 +1,165 @@
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Header from "../components/Header";
+import Loading from "../components/Loading";
+import { throttle } from "../util/util";
+import "./Category.css";
+import { customAxios } from "./customAxios";
+
+const Category = () => {
+  let { categoryId } = useParams();
+  const [isDrag, setIsDrag] = useState(false);
+  const [startX, setStartX] = useState();
+  const [menuIndex, setMenuIndex] = useState(categoryId);
+  const scrollRef = useRef(null);
+  const menuRef = useRef(null);
+  const [data, setData] = useState();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  let code;
+  let categoryArr = [
+    "한식",
+    "양식",
+    "일식",
+    "패스트푸드",
+    "카페",
+    "헤어",
+    "술집",
+    "놀이시설",
+  ];
+
+  const getData = async (code) => {
+    setData("");
+    setLoading(true);
+    await customAxios
+      .get(`/map/category?code=${code}`)
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data);
+      })
+      .catch((error) => {
+        console.log("error");
+        setData(null);
+      });
+    setLoading(false);
+  };
+  useEffect(() => {
+    if (menuIndex < 10) {
+      code = "0" + menuIndex;
+    }
+    getData(code);
+  }, []);
+
+  useEffect(() => {
+    //메뉴를 클릭하면 메뉴바 자동 슬라이드
+    if (menuIndex > 5) {
+      scrollRef.current.scrollLeft = 98.5;
+    } else if (menuIndex < 4) {
+      scrollRef.current.scrollLeft = 0;
+    }
+  }, [menuIndex]);
+
+  const onDragStart = (e) => {
+    e.preventDefault();
+    setIsDrag(true);
+    setStartX(e.pageX + scrollRef.current.scrollLeft);
+  };
+
+  const onDragEnd = () => {
+    setIsDrag(false);
+  };
+  const onDragMove = (e) => {
+    if (isDrag) {
+      const { scrollWidth, clientWidth, scrollLeft } = scrollRef.current;
+
+      scrollRef.current.scrollLeft = startX - e.pageX;
+
+      if (scrollLeft === 0) {
+        setStartX(e.pageX);
+      } else if (scrollWidth <= clientWidth + scrollLeft) {
+        setStartX(e.pageX + scrollLeft);
+      }
+    }
+  };
+
+  const delay = 100;
+  const onThrottleDragMove = throttle(onDragMove, delay);
+
+  //메뉴 클릭시 index 세팅
+  const selectMenu = (e) => {
+    if (e.target.getAttribute("data-key") < 10) {
+      code = "0" + e.target.getAttribute("data-key");
+    }
+    setMenuIndex(e.target.getAttribute("data-key"));
+    getData(code);
+  };
+
+  return (
+    <>
+      <Header text={"제휴 정보"} back={true}></Header>
+      <div
+        className="categoryNav"
+        ref={scrollRef}
+        onMouseDown={onDragStart}
+        onMouseMove={isDrag ? onThrottleDragMove : null}
+        onMouseUp={onDragEnd}
+        onMouseLeave={onDragEnd}
+      >
+        {categoryArr.map((item, index) => {
+          if (Number(menuIndex) === index + 1) {
+            return (
+              <span
+                ref={menuRef}
+                key={index}
+                data-key={index + 1}
+                className="selectedCategoryMenu"
+                onClick={selectMenu}
+              >
+                {item}
+              </span>
+            );
+          } else {
+            return (
+              <span
+                key={index}
+                data-key={index + 1}
+                className="categoryMenu"
+                onClick={selectMenu}
+              >
+                {item}
+              </span>
+            );
+          }
+        })}
+      </div>
+      <div className="storeContainer">
+        {loading ? <Loading /> : null}
+        {data
+          ? data.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => {
+                    navigate(`/detail/${item.storeId}`);
+                  }}
+                  className="storeItem"
+                  style={{
+                    backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
+                  }}
+                >
+                  <div className="ctContentBox">
+                    <span className="ctContentName">{item.storeName}</span>
+                    <span className="ctContentInfo">{item.eventContent}</span>
+                    <span className="ctContentPeriod">{item.eventPeriod}</span>
+                  </div>
+                </div>
+              );
+            })
+          : null}
+      </div>
+    </>
+  );
+};
+
+export default Category;

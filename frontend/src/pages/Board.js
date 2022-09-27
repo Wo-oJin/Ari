@@ -8,6 +8,7 @@ import { IoMdCloseCircle } from "react-icons/io";
 import { useInView } from "react-intersection-observer";
 import { Link } from "react-router-dom";
 import ConvertDate from "../components/ConvertDate";
+import Loading from "../components/Loading";
 
 const BoardItem = ({ boardId, img, title, author, date }) => {
   //받아온 날짜를 보기 좋게 변환
@@ -91,7 +92,7 @@ const Board = () => {
   };
 
   if (!data) {
-    return <h1>로딩 중</h1>;
+    return <Loading />;
   }
 
   //onChange 이벤트 발생할 때마다 검색어 최신화

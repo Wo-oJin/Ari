@@ -5,10 +5,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FiSearch } from "react-icons/fi";
 import { customAxios } from "../pages/customAxios";
+import { useNavigate } from "react-router-dom";
 
 const MainPage = ({ onClick }) => {
   const [keyword, setKeyword] = useState("");
-
+  let navigate = useNavigate();
   // 가게 카테고리
   const menuRow1 = [
     { name: "한식", image: "images/koreanFood.png" },
@@ -55,6 +56,11 @@ const MainPage = ({ onClick }) => {
     if (e.key === "Enter" && e.target.value !== "") {
       searchStore();
     }
+  };
+
+  const moveToCategory = (e) => {
+    let menuIndex = e.target.getAttribute("data-key");
+    navigate(`/store/category/${menuIndex}`);
   };
 
   return (
@@ -118,7 +124,12 @@ const MainPage = ({ onClick }) => {
                           className="mainPage-flex-column-center"
                           style={{ margin: "0 11px 34px 11px" }}
                         >
-                          <img alt="" src={menu.image}></img>
+                          <img
+                            onClick={moveToCategory}
+                            alt=""
+                            data-key={index + 1}
+                            src={menu.image}
+                          ></img>
                           <span style={{ marginTop: "9px", fontSize: "12px" }}>
                             {menu.name}
                           </span>
@@ -135,7 +146,12 @@ const MainPage = ({ onClick }) => {
                           className="mainPage-flex-column-center"
                           style={{ margin: "0 11px 34px 11px" }}
                         >
-                          <img alt="" src={menu.image}></img>
+                          <img
+                            data-key={index + 5}
+                            onClick={moveToCategory}
+                            alt=""
+                            src={menu.image}
+                          ></img>
                           <span style={{ marginTop: "9px", fontSize: "12px" }}>
                             {menu.name}
                           </span>
