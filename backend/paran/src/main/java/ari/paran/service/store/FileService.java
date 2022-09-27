@@ -35,6 +35,9 @@ public class FileService {
     @Value("${file.path}")
     private String detailUrl;
 
+    /**
+     * 기존 가게 가게 이미지를 저장
+     */
     @Transactional
     public void saveStoreImage(Long store_id, List<MultipartFile> images) throws IOException{
 
@@ -113,7 +116,7 @@ public class FileService {
 
             String fileName = "default.png";
 
-            FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
+            FileInputStream imageStream = new FileInputStream("/Users/jsc/ari_files/" + fileName);
             byte[] bytes = Base64.encodeBase64(imageStream.readAllBytes());
             String result = new String(bytes, "UTF-8");
             imageStream.close();

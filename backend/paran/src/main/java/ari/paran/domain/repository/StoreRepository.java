@@ -1,5 +1,6 @@
 package ari.paran.domain.repository;
 
+import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,4 +14,6 @@ import java.util.Optional;
 public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByName(String name);
     Optional<Store> findById(Long name);
+
+    List<Store> findAllByMember(Member member);
 }
