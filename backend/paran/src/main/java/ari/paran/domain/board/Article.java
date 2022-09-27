@@ -90,4 +90,7 @@ public class Article {
         this.favorites.add(favorite);
     }
 
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
 }

@@ -62,13 +62,18 @@ public class MemberService {
     private final RedisTemplate redisTemplate;
     private final JavaMailSender javaMailSender;
 
+    /**
+     * 가게 좋아요 추가/취소 시 해당 결과를 반영
+     */
     @Transactional
     public ResponseEntity<?> toggleMemberFavoriteStore(Long memberId, Long storeId){
+        /*1. 요청한 회원과 종아요(or 취소) 한 가게 객체를 가져옴*/
         Member member = getMemberInfoById(memberId);
         Store store = storeService.findStore(storeId);
 
-        FavoriteStore favorite;
+        FavoriteStore favorite; // 존재하는 좋아요 정보나 새롭게 추가할 좋아요 정보가 담길 변수
 
+        /*2. 회원이 해당 가게를 좋아요 했는지 여부를 판단 후 했다면 다음 조건 문 실행*/
         if(member.isFavoriteStore(store)) {
             favorite = favoriteRepository.findFavoriteStoreByMemberAndStore(member, store).orElseGet(null);
 
@@ -78,6 +83,7 @@ public class MemberService {
             return response.success("즐겨찾기 목록에서 성공적으로 제거했습니다.");
         }
 
+        /*3. 회원이 좋아요 하지 않았던 가게라면 회원과 가게 정보 담아 새롭게 좋아요 객체 생성 후 추가*/
         favorite = new FavoriteStore(member, store);
 
         member.addFavorite(favorite);
@@ -384,10 +390,16 @@ public class MemberService {
         return response.success("패스워드가 성공적으로 변경되었습니다.");
     }
 
+    /**
+     * 즐겨찾는 가게 목록 리스트를 반환
+     */
     public ResponseEntity<?> showLikeList(Principal principal) throws IOException {
+        /*1. 요청보낸 회원의 객체 가져온다*/
         Member member = memberRepository.findById(Long.valueOf(principal.getName())).get();
         List<FavoriteStore> favorites = member.getFavoriteStores();
-        List<LikeStoreListDto> data = new ArrayList<>();
+        List<LikeStoreListDto> data = new ArrayList<>(); //즐겨찾기 해놓은 가게들이 담길 LikeStoreListDto 리스트 변수
+
+        /*2. 반복문을 통해 좋아요 가게들에 대한 dto를 만든 뒤 data에 추가한다*/
         for (FavoriteStore favorite : favorites) {
             data.add(LikeStoreListDto.builder()
                             .name(favorite.getStore().getName())
@@ -411,7 +423,7 @@ public class MemberService {
         List<Store> stores = owner.getStores();
         for (Store store : stores) {
             eventNum += eventRepository.countByStore(store);
-            partnershipNum = partnershipRepository.countByStore(store);
+            //partnershipNum = partnershipRepository.countByStore(store);
         }
 
         result.add(partnershipNum);
@@ -421,31 +433,5 @@ public class MemberService {
     }
 
 
-    /*
-    public ResponseEntity<?> addLike(String storeName, Principal principal) {
-=======
-    public ResponseEntity<?> addLike(Long storeId, Principal principal) {
->>>>>>> 2633ea33 (Etc : 코드 최신화를 위한 커밋)
-        Member member = memberRepository.findById(Long.valueOf(principal.getName())).get();
-        Store store = storeService.findStore(storeId);
-
-        Favorite like = new Favorite(member, store);
-
-        member.getFavorites().add(like);
-        memberRepository.save(member);
-
-        return response.success();
-    }
-
-    public ResponseEntity<?> deleteLike(Long storeId, Principal principal) {
-        Member member = memberRepository.findById(Long.valueOf(principal.getName())).get();
-        Store store = storeService.findStore(storeId);
-        Favorite like = favoriteRepository.findFavoriteByMemberAndStore(member, store).get();
-
-        favoriteRepository.delete(like);
-
-        return response.success();
-    }
-    */
 
 }

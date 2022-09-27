@@ -36,7 +36,7 @@ public class StoreController {
 
         for(Store store : storeList){
             SimpleStoreDto simpleStoreDto = new SimpleStoreDto(store);
-            simpleStoreDto.setPartnersName(storeService.getPartnersName(store.getName()));
+            simpleStoreDto.setPartnersName(storeService.getPartnersName(store.getId()));
             simpleStoreDto.setImage(fileService.loadImage(store).get(0));
 
             simpleStoreDtoList.add(simpleStoreDto);

@@ -11,6 +11,7 @@ import ari.paran.dto.Response;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.EditInfoDto;
 import ari.paran.dto.response.store.EventListDto;
+import ari.paran.dto.response.store.StoreNameDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -50,23 +51,33 @@ public class StoreService {
         return storeRepository.findById(store_id).orElseGet(null);
     }
 
-    public List<String> getPartnersName(String storeName){
+    public List<String> getPartnersName(Long storeId){
 
-        List<Partnership> partnershipList = partnershipRepository.selectByStoreName(storeName);
+        Store store = storeRepository.findById(storeId).orElse(null);
+        List<Partnership> partnershipList = store.getPartnershipList();
+        List<String> results = new ArrayList<>();
 
-        return partnershipList.stream()
-                .map(Partnership :: getPartnerName)
-                .distinct()
-                .collect(Collectors.toList());
+        for (Partnership partnership : partnershipList) {
+            if(!partnership.isFrom())
+                results.add(partnership.getPartnerName());
+        }
+
+        return results.stream().distinct().collect(Collectors.toList());
     }
 
+    /**
+     * 현재 자신의 가게들 정보를 반환함
+     */
     public ResponseEntity<?> existingInfo(Principal principal) throws IOException {
-
+        /*1. 요청보낸 회원의 id를 통해 회원의 Store 리스트를 가져온다.*/
         Long ownerId = Long.valueOf(principal.getName());
         List<Store> stores = memberRepository.findById(ownerId).get().getStores();
         log.info("stores 정보: {}", stores.isEmpty());
+
+        /*2. 현재 가게들의 정보가 저장될 dto의 리스트를 선언한다*/
         List<EditInfoDto> existingInfos = new ArrayList<>();
 
+        /*3. 반복문을 통해 EditInfoDto를 만들고 이를 existingInfos에 추가한다.*/
         for (Store store : stores) {
             List<String> existingImages = fileService.loadImage(store);
             log.info("store 정보: {}", store.getName());
@@ -81,6 +92,9 @@ public class StoreService {
 
     }
 
+    /**
+     * editInfo와 images로 기존 정보를 변경
+     */
     @Transactional
     public ResponseEntity<?> editInfo(EditInfoDto editInfoDto,
                                       List<MultipartFile> images,
@@ -110,15 +124,21 @@ public class StoreService {
         return response.success();
     }
 
+    /**
+     * 기존 이벤트 정보 가져오기
+     */
     public ResponseEntity<?> existingEvent(Principal principal) {
+        /*1. 요청보낸 회원의 id를 통해 회원의 Store 리스트를 가져온다.*/
         Long ownerId = Long.valueOf(principal.getName());
         List<Store> stores = memberRepository.findById(ownerId).get().getStores();
-        List<EventListDto> result = new ArrayList<>();
+        List<EventListDto> result = new ArrayList<>(); // 반환에 사용될 EventListDto 리스트 변수
 
+        /*2. 바깥 반복문에서는 이벤트 내용이 담긴 eventListDto를 result에 추가해준다. */
         for (Store store : stores) {
             List<Event> eventList = store.getEventList();
-            List<String> eventInfo = new ArrayList<>();
+            List<String> eventInfo = new ArrayList<>(); // 한 가게의 이벤트 내용들이 담길 변수
 
+            /*3. 안쪽 반복문에서는 한 가게의 이벤트 정보들을 eventInfo에 담아준다.*/
             for (Event event : eventList) {
                 eventInfo.add(event.getInfo());
             }
@@ -186,7 +206,19 @@ public class StoreService {
         return editInfo(editInfoDto, images, principal);
     }
 
+    public ResponseEntity<?> getStoreNameList(Long ownerId) {
 
+        Member owner = memberRepository.findById(ownerId).orElse(null);
+        List<Store> Stores = owner.getStores();
+        List<StoreNameDto> results = new ArrayList<>();
+
+        for (Store store : Stores) {
+            StoreNameDto storeNameDto = new StoreNameDto(store.getId(), store.getName());
+            results.add(storeNameDto);
+        }
+
+        return response.success(results, "발신자 가게 정보", HttpStatus.OK);
+    }
 
     public Store findByName(String storeName) {
         return storeRepository.findByName(storeName).orElse(null);
