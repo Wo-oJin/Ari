@@ -86,8 +86,6 @@ public class StoreService {
 
             existingInfos.add(existingInfo);
         }
-
-
         return response.success(existingInfos, "기존 가게정보", HttpStatus.OK);
 
     }
@@ -117,7 +115,7 @@ public class StoreService {
                 editInfoDto.getOwnerName(), editInfoDto.getPhoneNumber(), editInfoDto.getSubText(), editInfoDto.getOpenHour());
 
         //3. 이미지 새로 저장
-        fileService.saveStoreImage(store.getId(), images);
+        fileService.saveStoreImage(store, images);
 
         storeRepository.save(store);
 
@@ -150,8 +148,7 @@ public class StoreService {
         return response.success(result, "기존 이벤트 정보", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> editEvent(Long storeId, int eventNum, String newInfo, Principal principal) {
-        Long ownerId = Long.valueOf(principal.getName());
+    public ResponseEntity<?> editEvent(Long storeId, int eventNum, String newInfo) {
         Store store = storeRepository.findById(storeId).get();
         Event event = store.getEventList().get(eventNum);
         event.changeInfo(newInfo);
@@ -161,7 +158,11 @@ public class StoreService {
         return response.success();
     }
 
+    /**
+     * 자체 이벤트를 추가
+     */
     public ResponseEntity<?> addEvent(Long storeId, String info, Principal principal) {
+        /*1. 매개변수 storeId를 이용하여 이벤트를 추가할 가게를 찾는다.*/
         Store store = storeRepository.findById(storeId).get();
 
         Event newEvent = Event.builder().store(store).info(info).build();

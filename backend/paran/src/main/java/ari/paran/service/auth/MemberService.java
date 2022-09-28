@@ -423,7 +423,7 @@ public class MemberService {
         List<Store> stores = owner.getStores();
         for (Store store : stores) {
             eventNum += eventRepository.countByStore(store);
-            //partnershipNum = partnershipRepository.countByStore(store);
+            partnershipNum += partnershipRepository.countByStore(store);
         }
 
         result.add(partnershipNum);

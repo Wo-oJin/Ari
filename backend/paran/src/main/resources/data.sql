@@ -19,6 +19,9 @@ INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text,
 
 INSERT INTO signup_code (id, code) VALUES (1, '11111');
 INSERT INTO signup_code (id, code) VALUES (2, '22222');
+INSERT INTO signup_code (id, code) VALUES (3, '33333');
+INSERT INTO signup_code (id, code) VALUES (4, '44444');
+INSERT INTO signup_code (id, code) VALUES (5, '55555');
 
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사1", "2022-08-01","2022-09-01");
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사2", "2022-09-01","2022-10-01");
