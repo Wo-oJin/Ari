@@ -25,6 +25,10 @@ import StoreAddPrivateEvent from "./pages/StoreAddPrivateEvent";
 import StoreEditPrivateEvent from "./pages/StoreEditPrivateEvent";
 import StoreFavoriteList from "./pages/StoreFavoriteList";
 import UserFavoriteList from "./pages/UserFavoriteList";
+import Partnership from "./pages/Partnership";
+import PartnershipList from "./pages/PartnershipList";
+import PartnershipWrite from "./pages/PartnershipWrite";
+import PartnershipView from "./pages/PartnershipView";
 
 import RedirectLogin from "./pages/RedirectLogin";
 import BoardListView from "./pages/BoardListView";
@@ -80,6 +84,11 @@ function App() {
             path="board/update/:articleId"
             element={<BoardModify />}
           ></Route>
+
+          <Route path="/partnership" element={<Partnership />} />
+          <Route path="/partnershipList" element={<PartnershipList />} />
+          <Route path="/partnershipWrite" element={<PartnershipWrite />} />
+          <Route path="/partnershipView" element={<PartnershipView />} />
         </Routes>
       </RecoilRoot>
     </BrowserRouter>
