@@ -37,11 +37,4 @@ public class ImageController {
         return "imageCheck";
     }
 
-    @PostMapping("/upload")
-    public String saveImage(HttpServletRequest request, @RequestParam List<MultipartFile> images) throws IOException {
-
-        fileService.saveStoreImage(1L, images);
-
-        return "upload";
-    }
 }

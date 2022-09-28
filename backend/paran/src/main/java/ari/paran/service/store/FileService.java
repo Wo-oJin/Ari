@@ -36,33 +36,38 @@ public class FileService {
     private String detailUrl;
 
     /**
-     * 기존 가게 가게 이미지를 저장
+     * 기존 가게의 이미지를 저장
      */
     @Transactional
-    public void saveStoreImage(Long store_id, List<MultipartFile> images) throws IOException{
-
+    public void saveStoreImage(Store store, List<MultipartFile> images) throws IOException{
+        /*1. 아무 이미지가 없으면 바로 반환*/
         if(images == null)
             return;
 
+        /*2. 파일이 저장될 경로를 설정해준다.*/
         String fileUrl = "/Users/jsc/ari_files/";
-        Store store = storeRepository.findById(store_id).orElseGet(null);
 
+        /*3. images에 있는 multipartFile 객체 image를 하나씩 확인하면서 저장 폴더에 저장하고 DB에 기록한다.*/
         for(MultipartFile image : images) {
+            /*3-1. 클라이언트에서 보낼 당시의 파일 이름*/
             String originalFileName = image.getOriginalFilename();
+
+            /*3-2. 실제로 저장될 파일이름을 uuid로 설정하여 중복을 방지*/
             String fileName = UUID.randomUUID().toString() +
-                    originalFileName.substring(originalFileName.lastIndexOf(".")); //uuid
+                    originalFileName.substring(originalFileName.lastIndexOf("."));
             File destinationFile = new File(fileUrl + fileName);
 
             destinationFile.getParentFile().mkdirs();
-            image.transferTo(destinationFile);
+            image.transferTo(destinationFile); // 파일을 설정한 경로에 저장
 
+            /*3-3. storeImgFile 객체에 저장된 파일에 대한 정보 담음*/
             StoreImgFile storeImgFile = StoreImgFile.builder()
                             .store(store)
                             .originalFileName(originalFileName)
                             .filename(fileName)
                             .fileUrl(fileUrl).build();
 
-            store.addImgFile(storeImgFile);
+            store.addImgFile(storeImgFile); // store의 ImgFile에 추가
 
             storeImgFileRepository.save(storeImgFile);
         }

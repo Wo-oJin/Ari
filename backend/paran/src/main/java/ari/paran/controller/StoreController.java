@@ -81,7 +81,7 @@ public class StoreController {
         Integer eventNum = Integer.valueOf(param.get("eventNum"));
         String newInfo = param.get("newInfo");
 
-        return storeService.editEvent(storeId, eventNum, newInfo, principal);
+        return storeService.editEvent(storeId, eventNum, newInfo);
     }
 
     @PostMapping("/add/self-event")
