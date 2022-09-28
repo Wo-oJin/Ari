@@ -86,8 +86,6 @@ public class StoreService {
 
             existingInfos.add(existingInfo);
         }
-
-
         return response.success(existingInfos, "기존 가게정보", HttpStatus.OK);
 
     }
