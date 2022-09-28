@@ -111,7 +111,16 @@ const BoardListView = () => {
                 <span className="label">제휴 기간</span>
                 <span className="period">{data.period}</span>
               </div>
-              <button className="chatBtn">채팅하기</button>
+              <button
+                className="chatBtn"
+                onClick={() =>
+                  navigate("/partnershipWrite", {
+                    state: { articleId: articleId },
+                  })
+                }
+              >
+                협약 신청
+              </button>
             </div>
             {authority ? (
               <div className="btnBox">
