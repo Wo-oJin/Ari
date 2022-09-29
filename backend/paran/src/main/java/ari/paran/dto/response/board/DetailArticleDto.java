@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Getter
 public class DetailArticleDto {
 
+    private Long storeId;
     private String title;
     private String author;
     private Long articleId;
@@ -21,9 +22,10 @@ public class DetailArticleDto {
     private List<String> images;
 
     @Builder
-    public DetailArticleDto(String title, String author, Long articleId, String location, String content, String period, boolean favorite,
+    public DetailArticleDto(Long storeId, String title, String author, Long articleId, String location, String content, String period, boolean favorite,
                             boolean authority, LocalDate createDate, LocalDate updateDate, List<String> images){
 
+        this.storeId = storeId;
         this.title = title;
         this.author = author;
         this.articleId = articleId;

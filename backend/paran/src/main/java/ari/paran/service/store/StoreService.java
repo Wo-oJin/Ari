@@ -1,5 +1,6 @@
 package ari.paran.service.store;
 import ari.paran.domain.Event;
+import ari.paran.domain.member.Member;
 import ari.paran.domain.repository.*;
 import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Partnership;
@@ -219,5 +220,11 @@ public class StoreService {
 
     public List<Store> findStoreByKeyword(String keyword) {
         return storeRepository.findByKeyword(keyword);
+    }
+
+    public Store findStoreIdByNameAndMember(String storeName, Long memberId){
+        Member member = memberRepository.findById(memberId).orElse(null);
+
+        return storeRepository.findStoreByNameAndMember(storeName, member);
     }
 }

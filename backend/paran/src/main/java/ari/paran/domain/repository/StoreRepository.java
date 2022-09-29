@@ -1,5 +1,6 @@
 package ari.paran.domain.repository;
 
+import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Partnership;
 import ari.paran.domain.store.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,5 +23,9 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     // findByNameContaining으로 대체 가능
     @Query("SELECT s FROM Store s WHERE s.name LIKE CONCAT('%',:keyword,'%')")
     List<Store> findByKeyword(@Param("keyword") String keyword);
+
+    @Query("SELECT s FROM Store s WHERE s.name = :storeName AND s.member = :member")
+    Store findStoreByNameAndMember(@Param("storeName") String name,
+                                    @Param("member") Member member);
 
 }
