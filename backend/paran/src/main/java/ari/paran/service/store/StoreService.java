@@ -2,10 +2,7 @@ package ari.paran.service.store;
 import ari.paran.domain.Event;
 import ari.paran.domain.member.Member;
 import ari.paran.domain.repository.*;
-import ari.paran.domain.store.Address;
-import ari.paran.domain.store.Partnership;
-import ari.paran.domain.store.Store;
-import ari.paran.domain.store.StoreImgFile;
+import ari.paran.domain.store.*;
 import ari.paran.dto.Response;
 import ari.paran.dto.EditInfoDto;
 import ari.paran.dto.response.store.EventListDto;
@@ -194,10 +191,9 @@ public class StoreService {
 
     public List<SimpleStoreDto> findByCategory(String code) throws IOException {
         List<SimpleStoreDto> simpleStoreDtoList = new ArrayList<>();
-        List<Store> stores =  storeRepository.findByCategory(code);
+        List<Store> stores =  storeRepository.findByCategory(Category.fromString(code));
 
         for(Store store : stores){
-
             Map<String, String> eventMap = store.getRandomEvents(); // key = eventInfo, value = eventDate
             List<String> eventInfos = new ArrayList<>(eventMap.keySet());
 
@@ -219,7 +215,7 @@ public class StoreService {
     }
 
     public List<Store> findStoreByKeyword(String keyword) {
-        return storeRepository.findByKeyword(keyword);
+        return storeRepository.findStoreByKeyword(keyword);
     }
 
     public Store findStoreIdByNameAndMember(String storeName, Long memberId){

@@ -1,8 +1,10 @@
 package ari.paran.controller;
 
 import ari.paran.domain.member.Member;
+import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.EditInfoDto;
+import ari.paran.dto.request.SignupDto;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.response.store.MainResult;
 import ari.paran.dto.response.store.SimpleStoreDto;
@@ -28,7 +30,7 @@ public class StoreController {
     private final FileService fileService;
     private final MemberService memberService;
 
-    @GetMapping("/map/store")
+    @GetMapping("/map/all-stores")
     @ResponseBody
     public MainResult simpleStoreList() throws IOException {
         List<SimpleStoreDto> simpleStoreDtoList = new ArrayList<>();
@@ -112,13 +114,25 @@ public class StoreController {
         return storeService.addStore(editInfoDto, images, principal);
     }
 
+    @PostMapping("/map/hihi")
+    public String hello(@RequestBody SignupDto signupDto){
+        log.info("sdfsdfsdf");
+        log.info("{}", signupDto.toString());
+        Member member = memberService.getMemberInfoById(5L);
+        Store store = signupDto.toStore(member, new Address("s", "1"));
+
+        storeService.save(store);
+
+        return storeService.findByName("우진이의 가게1234").getCategory().toString();
+    }
+
     @GetMapping("/map/category")
-    public List<SimpleStoreDto> findCategory(@RequestParam String code) throws IOException{
+    public List<SimpleStoreDto> findCategoryStores(@RequestParam String code) throws IOException{
         return storeService.findByCategory(code);
     }
 
     @GetMapping("/map/find")
-    public List<Store> findCategories(@RequestParam String keyword){
+    public List<Store> findStoreByKeyword(@RequestParam String keyword){
         return storeService.findStoreByKeyword(keyword);
     }
 

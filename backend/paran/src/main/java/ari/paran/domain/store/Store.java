@@ -41,8 +41,8 @@ public class Store implements Serializable{
     @Column(name = "sub_text")
     private String subText;
 
-    @Column(name = "category")
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @Column
     @ColumnDefault("0")
@@ -72,16 +72,18 @@ public class Store implements Serializable{
 
     @Builder
     public Store(String name, String ownerName, Address address, String phoneNumber, Member member, List<StoreImgFile> storeImgFile,
-                 String categoryCode, String subText, String openTime) {
+                 Category category, String subText, String openTime) {
+
         this.name = name;
         this.ownerName = ownerName;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.member = member;
         this.storeImgFiles = storeImgFile;
-        this.category = makeCategory(categoryCode);
+        this.category = category;
         this.subText = subText;
         this.openTime = openTime;
+
     }
 
     public boolean doPrivateEvent(){
@@ -152,7 +154,6 @@ public class Store implements Serializable{
 
     }
 
-
     public void updateInfo(String name, Address address, String ownerName, String phoneNumber, String subText, String openTime) {
         this.name = name;
         this.address = address;
@@ -161,7 +162,6 @@ public class Store implements Serializable{
         this.subText = subText;
         this.openTime = openTime;
     }
-
 
     /***************************************************************
      * 2자리의 가게 카테고리 코드를 전달받은 후, 랜덤한 값 4자리를 더 붙여 총 6자리로 구성된 가게 분류 코드를 전달

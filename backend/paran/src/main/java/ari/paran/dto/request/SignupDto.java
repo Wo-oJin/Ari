@@ -2,12 +2,10 @@ package ari.paran.dto.request;
 
 import ari.paran.domain.member.Authority;
 import ari.paran.domain.member.Member;
+import ari.paran.domain.store.Category;
 import ari.paran.domain.store.Store;
 import ari.paran.domain.store.Address;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -16,6 +14,7 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class SignupDto {
 
     @NotBlank(message = "아이디를 입력해주세요")
@@ -39,7 +38,7 @@ public class SignupDto {
 
     private String gender;
 
-    private String categoryCode;
+    private Category category;
 
     private Authority authority = Authority.ROLE_USER;
 
@@ -86,11 +85,12 @@ public class SignupDto {
     }
 
     public Store toStore(Member member, Address address) {
+        System.out.println(this.category);
         return Store.builder()
                 .name(storeName)
                 .ownerName(ownerName)
                 .address(address)
-                .categoryCode(categoryCode)
+                .category(category)
                 .phoneNumber(phoneNumber)
                 .member(member)
                 .build();
