@@ -76,7 +76,7 @@ public class BoardService {
 
     public DetailArticleDto findArticle(Long id, Long memberId) throws IOException {
         Article article = boardRepository.findById(id).orElseGet(null);
-        Store store = memberService.getMemberInfoById(article.getMember().getId()).getStores().get(0);
+        Store store = storeService.findStoreIdByNameAndMember(article.getAuthor(), memberId);
 
         if(article != null){
             return DetailArticleDto.builder()

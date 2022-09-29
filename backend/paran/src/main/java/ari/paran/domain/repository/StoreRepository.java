@@ -16,4 +16,8 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findById(Long name);
 
     List<Store> findAllByMember(Member member);
+
+    @Query("SELECT s FROM Store s WHERE s.name = :storeName AND s.member = :member")
+    Store findStoreByNameAndMember(@Param("storeName") String name,
+                                   @Param("member") Member member);
 }

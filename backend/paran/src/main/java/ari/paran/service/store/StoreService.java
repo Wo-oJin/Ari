@@ -224,4 +224,10 @@ public class StoreService {
     public Store findByName(String storeName) {
         return storeRepository.findByName(storeName).orElse(null);
     }
+
+    public Store findStoreIdByNameAndMember(String storeName, Long memberId){
+        Member member = memberRepository.findById(memberId).orElse(null);
+
+        return storeRepository.findStoreByNameAndMember(storeName, member);
+    }
 }

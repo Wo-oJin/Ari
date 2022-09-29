@@ -24,6 +24,7 @@ public class DetailArticleDto {
     public DetailArticleDto(String title, String author, Long storeId, String location, String content, String period, boolean favorite,
                             boolean authority, LocalDate createDate, LocalDate updateDate, List<String> images){
 
+        this.storeId = storeId;
         this.title = title;
         this.author = author;
         this.storeId = storeId;
