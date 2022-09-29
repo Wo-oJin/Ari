@@ -115,7 +115,7 @@ const BoardListView = () => {
                 className="chatBtn"
                 onClick={() =>
                   navigate("/partnershipWrite", {
-                    state: { articleId: articleId },
+                    state: { articleId: articleId, storeId: data.storeId },
                   })
                 }
               >
