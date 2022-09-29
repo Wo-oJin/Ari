@@ -74,9 +74,9 @@ public class BoardService {
         });
     }
 
-    public DetailArticleDto findArticle(Long id, Long memberId) throws IOException {
-        Article article = boardRepository.findById(id).orElseGet(null);
-        Store store = storeService.findStoreIdByNameAndMember(article.getAuthor(), memberId);
+    public DetailArticleDto findArticle(Long articleId, Long memberId) throws IOException {
+        Article article = boardRepository.findById(articleId).orElseGet(null);
+        Store store = storeService.findStoreIdByNameAndMember(article.getAuthor(), article.getMember().getId());
 
         if(article != null){
             return DetailArticleDto.builder()
