@@ -190,8 +190,19 @@ public class StoreService {
     }
 
     public List<SimpleStoreDto> findByCategory(String code) throws IOException {
+        List<Store> stores = storeRepository.findByCategory(Category.fromString(code));
+
+        return getSimpleStoreDtos(stores);
+    }
+
+    public List<SimpleStoreDto> findStoreByKeyword(String keyword) throws IOException {
+        List<Store> stores = storeRepository.findStoreByKeyword(keyword);
+
+        return getSimpleStoreDtos(stores);
+    }
+
+    private List<SimpleStoreDto> getSimpleStoreDtos(List<Store> stores) throws IOException {
         List<SimpleStoreDto> simpleStoreDtoList = new ArrayList<>();
-        List<Store> stores =  storeRepository.findByCategory(Category.fromString(code));
 
         for(Store store : stores){
             Map<String, String> eventMap = store.getRandomEvents(); // key = eventInfo, value = eventDate
@@ -212,10 +223,6 @@ public class StoreService {
         }
 
         return simpleStoreDtoList;
-    }
-
-    public List<Store> findStoreByKeyword(String keyword) {
-        return storeRepository.findStoreByKeyword(keyword);
     }
 
     public Store findStoreIdByNameAndMember(String storeName, Long memberId){

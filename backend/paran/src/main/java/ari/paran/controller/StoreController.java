@@ -132,7 +132,7 @@ public class StoreController {
     }
 
     @GetMapping("/map/find")
-    public List<Store> findStoreByKeyword(@RequestParam String keyword){
+    public List<SimpleStoreDto> findStoreByKeyword(@RequestParam String keyword) throws IOException {
         return storeService.findStoreByKeyword(keyword);
     }
 
