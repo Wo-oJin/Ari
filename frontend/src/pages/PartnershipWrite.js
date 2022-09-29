@@ -38,8 +38,7 @@ const PartnershipWrite = () => {
           startDate: startDate.replace(/-/g, "/"),
           endDate: endDate.replace(/-/g, "/"),
           fromStoreId: fromStores[storeIndex].storeId,
-          // toStoreId: state.toStoreId,
-          toStoreId: 5,
+          toStoreId: state.storeId,
           content: content,
           articleId: parseInt(state.articleId),
         })
