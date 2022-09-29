@@ -40,9 +40,9 @@ public class BoardController {
 
     @GetMapping("/list/{id}")
     @ResponseBody
-    public DetailArticleDto detailArticle(@PathVariable Long id, Principal principal) throws IOException {
+    public DetailArticleDto detailArticle(@PathVariable("id") Long articleId, Principal principal) throws IOException {
         Long memberId = Long.parseLong(principal.getName());
-        return boardService.findArticle(id, memberId);
+        return boardService.findArticle(articleId, memberId);
     }
 
     @PostMapping("/write")
