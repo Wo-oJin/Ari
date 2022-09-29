@@ -131,7 +131,7 @@ const Login = () => {
       <Header text="로그인" back={true}></Header>
       <div className="logoContainer"></div>
       <form onSubmit={onSubmit}>
-        <div className="inputContainer">
+        <div className="login-inputContainer">
           <Formbox>
             <input
               className="inputBox"

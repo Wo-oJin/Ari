@@ -4,7 +4,7 @@ import "../styles/LoginRegister.css";
 import { Link } from "react-router-dom";
 import Header from "./Header";
 
-const LoginRegister = () => {
+const LoginRequired = () => {
   const style = {
     width: "100%",
     height: "100%",
@@ -16,9 +16,9 @@ const LoginRegister = () => {
       <div className="loginRegisterContainer flexBox">
         <div className="loginRegisterContent">
           <div className="loginRegisterText">
-            <p>아리에 오신 것을 환영합니다</p>
-            <span>제휴 정보를 나누고</span>
-            <span>실시간 제휴 현황까지 확인해보세요!</span>
+            <p>로그인이 필요한 페이지입니다</p>
+            <span>로그인을 통해</span>
+            <span>우리 근처 제휴 정보를 확인하세요!</span>
           </div>
           <div className="mt-10">
             <Link to="/loginOwner">
@@ -36,4 +36,4 @@ const LoginRegister = () => {
   );
 };
 
-export default LoginRegister;
+export default LoginRequired;

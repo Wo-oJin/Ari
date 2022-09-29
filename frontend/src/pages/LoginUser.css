@@ -14,50 +14,27 @@
 }
 
 .kakao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 260px;
   height: 41px;
   color: #181600;
   background: #fee500;
   border-radius: 15px;
-  text-align: center;
   margin-bottom: 11px;
   cursor: pointer;
 }
 
-.kakao span::before {
-  content: "";
-  background: url(../../public/images/Kakao_Logo.png) no-repeat;
-  display: inline-block;
-  height: 28px;
-  width: 28px;
-  position: relative;
-  top: 9px;
-  right: 5px;
-}
-
 .naver {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 260px;
   height: 41px;
   color: #ffffff;
   background: #03c75a;
   border-radius: 15px;
-  text-align: center;
   margin-bottom: 11px;
   cursor: pointer;
-}
-
-.naver span {
-  position: relative;
-  bottom: 13px;
-}
-
-.naver span::before {
-  content: "";
-  background: url(../../public/images/Naver_Logo.png) no-repeat;
-  display: inline-block;
-  height: 39px;
-  width: 39px;
-  position: relative;
-  top: 13px;
-  right: 5px;
 }

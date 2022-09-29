@@ -117,7 +117,7 @@ export const PrivateEventTap = ({ data }) => {
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var customOverlay = new kakao.maps.CustomOverlay({
-          content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.ownerName}</div>`,
+          content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.name}</div>`,
           removable: false,
           position: coords,
         });
@@ -177,7 +177,7 @@ export const StoreInfoTap = ({ data }) => {
 
         // 인포윈도우로 장소에 대한 설명을 표시합니다
         var customOverlay = new kakao.maps.CustomOverlay({
-          content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.ownerName}</div>`,
+          content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.name}</div>`,
           removable: false,
           position: coords,
         });

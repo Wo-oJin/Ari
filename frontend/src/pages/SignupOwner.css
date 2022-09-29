@@ -35,6 +35,15 @@
   padding: 9px 14px;
 }
 
+.storeCodeInput {
+  width: 230px;
+  line-height: 22px;
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+  padding: 9px 14px;
+  margin-bottom: 21px;
+}
+
 .roadAddress {
   width: 142px;
   line-height: 22px;
@@ -128,10 +137,6 @@
 
 .gender-wrap:first-child {
   margin-left: 10px;
-}
-
-.storeCertification {
-  width: 230px;
 }
 
 .daumPost {
