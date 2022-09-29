@@ -1,6 +1,10 @@
 package ari.paran.domain.repository;
 
 import ari.paran.domain.member.Member;
+<<<<<<< HEAD
+=======
+import ari.paran.domain.store.Partnership;
+>>>>>>> 7882b637 (Update: DetailArticle 반환 시 StoreId 추가)
 import ari.paran.domain.store.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +19,20 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByName(String name);
     Optional<Store> findById(Long name);
 
+<<<<<<< HEAD
     List<Store> findAllByMember(Member member);
+=======
+    // findByCategoryContaining으로 대체 가능
+    @Query("SELECT s FROM Store s WHERE s.category LIKE :category%")
+    List<Store> findByCategory(@Param("category") String category);
+
+    // findByNameContaining으로 대체 가능
+    @Query("SELECT s FROM Store s WHERE s.name LIKE CONCAT('%',:keyword,'%')")
+    List<Store> findByKeyword(@Param("keyword") String keyword);
+
+    @Query("SELECT s FROM Store s WHERE s.name = :storeName AND s.member = :member")
+    Store findStoreByNameAndMember(@Param("storeName") String name,
+                                    @Param("member") Member member);
+
+>>>>>>> 7882b637 (Update: DetailArticle 반환 시 StoreId 추가)
 }

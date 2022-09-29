@@ -26,7 +26,11 @@ public class KakaoLoginService {
 
     private final static String KAKAO_CLIENT_ID = "6ba9808d7a83807d2d0ddc97b41c8889";
     private final static String KAKAO_CLIENT_SECRET = "lNrtpw0rVlsGF3afrTh6xQdROxEp2fhC";
+<<<<<<< HEAD
     private final static String KAKAO_REDIRECT_URI = "http://13.209.105.171:3000/auth/code/kakao"; //Redirect URL
+=======
+    private final static String KAKAO_REDIRECT_URI = "http://paran-ari.com/auth/kakao/login"; //Redirect URL
+>>>>>>> 7882b637 (Update: DetailArticle 반환 시 StoreId 추가)
     private final static String RESOURCE_SERVER_URL = "https://kapi.kakao.com/v2/user/me";
     private final static String SESSION_STATE = "kakao_oauth_state";
 
