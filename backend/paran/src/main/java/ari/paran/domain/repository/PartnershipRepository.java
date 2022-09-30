@@ -10,8 +10,8 @@ import java.util.*;
 @Repository
 public interface PartnershipRepository extends JpaRepository<Partnership, Long> {
 
-    @Query("SELECT p FROM Partnership p INNER JOIN p.store s WHERE s.name = ?1")
-    List<Partnership> selectByStoreName(String storeName);
+//    @Query("SELECT p FROM Partnership p INNER JOIN p.store s WHERE s.name = ?1")
+//    List<Partnership> selectByStoreName(String storeName);
 
     Long countByStore(Store store);
 

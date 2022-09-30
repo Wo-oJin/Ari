@@ -66,7 +66,7 @@ public class BoardService {
                                 .title(article.getTitle())
                                 .author(article.getAuthor())
                                 .createDate(article.getCreateDate())
-                                .image(fileService.getArticleImage(article, 1).get(0))
+                                .image(fileService.getArticleImages(article, 1).get(0))
                                 .build();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -90,7 +90,7 @@ public class BoardService {
                     .authority(article.getMember().getId() == memberId ? true : false)
                     .location(store.getFullAddress())
                     .createDate(article.getCreateDate())
-                    .images(fileService.getArticleImage(article, article.getImgFiles().size()))
+                    .images(fileService.getArticleImages(article, article.getImgFiles().size()))
                     .build();
         }
 

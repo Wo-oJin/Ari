@@ -32,38 +32,45 @@ public class FileService {
     @Autowired ArticleImgFilesRepository articleImgFilesRepository;
     @Autowired StoreImgFileRepository storeImgFileRepository;
 
-    @Value("${file.path}")
-    private String detailUrl;
+    @Value("${resource.path}")
+    private String resourceUrl;
 
-    @Value("${local.path}")
-    private String localDetailUrl;
+    private String detailUrl = "Users/jsc/ari_files/";
 
+
+    /**
+     * 기존 가게의 이미지를 저장
+     */
     @Transactional
-    public void saveStoreImage(Long storeId, List<MultipartFile> images) throws IOException{
-
+    public void saveStoreImage(Store store, List<MultipartFile> images) throws IOException{
+        /*1. 아무 이미지가 없으면 바로 반환*/
         if(images == null)
             return;
 
-        //String fileUrl = "/Users/jsc/ari_files/";
-        String fileUrl = System.getProperty("user.dir") + localDetailUrl;
-        Store store = storeRepository.findById(storeId).orElseGet(null);
+        /*2. 파일이 저장될 경로를 설정해준다.*/
+        String fileUrl = detailUrl;
 
+        /*3. images에 있는 multipartFile 객체 image를 하나씩 확인하면서 저장 폴더에 저장하고 DB에 기록한다.*/
         for(MultipartFile image : images) {
+            /*3-1. 클라이언트에서 보낼 당시의 파일 이름*/
             String originalFileName = image.getOriginalFilename();
+
+            /*3-2. 실제로 저장될 파일이름을 uuid로 설정하여 중복을 방지*/
             String fileName = UUID.randomUUID().toString() +
-                    originalFileName.substring(originalFileName.lastIndexOf(".")); //uuid
+                    originalFileName.substring(originalFileName.lastIndexOf("."));
             File destinationFile = new File(fileUrl + fileName);
 
             destinationFile.getParentFile().mkdirs();
-            image.transferTo(destinationFile);
+            image.transferTo(destinationFile); // 파일을 설정한 경로에 저장
 
+            /*3-3. storeImgFile 객체에 저장된 파일에 대한 정보 담음*/
             StoreImgFile storeImgFile = StoreImgFile.builder()
                             .store(store)
                             .originalFileName(originalFileName)
                             .filename(fileName)
                             .fileUrl(fileUrl).build();
 
-            store.addImgFile(storeImgFile);
+            store.addImgFile(storeImgFile); // store의 ImgFile에 추가
 
             storeImgFileRepository.save(storeImgFile);
         }
@@ -77,7 +84,7 @@ public class FileService {
         if(images == null)
             return;
 
-        String fileUrl = System.getProperty("user.dir") + localDetailUrl;
+        String fileUrl = detailUrl;
         Article article = boardRepository.findById(articleId).orElse(null);
 
         if(images!=null) {
@@ -108,12 +115,12 @@ public class FileService {
         saveArticleImage(articleId, images);
     }
 
-    public List<String> loadImage(Store store) throws IOException{
+    public List<String> getStoreImages(Store store) throws IOException{
         List<StoreImgFile> storeImages = store.getStoreImgFiles();
         List<String> base64Images = new ArrayList<>();
 
         if(storeImages.isEmpty()){
-            String fileUrl = System.getProperty("user.dir") + localDetailUrl;
+            String fileUrl = System.getProperty("user.dir") + resourceUrl;
 
             String fileName = "ari.PNG";
 
@@ -138,12 +145,12 @@ public class FileService {
         return base64Images;
     }
 
-    public List<String> getArticleImage(Article article, int count) throws IOException{
+    public List<String> getArticleImages(Article article, int count) throws IOException{
         List<String> base64Images = new ArrayList<>();
         List<ArticleImgFile> articleImages = article.getImgFiles();
 
         if(articleImages.isEmpty()){
-            String fileUrl = System.getProperty("user.dir") + localDetailUrl;
+            String fileUrl = System.getProperty("user.dir") + resourceUrl;
             String fileName = "ari.PNG";
 
             FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
@@ -173,7 +180,7 @@ public class FileService {
             List<StoreImgFile> storeImages = store.getStoreImgFiles();
 
             if(storeImages.isEmpty()) {
-                String fileUrl = System.getProperty("user.dir") + localDetailUrl;
+                String fileUrl = System.getProperty("user.dir") + resourceUrl;
                 String fileName = "ari.PNG";
                 FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
 

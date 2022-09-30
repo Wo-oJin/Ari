@@ -22,13 +22,17 @@ import UserFavoriteList from "./pages/UserFavoriteList";
 import StoreAddPrivateEvent from "./pages/StoreAddPrivateEvent";
 import StoreEditPrivateEvent from "./pages/StoreEditPrivateEvent";
 import StoreFavoriteList from "./pages/StoreFavoriteList";
+import UserFavoriteList from "./pages/UserFavoriteList";
+import Partnership from "./pages/Partnership";
+import PartnershipList from "./pages/PartnershipList";
+import PartnershipWrite from "./pages/PartnershipWrite";
+import PartnershipView from "./pages/PartnershipView";
 
 import Board from "./pages/Board";
 import BoardWrite from "./pages/BoardWrite";
 import BoardListView from "./pages/BoardListView";
 import BoardModify from "./pages/BoardModify";
 import Chat from "./pages/Chat";
-import { RecoilRoot } from "recoil";
 import Category from "./pages/Category";
 
 function App() {
@@ -84,9 +88,6 @@ function App() {
           path="/storeFavoriteList"
           element={AuthRoute(2, <StoreFavoriteList />)}
         />
-
-        <Route path="board/list/:articleId" element={<BoardListView />}></Route>
-        <Route path="board/update/:articleId" element={<BoardModify />}></Route>
         <Route path="/public/chat" element={<Chat />}></Route>
         <Route path="/board/list" element={AuthRoute(2, <Board />)} />
         <Route path="/board/:boardId" element={AuthRoute(2, <Board />)} />
@@ -99,6 +100,10 @@ function App() {
           path="board/update/:articleId"
           element={AuthRoute(2, <BoardModify />)}
         />
+          <Route path="/partnership" element={AuthRoute(2, <Partnership />)} />
+          <Route path="/partnershipList" element={AuthRoute(2, <PartnershipList />)} />
+          <Route path="/partnershipWrite" element={AuthRoute(2, <PartnershipWrite />)} />
+          <Route path="/partnershipView" element={AuthRoute(2, <PartnershipView />)} />
       </Routes>
     </BrowserRouter>
   );

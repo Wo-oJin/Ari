@@ -116,6 +116,7 @@
 
 .edit-store-tap-active {
   line-height: 26px;
+  font-size: 11px;
   border-radius: 20px;
   background-color: #386ffe;
   color: #ffffff;
@@ -127,6 +128,7 @@
 .add-store-tap {
   width: 96px;
   line-height: 26px;
+  font-size: 11px;
   border-radius: 20px;
   border: 0.7px dashed #c7c7ca;
   color: #ffffff;

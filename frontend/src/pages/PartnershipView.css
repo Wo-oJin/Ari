@@ -4,10 +4,10 @@
   align-items: center;
 }
 
-.eventForm {
+.partnership-infoForm {
   box-sizing: border-box;
   width: 327px;
-  height: 213px;
+  min-height: 213px;
   border: 0.7px solid #d7d7d7;
   border-radius: 15px;
   font-size: 16px;
@@ -15,6 +15,20 @@
   padding: 18px 19px;
   outline: none;
   resize: none;
+}
+
+.partnership-infoForm td {
+  padding-bottom: 21px;
+}
+
+.partnership-infoForm td:first-child {
+  width: 100px;
+  vertical-align: top;
+}
+
+.partnership-infoForm td:last-child {
+  font-size: 14px;
+  color: #4a4a4a;
 }
 
 .edit-buttonContainer {
@@ -42,4 +56,20 @@
   border-radius: 15px;
   cursor: pointer;
   margin-bottom: 57px;
+}
+
+.partnership-rightBtn {
+  float: right;
+  font-size: 16px;
+  color: #ffffff;
+  background: #386ffe;
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 0 16px;
+  line-height: 36px;
+  margin-top: 24px;
+}
+
+.partnership-rightBtn:disabled {
+  background-color: #dcdcdc;
 }

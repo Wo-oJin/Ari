@@ -1,10 +1,8 @@
 package ari.paran.controller;
 
 import ari.paran.domain.member.Member;
-import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.EditInfoDto;
-import ari.paran.dto.request.SignupDto;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.response.store.MainResult;
 import ari.paran.dto.response.store.SimpleStoreDto;
@@ -41,7 +39,7 @@ public class StoreController {
                     .storeId(store.getId())
                     .storeName(store.getName())
                     .address(store.getAddress())
-                    .partnersNames(storeService.getPartnersName(store.getName()))
+                    .partnersNames(storeService.getPartnersName(store))
                     .storeImage(fileService.getMainStoreImage(store))
                     .privateEvent(store.doPrivateEvent())
                     .build();
@@ -59,7 +57,7 @@ public class StoreController {
         Member member = memberService.getMemberInfoById(Long.valueOf(principal.getName()));
 
         DetailStoreDto detailStoreDto = new DetailStoreDto(store);
-        detailStoreDto.setStoreImages(fileService.loadImage(store));
+        detailStoreDto.setStoreImages(fileService.getStoreImages(store));
         detailStoreDto.setFavorite(member.isFavoriteStore(store));
 
         return detailStoreDto;
@@ -88,7 +86,7 @@ public class StoreController {
         Integer eventNum = Integer.valueOf(param.get("eventNum"));
         String newInfo = param.get("newInfo");
 
-        return storeService.editEvent(storeId, eventNum, newInfo, principal);
+        return storeService.editEvent(storeId, eventNum, newInfo);
     }
 
     @PostMapping("/add/self-event")
@@ -112,18 +110,6 @@ public class StoreController {
                                       @RequestParam(value = "newImages", required = false) List<MultipartFile> images,
                                       Principal principal) throws IOException {
         return storeService.addStore(editInfoDto, images, principal);
-    }
-
-    @PostMapping("/map/hihi")
-    public String hello(@RequestBody SignupDto signupDto){
-        log.info("sdfsdfsdf");
-        log.info("{}", signupDto.toString());
-        Member member = memberService.getMemberInfoById(5L);
-        Store store = signupDto.toStore(member, new Address("s", "1"));
-
-        storeService.save(store);
-
-        return storeService.findByName("우진이의 가게1234").getCategory().toString();
     }
 
     @GetMapping("/map/category")
