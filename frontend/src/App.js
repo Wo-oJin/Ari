@@ -22,7 +22,6 @@ import UserFavoriteList from "./pages/UserFavoriteList";
 import StoreAddPrivateEvent from "./pages/StoreAddPrivateEvent";
 import StoreEditPrivateEvent from "./pages/StoreEditPrivateEvent";
 import StoreFavoriteList from "./pages/StoreFavoriteList";
-import UserFavoriteList from "./pages/UserFavoriteList";
 import Partnership from "./pages/Partnership";
 import PartnershipList from "./pages/PartnershipList";
 import PartnershipWrite from "./pages/PartnershipWrite";
@@ -52,7 +51,7 @@ function App() {
         <Route path="/loginUser" element={AuthRoute(0, <LoginUser />)} />
         <Route path="/loginOwner" element={AuthRoute(0, <LoginOwner />)} />
         {/* <Route path="/redirectLogin" element={<RedirectLogin />} /> */}
-        <Route path="/auth/code/kakao" element={AuthRoute(0, <Kakao />)} />
+        <Route path="/auth/kakao/login" element={AuthRoute(0, <Kakao />)} />
         <Route path="/auth/naver/login" element={AuthRoute(0, <Naver />)} />
         <Route path="/signupUser" element={AuthRoute(0, <SignupUser />)} />
         <Route path="/signupOwner" element={AuthRoute(0, <SignupOwner />)} />
@@ -100,10 +99,19 @@ function App() {
           path="board/update/:articleId"
           element={AuthRoute(2, <BoardModify />)}
         />
-          <Route path="/partnership" element={AuthRoute(2, <Partnership />)} />
-          <Route path="/partnershipList" element={AuthRoute(2, <PartnershipList />)} />
-          <Route path="/partnershipWrite" element={AuthRoute(2, <PartnershipWrite />)} />
-          <Route path="/partnershipView" element={AuthRoute(2, <PartnershipView />)} />
+        <Route path="/partnership" element={AuthRoute(2, <Partnership />)} />
+        <Route
+          path="/partnershipList"
+          element={AuthRoute(2, <PartnershipList />)}
+        />
+        <Route
+          path="/partnershipWrite"
+          element={AuthRoute(2, <PartnershipWrite />)}
+        />
+        <Route
+          path="/partnershipView"
+          element={AuthRoute(2, <PartnershipView />)}
+        />
       </Routes>
     </BrowserRouter>
   );
