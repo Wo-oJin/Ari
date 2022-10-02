@@ -161,7 +161,7 @@ const FindPassword = () => {
   const onSubmit = async () => {
     try {
       await customAxios
-        .post("/change-password", {
+        .post("/auth/change-password", {
           email: email,
           newPassword: newPassword,
         })
