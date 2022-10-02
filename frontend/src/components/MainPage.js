@@ -72,6 +72,11 @@ const MainPage = ({ onClick }) => {
         <div style={{ width: "375px" }}>
           <div style={{ padding: "0 28px", marginTop: "85px" }}>
             <div className="mainPage-flex-column-end">
+              <img
+                style={{ width: "61px" }}
+                alt=""
+                src="images/ari_logo_text.png"
+              ></img>
               <p className="mainPage-intro">우리 주변 제휴 정보</p>
               <p className="mainPage-intro">
                 <span style={{ color: "#386FFE" }}>아리</span>에서
@@ -125,6 +130,7 @@ const MainPage = ({ onClick }) => {
                           style={{ margin: "0 11px 34px 11px" }}
                         >
                           <img
+                            style={{ cursor: "pointer" }}
                             onClick={moveToCategory}
                             alt=""
                             data-key={index + 1}
@@ -147,6 +153,7 @@ const MainPage = ({ onClick }) => {
                           style={{ margin: "0 11px 34px 11px" }}
                         >
                           <img
+                            style={{ cursor: "pointer" }}
                             data-key={index + 5}
                             onClick={moveToCategory}
                             alt=""
