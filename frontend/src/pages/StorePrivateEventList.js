@@ -47,7 +47,11 @@ const StorePrivateEventList = () => {
   } else {
     return (
       <>
-        <Header text="개인 이벤트 등록" back={true}></Header>
+        <Header
+          text="개인 이벤트 등록"
+          back={true}
+          url={"/myPageOwner"}
+        ></Header>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ width: "312px", marginTop: "26px" }}>
             {privateEvents.map((store, index) => {

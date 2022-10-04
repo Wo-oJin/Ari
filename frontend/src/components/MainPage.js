@@ -182,7 +182,13 @@ const MainPage = ({ onClick }) => {
             <p className="mainPage-subIntro">전체 목록 보기!</p>
             <div style={{ float: "left", marginLeft: "10px" }}>
               <div className="mainPage-flex-column-center">
-                <img alt="" src="images/seeAll.png"></img>
+                <img
+                  alt=""
+                  src="images/seeAll.png"
+                  data-key={0}
+                  onClick={moveToCategory}
+                  style={{ cursor: "pointer" }}
+                ></img>
                 <span style={{ marginTop: "9px", fontSize: "12px" }}>전체</span>
               </div>
             </div>

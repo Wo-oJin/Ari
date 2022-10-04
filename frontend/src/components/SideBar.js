@@ -26,7 +26,6 @@ const SideBar = ({ userState, nameState }) => {
             <Link className="nicknameBtn" to="/myPageUser">
               <div className="nicknameContainer">
                 <span>{nameState}</span>
-                <span>자기소개...</span>
               </div>
               <button>
                 <img alt="" src="../images/arrow.png"></img>
@@ -41,7 +40,6 @@ const SideBar = ({ userState, nameState }) => {
             <Link className="nicknameBtn" to="/myPageOwner">
               <div className="nicknameContainer">
                 <span>{nameState}</span>
-                <span>자기소개...</span>
               </div>
               <button>
                 <img alt="" src="../images/arrow.png"></img>

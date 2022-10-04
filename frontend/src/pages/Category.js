@@ -18,6 +18,7 @@ const Category = () => {
   const navigate = useNavigate();
 
   let categoryArr = [
+    "전체",
     "한식",
     "양식",
     "일식",
@@ -32,9 +33,9 @@ const Category = () => {
     setData("");
     setLoading(true);
     console.log("이 인덱스 넘어옴", menuIndex);
-    console.log("menu: ", categoryArr[menuIndex - 1]);
+    console.log("menu: ", categoryArr[menuIndex]);
     await customAxios
-      .get(`/map/category?code=${categoryArr[menuIndex - 1]}`)
+      .get(`/map/category?code=${categoryArr[menuIndex]}`)
       .then((res) => {
         console.log(res.data);
         setData(res.data);
@@ -103,12 +104,12 @@ const Category = () => {
         onMouseLeave={onDragEnd}
       >
         {categoryArr.map((item, index) => {
-          if (Number(menuIndex) === index + 1) {
+          if (Number(menuIndex) === index) {
             return (
               <span
                 ref={menuRef}
                 key={index}
-                data-key={index + 1}
+                data-key={index}
                 className="selectedCategoryMenu"
                 onClick={selectMenu}
               >
@@ -119,7 +120,7 @@ const Category = () => {
             return (
               <span
                 key={index}
-                data-key={index + 1}
+                data-key={index}
                 className="categoryMenu"
                 onClick={selectMenu}
               >
