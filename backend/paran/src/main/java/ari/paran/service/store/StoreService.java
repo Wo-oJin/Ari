@@ -76,7 +76,7 @@ public class StoreService {
 
         for(Partnership partnership : partnershipList){
             String partnerName = partnership.getPartnerName();
-            partnerLocations.put(partnerName, partnership.getStore().getAddress().getRoadAddress());
+            partnerLocations.put(partnerName, findStore(partnership.getPartnerId()).getAddress().getRoadAddress());
             String info = partnership.getInfo();
             LocalDate startDate = partnership.getStartDate();
             LocalDate finishDate = partnership.getFinishDate();
