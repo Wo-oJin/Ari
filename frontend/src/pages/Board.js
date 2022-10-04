@@ -110,7 +110,7 @@ const Board = () => {
   };
   return (
     <>
-      <Header text={"제휴 맺기 게시판"} back={true}></Header>
+      <Header text={"제휴 맺기 게시판"} back={true} url={"/"}></Header>
       <div className="searchContainer">
         <form className="searchForm" onSubmit={(e) => e.preventDefault()}>
           <div className="serachIcon">
