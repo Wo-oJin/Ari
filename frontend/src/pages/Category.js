@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { throttle } from "../util/util";
@@ -134,22 +134,26 @@ const Category = () => {
         {data
           ? data.map((item, index) => {
               return (
-                <div
-                  key={index}
-                  onClick={() => {
-                    navigate(`/detail/${item.storeId}`);
-                  }}
-                  className="storeItem"
-                  style={{
-                    backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
-                  }}
-                >
-                  <div className="ctContentBox">
-                    <span className="ctContentName">{item.storeName}</span>
-                    <span className="ctContentInfo">{item.eventContent}</span>
-                    <span className="ctContentPeriod">{item.eventPeriod}</span>
+                <Link to={`/detail/${item.storeId}`}>
+                  <div
+                    key={index}
+                    // onClick={() => {
+                    //   navigate(`/detail/${item.storeId}`);
+                    // }}
+                    className="storeItem"
+                    style={{
+                      backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
+                    }}
+                  >
+                    <div className="ctContentBox">
+                      <span className="ctContentName">{item.storeName}</span>
+                      <span className="ctContentInfo">{item.eventContent}</span>
+                      <span className="ctContentPeriod">
+                        {item.eventPeriod}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               );
             })
           : null}
