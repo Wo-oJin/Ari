@@ -56,9 +56,19 @@ public class StoreController {
         Store store = storeService.findStore(store_id);
         Member member = memberService.getMemberInfoById(Long.valueOf(principal.getName()));
 
-        DetailStoreDto detailStoreDto = new DetailStoreDto(store);
-        detailStoreDto.setStoreImages(fileService.getStoreImages(store));
-        detailStoreDto.setFavorite(member.isFavoriteStore(store));
+        DetailStoreDto detailStoreDto = DetailStoreDto.builder()
+                .storeId(store.getId())
+                .storeName(store.getName())
+                .ownerName(store.getOwnerName())
+                .address(store.getAddress())
+                .openTime(store.getOpenTime())
+                .subText(store.getSubText())
+                .phoneNumber(store.getPhoneNumber())
+                .isFavorite(member.isFavoriteStore(store))
+                .eventList(store.getEventList())
+                .partners(storeService.getPartners(store.getPartnershipList()))
+                .images(fileService.getStoreImages(store))
+                .build();
 
         return detailStoreDto;
     }

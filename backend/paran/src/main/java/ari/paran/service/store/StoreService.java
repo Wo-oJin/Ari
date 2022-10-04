@@ -5,6 +5,7 @@ import ari.paran.domain.repository.*;
 import ari.paran.domain.store.*;
 import ari.paran.dto.Response;
 import ari.paran.dto.EditInfoDto;
+import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.response.store.EventListDto;
 import ari.paran.dto.response.store.SimpleStoreDto;
 import ari.paran.dto.response.store.StoreNameDto;
@@ -14,11 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,7 +33,6 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
     private final MemberRepository memberRepository;
-    private final PartnershipRepository partnershipRepository;
     private final StoreImgFileRepository storeImgFileRepository;
     private final EventRepository eventRepository;
     private final Response response;
@@ -60,6 +63,34 @@ public class StoreService {
         return results.stream()
                 .distinct()
                 .collect(Collectors.toList());
+    }
+
+    /***************************************************************
+     * 가게 상세 정보를 조회할 때, 해당 가게가 어떤 가게들과 협약을 맺고 있는지 반환하는 메서드
+     ***************************************************************/
+    public List<DetailStoreDto.Partner> getPartners(List<Partnership> partnershipList){
+
+        List<DetailStoreDto.Partner> partners = new ArrayList<>();
+        Map<String, String> partnerLocations = new HashMap<>();
+        MultiValueMap<String, DetailStoreDto.EventInfo> partnersInfo = new LinkedMultiValueMap<>();
+
+        for(Partnership partnership : partnershipList){
+            String partnerName = partnership.getPartnerName();
+            partnerLocations.put(partnerName, partnership.getStore().getAddress().getRoadAddress());
+            String info = partnership.getInfo();
+            LocalDate startDate = partnership.getStartDate();
+            LocalDate finishDate = partnership.getFinishDate();
+
+            partnersInfo.add(partnerName, new DetailStoreDto.EventInfo(info, startDate, finishDate));
+        }
+
+        Set<String> keys = partnersInfo.keySet();
+        for(String key : keys){
+            DetailStoreDto.Partner partner = new DetailStoreDto.Partner(key, partnerLocations.get(key), partnersInfo.get(key));
+            partners.add(partner);
+        }
+
+        return partners;
     }
 
     /**

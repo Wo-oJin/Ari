@@ -19,7 +19,8 @@ public enum Category {
     HAIRSHOP("07", "헤어"),
     BAR("08", "술집"),
     PLAY("09", "놀이시설"),
-    STUDYCAFE("10", "스터디카페");
+    STUDYCAFE("10", "스터디카페"),
+    ALL("11", "전체");
 
     private final String code;
     private final String name;

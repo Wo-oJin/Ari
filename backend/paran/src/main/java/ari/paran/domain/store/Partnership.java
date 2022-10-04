@@ -29,7 +29,6 @@ public class Partnership {
     private Long partnerId;
     private String partnerName;
     private Long counterpartId;
-    private String partnerLocation;
     private String info; // 제휴 정보
     private LocalDate startDate;
     private LocalDate finishDate;
@@ -45,14 +44,13 @@ public class Partnership {
 
 
     @Builder
-    private Partnership(Store store, String StoreName, Long partnerId, String partnerName, String partnerLocation,
+    private Partnership(Store store, String StoreName, Long partnerId, String partnerName,
                         String info, LocalDate startDate, LocalDate finishDate, PartnershipState partnershipState,
                         Long counterpartId, Article article, boolean isFrom){
         this.store = store;
         this.StoreName = StoreName;
         this.partnerId = partnerId;
         this.partnerName = partnerName;
-        this.partnerLocation = partnerLocation;
         this.info = info;
         this.startDate = startDate;
         this.finishDate = finishDate;
@@ -60,13 +58,6 @@ public class Partnership {
         this.counterpartId = counterpartId;
         this.article = article;
         this.isFrom = isFrom;
-    }
-
-
-
-    // 임시로 사용 --> 기능 구현 시 삭제해야함
-    public void setPartnerLocation(String partnerLocation){
-        this.partnerLocation = partnerLocation;
     }
 
     public void changeReadStatus() {

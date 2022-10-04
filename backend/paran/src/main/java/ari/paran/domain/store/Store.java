@@ -100,60 +100,6 @@ public class Store implements Serializable{
 
     // 비즈니스 로직
 
-
-    /***************************************************************
-    * 가게 상세 정보를 조회할 때, 해당 가게가 어떤 가게들과 협약을 맺고 있는지 반환하는 메서드
-    ***************************************************************/
-    public List<Partner> getPartners(){
-
-        List<Partner> partners = new ArrayList<>();
-        Map<String, String> partnerLocations = new HashMap<>();
-        MultiValueMap<String, EventInfo> partnersInfo = new LinkedMultiValueMap<>();
-
-        for(Partnership partnership : partnershipList){
-            String partnerName = partnership.getPartnerName();
-            partnerLocations.put(partnerName, partnership.getPartnerLocation());
-            String info = partnership.getInfo();
-            LocalDate startDate = partnership.getStartDate();
-            LocalDate finishDate = partnership.getFinishDate();
-
-            partnersInfo.add(partnerName, new EventInfo(info, startDate, finishDate));
-        }
-
-        Set<String> keys = partnersInfo.keySet();
-        for(String key : keys){
-            Partner partner = new Partner(key, partnerLocations.get(key), partnersInfo.get(key));
-            partners.add(partner);
-        }
-
-        return partners;
-    }
-
-    /***************************************************************
-     * 협약 가게의 이름, 도로명 주소, 협약 내용을 담고 있는 DTO라 생각해도 된다.
-     * FE에서 요구하는 데이터만 추출하기 위해 만들었음.
-     ***************************************************************/
-    @Getter
-    @AllArgsConstructor
-    public static class Partner{
-        private String partnerName;
-        private String roadAddress;
-        private List<EventInfo> infos;
-    }
-
-    /***************************************************************
-     * 1개의 이벤트 정보와 시작/종료 날짜를 담는 DTO라 생각해도 된다.
-     * FE에서 요구하는 데이터만 추출하기 위해 만들었음.
-     ***************************************************************/
-    @Getter
-    @AllArgsConstructor
-    private static class EventInfo{
-        private String eventInfo;
-        private LocalDate startDate;
-        private LocalDate finishDate;
-
-    }
-
     public void updateInfo(String name, Address address, String ownerName, String phoneNumber, String subText, String openTime) {
         this.name = name;
         this.address = address;
