@@ -6,16 +6,25 @@ import "slick-carousel/slick/slick-theme.css";
 import { FiSearch } from "react-icons/fi";
 import { customAxios } from "../pages/customAxios";
 import { useNavigate } from "react-router-dom";
+import { useReissue } from "../services/jwt/useReissue";
 
 const MainPage = ({ onClick }) => {
   const [keyword, setKeyword] = useState("");
-  let navigate = useNavigate();
+
+  const navigate = useNavigate();
+
+  const { reissue } = useReissue();
+  // 메인 페이지 들어올 때마다 실행
+  useEffect(() => {
+    reissue();
+  }, []);
+
   // 가게 카테고리
   const menuRow1 = [
     { name: "한식", image: "images/koreanFood.png" },
     { name: "양식", image: "images/westernFood.png" },
     { name: "일식", image: "images/japaneseFood.png" },
-    { name: "패스트푸드", image: "images/fastFood.png" },
+    { name: "패스트푸드", image: "images/FastFood.png" },
   ];
 
   const menuRow2 = [

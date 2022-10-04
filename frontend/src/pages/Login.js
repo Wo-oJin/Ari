@@ -1,12 +1,12 @@
 import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import { authState, nameState } from "../state";
 import styled from "styled-components";
 import axios from "axios";
-import { authState, nameState } from "../state";
 import "../pages/Login.css";
 import Header from "../components/Header";
-import { Reissue } from "../services/jwt/reissue";
+import { useReissue } from "../services/jwt/useReissue";
 import Cookies from "universal-cookie";
 
 const Formbox = styled.div`
@@ -30,6 +30,8 @@ const Formbox = styled.div`
 const Login = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const [name, setName] = useRecoilState(nameState);
+
+  const { reissue } = useReissue();
 
   const cookies = new Cookies();
 
@@ -87,7 +89,7 @@ const Login = () => {
               maxAge: refreshTokenExpireIn, // 쿠키의 만료 시간을 밀리초 단위로 설정
               // sameSite: "none", // 모든 도메인에서 쿠키를 전송하고 사용
               // secure: true, // HTTPS를 통해서만 접근
-              domain: "localhost", // secure 옵션을 사용하면 같은 도메인을 공유해야 함
+              // domain: "localhost", // secure 옵션을 사용하면 같은 도메인을 공유해야 함
               // httpOnly: true, // 서버에서만 쿠키에 접근, 브라우저에서 접근 불가
             });
 
@@ -96,12 +98,12 @@ const Login = () => {
               maxAge: accessTokenExpireIn, // 쿠키의 만료 시간을 밀리초 단위로 설정
               // sameSite: "none", // 모든 도메인에서 쿠키를 전송하고 사용
               // secure: true, // HTTPS를 통해서만 접근
-              domain: "localhost", // secure 옵션을 사용하면 같은 도메인을 공유해야 함
+              // domain: "localhost", // secure 옵션을 사용하면 같은 도메인을 공유해야 함
               // httpOnly: true, // 서버에서만 쿠키에 접근, 브라우저에서 접근 불가
             });
 
             // accessToken 만료하기 1분 전에 로그인 연장
-            setTimeout(() => Reissue, parseInt(accessTokenExpireIn - 60000));
+            setTimeout(() => reissue(), parseInt(accessTokenExpireIn - 60000));
 
             // 사용자 권한을 recoil 변수에 저장
             if (res.data.data.authority === "ROLE_USER") {
@@ -116,7 +118,7 @@ const Login = () => {
             }
 
             setName(res.data.data.info); // recoil
-            alert(res.data.massage);
+            // alert(res.data.massage);
             navigate("/"); // 메인 페이지로 이동
             window.location.reload();
           }
