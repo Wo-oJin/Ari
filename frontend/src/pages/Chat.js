@@ -12,7 +12,6 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { BsArrowDownShort } from "react-icons/bs";
 import SendChatForm from "../components/SendChatForm";
 import { useInView } from "react-intersection-observer";
-import Loading from "../components/Loading";
 
 let socket;
 let stompClient;
@@ -34,7 +33,8 @@ const Chat = () => {
   //페이지 렌더링 되기 전에 웹소켓 connect
   useEffect(() => {
     //웹소켓 end point 설정
-    socket = new SockJS("http://localhost:8080/ws");
+    //socket = new SockJS("http://localhost:8080/ws");
+    socket = new SockJS("http://paran-ari.com:8080/ws");
     stompClient = Stomp.over(socket);
     connect();
 
@@ -149,7 +149,7 @@ const Chat = () => {
   };
 
   if (!messageList) {
-    return <Loading />;
+    return <div>로딩 중</div>;
   } else {
     return (
       <div className="allContainer">
