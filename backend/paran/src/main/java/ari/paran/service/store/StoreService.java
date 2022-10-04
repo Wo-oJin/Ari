@@ -250,7 +250,13 @@ public class StoreService {
     }
 
     public List<SimpleStoreDto> findByCategory(String code) throws IOException {
-        List<Store> stores = storeRepository.findByCategory(Category.fromString(code));
+        List<Store> stores = null;
+
+        log.info("코드: {}", code);
+        if(code.equals("전체"))
+            stores = storeRepository.findAll();
+        else
+            stores = storeRepository.findByCategory(Category.fromString(code));
 
         return getSimpleStoreDtos(stores);
     }

@@ -1,6 +1,7 @@
 package ari.paran.controller;
 
 import ari.paran.domain.member.Member;
+import ari.paran.domain.store.Category;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.EditInfoDto;
 import ari.paran.dto.response.store.DetailStoreDto;
