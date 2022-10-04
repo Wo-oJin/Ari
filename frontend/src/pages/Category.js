@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { throttle } from "../util/util";
@@ -17,7 +17,6 @@ const Category = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  let code;
   let categoryArr = [
     "한식",
     "양식",
@@ -29,11 +28,13 @@ const Category = () => {
     "놀이시설",
   ];
 
-  const getData = async (code) => {
+  const getData = async (menuIndex) => {
     setData("");
     setLoading(true);
+    console.log("이 인덱스 넘어옴", menuIndex);
+    console.log("menu: ", categoryArr[menuIndex - 1]);
     await customAxios
-      .get(`/map/category?code=${code}`)
+      .get(`/map/category?code=${categoryArr[menuIndex - 1]}`)
       .then((res) => {
         console.log(res.data);
         setData(res.data);
@@ -45,10 +46,7 @@ const Category = () => {
     setLoading(false);
   };
   useEffect(() => {
-    if (menuIndex < 10) {
-      code = "0" + menuIndex;
-    }
-    getData(code);
+    getData(menuIndex);
   }, []);
 
   useEffect(() => {
@@ -88,11 +86,9 @@ const Category = () => {
 
   //메뉴 클릭시 index 세팅
   const selectMenu = (e) => {
-    if (e.target.getAttribute("data-key") < 10) {
-      code = "0" + e.target.getAttribute("data-key");
-    }
     setMenuIndex(e.target.getAttribute("data-key"));
-    getData(code);
+    console.log("이 인덱스 선택함 ", e.target.getAttribute("data-key"));
+    getData(e.target.getAttribute("data-key"));
   };
 
   return (
@@ -138,22 +134,26 @@ const Category = () => {
         {data
           ? data.map((item, index) => {
               return (
-                <div
-                  key={index}
-                  onClick={() => {
-                    navigate(`/detail/${item.storeId}`);
-                  }}
-                  className="storeItem"
-                  style={{
-                    backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
-                  }}
-                >
-                  <div className="ctContentBox">
-                    <span className="ctContentName">{item.storeName}</span>
-                    <span className="ctContentInfo">{item.eventContent}</span>
-                    <span className="ctContentPeriod">{item.eventPeriod}</span>
+                <Link to={`/detail/${item.storeId}`}>
+                  <div
+                    key={index}
+                    // onClick={() => {
+                    //   navigate(`/detail/${item.storeId}`);
+                    // }}
+                    className="storeItem"
+                    style={{
+                      backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
+                    }}
+                  >
+                    <div className="ctContentBox">
+                      <span className="ctContentName">{item.storeName}</span>
+                      <span className="ctContentInfo">{item.eventContent}</span>
+                      <span className="ctContentPeriod">
+                        {item.eventPeriod}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               );
             })
           : null}
