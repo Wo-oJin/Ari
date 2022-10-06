@@ -60,6 +60,7 @@ public class StoreController {
         DetailStoreDto detailStoreDto = DetailStoreDto.builder()
                 .storeId(store.getId())
                 .storeName(store.getName())
+                .ownerId(store.getMember().getId())
                 .ownerName(store.getOwnerName())
                 .address(store.getAddress())
                 .openTime(store.getOpenTime())
