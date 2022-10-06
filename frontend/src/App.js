@@ -33,6 +33,7 @@ import BoardListView from "./pages/BoardListView";
 import BoardModify from "./pages/BoardModify";
 import Chat from "./pages/Chat";
 import Category from "./pages/Category";
+import SearchStore from "./pages/SearchStore";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/detail/:storeId" element={<Detail />} />
         <Route path="/store/category/:categoryId" element={<Category />} />
+        <Route path="/searchStore" element={<SearchStore />} />
 
         {/* 비회원 페이지 권한 설정 : auth=0 */}
         <Route
