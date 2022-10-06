@@ -1,6 +1,10 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { customAxios } from "../pages/customAxios";
 import "./DetailTap.css";
 const { kakao } = window;
+
+let testState = false;
 
 //협력 가게 정보 탭
 export const DetailCoopTap = ({ data }) => {
@@ -106,6 +110,10 @@ export const DetailCoopTap = ({ data }) => {
 
 //개인 이벤트 탭
 export const PrivateEventTap = ({ data }) => {
+  //버튼 사용 인증 상태
+  const [isOpened, setisOpened] = useState(false);
+  const [value, setValue] = useState();
+
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
@@ -141,16 +149,98 @@ export const PrivateEventTap = ({ data }) => {
     });
   }, []);
   console.log("in private ", data);
+
+  //버튼 클릭시 사용 인증 전송
+  const sendVerify = async (e) => {
+    if (!e.target.classList.contains("verifiedBtn")) {
+      await customAxios
+        .post("/history/record-button", {
+          storeName: data.name,
+          eventInfo: data.events[e.target.getAttribute("data-key")].info,
+        })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.result === "success") {
+            e.target.classList.remove("sendVerifyBtn");
+            e.target.classList.add("verifiedBtn");
+            e.target.innerText = "사용 완료";
+          }
+        });
+    } else {
+      window.alert("이미 사용 완료하셨습니다.");
+    }
+  };
+
+  const togglePopUp = () => {
+    setisOpened((prev) => !prev);
+  };
+
+  //버튼 클릭시 인증코드 전송
+  const sendVerifyKey = async (e) => {
+    console.log(value, data.ownerId);
+    if (!e.target.classList.contains("verifiedBtn")) {
+      await customAxios
+        .post(`/history/check-code?code=${value}&ownerId=${data.ownerId}`)
+        .then((res) => {
+          console.log(res.data);
+        });
+    }
+  };
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
   return (
     <div className="TapContainer">
+      {isOpened ? (
+        <div className="VerifyCodePopUp">
+          <div className="VerifyForm">
+            <input
+              className="VerifyInput"
+              placeholder="인증번호를 입력하세요."
+              type="text"
+              value={value}
+              onChange={onChange}
+            ></input>
+            <button className="VerifyCodeBtn" onClick={sendVerifyKey}>
+              확인
+            </button>
+          </div>
+
+          <button className="ClosePopUpBtn" onClick={togglePopUp}>
+            닫기
+          </button>
+        </div>
+      ) : null}
+
       <div className="PrivateEventContent">
         <span className="EventTitle">이벤트 내용:</span>
         {data.events && data.events.length > 0 ? (
           data.events.map((item, i) => {
             return (
-              <span className="PrivateEventSubText" key={i}>
-                {i + 1}. {item.info}
-              </span>
+              <div className="eventBox">
+                <span className="PrivateEventSubText" key={i}>
+                  {i + 1}. {item.info}
+                </span>
+                {testState ? (
+                  <button
+                    data-key={i}
+                    className="sendVerifyBtn"
+                    onClick={sendVerify}
+                  >
+                    사용 인증
+                  </button>
+                ) : (
+                  <button
+                    data-key={i}
+                    className="sendVerifyBtn"
+                    onClick={togglePopUp}
+                  >
+                    인증코드
+                  </button>
+                )}
+              </div>
             );
           })
         ) : (
