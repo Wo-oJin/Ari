@@ -36,6 +36,8 @@
 }
 
 .edit-store-tap {
+  display: inline-block;
+  width: 96px;
   line-height: 26px;
   font-size: 11px;
   border-radius: 20px;
@@ -44,9 +46,14 @@
   cursor: pointer;
   padding: 0 8px;
   margin: 8px 4px 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .edit-store-tap-active {
+  display: inline-block;
+  width: 96px;
   line-height: 26px;
   font-size: 11px;
   border-radius: 20px;
@@ -55,4 +62,7 @@
   cursor: pointer;
   padding: 0 8px;
   margin: 8px 4px 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

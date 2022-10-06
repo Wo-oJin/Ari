@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/StoreFavoriteList.css";
 import { customAxios } from "./customAxios";
+import Loading from "../components/Loading";
 
 const UserFavoriteList = () => {
   const [likeStores, setLikeStores] = useState([]); // 객체를 요소로 갖는 배열
@@ -24,7 +25,7 @@ const UserFavoriteList = () => {
   }, []);
 
   if (!isLoaded) {
-    return <h1>로딩 중</h1>;
+    return <Loading />;
   } else {
     return (
       <>

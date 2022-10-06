@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../pages/PartnershipView.css";
 import Header from "../components/Header";
 import { customAxios } from "./customAxios";
+import Loading from "../components/Loading";
 
 const PartnershipView = () => {
   const [data, setData] = useState(null);
@@ -72,7 +73,7 @@ const PartnershipView = () => {
   }
 
   if (!isLoaded) {
-    return <h1>로딩 중</h1>;
+    return <Loading />;
   } else {
     return (
       <>

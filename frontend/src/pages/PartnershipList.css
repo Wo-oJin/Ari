@@ -25,7 +25,7 @@
   text-overflow: ellipsis;
 }
 
-.edit-store-tap {
+.partnership-tap {
   width: 96px;
   line-height: 26px;
   font-size: 11px;
@@ -36,7 +36,7 @@
   margin: 8px 4px 0 4px;
 }
 
-.edit-store-tap-active {
+.partnership-tap-active {
   width: 96px;
   line-height: 26px;
   font-size: 11px;

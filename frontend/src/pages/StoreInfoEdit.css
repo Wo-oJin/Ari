@@ -105,6 +105,8 @@
 }
 
 .edit-store-tap {
+  display: inline-block;
+  width: 96px;
   line-height: 26px;
   border-radius: 20px;
   background-color: #c7c7ca;
@@ -112,9 +114,14 @@
   cursor: pointer;
   padding: 0 8px;
   margin: 8px 4px 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .edit-store-tap-active {
+  display: inline-block;
+  width: 96px;
   line-height: 26px;
   font-size: 11px;
   border-radius: 20px;
@@ -123,15 +130,32 @@
   cursor: pointer;
   padding: 0 8px;
   margin: 8px 4px 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .add-store-tap {
   width: 96px;
-  line-height: 26px;
-  font-size: 11px;
+  height: 26px;
   border-radius: 20px;
   border: 0.7px dashed #c7c7ca;
   color: #ffffff;
   cursor: pointer;
   margin: 8px 4px 0 4px;
+}
+
+.add-store-tap img {
+  width: 11px;
+}
+
+.store-searchAddress {
+  width: 90px;
+  line-height: 41px;
+  border-style: initial;
+  border-radius: 5px;
+  color: #ffffff;
+  background: #386ffe;
+  margin-left: 12px;
+  cursor: pointer;
 }
