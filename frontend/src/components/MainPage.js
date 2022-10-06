@@ -56,13 +56,13 @@ const MainPage = ({ onClick }) => {
     pauseOnHover: true, // hover시 정지
   };
 
-  const searchStore = () => {
-    // 가게 검색
+  const searchStore = async () => {
+    navigate(`/searchStore?keyword=${keyword}`);
   };
 
   const handleOnKeyPress = (e) => {
     // 검색어 입력 후 엔터를 누른 경우
-    if (e.key === "Enter" && e.target.value !== "") {
+    if (e.key === "Enter" && e.target.value.trim() !== "") {
       searchStore();
     }
   };
