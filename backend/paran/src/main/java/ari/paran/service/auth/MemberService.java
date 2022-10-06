@@ -151,7 +151,7 @@ public class MemberService {
 
         SignupCode signupCode = signupCodeRepository.findByCode(signUp.getSignupCode()).get();
         signupCode.setActivatedTrue();
-        signupCode.setStore(store);
+        signupCode.setMember(member);
 
         storeService.save(store);
         signupCodeRepository.save(signupCode);

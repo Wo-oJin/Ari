@@ -15,6 +15,7 @@ public class DetailStoreDto {
 
     private Long id;
     private String name;
+    private Long ownerId;
     private String ownerName;
     private Address address;
     private String phoneNumber;
@@ -27,13 +28,14 @@ public class DetailStoreDto {
     private boolean privateEvent;
 
     @Builder
-    public DetailStoreDto(Long storeId, String storeName, String ownerName, Address address,
+    public DetailStoreDto(Long storeId, String storeName, Long ownerId, String ownerName, Address address,
                           String openTime, String subText, String phoneNumber,
                           boolean doPrivateEvent, List<Event> eventList, List<Partner> partners,
                           List<String> images, boolean isFavorite) throws IOException {
 
         this.id = storeId;
         this.name = storeName;
+        this.ownerId = ownerId;
         this.ownerName = ownerName;
         this.address = address;
         this.openTime = openTime;

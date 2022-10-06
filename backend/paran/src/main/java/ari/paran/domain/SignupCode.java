@@ -1,5 +1,6 @@
 package ari.paran.domain;
 
+import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Store;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
@@ -19,16 +20,16 @@ public class SignupCode {
     private boolean activated;
 
     @OneToOne
-    @JoinColumn(name = "store_id")
-    private Store store;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     public void setActivatedTrue() {
 
         this.activated = true;
     }
 
-    public void setStore(Store store) {
-        this.store = store;
+    public void setMember(Member member) {
+        this.member = member;
     }
 }
 
