@@ -106,6 +106,7 @@
 
 .edit-store-tap {
   display: inline-block;
+  width: 96px;
   line-height: 26px;
   border-radius: 20px;
   background-color: #c7c7ca;
@@ -120,6 +121,7 @@
 
 .edit-store-tap-active {
   display: inline-block;
+  width: 96px;
   line-height: 26px;
   font-size: 11px;
   border-radius: 20px;
@@ -134,7 +136,6 @@
 }
 
 .add-store-tap {
-  display: inline-block;
   width: 96px;
   height: 26px;
   border-radius: 20px;
@@ -142,9 +143,6 @@
   color: #ffffff;
   cursor: pointer;
   margin: 8px 4px 0 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .add-store-tap img {
