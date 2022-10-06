@@ -5,6 +5,7 @@ import styled from "styled-components";
 import "../pages/StoreInfoEdit.css";
 import DaumPostcode from "react-daum-postcode";
 import { customAxios } from "./customAxios";
+import Loading from "../components/Loading";
 
 const Formbox = styled.div`
   margin-bottom: 36px;
@@ -344,7 +345,7 @@ const StoreInfoEdit = () => {
   };
 
   if (!isLoaded) {
-    return <h1>로딩 중</h1>;
+    return <Loading />;
   } else {
     return (
       <>
@@ -400,7 +401,8 @@ const StoreInfoEdit = () => {
           <Formbox>
             <div className="edit-intro">가게 주소:</div>
             <div className="edit-box">
-              <input
+              <textarea
+                style={{ resize: "none" }}
                 className="edit-input"
                 name="roadAddress"
                 value={uRoadAddress || ""}
@@ -408,14 +410,15 @@ const StoreInfoEdit = () => {
                 onChange={(e) => setuRoadAddress(e.target.value)}
                 placeholder="도로명 주소 검색"
                 required
+                readOnly
                 autoComplete="off"
               />
-              <img
-                style={{ cursor: "pointer" }}
-                alt=""
-                src="images/edit_icon.png"
+              <button
+                className="store-searchAddress"
                 onClick={onChangeOpenPost}
-              ></img>
+              >
+                주소 찾기
+              </button>
             </div>
             <div style={{ width: "260px" }}>
               {isOpenPost ? (

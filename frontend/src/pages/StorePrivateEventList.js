@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/StorePrivateEventList.css";
 import { customAxios } from "./customAxios";
+import Loading from "../components/Loading";
 
 const StorePrivateEventList = () => {
   const [privateEvents, setPrivateEvents] = useState([]); // 개인 이벤트
@@ -43,7 +44,7 @@ const StorePrivateEventList = () => {
   };
 
   if (!isLoaded) {
-    return <h1>로딩 중</h1>;
+    return <Loading />;
   } else {
     return (
       <>

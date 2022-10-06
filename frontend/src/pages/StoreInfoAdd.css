@@ -92,3 +92,14 @@
   text-align: center;
   line-height: 17px;
 }
+
+.store-searchAddress {
+  width: 90px;
+  line-height: 41px;
+  border-style: initial;
+  border-radius: 5px;
+  color: #ffffff;
+  background: #386ffe;
+  margin-left: 12px;
+  cursor: pointer;
+}

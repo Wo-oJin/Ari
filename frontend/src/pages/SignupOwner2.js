@@ -180,6 +180,7 @@ const SignupOwner2 = () => {
             onChange={(e) => setStoreRoadAddress(e.target.value)}
             placeholder="도로명 주소 검색"
             required
+            readOnly
             autoComplete="off"
           />
           <button className="searchAddress" onClick={onChangeOpenPost}>
