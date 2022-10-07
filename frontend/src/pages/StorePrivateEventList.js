@@ -4,7 +4,6 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import "../pages/StorePrivateEventList.css";
 import { customAxios } from "./customAxios";
-import Loading from "../components/Loading";
 
 const StorePrivateEventList = () => {
   const [privateEvents, setPrivateEvents] = useState([]); // 개인 이벤트
