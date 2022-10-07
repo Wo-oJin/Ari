@@ -4,7 +4,6 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import "../pages/Partnership.css";
 import { customAxios } from "./customAxios";
-import Loading from "../components/Loading";
 
 const Partnership = () => {
   const [fromStores, setFromStores] = useState([]);

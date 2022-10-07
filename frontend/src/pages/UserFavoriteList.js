@@ -4,7 +4,6 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import "../pages/StoreFavoriteList.css";
 import { customAxios } from "./customAxios";
-import Loading from "../components/Loading";
 
 const UserFavoriteList = () => {
   const [likeStores, setLikeStores] = useState([]); // 객체를 요소로 갖는 배열
