@@ -35,25 +35,10 @@ public class JwtController {
             return response.invalidFields(Helper.refineErrors(errors));
         }
 
-        if(memberService.signupUser(signupDto)){
+        if(memberService.signupUser(signupDto))
             return response.success("회원가입에 성공했습니다.");
-        }
-        else{
-            if(signupDto.getFromOauth() == 0)
-                return response.fail("입력하신 이메일은 사용 중입니다.", HttpStatus.BAD_REQUEST);
-            else {
-                URI redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
-                        .queryParam("loginFail", "{lf}")
-                        .encode()
-                        .buildAndExpand(true)
-                        .toUri();
-
-                HttpHeaders httpHeaders = new HttpHeaders();
-                httpHeaders.setLocation(redirectUrl);
-
-                return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-            }
-        }
+        else
+            return response.fail("입력하신 이메일은 사용 중입니다.", HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/signup-owner")
@@ -63,25 +48,10 @@ public class JwtController {
             return response.invalidFields(Helper.refineErrors(errors));
         }
 
-        if (memberService.signupOwner(signupDto)) {
+        if (memberService.signupOwner(signupDto))
             return response.success("회원가입에 성공했습니다.");
-        }
-        else{
-            if(signupDto.getFromOauth() == 0)
-                return response.fail("입력하신 이메일은 사용 중입니다.", HttpStatus.BAD_REQUEST);
-            else {
-                URI redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
-                        .queryParam("loginFail", "{lf}")
-                        .encode()
-                        .buildAndExpand(true)
-                        .toUri();
-
-                HttpHeaders httpHeaders = new HttpHeaders();
-                httpHeaders.setLocation(redirectUrl);
-
-                return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-            }
-        }
+        else
+            return response.fail("입력하신 이메일은 사용 중입니다.", HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/signup-code")
@@ -119,7 +89,6 @@ public class JwtController {
             return response.invalidFields(Helper.refineErrors(errors));
         }
 
-        log.info("일반 로그인 성공");
         return memberService.login(loginDto);
     }
 

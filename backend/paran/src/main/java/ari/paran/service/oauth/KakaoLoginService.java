@@ -13,6 +13,7 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -24,15 +25,17 @@ import java.util.*;
 @RequiredArgsConstructor
 public class KakaoLoginService {
 
-    private final static String KAKAO_CLIENT_ID = "6ba9808d7a83807d2d0ddc97b41c8889";
-    private final static String KAKAO_CLIENT_SECRET = "lNrtpw0rVlsGF3afrTh6xQdROxEp2fhC";
-    //private final static String KAKAO_REDIRECT_URI = "http://paran-ari.com/auth/kakao/login"; //Redirect URL
-    private final static String KAKAO_REDIRECT_URI = "http://localhost:3000/auth/kakao/login"; //Redirect URL
-    private final static String RESOURCE_SERVER_URL = "https://kapi.kakao.com/v2/user/me";
-    private final static String SESSION_STATE = "kakao_oauth_state";
-
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+
+    @Value("${KAKAO_CLIENT_ID}")
+    private String KAKAO_CLIENT_ID;
+    @Value("${KAKAO_CLIENT_SECRET}")
+    private String KAKAO_CLIENT_SECRET;
+    @Value("${KAKAO_REDIRECT_URI}")
+    private String KAKAO_REDIRECT_URI; //Redirect URL
+    private String RESOURCE_SERVER_URL = "https://kapi.kakao.com/v2/user/me";
+    private String SESSION_STATE = "kakao_oauth_state";
 
     // 코드 발급
     public String getAuthorizationUrl(HttpSession session) {
@@ -49,24 +52,22 @@ public class KakaoLoginService {
 
     // access token 발급
     public OAuth2AccessToken getAccessToken(HttpSession session, String code, String state) throws Exception {
-        //String sessionState = getSession(session);
+        String sessionState = getSession(session);
 
-        //if (sessionState.equals(state)) {
-            OAuth20Service oauthService = new ServiceBuilder()
-                    .apiKey(KAKAO_CLIENT_ID)
-                    .callback(KAKAO_REDIRECT_URI)
-                    .apiSecret(KAKAO_CLIENT_SECRET)
-                    .state(state).build(KakaoOAuthApi.instance());
+        OAuth20Service oauthService = new ServiceBuilder()
+                .apiKey(KAKAO_CLIENT_ID)
+                .callback(KAKAO_REDIRECT_URI)
+                .apiSecret(KAKAO_CLIENT_SECRET)
+                .state(state).build(KakaoOAuthApi.instance());
+        OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
 
-            OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
-            return accessToken;
-        //}
-
-        //return null;
+        return accessToken;
     }
 
     // user 정보 가져오기
     public Map<String, String> getUserProfile(OAuth2AccessToken oauthToken) throws Exception {
+
+        // 1. access token을 이용해 user profile 요청
         OAuth20Service oauthService = new ServiceBuilder()
                 .apiKey(KAKAO_CLIENT_ID)
                 .callback(KAKAO_REDIRECT_URI)
@@ -76,6 +77,9 @@ public class KakaoLoginService {
         oauthService.signRequest(oauthToken, request);
 
         Response response = request.send();
+
+
+        // 2. 전달받은 user profile 분해 //
         String body = response.getBody();
 
         Map<String, Map<String, String>> attributes = new HashMap<>();
@@ -85,19 +89,24 @@ public class KakaoLoginService {
 
         String email = account.get("email");
         String nickname = Arrays.asList(email.split("@")).get(0);
-        String gender = account.get("gender");
         String age = account.get("age_range").substring(0,2);
+        String gender = account.get("gender");
 
-        Map<String, String> profile = new HashMap<>();
+        if(gender.equals("M"))
+            gender = "male";
+        else
+            gender = "female";
 
-        profile.put("email", email);
 
+        // 3. 회원가입 처리 및 loginDto 작성
+        Map<String, String> loginInfo = new HashMap<>();
+
+        loginInfo.put("email", email);
         String password = nickname+gender+email+age;
-        profile.put("password", password);
+        loginInfo.put("password", password);
 
         Member member = memberRepository.findByEmail(email).orElse(null);
-        if(member == null || member.getFromOauth() == 1) {
-            log.info("카카오 로그인 성공!");
+        if(member == null) { // 새로 가입하는 oauth 회원이면
             SignupDto form = SignupDto.builder()
                     .email(email)
                     .password(password)
@@ -108,18 +117,9 @@ public class KakaoLoginService {
                     .build();
 
             memberService.signupUser(form);
-        }else {
-            log.info("카카오 로그인 실패!");
-            String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
-                    .queryParam("loginFail", "{lf}")
-                    .encode()
-                    .buildAndExpand(true)
-                    .toUriString();
-
-            profile.put("fail", redirectUrl);
         }
 
-        return profile;
+        return loginInfo;
     }
 
     // 세션 유효성 검증을 위한 난수

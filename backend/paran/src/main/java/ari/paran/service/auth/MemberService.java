@@ -119,13 +119,16 @@ public class MemberService {
      */
     public boolean signupUser(SignupDto signUp) {
 
+        Member member = memberRepository.findByEmail(signUp.getEmail()).orElse(null);
+
         /* 해당 이메일 계정이 이미 존재하는지 확인*/
-        if (memberRepository.existsByEmail(signUp.getEmail())) {
+        /* oauth 필드를 검사하는 이유는, oauth 이메일과 일반 이메일의 중복을 허용하기 때문 */
+        if (member != null && member.getFromOauth() == 0) {
             return false;
         }
 
         /* SignupDto를 통해 추가할 Member 객체 생성 및 저장 */
-        Member member = signUp.toMember(passwordEncoder);
+        member = signUp.toMember(passwordEncoder);
         memberRepository.save(member);
 
         return true;
@@ -250,24 +253,11 @@ public class MemberService {
 
         log.info(loginDto.toString());
         Member member = memberRepository.findByEmail(loginDto.getEmail()).orElse(null);
-        
 
         if (member == null || !passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
-            URI redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
-                    .queryParam("loginFail", "{lf}")
-                    .encode()
-                    .buildAndExpand(true)
-                    .toUri();
-
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setLocation(redirectUrl);
-
             if(member.getFromOauth() == 0)
-                return response.fail("일반 이메일 로그인 실패", HttpStatus.BAD_REQUEST);
-            else
-                return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+                return response.fail("아이디 또는 비밀번호를 잘못 입력", HttpStatus.BAD_REQUEST);
         }
-
 
         //1. Login id/pw를 기반으로 Authentication 객체 생성
         //이때 authentication는 인증 여부를 확인하는 authenticated 값이 false
@@ -294,35 +284,7 @@ public class MemberService {
             tokenDto.setInfo(member.getStores().get(0).getName()); // 가게이름
         }
 
-        /*
-        String redirectUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/redirectLogin")
-                .queryParam("accessToken", "{at}")
-                .queryParam("refreshToken", "{rt}")
-                .queryParam("authority", "{authority}")
-                .queryParam("accessTokenExpireIn", "{atExp}")
-                .queryParam("refreshTokenExpireIn", "{rtExp}")
-                .queryParam("info", "{info}")
-                .encode()
-                .buildAndExpand(tokenDto.getAccessToken(), tokenDto.getRefreshToken(),tokenDto.getAuthority(),
-                        tokenDto.getAccessTokenExpireIn(), tokenDto.getRefreshTokenExpiresIn(), tokenDto.getInfo())
-                .toUriString();
-
-        URI redirectUri = new URI(redirectUrl);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(redirectUri);
-
-        log.info("리다이렉트 토큰 = {}", redirectUri.toString());
-
-        if(member.getFromOauth() == 0) {
-            log.info("sdfdsfsd");
-            return response.success(tokenDto, "로그인 성공!", HttpStatus.OK);
-        }
-        else
-            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-         */
-
         return response.success(tokenDto, "로그인 성공!", HttpStatus.OK);
-
     }
 
     public ResponseEntity<?> reissue(TokenRequestDto reissue) {

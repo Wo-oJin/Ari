@@ -49,27 +49,9 @@ public class OAuthController {
         OAuth2AccessToken token = kakaoLoginService.getAccessToken(session, code, state);
 
         Map<String, String> apiResult = kakaoLoginService.getUserProfile(token);
+        LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
 
-        if(apiResult.containsKey("fail")) {
-            /*
-            URI redirectUri = new URI(apiResult.get("fail"));
-
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setLocation(redirectUri);
-
-            log.info("리다이렉트 = {}", redirectUri.toString());
-
-
-            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-             */
-
-            return response.fail("로그인 실패(중복된 이메일이 존재)", HttpStatus.BAD_REQUEST);
-        }
-        else {
-            LoginDto loginDto = new LoginDto(apiResult.get("email"), apiResult.get("password"));
-
-            return memberService.login(loginDto);
-        }
+        return memberService.login(loginDto);
     }
 
     @PostMapping("/auth/naver/login")
