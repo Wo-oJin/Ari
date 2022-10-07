@@ -5,6 +5,10 @@ import ari.paran.dto.response.board.DetailArticleDto;
 import ari.paran.dto.response.board.SimpleArticleDto;
 import ari.paran.dto.response.board.UpdateForm;
 import ari.paran.service.board.BoardService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,6 +33,11 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    @ApiOperation(value="게시글 목록 반환")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "API 정상 작동"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
     @GetMapping("/list")
     @ResponseBody
     public Page<SimpleArticleDto> ArticleList(
@@ -38,6 +47,12 @@ public class BoardController {
         return boardService.getArticleList(pageable, keyword);
     }
 
+    @ApiOperation(value="특정 게시글 조회")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "API 정상 작동"),
+            @ApiResponse(code = 500, message = "서버 에러")
+    })
+    @ApiImplicitParam(name = "id", value = "게시글 id", paramType = "path")
     @GetMapping("/list/{id}")
     @ResponseBody
     public DetailArticleDto detailArticle(@PathVariable("id") Long articleId, Principal principal) throws IOException {

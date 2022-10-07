@@ -1,5 +1,6 @@
 package ari.paran.dto.response.board;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import java.util.*;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 @Getter
 public class DetailArticleDto {
 
+    @ApiModelProperty(value = "글쓴이 가게 id")
     private Long storeId;
     private String title;
     private String author;
