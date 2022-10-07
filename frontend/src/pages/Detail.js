@@ -10,6 +10,7 @@ import {
 } from "../components/DatailTap";
 import { useParams, useNavigate } from "react-router-dom";
 import { customAxios } from "./customAxios";
+import Loading from "../components/Loading";
 
 const Detail = () => {
   const [data, setData] = useState(null);
@@ -64,7 +65,7 @@ const Detail = () => {
   };
   //아직 data가 setting되지 않았으면 로딩 중 문구 표시
   if (data === null) {
-    return <div>로딩 중</div>;
+    return <Loading></Loading>;
   }
   return (
     <div className="DetailContainer">

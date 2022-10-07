@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 import "../pages/Partnership.css";
 import { customAxios } from "./customAxios";
-import Loading from "../components/Loading";
 
 const Partnership = () => {
   const [fromStores, setFromStores] = useState([]);
@@ -34,7 +34,11 @@ const Partnership = () => {
         <Header text="협약 요청 목록" back={true}></Header>
         <div className="container">
           <div className="partnership-container">
-            <img alt="" src="images/ari_logo_text.png"></img>
+            <img
+              alt=""
+              src="images/ari_logo_text.png"
+              style={{ width: "97px", height: "97px" }}
+            ></img>
             <p className="partnership-intro" style={{ marginBottom: "16px" }}>
               어떤 가게로
             </p>
