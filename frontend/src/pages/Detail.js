@@ -11,26 +11,34 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
+import { useRecoilState } from "recoil";
+import { authState } from "../state";
 
 const Detail = () => {
+  const [auth, setAuth] = useRecoilState(authState);
   const [data, setData] = useState(null);
   //좋아요 유무를 확인하기 위한 변수
   const [isFavorited, setIsfavorited] = useState(false);
   const { storeId } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    const getDetailData = async () => {
-      customAxios.get(`/map/store/${storeId}`).then((response) => {
-        if (response.data.result) {
-          setData(response.data);
-          setIsfavorited(response.data.favorite);
-        } else {
-          window.alert("비회원은 접근 불가능한 페이지입니다.");
-          navigate("/");
-        }
-      });
-    };
-    getDetailData();
+    if (auth !== 0) {
+      const getDetailData = async () => {
+        customAxios.get(`/map/store/${storeId}`).then((response) => {
+          if (response.data.result) {
+            setData(response.data);
+            setIsfavorited(response.data.favorite);
+          } else {
+            window.alert("비회원은 접근 불가능한 페이지입니다.");
+            navigate("/");
+          }
+        });
+      };
+      getDetailData();
+    } else {
+      window.alert("비회원은 접근 불가능한 페이지입니다.");
+      navigate("/");
+    }
   }, [storeId]);
   console.log("in Detail ", data);
 

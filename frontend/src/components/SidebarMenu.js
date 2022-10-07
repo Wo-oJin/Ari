@@ -43,34 +43,62 @@ const SidebarMenu = (userState) => {
   };
 
   const menuForCustomer = [
-    { title: "공지사항", url: "/" },
-    { title: "찜 목록", url: "/userFavoriteList" },
-    { title: "문의하기", url: "/" },
+    { title: "공지사항", url: "/", service: false },
+    { title: "찜 목록", url: "/userFavoriteList", service: true },
+    { title: "문의하기", url: "/", service: false },
   ];
   const menuForBusiness = [
-    { title: "공지사항", url: "/" },
-    { title: "내 가게 정보 관리", url: "/storeInfoEdit" },
-    { title: "제휴 맺기 게시판", url: "/board/list" },
-    { title: "협력 제휴 관리", url: "/partnership" },
-    { title: "사장님 단체 채팅방", url: "/public/chat" },
-    { title: "문의하기", url: "/" },
+    { title: "공지사항", url: "/", service: false },
+    { title: "내 가게 정보 관리", url: "/storeInfoEdit", service: true },
+    { title: "제휴 맺기 게시판", url: "/board/list", service: true },
+    { title: "협력 제휴 관리", url: "/partnership", service: true },
+    { title: "사장님 단체 채팅방", url: "/public/chat", service: true },
+    { title: "문의하기", url: "/", service: false },
   ];
   return (
     <div className="menuListContainer">
       {userState.userState === 1
         ? menuForCustomer.map((item, index) => {
-            return (
-              <Link to={item.url} key={index}>
-                <span>{item.title}</span>
-              </Link>
-            );
+            if (item.service) {
+              return (
+                <Link to={item.url} key={index}>
+                  <span>{item.title}</span>
+                </Link>
+              );
+            } else {
+              return (
+                <a>
+                  <span
+                    onClick={() => {
+                      window.alert("준비 중인 서비스입니다.");
+                    }}
+                  >
+                    {item.title}
+                  </span>
+                </a>
+              );
+            }
           })
         : menuForBusiness.map((item, index) => {
-            return (
-              <Link to={item.url} key={index}>
-                <span>{item.title}</span>
-              </Link>
-            );
+            if (item.service) {
+              return (
+                <Link to={item.url} key={index}>
+                  <span>{item.title}</span>
+                </Link>
+              );
+            } else {
+              return (
+                <a>
+                  <span
+                    onClick={() => {
+                      window.alert("준비 중인 서비스입니다.");
+                    }}
+                  >
+                    {item.title}
+                  </span>
+                </a>
+              );
+            }
           })}
       <div className="logout" onClick={onLogout}>
         로그아웃
