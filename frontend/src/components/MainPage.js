@@ -196,7 +196,18 @@ const MainPage = ({ onClick }) => {
         </div>
       </div>
       <div className="footer">
-        <p>아리&#40;로고&#41; 팀 정보</p>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img
+            style={{
+              width: "48px",
+              height: "48px",
+              filter: "grayscale(100%)",
+              marginRight: "10px",
+            }}
+            src="/images/ari_logo_text.png"
+          ></img>
+          <span>정보</span>
+        </div>
         <table>
           <tbody>
             <tr>

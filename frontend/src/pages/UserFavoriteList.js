@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 import "../pages/StoreFavoriteList.css";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
