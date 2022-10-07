@@ -26,12 +26,17 @@ public class DetailStoreDto {
     private List<Event> events;
     private List<String> images;
     private boolean privateEvent;
+    private boolean result;
+
+    public DetailStoreDto(boolean result) {
+        this.result = result;
+    }
 
     @Builder
     public DetailStoreDto(Long storeId, String storeName, Long ownerId, String ownerName, Address address,
                           String openTime, String subText, String phoneNumber,
                           boolean doPrivateEvent, List<Event> eventList, List<Partner> partners,
-                          List<String> images, boolean isFavorite) throws IOException {
+                          List<String> images, boolean isFavorite, boolean result) throws IOException {
 
         this.id = storeId;
         this.name = storeName;
@@ -46,6 +51,7 @@ public class DetailStoreDto {
         this.partners = partners;
         this.images = images;
         this.favorite = isFavorite;
+        this.result = result;
     }
 
     /***************************************************************

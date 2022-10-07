@@ -55,24 +55,30 @@ public class StoreController {
     public DetailStoreDto detailStoreList(@PathVariable Long store_id, Principal principal) throws IOException {
 
         Store store = storeService.findStore(store_id);
-        Member member = memberService.getMemberInfoById(Long.valueOf(principal.getName()));
+        try {
+            Member member = memberService.getMemberInfoById(Long.valueOf(principal.getName()));
 
-        DetailStoreDto detailStoreDto = DetailStoreDto.builder()
-                .storeId(store.getId())
-                .storeName(store.getName())
-                .ownerId(store.getMember().getId())
-                .ownerName(store.getOwnerName())
-                .address(store.getAddress())
-                .openTime(store.getOpenTime())
-                .subText(store.getSubText())
-                .phoneNumber(store.getPhoneNumber())
-                .isFavorite(member.isFavoriteStore(store))
-                .eventList(store.getEventList())
-                .partners(storeService.getPartners(store.getPartnershipList()))
-                .images(fileService.getStoreImages(store))
-                .build();
+            DetailStoreDto detailStoreDto = DetailStoreDto.builder()
+                    .storeId(store.getId())
+                    .storeName(store.getName())
+                    .ownerId(store.getMember().getId())
+                    .ownerName(store.getOwnerName())
+                    .address(store.getAddress())
+                    .openTime(store.getOpenTime())
+                    .subText(store.getSubText())
+                    .phoneNumber(store.getPhoneNumber())
+                    .isFavorite(member.isFavoriteStore(store))
+                    .eventList(store.getEventList())
+                    .partners(storeService.getPartners(store.getPartnershipList()))
+                    .images(fileService.getStoreImages(store))
+                    .result(true)
+                    .build();
 
-        return detailStoreDto;
+            return detailStoreDto;
+        } catch (NullPointerException e) {
+            return new DetailStoreDto(false);
+        }
+
     }
 
     @GetMapping("/edit/store")
