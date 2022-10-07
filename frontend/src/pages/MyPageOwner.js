@@ -33,8 +33,8 @@ const MyPageOwner = () => {
     { title: "내 가게 정보 수정", url: "/storeInfoEdit" },
     { title: "개인 이벤트 등록", url: "/storePrivateEventList" },
     { title: "찜 목록", url: "/storeFavoriteList" },
-    { title: "협약 요청 목록 ", url: "/" },
-    { title: "사장님 단체 채팅방", url: "/" },
+    { title: "협약 요청 목록 ", url: "/partnership" },
+    { title: "사장님 단체 채팅방", url: "/public/chat" },
   ];
 
   if (!isLoaded) {
