@@ -25,7 +25,7 @@ const Detail = () => {
           setIsfavorited(response.data.favorite);
         } else {
           window.alert("비회원은 접근 불가능한 페이지입니다.");
-          navigate("/login");
+          navigate("/");
         }
       });
     };
