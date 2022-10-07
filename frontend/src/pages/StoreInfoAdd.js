@@ -284,7 +284,7 @@ const StoreInfoAdd = () => {
   };
 
   if (!isLoaded) {
-    return <Loading></Loading>;
+    return <Loading />;
   } else {
     return (
       <>

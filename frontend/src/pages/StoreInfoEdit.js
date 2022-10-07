@@ -345,7 +345,7 @@ const StoreInfoEdit = () => {
   };
 
   if (!isLoaded) {
-    return <Loading></Loading>;
+    return <Loading />;
   } else {
     return (
       <>

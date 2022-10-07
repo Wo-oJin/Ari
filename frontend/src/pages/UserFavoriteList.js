@@ -25,7 +25,7 @@ const UserFavoriteList = () => {
   }, []);
 
   if (!isLoaded) {
-    return <Loading></Loading>;
+    return <Loading />;
   } else {
     return (
       <>

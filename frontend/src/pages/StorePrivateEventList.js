@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 import "../pages/StorePrivateEventList.css";
 import { customAxios } from "./customAxios";
 
@@ -43,7 +44,7 @@ const StorePrivateEventList = () => {
   };
 
   if (!isLoaded) {
-    return <h1>로딩 중</h1>;
+    return <Loading />;
   } else {
     return (
       <>

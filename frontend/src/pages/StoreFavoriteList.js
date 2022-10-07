@@ -39,7 +39,7 @@ const StoreFavoriteList = () => {
   }, []);
 
   if (!(isLoadedStores && isLoadedArticles)) {
-    return <Loading></Loading>;
+    return <Loading />;
   } else {
     return (
       <>
