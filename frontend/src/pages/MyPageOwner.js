@@ -5,6 +5,7 @@ import "../pages/MyPageOwner.css";
 import { useRecoilState } from "recoil";
 import { nameState } from "../state";
 import { customAxios } from "./customAxios";
+import Loading from "../components/Loading";
 
 const MyPageOwner = () => {
   const [name, setName] = useRecoilState(nameState);
@@ -37,7 +38,7 @@ const MyPageOwner = () => {
   ];
 
   if (!isLoaded) {
-    return <h1>로딩 중</h1>;
+    return <Loading></Loading>;
   } else {
     return (
       <>

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import "../pages/StoreInfoAdd.css";
 import DaumPostcode from "react-daum-postcode";
 import { customAxios } from "./customAxios";
+import Loading from "../components/Loading";
 
 const Formbox = styled.div`
   margin-bottom: 36px;
@@ -283,7 +284,7 @@ const StoreInfoAdd = () => {
   };
 
   if (!isLoaded) {
-    return <h1>로딩 중</h1>;
+    return <Loading></Loading>;
   } else {
     return (
       <>

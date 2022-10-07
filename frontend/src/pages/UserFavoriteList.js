@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 import "../pages/StoreFavoriteList.css";
 import { customAxios } from "./customAxios";
 
@@ -24,7 +25,7 @@ const UserFavoriteList = () => {
   }, []);
 
   if (!isLoaded) {
-    return <h1>로딩 중</h1>;
+    return <Loading></Loading>;
   } else {
     return (
       <>
