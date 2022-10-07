@@ -24,6 +24,7 @@
   padding: 5px 10px;
   border-radius: 10px;
   border: 1px solid #868585;
+  text-align: center;
 }
 
 .partnership-write-textarea {
@@ -58,4 +59,8 @@
 
 .partnership-rightBtn:disabled {
   background-color: #dcdcdc;
+}
+
+.partnership-select-store {
+  text-align: center;
 }
