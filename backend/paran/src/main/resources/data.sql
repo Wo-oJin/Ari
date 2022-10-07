@@ -20,7 +20,7 @@ INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text,
 INSERT INTO signup_code (id, code, member_id) VALUES (1, '11111', 1);
 INSERT INTO signup_code (id, code, member_id) VALUES (2, '22222', 3);
 INSERT INTO signup_code (id, code, member_id) VALUES (3, '33333', 4);
-INSERT INTO signup_code (id, code, member_id) VALUES (4, '44444');
+INSERT INTO signup_code (id, code) VALUES (4, '44444');
 
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사1", "2022-08-01","2022-09-01");
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사2", "2022-09-01","2022-10-01");
