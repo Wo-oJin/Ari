@@ -3,17 +3,17 @@ INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gende
 INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (3, '$2a$10$AzLul68qfPEi8KhC96AW8ucB8oMP.a5iSl21DGuWC6FNt5YpWeoli', 'ghi789@efg.com', 0, 30, '닉네임3', 'female', 'ROLE_OWNER');
 INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (4, '$2a$10$AzLul68qfPEi8KhC96AW8ucB8oMP.a5iSl21DGuWC6FNt5YpWeoli', 'jkl101@efg.com', 0, 30, '닉네임4', 'male', 'ROLE_OWNER');
 
-INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event)
-    VALUES ("경기 수원시 팔달구 아주로 47번길 16", 1, "1층", "오전 9시 ~ 오후 9시", "미스터쉐프 한 줄 소개", "미스터쉐프", "우영우", "010-1234-5678", 1);
+INSERT INTO store (road_address, category, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event)
+    VALUES ("경기 수원시 팔달구 아주로 47번길 16", "KOREAN", 1, "1층", "오전 9시 ~ 오후 9시", "미스터쉐프 한 줄 소개", "미스터쉐프", "우영우", "010-1234-5678", 1);
 
-INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event)
-    VALUES ("경기 수원시 팔달구 아주로 13번길 19 골든파크", 2, "1층", "오전 9시 ~ 오후 9시", "아맛집 한 줄 소개", "아맛집", "동그라미", "010-5678-1234", 0);
+INSERT INTO store (road_address, category, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event)
+    VALUES ("경기 수원시 팔달구 아주로 13번길 19 골든파크", "KOREAN", 2, "1층", "오전 9시 ~ 오후 9시", "아맛집 한 줄 소개", "아맛집", "동그라미", "010-5678-1234", 0);
 
-INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event)
-    VALUES ("경기 수원시 영통구 아주로 46", 3, "아록빌딩 1층", "오전 9시 ~ 오후 9시", "맥도날드 한 줄 소개", "맥도날드 아주대점", "정명석", "010-5678-1234", 1);
+INSERT INTO store (road_address, category, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event)
+    VALUES ("경기 수원시 영통구 아주로 46", "FASTFOOD", 3, "아록빌딩 1층", "오전 9시 ~ 오후 9시", "맥도날드 한 줄 소개", "맥도날드 아주대점", "정명석", "010-5678-1234", 1);
 
-INSERT INTO store (road_address, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event)
-    VALUES ("경기 수원시 영통구 아주로 18", 4, "1층", "오전 9시 ~ 오후 9시", "카리스마 한 줄 소개", "카리스마 아주대점", "한수연", "010-5678-1234", 0);
+INSERT INTO store (road_address, category, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event)
+    VALUES ("경기 수원시 영통구 아주로 18", "HAIRSHOP", 4, "1층", "오전 9시 ~ 오후 9시", "카리스마 한 줄 소개", "카리스마 아주대점", "한수연", "010-5678-1234", 0);
 
 INSERT INTO signup_code (id, code) VALUES (1, '11111');
 INSERT INTO signup_code (id, code) VALUES (2, '22222');

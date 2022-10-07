@@ -92,9 +92,9 @@ public class KakaoLoginService {
         String age = account.get("age_range").substring(0,2);
         String gender = account.get("gender");
 
-        if(gender.equals("M"))
+        if(gender != null && gender.equals("M"))
             gender = "male";
-        else
+        else if(gender != null && gender.equals("F"))
             gender = "female";
 
 
