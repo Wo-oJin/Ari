@@ -1,10 +1,19 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { customAxios } from "../pages/customAxios";
 import "./DetailTap.css";
 const { kakao } = window;
+
+let testState = false;
 
 //협력 가게 정보 탭
 export const DetailCoopTap = ({ data }) => {
   const [index, setIndex] = useState("0");
+  //버튼 사용 인증 상태
+  const [isOpened, setisOpened] = useState(false);
+  const [target, setTarget] = useState();
+  const [value, setValue] = useState();
   console.log("in detailTap ", data);
   //로드되면 처음에 협력 가게 위치를 카카오맵 상에 마커로 찍기
   useEffect(() => {
@@ -46,9 +55,89 @@ export const DetailCoopTap = ({ data }) => {
       );
     }
   }, [index]);
+  //버튼 클릭시 사용 인증 전송
+  const sendVerify = async (e) => {
+    if (!e.target.classList.contains("verifiedBtn")) {
+      await customAxios
+        .post("/history/record-button", {
+          storeName: data.name,
+          eventInfo: data.events[e.target.getAttribute("data-key")].info,
+        })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.result === "success") {
+            e.target.classList.remove("sendVerifyBtn");
+            e.target.classList.add("verifiedBtn");
+            e.target.innerText = "사용 완료";
+          }
+        });
+    } else {
+      window.alert("이미 사용 완료하셨습니다.");
+    }
+  };
+
+  const togglePopUp = (e) => {
+    if (!e.target.classList.contains("verifiedBtn")) {
+      setisOpened((prev) => !prev);
+      setTarget(e.target);
+    } else {
+      window.alert("이미 사용 완료하셨습니다.");
+    }
+  };
+
+  //버튼 클릭시 인증코드 전송
+  const sendVerifyKey = async (e) => {
+    console.log(`/history/check-code?code=${value}&ownerId=${data.ownerId}`);
+
+    await customAxios
+      .post(`/history/check-code?code=${value}&ownerId=${data.ownerId}`)
+      .then(async (res) => {
+        if (res.data.result === "success") {
+          await customAxios
+            .post("/history/record-code", {
+              storeName: data.name,
+              eventInfo: data.events[target.getAttribute("data-key")].info,
+            })
+            .then(() => {
+              window.alert("인증되었습니다");
+              setisOpened(false);
+              target.classList.remove("sendVerifyBtn");
+              target.classList.add("verifiedBtn");
+              target.innerText = "사용 완료";
+            });
+        } else {
+          window.alert("인증번호가 일치하지 않습니다.");
+        }
+      });
+  };
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
   if (data.partners.length > 0) {
     return (
       <div className="TapContainer">
+        {isOpened ? (
+          <div className="VerifyCodePopUp">
+            <div className="VerifyForm">
+              <input
+                className="VerifyInput"
+                placeholder="인증번호를 입력하세요."
+                type="text"
+                value={value}
+                onChange={onChange}
+              ></input>
+              <button className="VerifyCodeBtn" onClick={sendVerifyKey}>
+                확인
+              </button>
+            </div>
+
+            <button className="ClosePopUpBtn" onClick={togglePopUp}>
+              닫기
+            </button>
+          </div>
+        ) : null}
+
         <div className="CoopStoreListContainer">
           <span>협력 중인 가게:</span>
           <div className="CoopStoreList">
@@ -83,9 +172,28 @@ export const DetailCoopTap = ({ data }) => {
           {data.partners.length > 0 &&
             data.partners[index].infos.map((item, i) => {
               return (
-                <span key={i} className="EventSubText">
-                  {item.eventInfo}
-                </span>
+                <div className="eventBox">
+                  <span key={i} className="EventSubText">
+                    {i + 1}. {item.eventInfo}
+                  </span>
+                  {testState ? (
+                    <button
+                      data-key={i}
+                      className="sendVerifyBtn"
+                      onClick={sendVerify}
+                    >
+                      사용 인증
+                    </button>
+                  ) : (
+                    <button
+                      data-key={i}
+                      className="sendVerifyBtn"
+                      onClick={togglePopUp}
+                    >
+                      인증코드
+                    </button>
+                  )}
+                </div>
               );
             })}
         </div>
@@ -106,6 +214,11 @@ export const DetailCoopTap = ({ data }) => {
 
 //개인 이벤트 탭
 export const PrivateEventTap = ({ data }) => {
+  //버튼 사용 인증 상태
+  const [isOpened, setisOpened] = useState(false);
+  const [target, setTarget] = useState();
+  const [value, setValue] = useState();
+
   useEffect(() => {
     const container = document.getElementById("map");
     const options = {
@@ -141,16 +254,117 @@ export const PrivateEventTap = ({ data }) => {
     });
   }, []);
   console.log("in private ", data);
+
+  //버튼 클릭시 사용 인증 전송
+  const sendVerify = async (e) => {
+    if (!e.target.classList.contains("verifiedBtn")) {
+      await customAxios
+        .post("/history/record-button", {
+          storeName: data.name,
+          eventInfo: data.events[e.target.getAttribute("data-key")].info,
+        })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.result === "success") {
+            e.target.classList.remove("sendVerifyBtn");
+            e.target.classList.add("verifiedBtn");
+            e.target.innerText = "사용 완료";
+          }
+        });
+    } else {
+      window.alert("이미 사용 완료하셨습니다.");
+    }
+  };
+
+  const togglePopUp = (e) => {
+    if (!e.target.classList.contains("verifiedBtn")) {
+      setisOpened((prev) => !prev);
+      setTarget(e.target);
+    } else {
+      window.alert("이미 사용 완료하셨습니다.");
+    }
+  };
+
+  //버튼 클릭시 인증코드 전송
+  const sendVerifyKey = async (e) => {
+    console.log(`/history/check-code?code=${value}&ownerId=${data.ownerId}`);
+
+    await customAxios
+      .post(`/history/check-code?code=${value}&ownerId=${data.ownerId}`)
+      .then(async (res) => {
+        if (res.data.result === "success") {
+          await customAxios
+            .post("/history/record-code", {
+              storeName: data.name,
+              eventInfo: data.events[target.getAttribute("data-key")].info,
+            })
+            .then(() => {
+              window.alert("인증되었습니다");
+              setisOpened(false);
+              target.classList.remove("sendVerifyBtn");
+              target.classList.add("verifiedBtn");
+              target.innerText = "사용 완료";
+            });
+        } else {
+          window.alert("인증번호가 일치하지 않습니다.");
+        }
+      });
+  };
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
   return (
     <div className="TapContainer">
+      {isOpened ? (
+        <div className="VerifyCodePopUp">
+          <div className="VerifyForm">
+            <input
+              className="VerifyInput"
+              placeholder="인증번호를 입력하세요."
+              type="text"
+              value={value}
+              onChange={onChange}
+            ></input>
+            <button className="VerifyCodeBtn" onClick={sendVerifyKey}>
+              확인
+            </button>
+          </div>
+
+          <button className="ClosePopUpBtn" onClick={togglePopUp}>
+            닫기
+          </button>
+        </div>
+      ) : null}
+
       <div className="PrivateEventContent">
         <span className="EventTitle">이벤트 내용:</span>
         {data.events && data.events.length > 0 ? (
           data.events.map((item, i) => {
             return (
-              <span className="PrivateEventSubText" key={i}>
-                {i + 1}. {item.info}
-              </span>
+              <div className="eventBox">
+                <span className="PrivateEventSubText" key={i}>
+                  {i + 1}. {item.info}
+                </span>
+                {testState ? (
+                  <button
+                    data-key={i}
+                    className="sendVerifyBtn"
+                    onClick={sendVerify}
+                  >
+                    사용 인증
+                  </button>
+                ) : (
+                  <button
+                    data-key={i}
+                    className="sendVerifyBtn"
+                    onClick={togglePopUp}
+                  >
+                    인증코드
+                  </button>
+                )}
+              </div>
             );
           })
         ) : (
@@ -215,7 +429,7 @@ export const StoreInfoTap = ({ data }) => {
           {data.openHour ? (
             <span className="StoreInfo">{data.openHour} </span>
           ) : (
-            <span>아직 등록된 정보가 없습니다.</span>
+            <span className="StoreInfo">아직 등록된 정보가 없습니다.</span>
           )}
           {data.phoneNumber ? (
             <span className="StoreInfo">{data.phoneNumber} </span>

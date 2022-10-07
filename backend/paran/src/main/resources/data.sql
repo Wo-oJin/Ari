@@ -1,3 +1,4 @@
+-- 공통 비밀번호: password123!
 INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (1, '$2a$10$Pqli0r4TwDdi7Fd2RPL9SOKTvmTru121x6loQryHplGMuKg8wWnJu', 'dnwls813@ajou.ac.kr', 0, 20, '우진', 'male', 'ROLE_OWNER');
 INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (2, '$2a$10$AzLul68qfPEi8KhC96AW8ucB8oMP.a5iSl21DGuWC6FNt5YpWeoli', 'cdf456@efg.com', 0, 30,'user', 'female', 'ROLE_USER');
 INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (3, '$2a$10$AzLul68qfPEi8KhC96AW8ucB8oMP.a5iSl21DGuWC6FNt5YpWeoli', 'ghi789@efg.com', 0, 30, '닉네임3', 'female', 'ROLE_OWNER');
@@ -15,9 +16,9 @@ INSERT INTO store (road_address, category, member_id, detail_address, open_time,
 INSERT INTO store (road_address, category, member_id, detail_address, open_time, sub_text, store_name, owner_name, phone, private_event)
     VALUES ("경기 수원시 영통구 아주로 18", "HAIRSHOP", 4, "1층", "오전 9시 ~ 오후 9시", "카리스마 한 줄 소개", "카리스마 아주대점", "한수연", "010-5678-1234", 0);
 
-INSERT INTO signup_code (id, code) VALUES (1, '11111');
-INSERT INTO signup_code (id, code) VALUES (2, '22222');
-INSERT INTO signup_code (id, code) VALUES (3, '33333');
+INSERT INTO signup_code (id, code, member_id) VALUES (1, '11111', 1);
+INSERT INTO signup_code (id, code, member_id) VALUES (2, '22222', 3);
+INSERT INTO signup_code (id, code, member_id) VALUES (3, '33333', 4);
 INSERT INTO signup_code (id, code) VALUES (4, '44444');
 
 INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사1", "2022-08-01","2022-09-01");
