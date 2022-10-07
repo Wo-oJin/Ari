@@ -20,9 +20,13 @@ const Detail = () => {
   useEffect(() => {
     const getDetailData = async () => {
       customAxios.get(`/map/store/${storeId}`).then((response) => {
-        console.log("asdasd", response.data);
-        setData(response.data);
-        setIsfavorited(response.data.favorite);
+        if (response.data.result) {
+          setData(response.data);
+          setIsfavorited(response.data.favorite);
+        } else {
+          window.alert("비회원은 접근 불가능한 페이지입니다.");
+          navigate("/login");
+        }
       });
     };
     getDetailData();
