@@ -89,7 +89,7 @@ const StoreFavoriteList = () => {
             likeArticles.map((item, index) => {
               return (
                 <div key={index}>
-                  <Link to={`/detail/${item.storeId}`}>
+                  <Link to={`/board/list/${item.articleId}`}>
                     <div className="fav-list-box">
                       <img
                         className="fav-store-img"
