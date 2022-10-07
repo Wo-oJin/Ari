@@ -27,7 +27,7 @@ const Partnership = () => {
   }, []);
 
   if (!isLoaded) {
-    return <Loading></Loading>;
+    return <Loading />;
   } else {
     return (
       <>
