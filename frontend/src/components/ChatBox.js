@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./ChatBox.css";
 
 export const MyChatBox = ({ content, createTime }) => {

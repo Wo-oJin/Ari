@@ -33,8 +33,8 @@ const Chat = () => {
   //페이지 렌더링 되기 전에 웹소켓 connect
   useEffect(() => {
     //웹소켓 end point 설정
-    //socket = new SockJS("http://localhost:8080/ws");
-    socket = new SockJS("http://paran-ari.com:8080/ws");
+    socket = new SockJS("http://localhost:8080/ws");
+    //socket = new SockJS("http://paran-ari.com:8080/ws");
     stompClient = Stomp.over(socket);
     connect();
 
@@ -106,13 +106,15 @@ const Chat = () => {
     if (message.type === "JOIN") {
       console.log("JOIN!!!");
       setRecMessage((prev) => [...prev, message]);
+      scrollToElement();
     } else if (message.type === "LEAVE") {
       console.log("LEAVE!!");
-      setRecMessage((prev) => [...prev, message]);
+      // setRecMessage((prev) => [...prev, message]);
     } else {
       console.log("Chatting: ", message);
       setRecMessage((prev) => [...prev, message]);
       setNewMessage(message);
+      scrollToElement();
     }
     if (message.sender === name) {
       scrollToElement();
@@ -159,15 +161,15 @@ const Chat = () => {
             className="backBtn"
             onClick={() => {
               //뒤로 가기 클릭 시, Leave 메시지 날리기
-              let chatMessage = {
-                sender: name,
-                type: "LEAVE",
-              };
-              stompClient.send(
-                "/app/chat/sendMessage",
-                {},
-                JSON.stringify(chatMessage)
-              );
+              // let chatMessage = {
+              //   sender: name,
+              //   type: "LEAVE",
+              // };
+              // stompClient.send(
+              //   "/app/chat/sendMessage",
+              //   {},
+              //   JSON.stringify(chatMessage)
+              // );
               //back btn 클릭 시, 뒤로 가기
               navigate(-1);
             }}
@@ -258,7 +260,7 @@ const Chat = () => {
                 }
               }
             })}
-          <div className="lastElement" ref={myRef}></div>
+
           <div ref={ref}> </div>
           {newMessageState && (
             <div className="newMsgPopUp" onClick={scrollDownHandler}>
@@ -267,6 +269,7 @@ const Chat = () => {
               <BsArrowDownShort size={"1.5em"}></BsArrowDownShort>
             </div>
           )}
+          <div className="lastElement" ref={myRef}></div>
         </div>
         <SendChatForm onChange={onChange} onSubmit={onSubmit} chat={chat} />
       </div>
