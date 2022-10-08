@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./MainPage.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -6,17 +7,102 @@ import "slick-carousel/slick/slick-theme.css";
 import { FiSearch } from "react-icons/fi";
 import { customAxios } from "../pages/customAxios";
 import { useNavigate } from "react-router-dom";
-import { useReissue } from "../services/jwt/useReissue";
+import Loading from "./Loading";
+import { useRecoilState } from "recoil";
+import { authState, nameState } from "../state";
+import Cookies from "universal-cookie";
+import axios from "axios";
 
 const MainPage = ({ onClick }) => {
+  const [count, setCount] = useState(0);
+  const [storeList, setStoreList] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const [auth, setAuth] = useRecoilState(authState);
+  const [name, setName] = useRecoilState(nameState);
+
+  const cookies = new Cookies();
 
   const navigate = useNavigate();
 
-  const { reissue } = useReissue();
+  // 토큰 갱신 요청
+  const reissue = async () => {
+    try {
+      await axios
+        .post("/auth/reissue", {
+          accessToken: cookies.get("accessToken"),
+          refreshToken: cookies.get("refreshToken"),
+        })
+        .then((res) => {
+          console.log(res.data.massage);
+          if (res.data.result === "fail") {
+            // 토큰 갱신 실패
+            // recoil persist로 저장된 변수 초기화
+            setAuth(0);
+            setName("");
+            // cookie 지우기
+            cookies.remove("accessToken");
+            cookies.remove("refreshToken");
+          } else {
+            // 토큰 갱신 성공
+            const {
+              accessToken,
+              refreshToken,
+              refreshTokenExpireIn,
+              accessTokenExpireIn,
+            } = res.data.data;
+
+            // 쿠키 사용 설정
+            axios.defaults.withCredentials = true;
+
+            // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정 : 모든 컴포넌트의 요청에서 전역으로 설정되지 않고 있음
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${accessToken}`;
+
+            // 토큰을 secure http only 쿠키에 저장
+            cookies.set("refreshToken", refreshToken, {
+              path: "/", // 모든 페이지에서 쿠키 사용
+              maxAge: refreshTokenExpireIn, // 쿠키의 만료 시간을 밀리초 단위로 설정
+              // sameSite: "none", // 모든 도메인에서 쿠키를 전송하고 사용
+              // secure: true, // HTTPS를 통해서만 접근
+              // domain: "localhost", // secure 옵션을 사용하면 같은 도메인을 공유해야 함
+              // httpOnly: true, // 서버에서만 쿠키에 접근, 브라우저에서 접근 불가
+            });
+
+            cookies.set("accessToken", accessToken, {
+              path: "/", // 모든 페이지에서 쿠키 사용
+              maxAge: accessTokenExpireIn, // 쿠키의 만료 시간을 밀리초 단위로 설정
+              // sameSite: "none", // 모든 도메인에서 쿠키를 전송하고 사용
+              // secure: true, // HTTPS를 통해서만 접근
+              // domain: "localhost", // secure 옵션을 사용하면 같은 도메인을 공유해야 함
+              // httpOnly: true, // 서버에서만 쿠키에 접근, 브라우저에서 접근 불가
+            });
+
+            // 메인페이지에서는 reissue setTimeout 설정 안함!!
+          }
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getBannerInfo = async () => {
+    try {
+      const { data } = await customAxios.get("/map/random-events");
+      setCount(data.count);
+      setStoreList(data.storeList);
+      setIsLoaded(true);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   // 메인 페이지 들어올 때마다 실행
   useEffect(() => {
     reissue();
+    getBannerInfo();
   }, []);
 
   // 가게 카테고리
@@ -32,15 +118,6 @@ const MainPage = ({ onClick }) => {
     { name: "헤어", image: "images/hairshop.png" },
     { name: "술집", image: "images/bar.png" },
     { name: "놀이시설", image: "images/karaoke.png" },
-  ];
-
-  // 이벤트 배너
-  const banner = [
-    { name: "모서리다방", image: "images/defaultEventBanner.png" },
-    { name: "미스터쉐프", image: "images/defaultEventBanner.png" },
-    { name: "맥도날드", image: "images/defaultEventBanner.png" },
-    { name: "아맛집", image: "images/defaultEventBanner.png" },
-    { name: "쉐프의 포차", image: "images/defaultEventBanner.png" },
   ];
 
   // react-slick 캐러셀 설정
@@ -72,161 +149,177 @@ const MainPage = ({ onClick }) => {
     navigate(`/store/category/${menuIndex}`);
   };
 
-  return (
-    <>
-      <div
-        onClick={onClick}
-        style={{ display: "flex", justifyContent: "center" }}
-      >
-        <div style={{ width: "375px" }}>
-          <div style={{ padding: "0 28px", marginTop: "85px" }}>
-            <div className="mainPage-flex-column-end">
-              <img
-                style={{ width: "61px" }}
-                alt=""
-                src="images/ari_logo_text.png"
-              ></img>
-              <p className="mainPage-intro">우리 주변 제휴 정보</p>
-              <p className="mainPage-intro">
-                <span style={{ color: "#386FFE" }}>아리</span>에서
-              </p>
-            </div>
-            <div style={{ position: "relative" }}>
-              <div className="mainPage-search-icon" onClick={searchStore}>
-                <FiSearch></FiSearch>
-              </div>
-              <input
-                onKeyPress={handleOnKeyPress}
-                className="mainPage-store-search"
-                type="text"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                placeholder="제휴 정보를 보고 싶은 가게명을 검색하세요!"
-                maxLength={20}
-              ></input>
-            </div>
-          </div>
-          <Slider {...settings}>
-            {banner.map((event, index) => {
-              return (
-                <div key={index} className="mainPage-banner-box">
-                  <img alt="" src="images/defaultEventBanner.png"></img>
-                  <p className="mainPage-banner-intro">
-                    {event.name}
-                    <br />
-                    제휴 이벤트 확인하기
-                  </p>
-                  <div className="mainPage-banner-num">
-                    {index + 1}/{banner.length}
-                  </div>
-                </div>
-              );
-            })}
-          </Slider>
-          <div style={{ padding: "0 28px", marginTop: "40px" }}>
-            <p className="mainPage-subIntro">
-              <span className="mainPage-select-intro">골라서</span>
-              보는 건 어때요?
-            </p>
-            <table>
-              <tbody>
-                <tr>
-                  {menuRow1.map((menu, index) => {
-                    return (
-                      <td key={index}>
-                        <div
-                          className="mainPage-flex-column-center"
-                          style={{ margin: "0 11px 34px 11px" }}
-                        >
-                          <img
-                            style={{ cursor: "pointer" }}
-                            onClick={moveToCategory}
-                            alt=""
-                            data-key={index + 1}
-                            src={menu.image}
-                          ></img>
-                          <span style={{ marginTop: "9px", fontSize: "12px" }}>
-                            {menu.name}
-                          </span>
-                        </div>
-                      </td>
-                    );
-                  })}
-                </tr>
-                <tr>
-                  {menuRow2.map((menu, index) => {
-                    return (
-                      <td key={index}>
-                        <div
-                          className="mainPage-flex-column-center"
-                          style={{ margin: "0 11px 34px 11px" }}
-                        >
-                          <img
-                            style={{ cursor: "pointer" }}
-                            data-key={index + 5}
-                            onClick={moveToCategory}
-                            alt=""
-                            src={menu.image}
-                          ></img>
-                          <span style={{ marginTop: "9px", fontSize: "12px" }}>
-                            {menu.name}
-                          </span>
-                        </div>
-                      </td>
-                    );
-                  })}
-                </tr>
-              </tbody>
-            </table>
-            <div style={{ clear: "both" }}></div>
-            <p className="mainPage-subIntro">전체 목록 보기!</p>
-            <div style={{ float: "left", marginLeft: "10px" }}>
-              <div className="mainPage-flex-column-center">
+  if (!isLoaded) {
+    return <Loading />;
+  } else {
+    return (
+      <>
+        <div
+          onClick={onClick}
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <div style={{ width: "375px" }}>
+            <div style={{ padding: "0 28px", marginTop: "85px" }}>
+              <div className="mainPage-flex-column-end">
                 <img
+                  style={{ width: "61px" }}
                   alt=""
-                  src="images/seeAll.png"
-                  data-key={0}
-                  onClick={moveToCategory}
-                  style={{ cursor: "pointer" }}
+                  src="images/ari_logo_text.png"
                 ></img>
-                <span style={{ marginTop: "9px", fontSize: "12px" }}>전체</span>
+                <p className="mainPage-intro">우리 주변 제휴 정보</p>
+                <p className="mainPage-intro">
+                  <span style={{ color: "#386FFE" }}>아리</span>에서
+                </p>
+              </div>
+              <div style={{ position: "relative" }}>
+                <div className="mainPage-search-icon" onClick={searchStore}>
+                  <FiSearch></FiSearch>
+                </div>
+                <input
+                  onKeyPress={handleOnKeyPress}
+                  className="mainPage-store-search"
+                  type="text"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  placeholder="제휴 정보를 보고 싶은 가게명을 검색하세요!"
+                  maxLength={20}
+                ></input>
+              </div>
+            </div>
+            <Slider {...settings}>
+              {storeList.map((item, index) => {
+                return (
+                  <Link to={`/detail/${item.storeId}`} key={index}>
+                    <div className="mainPage-banner-box">
+                      <img
+                        alt=""
+                        src={`data:image/;base64,${item.storeImage}`}
+                      ></img>
+                      <p className="mainPage-banner-intro">
+                        {item.storeName}
+                        <br />
+                        제휴 이벤트 확인하기
+                      </p>
+                      <div className="mainPage-banner-num">
+                        {index + 1}/{count}
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </Slider>
+            <div style={{ padding: "0 28px", marginTop: "40px" }}>
+              <p className="mainPage-subIntro">
+                <span className="mainPage-select-intro">골라서</span>
+                보는 건 어때요?
+              </p>
+              <table>
+                <tbody>
+                  <tr>
+                    {menuRow1.map((menu, index) => {
+                      return (
+                        <td key={index}>
+                          <div
+                            className="mainPage-flex-column-center"
+                            style={{ margin: "0 11px 34px 11px" }}
+                          >
+                            <img
+                              style={{ cursor: "pointer" }}
+                              onClick={moveToCategory}
+                              alt=""
+                              data-key={index + 1}
+                              src={menu.image}
+                            ></img>
+                            <span
+                              style={{ marginTop: "9px", fontSize: "12px" }}
+                            >
+                              {menu.name}
+                            </span>
+                          </div>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  <tr>
+                    {menuRow2.map((menu, index) => {
+                      return (
+                        <td key={index}>
+                          <div
+                            className="mainPage-flex-column-center"
+                            style={{ margin: "0 11px 34px 11px" }}
+                          >
+                            <img
+                              style={{ cursor: "pointer" }}
+                              data-key={index + 5}
+                              onClick={moveToCategory}
+                              alt=""
+                              src={menu.image}
+                            ></img>
+                            <span
+                              style={{ marginTop: "9px", fontSize: "12px" }}
+                            >
+                              {menu.name}
+                            </span>
+                          </div>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                </tbody>
+              </table>
+              <div style={{ clear: "both" }}></div>
+              <p className="mainPage-subIntro">전체 목록 보기!</p>
+              <div style={{ float: "left", marginLeft: "10px" }}>
+                <div className="mainPage-flex-column-center">
+                  <img
+                    alt=""
+                    src="images/seeAll.png"
+                    data-key={0}
+                    onClick={moveToCategory}
+                    style={{ cursor: "pointer" }}
+                  ></img>
+                  <span style={{ marginTop: "9px", fontSize: "12px" }}>
+                    전체
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="footer">
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <img
-            style={{
-              width: "48px",
-              height: "48px",
-              filter: "grayscale(100%)",
-              marginRight: "10px",
-            }}
-            src="/images/ari_logo_text.png"
-          ></img>
-          <span>정보</span>
+        <div className="footer">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img
+              alt=""
+              style={{
+                width: "48px",
+                height: "48px",
+                filter: "grayscale(100%)",
+                marginRight: "10px",
+              }}
+              src="/images/ari_logo_text.png"
+            ></img>
+            <span>정보</span>
+          </div>
+          <table>
+            <tbody>
+              <tr>
+                <td>팀장</td>
+                <td>여인수</td>
+              </tr>
+              <tr>
+                <td>대표 이메일</td>
+                <td>aritest0222@gmail.com</td>
+              </tr>
+              <tr>
+                <td>대표 연락처</td>
+                <td>010-4355-4616</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <table>
-          <tbody>
-            <tr>
-              <td>팀장</td>
-              <td>여인수</td>
-            </tr>
-            <tr>
-              <td>대표 이메일</td>
-              <td>aritest0222@gmail.com</td>
-            </tr>
-            <tr>
-              <td>대표 연락처</td>
-              <td>010-4355-4616</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 };
 
 export default MainPage;

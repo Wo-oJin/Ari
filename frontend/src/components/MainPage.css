@@ -57,6 +57,16 @@
 
 .mainPage-banner-box {
   position: relative;
+  width: 375px;
+  height: 190px;
+}
+
+.mainPage-banner-box img {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .mainPage-banner-intro {
