@@ -2,6 +2,7 @@ package ari.paran.domain.store;
 
 import ari.paran.domain.Event;
 import ari.paran.domain.member.Member;
+import ari.paran.dto.response.store.DetailStoreDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -16,6 +17,7 @@ import java.util.*;
 @Getter
 @NoArgsConstructor
 @Entity
+@ToString
 public class Store implements Serializable{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,11 +61,11 @@ public class Store implements Serializable{
     private List<StoreImgFile> storeImgFiles = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Partnership> partnershipList = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Event> eventList = new ArrayList<>();
 
     @JsonIgnore
@@ -138,11 +140,22 @@ public class Store implements Serializable{
     public Map<String, String> getRandomEvents(){
         Map<String, String> events = new HashMap<>();
 
-        // 파트너쉽 추가해야함
+        for(Partnership partnership : partnershipList){
+            if(partnership.getFinishDate().isBefore(LocalDate.now()))
+                continue;
+
+            String eventInfo = partnership.getInfo();
+            String date = partnership.getStartDate() + " ~ " + partnership.getFinishDate();
+            events.put(eventInfo, date);
+        }
 
         for(Event event : eventList) {
+            if(event.getFinishDate().isBefore(LocalDate.now()))
+                continue;
+
+            String eventInfo = event.getInfo();
             String date = event.getStartDate() + " ~ " + event.getFinishDate();
-            events.put(event.getInfo(), date);
+            events.put(eventInfo, date);
         }
 
         return events;

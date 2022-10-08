@@ -3,11 +3,12 @@ package ari.paran.dto.response.store;
 import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;
 
-@Getter
+@Data
 public class SimpleStoreDto {
 
     private Long storeId;

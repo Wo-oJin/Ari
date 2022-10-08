@@ -252,26 +252,42 @@ public class StoreService {
     public List<SimpleStoreDto> findByCategory(String code) throws IOException {
         List<Store> stores = null;
 
-        log.info("코드: {}", code);
         if(code.equals("전체"))
             stores = storeRepository.findAll();
         else
             stores = storeRepository.findByCategory(Category.fromString(code));
 
-        return getSimpleStoreDtos(stores);
+        return getStoreRandomEvents(stores);
     }
 
     public List<SimpleStoreDto> findStoreByKeyword(String keyword) throws IOException {
         List<Store> stores = storeRepository.findStoreByKeyword(keyword);
 
-        return getSimpleStoreDtos(stores);
+        return getStoreRandomEvents(stores);
     }
 
-    private List<SimpleStoreDto> getSimpleStoreDtos(List<Store> stores) throws IOException {
+    public List<SimpleStoreDto> findRandomEvents() throws IOException {
+        List<Store> stores = storeRepository.findAllStoreEvents();
+
+        if(stores.size() > 5){
+            while(stores.size() > 5) {
+                int randomId = (int)(Math.random() * stores.size());
+                stores.remove(randomId);
+            }
+        }
+
+        return getStoreRandomEvents(stores);
+    }
+
+    private List<SimpleStoreDto> getStoreRandomEvents(List<Store> stores) throws IOException {
         List<SimpleStoreDto> simpleStoreDtoList = new ArrayList<>();
 
         for(Store store : stores){
             Map<String, String> eventMap = store.getRandomEvents(); // key = eventInfo, value = eventDate
+
+            if(eventMap.size() == 0)
+                continue;
+
             List<String> eventInfos = new ArrayList<>(eventMap.keySet());
 
             int randomId = (int)(Math.random() * eventMap.size());

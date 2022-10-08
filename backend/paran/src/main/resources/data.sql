@@ -21,14 +21,14 @@ INSERT INTO signup_code (id, code, member_id) VALUES (2, '22222', 3);
 INSERT INTO signup_code (id, code, member_id) VALUES (3, '33333', 4);
 INSERT INTO signup_code (id, code) VALUES (4, '44444');
 
-INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사1", "2022-08-01","2022-09-01");
-INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사2", "2022-09-01","2022-10-01");
-INSERT INTO event (store_id, info, start_date, finish_date) VALUES (2, "아맛집 할인 행사1", "2022-08-01","2022-09-01");
-INSERT INTO event (store_id, info, start_date, finish_date) VALUES (2, "아맛집 할인 행사2", "2022-09-01","2022-10-01");
-INSERT INTO event (store_id, info, start_date, finish_date) VALUES (3, "맥도날드 할인 행사1", "2022-08-01","2022-09-01");
-INSERT INTO event (store_id, info, start_date, finish_date) VALUES (3, "맥도날드 할인 행사2", "2022-09-01","2022-10-01");
-INSERT INTO event (store_id, info, start_date, finish_date) VALUES (4, "카리스마 할인 행사1", "2022-08-01","2022-09-01");
-INSERT INTO event (store_id, info, start_date, finish_date) VALUES (4, "카리스마 할인 행사2", "2022-09-01","2022-10-01");
+INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사1", "2022-08-01","2023-09-01");
+INSERT INTO event (store_id, info, start_date, finish_date) VALUES (1, "미스터쉐프 할인 행사2", "2022-09-01","2023-10-01");
+INSERT INTO event (store_id, info, start_date, finish_date) VALUES (2, "아맛집 할인 행사1", "2022-08-01","2023-09-01");
+INSERT INTO event (store_id, info, start_date, finish_date) VALUES (2, "아맛집 할인 행사2", "2022-09-01","2023-10-01");
+INSERT INTO event (store_id, info, start_date, finish_date) VALUES (3, "맥도날드 할인 행사1", "2022-08-01","2023-09-01");
+INSERT INTO event (store_id, info, start_date, finish_date) VALUES (3, "맥도날드 할인 행사2", "2022-09-01","2023-10-01");
+INSERT INTO event (store_id, info, start_date, finish_date) VALUES (4, "카리스마 할인 행사1", "2022-08-01","2023-09-01");
+INSERT INTO event (store_id, info, start_date, finish_date) VALUES (4, "카리스마 할인 행사2", "2022-09-01","2023-10-01");
 
 INSERT INTO board(article_id, author, is_completed, title, content, writer_id, partnership_period, create_date, update_date) VALUES(1, "미스터쉐프", 0, "제목1", "내용1", 1, "3달", now(), now());
 INSERT INTO board(article_id, author, is_completed, title, content, writer_id, partnership_period, create_date, update_date) VALUES(2, "아맛집", 0, "제목2", "내용2", 2, "3달", now(), now());
@@ -46,12 +46,12 @@ INSERT INTO board(article_id, author, is_completed, title, content, writer_id, p
 INSERT INTO board(article_id, author, is_completed, title, content, writer_id, partnership_period, create_date, update_date) VALUES(14, "아맛집", 0, "제목14", "내용14", 2, "2달", now(), now());
 INSERT INTO board(article_id, author, is_completed, title, content, writer_id, partnership_period, create_date, update_date) VALUES(15, "맥도날드 아주대점", 0, "제목15", "내용15", 3, "2달", now(), now());
 
-INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요~", "2022-10-15", "2022-10-15 18:15:41", "여인수", 0);
-INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요!", "2022-10-15", "2022-10-15 17:15:41", "정세창", 0);
-INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요~", "2022-10-16", "2022-10-16 08:30:32", "봉지수", 0);
-INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요!", "2022-10-16", "2022-10-16 13:53:45", "김우진", 0);
-INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요~", "2022-10-17", "2022-10-17 16:41:32", "김지수", 0);
-INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요!", "2022-10-17", "2022-10-17 21:53:45", "홍서희", 0);
+INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요~", "2022-10-04", "2022-10-14 18:15:41", "여인수", 0);
+INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요!", "2022-10-04", "2022-10-14 17:15:41", "정세창", 0);
+INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요~", "2022-10-05", "2022-10-05 08:30:32", "봉지수", 0);
+INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요!", "2022-10-05", "2022-10-05 13:53:45", "김우진", 0);
+INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요~", "2022-10-06", "2022-10-06 16:41:32", "김지수", 0);
+INSERT INTO chat_message (content, create_date, create_time, sender, type) VALUES ("안녕하세요!", "2022-10-06", "2022-10-06 21:53:45", "홍서희", 0);
 
 INSERT INTO favorite_store (favorite_id, member_id, store_id) VALUES (1, 1, 2);
 INSERT INTO favorite_store (favorite_id, member_id, store_id) VALUES (2, 2, 1);
@@ -61,16 +61,16 @@ INSERT INTO favorite_article (favorite_id, member_id, article_id) VALUES (2, 2, 
 
 INSERT INTO partnership (store_name, counterpart_id, finish_date, info, is_finish, is_from, is_read,
                          partner_id, partner_name, partnership_state, start_date, article_id, store_id)
-VALUES ("미스터쉐프", 2, "2022-10-05", "협약 정보1", 0, 1, 0, 2, "아맛집", "APPROVED", "2022-10-02", 14, 1);
+VALUES ("미스터쉐프", 2, "2023-10-05", "협약 정보1", 0, 1, 0, 2, "아맛집", "APPROVED", "2022-10-02", 14, 1);
 
 INSERT INTO partnership (store_name, counterpart_id, finish_date, info, is_finish, is_from, is_read,
                          partner_id, partner_name, partnership_state, start_date, article_id, store_id)
-VALUES ("아맛집", 1, "2022-10-05", "협약 정보1", 0, 0, 0, 1, "미스터쉐프", "APPROVED", "2022-10-02", 14, 2);
+VALUES ("아맛집", 1, "2023-10-05", "협약 정보1", 0, 0, 0, 1, "미스터쉐프", "APPROVED", "2022-10-02", 14, 2);
 
 INSERT INTO partnership (store_name, counterpart_id, finish_date, info, is_finish, is_from, is_read,
                          partner_id, partner_name, partnership_state, start_date, article_id, store_id)
-VALUES ("맥도날드 아주대점", 4, "2022-10-15", "협약 정보2", 0, 1, 0, 4, "카리스마 아주대점", "APPROVED", "2022-10-12", 15, 3);
+VALUES ("맥도날드 아주대점", 4, "2023-10-15", "협약 정보2", 0, 1, 0, 4, "카리스마 아주대점", "APPROVED", "2022-10-12", 15, 3);
 
 INSERT INTO partnership (store_name, counterpart_id, finish_date, info, is_finish, is_from, is_read,
                          partner_id, partner_name, partnership_state, start_date, article_id, store_id)
-VALUES ("카리스마 아주대점", 3, "2022-10-15", "협약 정보2", 0, 0, 0, 3, "맥도날드 아주대점", "APPROVED", "2022-10-12", 15, 4);
+VALUES ("카리스마 아주대점", 3, "2023-10-15", "협약 정보2", 0, 0, 0, 3, "맥도날드 아주대점", "APPROVED", "2022-10-12", 15, 4);

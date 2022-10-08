@@ -63,7 +63,7 @@ public class DetailStoreDto {
     public static class Partner{
         private String partnerName;
         private String roadAddress;
-        private List<EventInfo> infos;
+        private List<DetailStoreDto.EventInfo> infos;
     }
 
     /***************************************************************

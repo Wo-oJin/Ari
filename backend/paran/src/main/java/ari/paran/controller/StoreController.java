@@ -1,7 +1,6 @@
 package ari.paran.controller;
 
 import ari.paran.domain.member.Member;
-import ari.paran.domain.store.Category;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.EditInfoDto;
 import ari.paran.dto.response.store.DetailStoreDto;
@@ -28,6 +27,13 @@ public class StoreController {
     private final StoreService storeService;
     private final FileService fileService;
     private final MemberService memberService;
+
+    @GetMapping("/map/random-events")
+    public MainResult randomEventsList() throws IOException {
+        List<SimpleStoreDto> storeList = storeService.findRandomEvents();
+
+        return new MainResult(storeList.size(), storeList);
+    }
 
     @GetMapping("/map/all-stores")
     @ResponseBody
