@@ -28,3 +28,10 @@
   margin-bottom: 19px;
   cursor: pointer;
 }
+
+.partnership-storeBtn span {
+  max-width: 214px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
