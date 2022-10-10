@@ -34,7 +34,6 @@
   font-size: 16px;
   border: none;
   border-bottom: 1px solid #dbdbdb;
-  font-family: "Work Sans";
   padding: 16px 0;
   outline: none;
   resize: none;
@@ -59,6 +58,7 @@
 
 .partnership-rightBtn:disabled {
   background-color: #dcdcdc;
+  cursor: default;
 }
 
 .partnership-select-store {

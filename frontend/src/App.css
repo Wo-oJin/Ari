@@ -23,8 +23,10 @@ body::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }
 
-textarea {
-  font-family: work-sans, sans-serif;
+textarea,
+input,
+select {
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 400;
   font-style: normal;
   line-height: 24px;
