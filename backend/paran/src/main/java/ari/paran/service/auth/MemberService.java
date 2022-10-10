@@ -283,7 +283,7 @@ public class MemberService {
                         tokenDto.getRefreshTokenExpiresIn(), TimeUnit.MILLISECONDS);
 
         /* user/owner에 따라 닉네임or가게이름 tokenDto에 추가 */
-        if (member.getAuthority() == Authority.ROLE_USER) {
+        if (member.getAuthority() == Authority.ROLE_USER || member.getAuthority() == Authority.ROLE_USER2) {
             tokenDto.setInfo(member.getNickname()); // 닉네임
         } else {
             tokenDto.setInfo(member.getStores().get(0).getName()); // 가게이름

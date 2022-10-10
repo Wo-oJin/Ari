@@ -35,7 +35,7 @@ public class FileService {
     @Value("${resource.path}")
     private String resourceUrl;
 
-    private String detailUrl = "C:\\Users\\김우진\\Desktop\\image\\";
+    private String detailUrl = "/Users/jsc/ari_files";
 
 
     /**
