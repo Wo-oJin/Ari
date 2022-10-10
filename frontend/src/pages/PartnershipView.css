@@ -71,4 +71,5 @@
 
 .partnership-rightBtn:disabled {
   background-color: #dcdcdc;
+  cursor: default;
 }

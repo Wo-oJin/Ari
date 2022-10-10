@@ -7,7 +7,7 @@ import Loading from "../components/Loading";
 
 const PartnershipWrite = () => {
   const [fromStores, setFromStores] = useState([]);
-  const [storeIndex, setStoreIndex] = useState(null);
+  const [storeIndex, setStoreIndex] = useState("-1");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [content, setContent] = useState("");
@@ -76,7 +76,7 @@ const PartnershipWrite = () => {
                 className="partnership-select-store"
                 onChange={(e) => setStoreIndex(e.target.value)}
               >
-                <option value={"--선택하세요--"}>--선택하세요--</option>
+                <option value="-1">--선택하세요--</option>
                 {fromStores &&
                   fromStores.map((store, index) => {
                     return (
@@ -125,7 +125,7 @@ const PartnershipWrite = () => {
               className="partnership-rightBtn"
               onClick={partnershipRequest}
               disabled={
-                storeIndex !== null && startDate !== "" && endDate !== ""
+                storeIndex !== "-1" && startDate !== "" && endDate !== ""
                   ? false
                   : true
               }

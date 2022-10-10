@@ -32,7 +32,9 @@ const Kakao = () => {
           .then((res) => {
             console.log("소셜 로그인>>" + JSON.stringify(res.data));
             if (res.data.state === 400) {
-              alert("로그인에 실패하였습니다.");
+              // from_oauth 값에 따라 다른 메시지 띄우기
+              alert(res.data.massage);
+              navigate("/"); // 메인 페이지로 이동
             } else {
               const {
                 accessToken,
@@ -89,7 +91,7 @@ const Kakao = () => {
               setName(res.data.data.info); // recoil
               // alert(res.data.massage);
               navigate("/"); // 메인 페이지로 이동
-              window.location.reload();
+              // window.location.reload();
             }
           });
       } catch (e) {
