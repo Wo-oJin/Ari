@@ -78,4 +78,12 @@ public class PartnershipController {
 
         return partnershipService.rejectPartnership(storeId, partnershipId);
     }
+
+    @GetMapping("/check/new-request")
+    public ResponseEntity<?> checkNewRequest(Principal principal) {
+
+        Long ownerId = Long.parseLong(principal.getName());
+
+        return partnershipService.checkNewRequest(ownerId);
+    }
 }
