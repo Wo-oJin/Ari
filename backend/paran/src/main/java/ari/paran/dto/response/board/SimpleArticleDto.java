@@ -14,15 +14,17 @@ public class SimpleArticleDto {
     private String author;
     private String image;
     private LocalDate createDate;
+    private boolean isCompleted;
 
     @Builder
-    public SimpleArticleDto(Long id, String title, String author, String image, LocalDate createDate){
+    public SimpleArticleDto(Long id, String title, String author, String image, LocalDate createDate, boolean isCompleted){
 
         this.id = id;
         this.title = title;
         this.author = author;
         this.image = image;
         this.createDate = createDate;
+        this.isCompleted = isCompleted;
 
     }
 

@@ -66,6 +66,7 @@ public class BoardService {
                                 .title(article.getTitle())
                                 .author(article.getAuthor())
                                 .createDate(article.getCreateDate())
+                                .isCompleted(article.isCompleted())
                                 .image(fileService.getArticleImages(article, 1).get(0))
                                 .build();
             } catch (IOException e) {
