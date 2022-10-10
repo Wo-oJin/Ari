@@ -111,7 +111,7 @@ public class NaverLoginService {
         Map<String, String> loginInfo = new HashMap<>();
 
         loginInfo.put("email", email);
-        String password = nickname+gender+email+age;
+        String password = email+age+nickname+gender;
         loginInfo.put("password", password);
 
         Member member = memberRepository.findByEmail(email).orElse(null);

@@ -291,13 +291,14 @@ public class StoreService {
             List<String> eventInfos = new ArrayList<>(eventMap.keySet());
 
             int randomId = (int)(Math.random() * eventMap.size());
+            String eventPeriod = eventMap.get(eventInfos.get(randomId));
 
             SimpleStoreDto simpleStoreDto = SimpleStoreDto.builder()
                     .storeId(store.getId())
                     .storeName(store.getName())
                     .storeImage(fileService.getMainStoreImage(store))
                     .eventContent(eventInfos.get(randomId))
-                    .eventPeriod(eventMap.get(eventInfos.get(randomId)))
+                    .eventPeriod(eventPeriod == null ? "" : eventPeriod)
                     .eventLength(eventMap.size())
                     .build();
 

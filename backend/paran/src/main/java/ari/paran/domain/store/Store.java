@@ -150,12 +150,14 @@ public class Store implements Serializable{
         }
 
         for(Event event : eventList) {
+            /*
             if(event.getFinishDate().isBefore(LocalDate.now()))
                 continue;
+             */
 
             String eventInfo = event.getInfo();
-            String date = event.getStartDate() + " ~ " + event.getFinishDate();
-            events.put(eventInfo, date);
+            //String date = event.getStartDate() + " ~ " + event.getFinishDate();
+            events.put(eventInfo, null);
         }
 
         return events;
