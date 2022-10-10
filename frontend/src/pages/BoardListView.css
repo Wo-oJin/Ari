@@ -7,8 +7,11 @@
 .viewImg {
   width: 330px;
   height: 220px;
-  border-radius: 10px;
   object-fit: cover;
+}
+.viewImgContainer {
+  width: 340px;
+  height: 220px;
   box-shadow: 0px 4px 4px rgb(174, 174, 174);
 }
 .viewContentBox {

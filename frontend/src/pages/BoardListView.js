@@ -2,9 +2,14 @@ import { customAxios } from "./customAxios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
+import "../components/MainPage.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./BoardListView.css";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import ConvertDate from "../components/ConvertDate";
+
 const BoardListView = () => {
   const navigate = useNavigate();
   //좋아요 유무를 확인하기 위한 변수
@@ -66,6 +71,19 @@ const BoardListView = () => {
     navigate(-1);
   };
 
+  // react-slick 캐러셀 설정
+  const settings = {
+    infinite: true, // 무한 캐러셀
+    speed: 500, // 다음 컨텐츠 까지의 속도
+    slidesToShow: 1, // 화면에 보이는 컨텐츠 수
+    slidesToScroll: 1, // 스크롤 시 넘어가는 컨텐츠 수
+    autoplay: false, // 자동 캐러셀
+    autoplaySpeed: 3000, // 자동 캐러셀 속도
+    draggable: true, // 드래그
+    pauseOnFocus: true, // focus시 정지
+    pauseOnHover: true, // hover시 정지
+  };
+
   //아직 데이터가 들어오기 전이면 로딩 중 출력
   if (!data) {
     return <h1>로딩 중...</h1>;
@@ -74,12 +92,20 @@ const BoardListView = () => {
       <>
         <Header text={"제휴 맺기 게시판"} back={true}></Header>
         <div className="viewContainer">
-          <img
-            className="viewImg"
-            alt="img"
-            src={`data:image/jpg;base64, ${data.images[0]}`}
-          ></img>
           <div className="viewContentBox">
+            <Slider {...settings}>
+              {data.images.map((item, index) => {
+                return (
+                  <div className="viewImgContainer" key={index}>
+                    <img
+                      className="viewImg"
+                      alt=""
+                      src={`data:image/;base64,${item}`}
+                    ></img>
+                  </div>
+                );
+              })}
+            </Slider>
             <div className="viewContentHeader">
               <span className="author">{data.author}</span>
               <span className="location">{data.location}</span>
