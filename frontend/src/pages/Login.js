@@ -109,6 +109,9 @@ const Login = () => {
             if (res.data.data.authority === "ROLE_USER") {
               // 손님
               setAuth(1);
+            } else if (res.data.data.authority === "ROLE_USER2") {
+              //베타 테스트용 손님2
+              setAuth(4);
             } else if (res.data.data.authority === "ROLE_OWNER") {
               // 사장
               setAuth(2);

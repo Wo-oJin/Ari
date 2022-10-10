@@ -57,7 +57,7 @@ const SidebarMenu = (userState) => {
   ];
   return (
     <div className="menuListContainer">
-      {userState.userState === 1
+      {userState.userState === 1 || userState.userState === 4
         ? menuForCustomer.map((item, index) => {
             if (item.service) {
               return (
