@@ -24,8 +24,10 @@
   border-radius: 20px;
   margin-top: 5px;
   margin-right: 7px;
+  padding: 0 5px;
 }
 .UnSelectedStoreTag {
+  padding: 0 5px;
   margin-top: 5px;
   text-align: center;
   display: inline-block;

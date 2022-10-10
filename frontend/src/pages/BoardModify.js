@@ -21,6 +21,20 @@ const BoardModify = () => {
   const { articleId } = useParams();
   let newImageURL = [];
 
+  function base64ToFile(base64, fileName) {
+    const arr = base64.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    let u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], fileName, { type: mime });
+  }
+
   //처음 페이지에 접근하면 작성자의 가게들을 받아오기
   useEffect(() => {
     const getData = async () => {
@@ -30,6 +44,17 @@ const BoardModify = () => {
         setTitle(res.data.title);
         setPeriod(res.data.period);
         setcContent(res.data.content);
+        setImageUrl(
+          res.data.images.map((image) => `data:image/;base64,${image}`)
+        );
+        let decodeFilesArr = [];
+        res.data.images.forEach((image, index) => {
+          decodeFilesArr[index] = base64ToFile(
+            `data:image/;base64,${image}`,
+            `${res.data.storeId}_${index}.png`
+          );
+        });
+        setPostImages(...decodeFilesArr);
       });
     };
     const getStoreData = async () => {
@@ -43,7 +68,7 @@ const BoardModify = () => {
   //작성한 내용을 POST
   const sendData = async () => {
     let formData = new FormData();
-    if (postImages) {
+    if (postImages.length > 0) {
       postImages.map((item) => {
         formData.append("files", item);
       });
@@ -80,7 +105,8 @@ const BoardModify = () => {
       //업로드된 이미지가 3장 미만이라면 imageURL 배열에 추가
       if (imgRef.current.files.length > 0) {
         const imageFiles = [...imgRef.current.files];
-        setPostImages(imageFiles);
+        setPostImages((prev) => [prev, ...imageFiles]);
+        console.log("post ", postImages);
         imageFiles.map((item) => {
           const reader = new FileReader();
           reader.readAsDataURL(item);
@@ -187,7 +213,22 @@ const BoardModify = () => {
             <div className="writeAuthor" placeholder="작성자 가게 선택">
               <span>작성자 가게 선택</span>
               <select className="writeSelect" onChange={changeSelectHandler}>
-                {data && <option value={data.author}>{data.author}</option>}
+                {authorList &&
+                  authorList.map((item, index) => {
+                    if (item.storeName === data.author) {
+                      return (
+                        <option key={index} value={index} selected>
+                          {item.storeName}
+                        </option>
+                      );
+                    } else {
+                      return (
+                        <option key={index} value={index}>
+                          {item.storeName}
+                        </option>
+                      );
+                    }
+                  })}
               </select>
             </div>
 
