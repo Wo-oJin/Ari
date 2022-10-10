@@ -1,6 +1,8 @@
 package ari.paran.service.store;
 
+import ari.paran.domain.member.Member;
 import ari.paran.domain.repository.BoardRepository;
+import ari.paran.domain.repository.MemberRepository;
 import ari.paran.domain.repository.PartnershipRepository;
 import ari.paran.domain.repository.StoreRepository;
 import ari.paran.domain.store.Partnership;
@@ -29,6 +31,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class PartnershipService {
 
+    private final MemberRepository memberRepository;
     private final StoreRepository storeRepository;
     private final PartnershipRepository partnershipRepository;
     private final BoardRepository boardRepository;
@@ -184,7 +187,7 @@ public class PartnershipService {
             detailPartnershipDto.setSentByMe(true);
         }else{
             detailPartnershipDto.setSentByMe(false);
-            /*3-1. 만약 받은 요청을 클릭 했을 때 해당 요청을 처음 클릭하는 경우에는 isRead를 false로 변경하여 읽음 처리*/
+            /*3-1. 만약 받은 요청을 클릭 했을 때 해당 요청을 처음 클릭하는 경우에는 isRead를 true로 변경하여 읽음 처리*/
             if(partnership.isRead() == false)
                 partnership.changeReadStatus();
         }
@@ -219,6 +222,7 @@ public class PartnershipService {
      */
     @Transactional
     public ResponseEntity<?> rejectPartnership(Long storeId, Long partnershipId) {
+
         Partnership partnership = partnershipRepository.findById(partnershipId).orElse(null);
         Partnership counterpart = partnershipRepository.findById(partnership.getCounterpartId()).orElse(null);
 
@@ -231,4 +235,23 @@ public class PartnershipService {
         return response.success();
     }
 
+    @Transactional
+    public ResponseEntity<?> checkNewRequest(Long ownerId) {
+
+        Member owner = memberRepository.findById(ownerId).orElse(null);
+
+        List<Store> stores = owner.getStores();
+
+        for (Store store : stores) {
+            List<Partnership> partnershipList = store.getPartnershipList();
+            for (Partnership partnership : partnershipList) {
+                if (!partnership.isRead()) {
+                    return response.success(true, "새 협약요청이 존재합니다.", HttpStatus.OK);
+                }
+            }
+        }
+
+        return response.success(false, "새 협약요청이 존재하지 않습니다.", HttpStatus.OK);
+
+    }
 }
