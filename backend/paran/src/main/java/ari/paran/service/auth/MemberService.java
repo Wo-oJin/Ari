@@ -119,16 +119,12 @@ public class MemberService {
      */
     public boolean signupUser(SignupDto signUp) {
 
-        Member member = memberRepository.findByEmail(signUp.getEmail()).orElse(null);
-
-        /* 해당 이메일 계정이 이미 존재하는지 확인*/
-        /* oauth 필드를 검사하는 이유는, oauth 이메일과 일반 이메일의 중복을 허용하기 때문 */
-        if (member != null && member.getFromOauth() == 0) {
+        if (memberRepository.existsByEmail(signUp.getEmail())) {
             return false;
         }
 
         /* SignupDto를 통해 추가할 Member 객체 생성 및 저장 */
-        member = signUp.toMember(passwordEncoder);
+        Member member = signUp.toMember(passwordEncoder);
         memberRepository.save(member);
 
         return true;
@@ -249,14 +245,23 @@ public class MemberService {
     /**
      * 로그인
      */
-    public ResponseEntity<?> login(LoginDto loginDto) throws URISyntaxException {
+    public ResponseEntity<?> login(LoginDto loginDto, int authFrom) throws URISyntaxException {
 
-        log.info(loginDto.toString());
         Member member = memberRepository.findByEmail(loginDto.getEmail()).orElse(null);
 
-        if (member == null || !passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
-            if(member.getFromOauth() == 0)
-                return response.fail("아이디 또는 비밀번호를 잘못 입력", HttpStatus.BAD_REQUEST);
+        if(member == null){
+            return response.fail("아이디 또는 비밀번호를 잘못 입력하셨습니다.", HttpStatus.BAD_REQUEST);
+        }
+        else if(!passwordEncoder.matches(loginDto.getPassword(), member.getPassword())){
+            if(authFrom != member.getFromOauth()){
+                String[] authMethod = {"아리 플랫폼으로 ", "카카오 로그인 방식으로 ", "네이버 로그인 방식으로 "};
+                String msg = "이미 " + authMethod[member.getFromOauth()] +"가입한 이메일입니다.";
+
+                return response.fail(msg, HttpStatus.BAD_REQUEST);
+            }
+            else{
+                return response.fail("아이디 또는 비밀번호를 잘못 입력하셨습니다.", HttpStatus.BAD_REQUEST);
+            }
         }
 
         //1. Login id/pw를 기반으로 Authentication 객체 생성

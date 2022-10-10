@@ -89,7 +89,7 @@ public class JwtController {
             return response.invalidFields(Helper.refineErrors(errors));
         }
 
-        return memberService.login(loginDto);
+        return memberService.login(loginDto, 0);
     }
 
     @PostMapping("/reissue")
