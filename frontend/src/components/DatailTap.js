@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import { customAxios } from "../pages/customAxios";
+import { authState } from "../state";
 import "./DetailTap.css";
 const { kakao } = window;
 
@@ -14,6 +16,8 @@ export const DetailCoopTap = ({ data }) => {
   const [isOpened, setisOpened] = useState(false);
   const [target, setTarget] = useState();
   const [value, setValue] = useState();
+  const [auth, setAuth] = useRecoilState(authState);
+  console.log("현재 유저 상태: ", auth);
   console.log("in detailTap ", data);
   //로드되면 처음에 협력 가게 위치를 카카오맵 상에 마커로 찍기
   useEffect(() => {
@@ -176,7 +180,7 @@ export const DetailCoopTap = ({ data }) => {
                   <span key={i} className="EventSubText">
                     {i + 1}. {item.eventInfo}
                   </span>
-                  {testState ? (
+                  {auth === 4 && (
                     <button
                       data-key={i}
                       className="sendVerifyBtn"
@@ -184,7 +188,8 @@ export const DetailCoopTap = ({ data }) => {
                     >
                       사용 인증
                     </button>
-                  ) : (
+                  )}
+                  {auth === 1 && (
                     <button
                       data-key={i}
                       className="sendVerifyBtn"

@@ -50,6 +50,20 @@ const SideBar = ({ userState, nameState }) => {
         );
       case 3:
         return;
+      case 4:
+        return (
+          <div className="memberContainer">
+            <Link className="nicknameBtn" to="/myPageUser">
+              <div className="nicknameContainer">
+                <span>{nameState}</span>
+              </div>
+              <button>
+                <img alt="" src="../images/arrow.png"></img>
+              </button>
+            </Link>
+            <SidebarMenu userState={userState} />
+          </div>
+        );
       default:
         return;
     }
