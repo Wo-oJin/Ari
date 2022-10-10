@@ -1,5 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthRoute } from "./AuthRoute";
+import { useEffect } from "react";
+import { useReissue } from "./services/jwt/useReissue";
 
 import Main from "./components/Main";
 import LoginRegister from "./components/LoginRegister";
@@ -36,6 +38,22 @@ import Category from "./pages/Category";
 import SearchStore from "./pages/SearchStore";
 
 function App() {
+  const { reissue } = useReissue();
+
+  useEffect(() => {
+    // 새로고침 시 이전 타이머가 해제됨 -> 다시 reissue 요청 보내서 타이머 설정
+    const pageAccessedByReload =
+      (PerformanceNavigationTiming && PerformanceNavigationTiming.TYPE === 1) ||
+      window.performance
+        .getEntriesByType("navigation")
+        .map((nav) => nav.type)
+        .includes("reload");
+    if (pageAccessedByReload === true) {
+      // 새로고침 후
+      setTimeout(() => reissue(), 10000);
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
