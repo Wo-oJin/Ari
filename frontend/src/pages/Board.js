@@ -10,24 +10,46 @@ import { Link } from "react-router-dom";
 import ConvertDate from "../components/ConvertDate";
 import Loading from "../components/Loading";
 
-const BoardItem = ({ boardId, img, title, author, date }) => {
+const BoardItem = ({ boardId, img, title, author, date, completed }) => {
   //받아온 날짜를 보기 좋게 변환
   let convertDate;
   convertDate = ConvertDate(date);
 
   return (
-    <Link to={`/board/list/${boardId}`}>
-      <div className="itemContainer">
-        <div className="itemBox">
-          <img className="itemImg" src={`data:image/jpg;base64, ${img}`}></img>
-          <div className="itemContent">
-            <span className="itemTitle">{title}</span>
-            <span className="itemAuthor">{author}</span>
-            <span className="itemDate">{convertDate}</span>
+    <>
+      {completed ? (
+        <div className="completedItemContianer">
+          <div className="itemBox">
+            <img
+              className="itemImg"
+              src={`data:image/jpg;base64, ${img}`}
+            ></img>
+            <div className="itemContent">
+              <span className="itemTitle">{title}</span>
+              <span className="itemAuthor">{author}</span>
+              <span className="itemDate">{convertDate}</span>
+              <span className="itemComplete">협약 완료</span>
+            </div>
           </div>
         </div>
-      </div>
-    </Link>
+      ) : (
+        <Link to={`/board/list/${boardId}`}>
+          <div className="itemContainer">
+            <div className="itemBox">
+              <img
+                className="itemImg"
+                src={`data:image/jpg;base64, ${img}`}
+              ></img>
+              <div className="itemContent">
+                <span className="itemTitle">{title}</span>
+                <span className="itemAuthor">{author}</span>
+                <span className="itemDate">{convertDate}</span>
+              </div>
+            </div>
+          </div>
+        </Link>
+      )}
+    </>
   );
 };
 const Board = () => {
@@ -142,6 +164,7 @@ const Board = () => {
               title={item.title}
               author={item.author}
               date={item.createDate}
+              completed={item.completed}
             />
           );
         })
