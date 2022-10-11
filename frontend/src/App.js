@@ -50,7 +50,7 @@ function App() {
         .includes("reload");
     if (pageAccessedByReload === true) {
       // 새로고침 후
-      setTimeout(() => reissue(), 10000);
+      setTimeout(() => reissue(), 1000);
     }
   }, []);
 
