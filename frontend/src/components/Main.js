@@ -25,7 +25,7 @@ const Main = () => {
 
   useEffect(() => {
     if (auth === 2) {
-      setTimeout(() => checkNewPartnership(), 1000); // 바로 함수 실행하면 bearer 토큰값 못 가져올 수 있으므로 1초 뒤에 실행
+      checkNewPartnership();
     }
   }, []);
 

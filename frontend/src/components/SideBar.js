@@ -37,11 +37,7 @@ const SideBar = ({ userState, nameState, isNew }) => {
       case 2: //사장님
         return (
           <div className="memberContainer">
-            <Link
-              className="nicknameBtn"
-              to="/myPageOwner"
-              state={{ isNew: isNew }}
-            >
+            <Link className="nicknameBtn" to="/myPageOwner">
               <div className="nicknameContainer">
                 <span>{nameState}</span>
               </div>

@@ -12,22 +12,32 @@ const MyPageOwner = () => {
 
   const [coopEventNum, setCoopEventNum] = useState(0);
   const [privateEventNum, setPrivateEventNum] = useState(0);
+  const [isNewPartnership, setIsNewPartnership] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const { state } = useLocation();
+  const initialEventNum = async () => {
+    try {
+      await customAxios.get("/member/event-num").then((res) => {
+        setCoopEventNum(res.data.data[0]);
+        setPrivateEventNum(res.data.data[1]);
+        setIsLoaded(true);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const checkNewPartnership = async () => {
+    try {
+      const { data } = await customAxios.get("/partnership/check/new-request");
+      setIsNewPartnership(data.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
-    const initialEventNum = async () => {
-      try {
-        await customAxios.get("/member/event-num").then((res) => {
-          setCoopEventNum(res.data.data[0]);
-          setPrivateEventNum(res.data.data[1]);
-          setIsLoaded(true);
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    };
+    checkNewPartnership();
     initialEventNum();
   }, []);
 
@@ -35,7 +45,11 @@ const MyPageOwner = () => {
     { title: "내 가게 정보 수정", url: "/storeInfoEdit" },
     { title: "개인 이벤트 등록", url: "/storePrivateEventList" },
     { title: "찜 목록", url: "/storeFavoriteList" },
-    { title: "협약 요청 목록 ", url: "/partnership", isNew: state.isNew },
+    {
+      title: "협약 요청 목록 ",
+      url: "/partnership",
+      isNew: isNewPartnership,
+    },
     { title: "사장님 단체 채팅방", url: "/public/chat" },
   ];
 
