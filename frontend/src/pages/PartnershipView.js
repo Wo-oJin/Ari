@@ -61,8 +61,6 @@ const PartnershipView = () => {
     }
   };
 
-  const onDelete = async () => {};
-
   // 날짜 앞에 0 붙이기
   function addZero(date) {
     if (date < 10) {
@@ -129,15 +127,6 @@ const PartnershipView = () => {
                   </button>
                 </div>
               </div>
-            ) : data.partnershipState === "WAITING" &&
-              data.sentByMe === true ? (
-              <button
-                className="partnership-rightBtn"
-                style={{ background: "#D86F6F" }}
-                onClick={onDelete}
-              >
-                삭제
-              </button>
             ) : null}
           </div>
         </div>
