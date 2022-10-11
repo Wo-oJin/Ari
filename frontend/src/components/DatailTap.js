@@ -431,20 +431,20 @@ export const StoreInfoTap = ({ data }) => {
         </div>
         <div className="StoreContentR">
           <span className="StoreInfo">{data.ownerName} </span>
-          {data.openHour ? (
-            <span className="StoreInfo">{data.openHour} </span>
+          {data.openTime ? (
+            <span className="StoreInfo">{data.openTime} </span>
           ) : (
             <span className="StoreInfo">아직 등록된 정보가 없습니다.</span>
           )}
           {data.phoneNumber ? (
             <span className="StoreInfo">{data.phoneNumber} </span>
           ) : (
-            <span>아직 등록된 정보가 없습니다.</span>
+            <span className="StoreInfo">아직 등록된 정보가 없습니다.</span>
           )}
           {data.subText ? (
             <span className="StoreInfo">{data.subText} </span>
           ) : (
-            <span>아직 등록된 정보가 없습니다.</span>
+            <span className="StoreInfo">아직 등록된 정보가 없습니다.</span>
           )}
         </div>
       </div>
