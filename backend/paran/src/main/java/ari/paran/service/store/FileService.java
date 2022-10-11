@@ -32,10 +32,9 @@ public class FileService {
     @Autowired ArticleImgFilesRepository articleImgFilesRepository;
     @Autowired StoreImgFileRepository storeImgFileRepository;
 
-    @Value("${resource.path}")
-    private String resourceUrl;
+    private String resourceUrl = "/home/ec2-user/ari-files/default/";
 
-    private String detailUrl = "/Users/jsc/ari_files";
+    private String detailUrl = "/home/ec2-user/ari-files/";
 
 
     /**
@@ -120,7 +119,7 @@ public class FileService {
         List<String> base64Images = new ArrayList<>();
 
         if(storeImages.isEmpty()){
-            String fileUrl = System.getProperty("user.dir") + resourceUrl;
+            String fileUrl = resourceUrl;
 
             String fileName = "ari.PNG";
 
@@ -150,7 +149,7 @@ public class FileService {
         List<ArticleImgFile> articleImages = article.getImgFiles();
 
         if(articleImages.isEmpty()){
-            String fileUrl = System.getProperty("user.dir") + resourceUrl;
+            String fileUrl = resourceUrl;
             String fileName = "ari.PNG";
 
             FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
@@ -180,7 +179,7 @@ public class FileService {
             List<StoreImgFile> storeImages = store.getStoreImgFiles();
 
             if(storeImages.isEmpty()) {
-                String fileUrl = System.getProperty("user.dir") + resourceUrl;
+                String fileUrl = resourceUrl;
                 String fileName = "ari.PNG";
                 FileInputStream imageStream = new FileInputStream(fileUrl + fileName);
 
