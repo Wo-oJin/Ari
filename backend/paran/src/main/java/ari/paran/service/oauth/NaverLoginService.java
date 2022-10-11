@@ -87,7 +87,6 @@ public class NaverLoginService {
 
         Response response = request.send();
 
-
         // 2. 전달받은 user profile 분해 //
         String body = response.getBody();
 
@@ -97,10 +96,16 @@ public class NaverLoginService {
         Map<String, String> account = attributes.get("response");
 
         String email = account.get("email");
-        String nickname = Arrays.asList(email.split("@")).get(0);
-        String age = account.get("age").substring(0,2);
-        String gender = account.get("gender");
 
+        String nickname = null;
+        if(email!=null)
+            nickname = Arrays.asList(email.split("@")).get(0);
+        else
+            nickname = "user";
+
+        String age = account.get("age").substring(0,2);
+
+        String gender = account.get("gender");
         if(gender != null && gender.equals("M"))
             gender = "male";
         else if(gender != null && gender.equals("F"))
