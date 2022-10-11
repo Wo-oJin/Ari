@@ -349,7 +349,11 @@ const StoreInfoEdit = () => {
   } else {
     return (
       <>
-        <Header text="내 가게 정보 수정" back={true}></Header>
+        <Header
+          text="내 가게 정보 수정"
+          back={true}
+          url={"/myPageOwner"}
+        ></Header>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ width: "312px", marginTop: "26px" }}>
             {storeInfoArr.map((store, index) => {
