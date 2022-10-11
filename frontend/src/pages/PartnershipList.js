@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/PartnershipList.css";
 import { customAxios } from "./customAxios";
@@ -114,13 +114,18 @@ const PartnershipList = () => {
                     storeId: storeId,
                     partnershipId: request.partnershipId,
                     partnershipState: request.partnershipState,
-                    read: request.read,
                   }}
                 >
                   <div className="partnership-event-list-info">
-                    <p className="partnership-event-text-ellipsis">
-                      {request.storeName}
-                    </p>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <p className="partnership-event-text-ellipsis">
+                        {request.storeName}
+                      </p>
+                      {request.partnershipState === "WAITING" &&
+                      request.read === false ? (
+                        <span className="new">new</span>
+                      ) : null}
+                    </div>
                     {request.partnershipState === "WAITING" ? (
                       <img alt="" src="images/arrow_right.png"></img>
                     ) : request.partnershipState === "REJECTED" ? (
