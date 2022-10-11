@@ -55,3 +55,16 @@
   margin-bottom: 35px;
   cursor: pointer;
 }
+
+.new {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 31px;
+  height: 15px;
+  font-size: 10px;
+  color: #ffffff;
+  background: #386ffe;
+  border-radius: 10px;
+  margin-left: 10px;
+}
