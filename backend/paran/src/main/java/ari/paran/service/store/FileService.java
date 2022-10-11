@@ -34,8 +34,8 @@ public class FileService {
 
     private String resourceUrl = "/home/ec2-user/ari-files/default/";
 
-    private String detailUrl = "/home/ec2-user/ari-files/";
 
+    private String detailUrl = "/home/ec2-user/ari-files/";
 
     /**
      * 기존 가게의 이미지를 저장
