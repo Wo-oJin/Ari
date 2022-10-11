@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
 import Cookies from "universal-cookie";
 
-const SidebarMenu = (userState) => {
+const SidebarMenu = ({ userState, isNew }) => {
   const [auth, setAuth] = useRecoilState(authState);
   const [name, setName] = useRecoilState(nameState);
 
@@ -51,13 +51,18 @@ const SidebarMenu = (userState) => {
     { title: "공지사항", url: "/", service: false },
     { title: "내 가게 정보 관리", url: "/storeInfoEdit", service: true },
     { title: "제휴 맺기 게시판", url: "/board/list", service: true },
-    { title: "협력 제휴 관리", url: "/partnership", service: true },
+    {
+      title: "협력 제휴 관리",
+      url: "/partnership",
+      service: true,
+      isNew: isNew,
+    },
     { title: "사장님 단체 채팅방", url: "/public/chat", service: true },
     { title: "문의하기", url: "/", service: false },
   ];
   return (
     <div className="menuListContainer">
-      {userState.userState === 1 || userState.userState === 4
+      {userState === 1 || userState === 4
         ? menuForCustomer.map((item, index) => {
             if (item.service) {
               return (
@@ -83,7 +88,12 @@ const SidebarMenu = (userState) => {
             if (item.service) {
               return (
                 <Link to={item.url} key={index}>
-                  <span>{item.title}</span>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <span>{item.title}</span>
+                    {item.isNew === true ? (
+                      <span className="new">new</span>
+                    ) : null}
+                  </div>
                 </Link>
               );
             } else {

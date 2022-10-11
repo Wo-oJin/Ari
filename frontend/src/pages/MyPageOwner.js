@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/MyPageOwner.css";
 import { useRecoilState } from "recoil";
@@ -13,6 +13,8 @@ const MyPageOwner = () => {
   const [coopEventNum, setCoopEventNum] = useState(0);
   const [privateEventNum, setPrivateEventNum] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const { state } = useLocation();
 
   useEffect(() => {
     const initialEventNum = async () => {
@@ -33,7 +35,7 @@ const MyPageOwner = () => {
     { title: "내 가게 정보 수정", url: "/storeInfoEdit" },
     { title: "개인 이벤트 등록", url: "/storePrivateEventList" },
     { title: "찜 목록", url: "/storeFavoriteList" },
-    { title: "협약 요청 목록 ", url: "/partnership" },
+    { title: "협약 요청 목록 ", url: "/partnership", isNew: state.isNew },
     { title: "사장님 단체 채팅방", url: "/public/chat" },
   ];
 
@@ -84,7 +86,12 @@ const MyPageOwner = () => {
               <div style={{ marginBottom: "12px" }} key={index}>
                 <Link to={item.url}>
                   <div className="sub-info">
-                    <p style={{ marginLeft: "28px" }}>{item.title}</p>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <p style={{ marginLeft: "28px" }}>{item.title}</p>
+                      {item.isNew === true ? (
+                        <span className="new">new</span>
+                      ) : null}
+                    </div>
                     <img
                       style={{ marginRight: "20px" }}
                       alt=""
