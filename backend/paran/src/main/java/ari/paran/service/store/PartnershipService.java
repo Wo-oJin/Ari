@@ -58,6 +58,7 @@ public class PartnershipService {
                 .partnershipState(PartnershipState.WAITING)
                 .article(boardRepository.findById(requestDto.getArticleId()).orElse(null))
                 .isFrom(true)
+                .isRead(true)
                 .build();
 
         /*2-1. dto의 정보를 기반으로 새로운 제휴 객체 생성1(toStore)*/

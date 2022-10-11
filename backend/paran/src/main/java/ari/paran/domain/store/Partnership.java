@@ -46,7 +46,7 @@ public class Partnership {
     @Builder
     private Partnership(Store store, String StoreName, Long partnerId, String partnerName,
                         String info, LocalDate startDate, LocalDate finishDate, PartnershipState partnershipState,
-                        Long counterpartId, Article article, boolean isFrom){
+                        Long counterpartId, Article article, boolean isFrom, boolean isRead){
         this.store = store;
         this.StoreName = StoreName;
         this.partnerId = partnerId;
@@ -58,6 +58,7 @@ public class Partnership {
         this.counterpartId = counterpartId;
         this.article = article;
         this.isFrom = isFrom;
+        this.isRead = isRead;
     }
 
     public void changeReadStatus() {
