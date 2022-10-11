@@ -257,12 +257,14 @@ public class StoreService {
         else
             stores = storeRepository.findByCategory(Category.fromString(code));
 
+        Collections.sort(stores, (s1, s2) -> s1.getName().compareTo(s2.getName()));
         return getStoreRandomEvents(stores);
     }
 
     public List<SimpleStoreDto> findStoreByKeyword(String keyword) throws IOException {
         List<Store> stores = storeRepository.findStoreByKeyword(keyword);
 
+        Collections.sort(stores, (s1, s2) -> s1.getName().compareTo(s2.getName()));
         return getStoreRandomEvents(stores);
     }
 
@@ -276,6 +278,7 @@ public class StoreService {
             }
         }
 
+        Collections.shuffle(stores);
         return getStoreRandomEvents(stores);
     }
 
