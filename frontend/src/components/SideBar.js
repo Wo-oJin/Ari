@@ -23,14 +23,11 @@ const SideBar = ({ userState, nameState, isNew }) => {
       case 1: //손님
         return (
           <div className="memberContainer">
-            <Link className="nicknameBtn" to="/myPageUser">
+            <div className="nicknameBtn" style={{ cursor: "default" }}>
               <div className="nicknameContainer">
                 <span>{nameState}</span>
               </div>
-              <button>
-                <img alt="" src="../images/arrow.png"></img>
-              </button>
-            </Link>
+            </div>
             <SidebarMenu userState={userState} />
           </div>
         );
