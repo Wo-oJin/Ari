@@ -61,6 +61,8 @@ function App() {
         <Route path="/detail/:storeId" element={<Detail />} />
         <Route path="/store/category/:categoryId" element={<Category />} />
         <Route path="/searchStore" element={<SearchStore />} />
+        <Route path="/auth/kakao/login" element={<Kakao />} />
+        <Route path="/auth/naver/login" element={<Naver />} />
 
         {/* 비회원 페이지 권한 설정 : auth=0 */}
         <Route
@@ -71,8 +73,6 @@ function App() {
         <Route path="/loginUser" element={AuthRoute(0, <LoginUser />)} />
         <Route path="/loginOwner" element={AuthRoute(0, <LoginOwner />)} />
         {/* <Route path="/redirectLogin" element={<RedirectLogin />} /> */}
-        <Route path="/auth/kakao/login" element={AuthRoute(0, <Kakao />)} />
-        <Route path="/auth/naver/login" element={AuthRoute(0, <Naver />)} />
         <Route path="/signupUser" element={AuthRoute(0, <SignupUser />)} />
         <Route path="/signupOwner" element={AuthRoute(0, <SignupOwner />)} />
         <Route path="/signupOwner2" element={AuthRoute(0, <SignupOwner2 />)} />
