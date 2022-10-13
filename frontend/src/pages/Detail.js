@@ -59,9 +59,9 @@ const Detail = () => {
   const SwitchTap = (i, data) => {
     switch (i) {
       case "0":
-        return <DetailCoopTap data={data} />;
-      case "1":
         return <PrivateEventTap data={data} />;
+      case "1":
+        return <DetailCoopTap data={data} />;
       case "2":
         return <StoreInfoTap data={data} />;
       default:
@@ -77,7 +77,7 @@ const Detail = () => {
       <div className="Wrapper">
         <img
           className="StoreImg"
-          src={`data:image/jpg;base64, ${data.images}`}
+          src={`data:image/jpg;base64, ${data.images[0]}`}
           alt="이미지"
         ></img>
       </div>
@@ -102,17 +102,18 @@ const Detail = () => {
       <div className="DetailContentModal">
         <span className="ContentTitle">{data.name}</span>
         <div key={0} className="LikeContainer">
+          <span className="LikeText">찜 목록에 추가</span>
           {isFavorited ? (
             <button className="UnLikeBtn" onClick={onLikeClick}>
-              <FcLike size={"1.2em"}></FcLike>
+              <FcLike size={"1.8em"}></FcLike>
             </button>
           ) : (
             <button className="LikeBtn" onClick={onLikeClick}>
-              <FcLikePlaceholder size={"1.2em"}></FcLikePlaceholder>
+              <FcLikePlaceholder size={"1.8em"}></FcLikePlaceholder>
             </button>
           )}
-          <span className="LikeText">찜 목록에 추가</span>
         </div>
+
         <div className="LabelContainer">
           {data.partners.length > 0 ? (
             <span className="Label">
@@ -126,20 +127,20 @@ const Detail = () => {
         <div className="SwitchTap">
           {tapIndex === "0" ? (
             <div id="0" className="TapBold" onClick={onTapClick}>
-              함께하는 이벤트
+              개인 이벤트
             </div>
           ) : (
             <div id="0" className="Tap" onClick={onTapClick}>
-              함께하는 이벤트
+              개인 이벤트
             </div>
           )}
           {tapIndex === "1" ? (
             <div id="1" className="TapBold" onClick={onTapClick}>
-              개인 이벤트
+              함께하는 이벤트
             </div>
           ) : (
             <div id="1" className="Tap" onClick={onTapClick}>
-              개인 이벤트
+              함께하는 이벤트
             </div>
           )}
           {tapIndex === "2" ? (

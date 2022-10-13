@@ -177,8 +177,11 @@ export const DetailCoopTap = ({ data }) => {
             data.partners[index].infos.map((item, i) => {
               return (
                 <div className="eventBox">
-                  <span key={i} className="EventSubText">
-                    {i + 1}. {item.eventInfo}
+                  <span key={i} className="EventSubText1">
+                    {i + 1}.
+                  </span>
+                  <span key={i} className="EventSubText2">
+                    {item.eventInfo}
                   </span>
                   {auth === 4 && (
                     <button
@@ -349,8 +352,11 @@ export const PrivateEventTap = ({ data }) => {
           data.events.map((item, i) => {
             return (
               <div className="eventBox">
-                <span className="PrivateEventSubText" key={i}>
-                  {i + 1}. {item.info}
+                <span className="PrivateEventSubText1" key={i}>
+                  {i + 1}.
+                </span>
+                <span className="PrivateEventSubText2" key={i}>
+                  {item.info}
                 </span>
                 {testState ? (
                   <button
@@ -424,27 +430,27 @@ export const StoreInfoTap = ({ data }) => {
       <span className="EventTitle">가게 정보:</span>
       <div className="StoreContainer">
         <div className="StoreContentL">
-          <span className="StoreInfo">상호명: </span>
-          <span className="StoreInfo">운영시간: </span>
-          <span className="StoreInfo">전화번호: </span>
-          <span className="StoreInfo">한 줄 소개: </span>
+          <span className="StoreInfoLeft">상호명: </span>
+          <span className="StoreInfoLeft">운영시간: </span>
+          <span className="StoreInfoLeft">전화번호: </span>
+          <span className="StoreInfoLeft">한 줄 소개: </span>
         </div>
         <div className="StoreContentR">
-          <span className="StoreInfo">{data.ownerName} </span>
+          <span className="StoreInfoRight">{data.ownerName} </span>
           {data.openTime ? (
-            <span className="StoreInfo">{data.openTime} </span>
+            <span className="StoreInfoRight">{data.openTime} </span>
           ) : (
-            <span className="StoreInfo">아직 등록된 정보가 없습니다.</span>
+            <span className="StoreInfoRight">아직 등록된 정보가 없습니다.</span>
           )}
           {data.phoneNumber ? (
-            <span className="StoreInfo">{data.phoneNumber} </span>
+            <span className="StoreInfoRight">{data.phoneNumber} </span>
           ) : (
-            <span className="StoreInfo">아직 등록된 정보가 없습니다.</span>
+            <span className="StoreInfoRight">아직 등록된 정보가 없습니다.</span>
           )}
           {data.subText ? (
-            <span className="StoreInfo">{data.subText} </span>
+            <span className="StoreInfoRight">{data.subText} </span>
           ) : (
-            <span className="StoreInfo">아직 등록된 정보가 없습니다.</span>
+            <span className="StoreInfoRight">아직 등록된 정보가 없습니다.</span>
           )}
         </div>
       </div>
