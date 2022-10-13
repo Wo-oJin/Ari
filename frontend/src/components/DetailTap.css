@@ -1,4 +1,5 @@
 .TapContainer {
+  width: 330px;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -49,10 +50,16 @@
   font-weight: 600;
   margin-bottom: 5px;
 }
-.EventSubText {
+.EventSubText1 {
   width: 303px;
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.EventSubText2 {
+  width: 303px;
+  font-size: 15px;
   overflow: hidden;
+  white-space: pre;
   text-overflow: ellipsis;
   word-break: keep-all;
 }
@@ -68,9 +75,16 @@
   width: 320px;
   height: 180px;
 }
-.PrivateEventSubText {
+.PrivateEventSubText1 {
+  white-space: pre;
   width: 303px;
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.PrivateEventSubText2 {
+  white-space: pre;
+  width: 303px;
+  font-size: 15px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -80,21 +94,24 @@
 }
 .StoreContainer {
   display: flex;
+  height: auto;
 }
 .StoreContentL {
   display: flex;
   flex-direction: column;
   width: 80px;
-  height: 100px;
 }
 .StoreContentR {
   display: flex;
   flex-direction: column;
-  width: 208px;
-  height: 100px;
+  width: 240px;
 }
-.StoreInfo {
-  width: 303px;
+.StoreInfoLeft {
+  width: 100%;
+  font-size: 13px;
+}
+.StoreInfoRight {
+  width: 100%;
   font-size: 13px;
 }
 .eventBox {

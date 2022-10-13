@@ -37,12 +37,18 @@ button {
   justify-content: center;
   align-items: center;
   width: 337px;
-  height: 166px;
+  height: 190px;
   border-radius: 20px;
   box-shadow: 0px 4px 4px rgb(174, 174, 174);
   z-index: 10;
 }
-
+.Label {
+  background-color: #ffea26;
+  margin-right: 5px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+}
 .ContentTitle {
   font-size: 24px;
   font-weight: 700;
@@ -52,28 +58,23 @@ button {
 }
 .LikeContainer {
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 .LikeText {
+  display: block;
   font-size: 13px;
-  margin-bottom: 2px;
+  margin-top: 5px;
   margin-left: 5px;
 }
 
 .LabelContainer {
-  font-size: 8px;
-  margin-top: 25px;
-}
-
-.LabelContainer span {
-  background-color: #ffea26;
-  padding: 5px 7px;
-  border-radius: 20px;
-  margin: 0 4px;
+  font-size: 10px;
+  margin-top: 15px;
 }
 
 .BottomContainer {
-  margin-top: 160px;
+  margin-top: 170px;
   width: 100%;
   min-height: 450px;
 }
