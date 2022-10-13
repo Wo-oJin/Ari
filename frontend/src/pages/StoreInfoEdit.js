@@ -349,7 +349,11 @@ const StoreInfoEdit = () => {
   } else {
     return (
       <>
-        <Header text="내 가게 정보 수정" back={true}></Header>
+        <Header
+          text="내 가게 정보 수정"
+          back={true}
+          url={"/myPageOwner"}
+        ></Header>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div style={{ width: "312px", marginTop: "26px" }}>
             {storeInfoArr.map((store, index) => {
@@ -538,7 +542,8 @@ const StoreInfoEdit = () => {
           <Formbox>
             <div className="edit-intro">가게 한 줄 소개:</div>
             <div className="edit-box">
-              <input
+              <textarea
+                style={{ height: "26px" }}
                 className="edit-input"
                 name="subText"
                 value={uSubText || ""}
@@ -546,7 +551,7 @@ const StoreInfoEdit = () => {
                 onChange={(e) => setuSubText(e.target.value)}
                 placeholder="가게 한 줄 소개 입력"
                 autoComplete="off"
-                maxLength="40"
+                maxLength="250"
               />
               <img alt="" src="images/edit_icon.png"></img>
             </div>

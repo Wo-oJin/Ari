@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/PartnershipList.css";
 import { customAxios } from "./customAxios";
@@ -7,6 +7,7 @@ import Loading from "../components/Loading";
 
 const PartnershipList = () => {
   const [requestList, setRequestList] = useState([]);
+  const [isSentByMe, setIsSentByMe] = useState(false); // 내가 한 요청의 경우 new 표시 안 띄우기 위한 flag
   const [isLoaded, setIsLoaded] = useState(false);
   const taps = ["내가 받은 요청", "내가 한 요청", "처리된 요청"];
   const [tapIndex, setTapIndex] = useState("0"); // 탭 인덱스
@@ -53,6 +54,7 @@ const PartnershipList = () => {
             .get(`/partnership/send?storeId=${storeId}`)
             .then((res) => {
               setRequestList(res.data.data);
+              setIsSentByMe(true);
             });
         } catch (e) {
           console.log(e);
@@ -114,13 +116,19 @@ const PartnershipList = () => {
                     storeId: storeId,
                     partnershipId: request.partnershipId,
                     partnershipState: request.partnershipState,
-                    read: request.read,
                   }}
                 >
                   <div className="partnership-event-list-info">
-                    <p className="partnership-event-text-ellipsis">
-                      {request.storeName}
-                    </p>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <p className="partnership-event-text-ellipsis">
+                        {request.storeName}
+                      </p>
+                      {request.partnershipState === "WAITING" &&
+                      isSentByMe === false &&
+                      request.read === false ? (
+                        <span className="new">new</span>
+                      ) : null}
+                    </div>
                     {request.partnershipState === "WAITING" ? (
                       <img alt="" src="images/arrow_right.png"></img>
                     ) : request.partnershipState === "REJECTED" ? (

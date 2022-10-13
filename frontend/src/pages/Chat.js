@@ -33,8 +33,9 @@ const Chat = () => {
   //페이지 렌더링 되기 전에 웹소켓 connect
   useEffect(() => {
     //웹소켓 end point 설정
-    socket = new SockJS("http://localhost:8080/ws");
-    //socket = new SockJS("http://paran-ari.com:8080/ws");
+    socket = new SockJS("http://paran-ari.com:8080/ws");
+    //socket = new SockJS("http://13.209.105.171:8080/ws");
+    //socket = new SockJS("http://localhost:8080/ws");
     stompClient = Stomp.over(socket);
     connect();
 

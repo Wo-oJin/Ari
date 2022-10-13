@@ -88,10 +88,18 @@ public class KakaoLoginService {
         Map<String, String> account = attributes.get("kakao_account");
 
         String email = account.get("email");
-        String nickname = Arrays.asList(email.split("@")).get(0);
-        String age = account.get("age_range").substring(0,2);
-        String gender = account.get("gender");
 
+        String nickname = null;
+        if(email!=null)
+            nickname = Arrays.asList(email.split("@")).get(0);
+        else
+            nickname = "user";
+
+        String age = null;
+        if(account.get("age_range") != null)
+            age = account.get("age_range").substring(0,2);
+
+        String gender = account.get("gender");
         if(gender != null && gender.equals("M"))
             gender = "male";
         else if(gender != null && gender.equals("F"))

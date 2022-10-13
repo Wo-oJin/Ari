@@ -70,7 +70,7 @@ const StoreEditPrivateEvent = () => {
             className="eventForm"
             value={newInfo}
             onChange={(e) => setNewInfo(e.target.value)}
-            maxLength="152"
+            maxLength="250"
           ></textarea>
           <img
             style={{

@@ -4,7 +4,7 @@ import "../styles/SidebarMenu.css";
 import { Link } from "react-router-dom";
 import SidebarMenu from "./SidebarMenu";
 
-const SideBar = ({ userState, nameState }) => {
+const SideBar = ({ userState, nameState, isNew }) => {
   const userSideBar = (userState) => {
     switch (userState) {
       case 0: //비회원
@@ -23,14 +23,11 @@ const SideBar = ({ userState, nameState }) => {
       case 1: //손님
         return (
           <div className="memberContainer">
-            <Link className="nicknameBtn" to="/myPageUser">
+            <div className="nicknameBtn" style={{ cursor: "default" }}>
               <div className="nicknameContainer">
                 <span>{nameState}</span>
               </div>
-              <button>
-                <img alt="" src="../images/arrow.png"></img>
-              </button>
-            </Link>
+            </div>
             <SidebarMenu userState={userState} />
           </div>
         );
@@ -45,7 +42,7 @@ const SideBar = ({ userState, nameState }) => {
                 <img alt="" src="../images/arrow.png"></img>
               </button>
             </Link>
-            <SidebarMenu userState={userState} />
+            <SidebarMenu userState={userState} isNew={isNew} />
           </div>
         );
       case 3:
