@@ -58,9 +58,7 @@
 .EventSubText2 {
   width: 303px;
   font-size: 15px;
-  overflow: hidden;
-  white-space: pre;
-  text-overflow: ellipsis;
+  white-space: pre-wrap;
   word-break: keep-all;
 }
 .StoreLocation {
@@ -76,17 +74,16 @@
   height: 180px;
 }
 .PrivateEventSubText1 {
-  white-space: pre;
+  white-space: pre-wrap;
   width: 303px;
   font-size: 15px;
   font-weight: 600;
 }
 .PrivateEventSubText2 {
-  white-space: pre;
+  white-space: pre-wrap;
   width: 303px;
   font-size: 15px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-break: break-all;
 }
 .PrivateEventContent {
   display: flex;
@@ -113,6 +110,7 @@
 .StoreInfoRight {
   width: 100%;
   font-size: 13px;
+  white-space: pre;
 }
 .eventBox {
   display: flex;
