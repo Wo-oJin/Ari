@@ -61,9 +61,15 @@
 }
 
 .ctContentInfo {
+  text-align: end;
+  display: inline-block;
   font-size: 10px;
-  height: 15px;
+  width: 300px;
+  height: 18px;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ctContentPeriod {

@@ -148,7 +148,7 @@ const Category = () => {
                   >
                     <div className="ctContentBox">
                       <span className="ctContentName">{item.storeName}</span>
-                      <span className="ctContentInfo">{item.eventContent}</span>
+                      <div className="ctContentInfo">{item.eventContent}</div>
                       <span className="ctContentPeriod">
                         {item.eventPeriod}
                       </span>
