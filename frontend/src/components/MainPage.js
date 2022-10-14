@@ -190,11 +190,16 @@ const MainPage = ({ onClick }) => {
               {storeList.map((item, index) => {
                 return (
                   <Link to={`/detail/${item.storeId}`} key={index}>
-                    <div className="mainPage-banner-box">
-                      <img
+                    <div
+                      style={{
+                        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
+                      }}
+                      className="mainPage-banner-box"
+                    >
+                      {/* <img
                         alt=""
                         src={`data:image/;base64,${item.storeImage}`}
-                      ></img>
+                      ></img> */}
                       <p className="mainPage-banner-intro">
                         {item.storeName}
                         <br />

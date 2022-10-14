@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import { authState, nameState } from "../../state";
 import { useReissue } from "../jwt/useReissue";
 import Cookies from "universal-cookie";
+import Loading from "../../components/Loading";
 
 const Kakao = () => {
   const [auth, setAuth] = useRecoilState(authState);
@@ -101,7 +102,7 @@ const Kakao = () => {
     sendCode();
   }, []);
 
-  return <>로딩중...</>;
+  return <Loading></Loading>;
 };
 
 export default Kakao;

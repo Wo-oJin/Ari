@@ -64,7 +64,6 @@ button {
 
 .side_btn {
   padding: 0;
-  background-color: white;
   text-decoration: none;
   border: none;
   position: absolute;
@@ -74,6 +73,16 @@ button {
   height: 44px;
   border-radius: 50%;
   box-shadow: 2px 2px gainsboro;
+  z-index: 10;
+}
+
+.side_btn2 {
+  padding: 0;
+  text-decoration: none;
+  border: none;
+  position: absolute;
+  top: 55px;
+  left: 40px;
   z-index: 10;
 }
 
