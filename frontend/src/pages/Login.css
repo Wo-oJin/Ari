@@ -13,15 +13,16 @@
   align-items: center;
 }
 
-.inputBox {
+.login-inputBox {
   width: 230px;
   line-height: 22px;
   border: 1px solid #dcdcdc;
   border-radius: 5px;
   padding: 9px 14px;
+  font-size: 16px;
 }
 
-.inputBox::placeholder {
+.login-inputBox::placeholder {
   color: #a3a3a3;
 }
 
@@ -40,6 +41,7 @@
   margin-bottom: 10px;
   background: #386ffe;
   cursor: pointer;
+  font-size: 18px;
 }
 
 .loginButton:disabled {
@@ -55,7 +57,7 @@
 .login-sub-menu {
   display: flex;
   justify-content: space-between;
-  width: 183px;
-  font-size: 12px;
+  width: 200px;
+  font-size: 14px;
   color: #4e514f;
 }

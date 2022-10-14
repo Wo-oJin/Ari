@@ -139,7 +139,7 @@ const Login = () => {
         <div className="login-inputContainer">
           <Formbox>
             <input
-              className="inputBox"
+              className="login-inputBox"
               name="email"
               value={email}
               type="email"
@@ -151,7 +151,7 @@ const Login = () => {
           </Formbox>
           <Formbox>
             <input
-              className="inputBox"
+              className="login-inputBox"
               name="password"
               value={password}
               type="password"
