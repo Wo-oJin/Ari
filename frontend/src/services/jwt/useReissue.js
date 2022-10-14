@@ -46,7 +46,7 @@ export const useReissue = () => {
             // 토큰을 secure http only 쿠키에 저장
             cookies.set("refreshToken", refreshToken, {
               path: "/", // 모든 페이지에서 쿠키 사용
-              maxAge: refreshTokenExpireIn, // 쿠키의 만료 시간을 밀리초 단위로 설정
+              maxAge: 60 * 60 * 24 * 30 * 12, // 쿠키의 만료 시간을 밀리초 단위로 설정
               // sameSite: "none", // 모든 도메인에서 쿠키를 전송하고 사용
               // secure: true, // HTTPS를 통해서만 접근
               // domain: "localhost", // secure 옵션을 사용하면 같은 도메인을 공유해야 함
