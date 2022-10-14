@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
 import MainPage from "./MainPage";
 import { customAxios } from "../pages/customAxios";
+import { Link } from "react-router-dom";
 
 const Main = () => {
   // 0:비회원 1:손님 2:사장님 3:관리자
@@ -44,10 +45,21 @@ const Main = () => {
           </>
         )}
       </div>
+      {auth === 0 ? (
+        <Link to={"/loginRegister"}>
+          <button
+            className="side_btn2"
+            style={{ fontWeight: "600", cursor: "pointer" }}
+          >
+            로그인/회원가입
+          </button>
+        </Link>
+      ) : (
+        <button className="side_btn" onClick={onClick}>
+          <img alt="" src="images/button.png"></img>
+        </button>
+      )}
 
-      <button className="side_btn" onClick={onClick}>
-        <img alt="" src="images/button.png"></img>
-      </button>
       {isOpend ? (
         <SideBar userState={auth} nameState={name} isNew={isNewPartnership} />
       ) : null}

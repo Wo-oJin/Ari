@@ -42,10 +42,20 @@ const SidebarMenu = ({ userState, isNew }) => {
     }
   };
 
+  const onClickHelp = () => {
+    console.log("11");
+    window.open("https://pf.kakao.com/_RyZKxj/chat");
+  };
+
   const menuForCustomer = [
     { title: "공지사항", url: "/", service: false },
     { title: "찜 목록", url: "/userFavoriteList", service: true },
-    { title: "문의하기", url: "/", service: false },
+    {
+      title: "문의하기",
+      url: "/",
+      onClick: onClickHelp,
+      service: true,
+    },
   ];
   const menuForBusiness = [
     { title: "공지사항", url: "/", service: false },
@@ -58,7 +68,12 @@ const SidebarMenu = ({ userState, isNew }) => {
       isNew: isNew,
     },
     { title: "사장님 단체 채팅방", url: "/public/chat", service: true },
-    { title: "문의하기", url: "/", service: false },
+    {
+      title: "문의하기",
+      url: "/",
+      service: true,
+      onClick: onClickHelp,
+    },
   ];
   return (
     <div className="menuListContainer">
@@ -67,7 +82,7 @@ const SidebarMenu = ({ userState, isNew }) => {
             if (item.service) {
               return (
                 <Link to={item.url} key={index}>
-                  <span>{item.title}</span>
+                  <span onClick={item.onClick}>{item.title}</span>
                 </Link>
               );
             } else {
@@ -89,7 +104,7 @@ const SidebarMenu = ({ userState, isNew }) => {
               return (
                 <Link to={item.url} key={index}>
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <span>{item.title}</span>
+                    <span onClick={item.onClick}>{item.title}</span>
                     {item.isNew === true ? (
                       <span className="new">new</span>
                     ) : null}
