@@ -44,7 +44,7 @@ const SidebarMenu = ({ userState, isNew }) => {
 
   const onClickHelp = () => {
     console.log("11");
-    window.open("https://pf.kakao.com/_RyZKxj/chat");
+    window.open("http://pf.kakao.com/_LjxcCxj/chat");
   };
 
   const menuForCustomer = [
