@@ -22,41 +22,43 @@ export const DetailCoopTap = ({ data }) => {
   //로드되면 처음에 협력 가게 위치를 카카오맵 상에 마커로 찍기
   useEffect(() => {
     if (data.partners.length > 0) {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(37.2775551775579, 127.04387899081716),
-        level: 4,
-      };
-      const map = new kakao.maps.Map(container, options);
-      let geoCoder = new kakao.maps.services.Geocoder();
-      geoCoder.addressSearch(
-        data.partners[index].roadAddress,
-        function (result, status) {
-          // 정상적으로 검색이 완료됐으면
-          if (status === kakao.maps.services.Status.OK) {
-            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+      if (kakao !== undefined) {
+        const container = document.getElementById("map");
+        const options = {
+          center: new kakao.maps.LatLng(37.2775551775579, 127.04387899081716),
+          level: 4,
+        };
+        const map = new kakao.maps.Map(container, options);
+        let geoCoder = new kakao.maps.services.Geocoder();
+        geoCoder.addressSearch(
+          data.partners[index].roadAddress,
+          function (result, status) {
+            // 정상적으로 검색이 완료됐으면
+            if (status === kakao.maps.services.Status.OK) {
+              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-            // 결과값으로 받은 위치를 마커로 표시합니다
-            var marker = new kakao.maps.Marker({
-              map: map,
-              position: coords,
-              clickable: true,
-            });
+              // 결과값으로 받은 위치를 마커로 표시합니다
+              var marker = new kakao.maps.Marker({
+                map: map,
+                position: coords,
+                clickable: true,
+              });
 
-            // 인포윈도우로 장소에 대한 설명을 표시합니다
-            var customOverlay = new kakao.maps.CustomOverlay({
-              content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.partners[index].partnerName}</div>`,
-              removable: false,
-              position: coords,
-            });
-            customOverlay.setMap(map);
-            map.panTo(coords);
-            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-          } else {
-            console.log("error");
+              // 인포윈도우로 장소에 대한 설명을 표시합니다
+              var customOverlay = new kakao.maps.CustomOverlay({
+                content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.partners[index].partnerName}</div>`,
+                removable: false,
+                position: coords,
+              });
+              customOverlay.setMap(map);
+              map.panTo(coords);
+              // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+            } else {
+              console.log("error");
+            }
           }
-        }
-      );
+        );
+      }
     }
   }, [index]);
   //버튼 클릭시 사용 인증 전송
@@ -207,7 +209,13 @@ export const DetailCoopTap = ({ data }) => {
         </div>
         <div className="StoreLocation">
           <span>위치 안내:</span>
-          <div id="map" className="map"></div>
+          {kakao === undefined ? (
+            <div>
+              {data.address.roadAddress}, {data.address.detailAddress}
+            </div>
+          ) : (
+            <div id="map" className="map"></div>
+          )}
         </div>
       </div>
     );
@@ -228,38 +236,43 @@ export const PrivateEventTap = ({ data }) => {
   const [value, setValue] = useState();
 
   useEffect(() => {
-    const container = document.getElementById("map");
-    const options = {
-      center: new kakao.maps.LatLng(37.2775551775579, 127.04387899081716),
-      level: 4,
-    };
-    const map = new kakao.maps.Map(container, options);
-    let geoCoder = new kakao.maps.services.Geocoder();
-    geoCoder.addressSearch(data.address.roadAddress, function (result, status) {
-      // 정상적으로 검색이 완료됐으면
-      if (status === kakao.maps.services.Status.OK) {
-        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+    if (kakao !== undefined) {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(37.2775551775579, 127.04387899081716),
+        level: 4,
+      };
+      const map = new kakao.maps.Map(container, options);
+      let geoCoder = new kakao.maps.services.Geocoder();
+      geoCoder.addressSearch(
+        data.address.roadAddress,
+        function (result, status) {
+          // 정상적으로 검색이 완료됐으면
+          if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-          map: map,
-          position: coords,
-          clickable: true,
-        });
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            var marker = new kakao.maps.Marker({
+              map: map,
+              position: coords,
+              clickable: true,
+            });
 
-        // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var customOverlay = new kakao.maps.CustomOverlay({
-          content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.name}</div>`,
-          removable: false,
-          position: coords,
-        });
-        customOverlay.setMap(map);
-        map.panTo(coords);
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-      } else {
-        console.log("error");
-      }
-    });
+            // 인포윈도우로 장소에 대한 설명을 표시합니다
+            var customOverlay = new kakao.maps.CustomOverlay({
+              content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.name}</div>`,
+              removable: false,
+              position: coords,
+            });
+            customOverlay.setMap(map);
+            map.panTo(coords);
+            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+          } else {
+            console.log("error");
+          }
+        }
+      );
+    }
   }, []);
   console.log("in private ", data);
 
@@ -384,7 +397,13 @@ export const PrivateEventTap = ({ data }) => {
       </div>
       <div className="StoreLocation">
         <span>위치 안내:</span>
-        <div id="map" className="map"></div>
+        {kakao === undefined ? (
+          <div>
+            {data.address.roadAddress}, {data.address.detailAddress}
+          </div>
+        ) : (
+          <div id="map" className="map"></div>
+        )}
       </div>
     </div>
   );
@@ -392,38 +411,43 @@ export const PrivateEventTap = ({ data }) => {
 
 export const StoreInfoTap = ({ data }) => {
   useEffect(() => {
-    const container = document.getElementById("map");
-    const options = {
-      center: new kakao.maps.LatLng(37.2775551775579, 127.04387899081716),
-      level: 4,
-    };
-    const map = new kakao.maps.Map(container, options);
-    let geoCoder = new kakao.maps.services.Geocoder();
-    geoCoder.addressSearch(data.address.roadAddress, function (result, status) {
-      // 정상적으로 검색이 완료됐으면
-      if (status === kakao.maps.services.Status.OK) {
-        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+    if (kakao !== undefined) {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(37.2775551775579, 127.04387899081716),
+        level: 4,
+      };
+      const map = new kakao.maps.Map(container, options);
+      let geoCoder = new kakao.maps.services.Geocoder();
+      geoCoder.addressSearch(
+        data.address.roadAddress,
+        function (result, status) {
+          // 정상적으로 검색이 완료됐으면
+          if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-          map: map,
-          position: coords,
-          clickable: true,
-        });
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            var marker = new kakao.maps.Marker({
+              map: map,
+              position: coords,
+              clickable: true,
+            });
 
-        // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var customOverlay = new kakao.maps.CustomOverlay({
-          content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.name}</div>`,
-          removable: false,
-          position: coords,
-        });
-        customOverlay.setMap(map);
-        map.panTo(coords);
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-      } else {
-        console.log("error");
-      }
-    });
+            // 인포윈도우로 장소에 대한 설명을 표시합니다
+            var customOverlay = new kakao.maps.CustomOverlay({
+              content: `<div style="background-color: #ffffff;border-radius: 20px;border: 2px solid #386ffe; padding: 3px 10px;margin-bottom:120px;">${data.name}</div>`,
+              removable: false,
+              position: coords,
+            });
+            customOverlay.setMap(map);
+            map.panTo(coords);
+            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+          } else {
+            console.log("error");
+          }
+        }
+      );
+    }
   }, []);
   return (
     <div className="TapContainer">
@@ -456,7 +480,13 @@ export const StoreInfoTap = ({ data }) => {
       </div>
       <div className="StoreLocation">
         <span>위치 안내:</span>
-        <div id="map" className="map"></div>
+        {kakao === undefined ? (
+          <div>
+            {data.address.roadAddress}, {data.address.detailAddress}
+          </div>
+        ) : (
+          <div id="map" className="map"></div>
+        )}
       </div>
     </div>
   );
