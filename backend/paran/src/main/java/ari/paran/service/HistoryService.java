@@ -44,35 +44,38 @@ public class HistoryService {
         }
     }
 
-    public ResponseEntity<?> recordButtonHistory(Long memberId, String storeName, String eventInfo) {
+    public ResponseEntity<?> recordHistory(Long memberId, String storeName, String eventInfo) {
 
         Member member = memberRepository.findById(memberId).orElse(null);
 
-        History history = new History(member, storeName, eventInfo);
-
-        historyRepository.save(history);
-
-        return response.success();
-    }
-
-    /**
-     * 가입시 인증코드를 이용한 방문기록 api
-     */
-    public ResponseEntity<?> recordCodeHistory(Long memberId, String storeName, String eventInfo) {
-        /*1. 요청보낸 member의 id를 통해 해당 member 객체를 가져온다.*/
-        Member member = memberRepository.findById(memberId).orElse(null);
-
-        /*2. 현재 시간을 "yyyy-MM-dd HH:mm:ss" 형식의 String 형식으로 저장한다.*/
+        /*현재 시간을 "yyyy-MM-dd HH:mm:ss" 형식의 String 형식으로 저장한다.*/
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        log.info("현재시간: {}", now);
 
-        /*3. 회원, 현재시간, 가게이름, 이벤트 내용의 정보를 담아 저장한다.*/
         History history = new History(member, now, storeName, eventInfo);
 
         historyRepository.save(history);
 
         return response.success();
     }
+
+//    /**
+//     * 가입시 인증코드를 이용한 방문기록 api
+//     */
+//    public ResponseEntity<?> recordCodeHistory(Long memberId, String storeName, String eventInfo) {
+//        /*1. 요청보낸 member의 id를 통해 해당 member 객체를 가져온다.*/
+//        Member member = memberRepository.findById(memberId).orElse(null);
+//
+//        /*2. 현재 시간을 "yyyy-MM-dd HH:mm:ss" 형식의 String 형식으로 저장한다.*/
+//        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//        log.info("현재시간: {}", now);
+//
+//        /*3. 회원, 현재시간, 가게이름, 이벤트 내용의 정보를 담아 저장한다.*/
+//        History history = new History(member, now, storeName, eventInfo);
+//
+//        historyRepository.save(history);
+//
+//        return response.success();
+//    }
 
 
 }

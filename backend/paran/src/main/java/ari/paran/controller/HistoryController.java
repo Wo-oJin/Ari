@@ -23,21 +23,21 @@ public class HistoryController {
         return historyService.checkStoreCode(ownerId, code);
     }
 
-    @PostMapping("/record-button")
+    @PostMapping("/record")
     public ResponseEntity<?> recordButtonHistory(@RequestBody Map<String, String> body, Principal principal) {
         String storeName = body.get("storeName");
         String eventInfo = body.get("eventInfo");
         long memberId = Long.parseLong(principal.getName());
 
-        return historyService.recordButtonHistory(memberId, storeName, eventInfo);
+        return historyService.recordHistory(memberId, storeName, eventInfo);
     }
 
-    @PostMapping("/record-code")
-    public ResponseEntity<?> recordCodeHistory(@RequestBody Map<String, String> body, Principal principal) {
-        String storeName = body.get("storeName");
-        String eventInfo = body.get("eventInfo");
-        long memberId = Long.parseLong(principal.getName());
-
-        return historyService.recordCodeHistory(memberId, storeName, eventInfo);
-    }
+//    @PostMapping("/record-code")
+//    public ResponseEntity<?> recordCodeHistory(@RequestBody Map<String, String> body, Principal principal) {
+//        String storeName = body.get("storeName");
+//        String eventInfo = body.get("eventInfo");
+//        long memberId = Long.parseLong(principal.getName());
+//
+//        return historyService.recordCodeHistory(memberId, storeName, eventInfo);
+//    }
 }
