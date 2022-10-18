@@ -7,8 +7,6 @@ import { authState } from "../state";
 import "./DetailTap.css";
 const { kakao } = window;
 
-let testState = false;
-
 //협력 가게 정보 탭
 export const DetailCoopTap = ({ data }) => {
   const [index, setIndex] = useState("0");
@@ -65,7 +63,7 @@ export const DetailCoopTap = ({ data }) => {
   const sendVerify = async (e) => {
     if (!e.target.classList.contains("verifiedBtn")) {
       await customAxios
-        .post("/history/record-button", {
+        .post("/history/record", {
           storeName: data.name,
           eventInfo: data.events[e.target.getAttribute("data-key")].info,
         })
@@ -185,22 +183,13 @@ export const DetailCoopTap = ({ data }) => {
                   <span key={i} className="EventSubText2">
                     {item.eventInfo}
                   </span>
-                  {auth === 4 && (
+                  {auth === 1 && (
                     <button
                       data-key={i}
                       className="sendVerifyBtn"
                       onClick={sendVerify}
                     >
                       사용 인증
-                    </button>
-                  )}
-                  {auth === 1 && (
-                    <button
-                      data-key={i}
-                      className="sendVerifyBtn"
-                      onClick={togglePopUp}
-                    >
-                      인증코드
                     </button>
                   )}
                 </div>
@@ -231,9 +220,7 @@ export const DetailCoopTap = ({ data }) => {
 //개인 이벤트 탭
 export const PrivateEventTap = ({ data }) => {
   //버튼 사용 인증 상태
-  const [isOpened, setisOpened] = useState(false);
-  const [target, setTarget] = useState();
-  const [value, setValue] = useState();
+  const [auth, setAuth] = useRecoilState(authState);
 
   useEffect(() => {
     if (kakao !== undefined) {
@@ -274,13 +261,12 @@ export const PrivateEventTap = ({ data }) => {
       );
     }
   }, []);
-  console.log("in private ", data);
 
   //버튼 클릭시 사용 인증 전송
   const sendVerify = async (e) => {
     if (!e.target.classList.contains("verifiedBtn")) {
       await customAxios
-        .post("/history/record-button", {
+        .post("/history/record", {
           storeName: data.name,
           eventInfo: data.events[e.target.getAttribute("data-key")].info,
         })
@@ -297,68 +283,8 @@ export const PrivateEventTap = ({ data }) => {
     }
   };
 
-  const togglePopUp = (e) => {
-    if (!e.target.classList.contains("verifiedBtn")) {
-      setisOpened((prev) => !prev);
-      setTarget(e.target);
-    } else {
-      window.alert("이미 사용 완료하셨습니다.");
-    }
-  };
-
-  //버튼 클릭시 인증코드 전송
-  const sendVerifyKey = async (e) => {
-    console.log(`/history/check-code?code=${value}&ownerId=${data.ownerId}`);
-
-    await customAxios
-      .post(`/history/check-code?code=${value}&ownerId=${data.ownerId}`)
-      .then(async (res) => {
-        if (res.data.result === "success") {
-          await customAxios
-            .post("/history/record-code", {
-              storeName: data.name,
-              eventInfo: data.events[target.getAttribute("data-key")].info,
-            })
-            .then(() => {
-              window.alert("인증되었습니다");
-              setisOpened(false);
-              target.classList.remove("sendVerifyBtn");
-              target.classList.add("verifiedBtn");
-              target.innerText = "사용 완료";
-            });
-        } else {
-          window.alert("인증번호가 일치하지 않습니다.");
-        }
-      });
-  };
-
-  const onChange = (e) => {
-    setValue(e.target.value);
-  };
-
   return (
     <div className="TapContainer">
-      {isOpened ? (
-        <div className="VerifyCodePopUp">
-          <div className="VerifyForm">
-            <input
-              className="VerifyInput"
-              placeholder="인증번호를 입력하세요."
-              type="text"
-              value={value}
-              onChange={onChange}
-            ></input>
-            <button className="VerifyCodeBtn" onClick={sendVerifyKey}>
-              확인
-            </button>
-          </div>
-
-          <button className="ClosePopUpBtn" onClick={togglePopUp}>
-            닫기
-          </button>
-        </div>
-      ) : null}
-
       <div className="PrivateEventContent">
         <span className="EventTitle">이벤트 내용:</span>
         {data.events && data.events.length > 0 ? (
@@ -371,7 +297,7 @@ export const PrivateEventTap = ({ data }) => {
                 <span className="PrivateEventSubText2" key={i}>
                   {item.info}
                 </span>
-                {testState ? (
+                {auth === 1 ? (
                   <button
                     data-key={i}
                     className="sendVerifyBtn"
@@ -379,15 +305,7 @@ export const PrivateEventTap = ({ data }) => {
                   >
                     사용 인증
                   </button>
-                ) : (
-                  <button
-                    data-key={i}
-                    className="sendVerifyBtn"
-                    onClick={togglePopUp}
-                  >
-                    인증코드
-                  </button>
-                )}
+                ) : null}
               </div>
             );
           })
