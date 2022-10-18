@@ -32,10 +32,10 @@ public class FileService {
     @Autowired ArticleImgFilesRepository articleImgFilesRepository;
     @Autowired StoreImgFileRepository storeImgFileRepository;
 
-    private String resourceUrl = "/home/ec2-user/ari-files/default/";
+    private String resourceUrl = "/Users/jsc/ari_files/default/";
 
 
-    private String detailUrl = "/home/ec2-user/ari-files/";
+    private String detailUrl = "/Users/jsc/ari_files/";
 
     /**
      * 기존 가게의 이미지를 저장
