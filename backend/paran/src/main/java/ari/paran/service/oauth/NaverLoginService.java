@@ -34,6 +34,7 @@ public class NaverLoginService {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private static int cnt = 1;
 
     @Value("${NAVER_CLIENT_ID}")
     private String NAVER_CLIENT_ID;
@@ -95,16 +96,23 @@ public class NaverLoginService {
 
         Map<String, String> account = attributes.get("response");
 
+        // 닉네임은 필수 제공값
+        String nickname = account.get("nickname");
+
+        // 이메일 설정
         String email = account.get("email");
+        if(email == null){
+            email = nickname + cnt;
+            cnt++;
+        }
 
-        String nickname = null;
-        if(email!=null)
-            nickname = Arrays.asList(email.split("@")).get(0);
-        else
-            nickname = "user";
+        // 연령대 설정
+        String ageRange = account.get("age");
+        int age = -1;
+        if(ageRange != null)
+            age = Integer.valueOf(ageRange.substring(0,2));
 
-        String age = account.get("age").substring(0,2);
-
+        // 성별 설정
         String gender = account.get("gender");
         if(gender != null && gender.equals("M"))
             gender = "male";
@@ -126,7 +134,7 @@ public class NaverLoginService {
                     .password(password)
                     .nickname(nickname)
                     .gender(gender)
-                    .age(Integer.valueOf(age))
+                    .age(age)
                     .fromOauth(2)
                     .build();
 

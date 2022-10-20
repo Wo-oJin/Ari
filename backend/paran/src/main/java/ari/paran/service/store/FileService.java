@@ -64,10 +64,10 @@ public class FileService {
 
             /*3-3. storeImgFile 객체에 저장된 파일에 대한 정보 담음*/
             StoreImgFile storeImgFile = StoreImgFile.builder()
-                            .store(store)
-                            .originalFileName(originalFileName)
-                            .filename(fileName)
-                            .fileUrl(fileUrl).build();
+                    .store(store)
+                    .originalFileName(originalFileName)
+                    .filename(fileName)
+                    .fileUrl(fileUrl).build();
 
             store.addImgFile(storeImgFile); // store의 ImgFile에 추가
 

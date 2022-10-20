@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -27,6 +27,8 @@ public class KakaoLoginService {
 
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+
+    private static int cnt = 1;
 
     @Value("${KAKAO_CLIENT_ID}")
     private String KAKAO_CLIENT_ID;
@@ -86,19 +88,25 @@ public class KakaoLoginService {
         attributes = new Gson().fromJson(body, attributes.getClass());
 
         Map<String, String> account = attributes.get("kakao_account");
+        Map<String, String> properties = attributes.get("properties");
 
+        // 닉네임은 필수 제공값
+        String nickname = properties.get("nickname");
+
+        // 이메일 설정
         String email = account.get("email");
+        if(email == null){
+            email = nickname + cnt;
+            cnt++;
+        }
 
-        String nickname = null;
-        if(email!=null)
-            nickname = Arrays.asList(email.split("@")).get(0);
-        else
-            nickname = "user";
+        // 연령대 설정
+        String ageRange = account.get("age_range");
+        int age = -1;
+        if(ageRange != null)
+            age = Integer.valueOf(ageRange.substring(0,2));
 
-        String age = null;
-        if(account.get("age_range") != null)
-            age = account.get("age_range").substring(0,2);
-
+        // 성별 설정
         String gender = account.get("gender");
         if(gender != null && gender.equals("M"))
             gender = "male";
@@ -120,7 +128,7 @@ public class KakaoLoginService {
                     .password(password)
                     .nickname(nickname)
                     .gender(gender)
-                    .age(Integer.valueOf(age))
+                    .age(age)
                     .fromOauth(1)
                     .build();
 

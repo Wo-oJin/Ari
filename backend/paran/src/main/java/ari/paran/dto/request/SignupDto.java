@@ -33,7 +33,6 @@ public class SignupDto {
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z]{2,30}$", message = "숫자 또는 특수문자를 제외한 2자이상 입력해주세요")
     private String nickname;
 
-    @NotBlank
     private int age;
 
     private String gender;
