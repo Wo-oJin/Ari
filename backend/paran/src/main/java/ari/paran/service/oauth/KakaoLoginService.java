@@ -36,6 +36,9 @@ public class KakaoLoginService {
     private String KAKAO_CLIENT_SECRET;
     @Value("${KAKAO_REDIRECT_URI}")
     private String KAKAO_REDIRECT_URI; //Redirect URL
+
+    @Value("${OAUTH_USER_PW}")
+    private String password;
     private String RESOURCE_SERVER_URL = "https://kapi.kakao.com/v2/user/me";
     private String SESSION_STATE = "kakao_oauth_state";
 
@@ -118,7 +121,6 @@ public class KakaoLoginService {
         Map<String, String> loginInfo = new HashMap<>();
 
         loginInfo.put("email", email);
-        String password = nickname+gender+email+age;
         loginInfo.put("password", password);
 
         Member member = memberRepository.findByEmail(email).orElse(null);

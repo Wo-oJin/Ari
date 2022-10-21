@@ -42,6 +42,9 @@ public class NaverLoginService {
     private String NAVER_CLIENT_SECRET;
     @Value("${NAVER_REDIRECT_URI}")
     private String NAVER_REDIRECT_URI;
+
+    @Value("${OAUTH_USER_PW}")
+    private String password;
     private final String RESOURCE_SERVER_URL = "https://openapi.naver.com/v1/nid/me";
     private final String SESSION_STATE = "naver_oauth_state";
 
@@ -124,7 +127,6 @@ public class NaverLoginService {
         Map<String, String> loginInfo = new HashMap<>();
 
         loginInfo.put("email", email);
-        String password = email+age+nickname+gender;
         loginInfo.put("password", password);
 
         Member member = memberRepository.findByEmail(email).orElse(null);
