@@ -48,7 +48,7 @@ const SidebarMenu = ({ userState, isNew }) => {
   };
 
   const menuForCustomer = [
-    { title: "공지사항", url: "/", service: false },
+    { title: "공지사항", url: "/notice", service: true },
     { title: "찜 목록", url: "/userFavoriteList", service: true },
     {
       title: "문의하기",

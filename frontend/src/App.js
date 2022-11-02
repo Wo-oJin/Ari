@@ -36,6 +36,7 @@ import BoardModify from "./pages/BoardModify";
 import Chat from "./pages/Chat";
 import Category from "./pages/Category";
 import SearchStore from "./pages/SearchStore";
+import Notice from "./pages/Notice";
 
 function App() {
   const { reissue } = useReissue();
@@ -58,6 +59,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/notice" element={<Notice></Notice>}></Route>
         <Route path="/detail/:storeId" element={<Detail />} />
         <Route path="/store/category/:categoryId" element={<Category />} />
         <Route path="/searchStore" element={<SearchStore />} />
