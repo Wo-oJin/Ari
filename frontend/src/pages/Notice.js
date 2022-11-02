@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "./Notice.css";
 
@@ -41,6 +42,11 @@ const testData = [
 ];
 
 const Notice = () => {
+  const navigate = useNavigate();
+  const onClick = (e) => {
+    console.log(e.target.getAttribute("data-key"));
+    navigate(`/notice/${e.target.getAttribute("data-key")}`);
+  };
   return (
     <>
       <Header text="공지사항" back={true}></Header>
@@ -49,8 +55,14 @@ const Notice = () => {
         <div className="noticeArticlesContainer">
           {testData.map((item, index) => {
             return (
-              <div className="noticeArticle" key={index}>
-                <span className="noticeTitle">{item.title}</span>
+              <div className="noticeArticle">
+                <span
+                  className="noticeTitle"
+                  onClick={onClick}
+                  data-key={index}
+                >
+                  {item.title}
+                </span>
                 <span className="noticeDate">{item.date}</span>
               </div>
             );
