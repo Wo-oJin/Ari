@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
@@ -36,6 +36,13 @@ const Login = () => {
   const cookies = new Cookies();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth !== 0) {
+      alert("잘못된 접근입니다.");
+      navigate(-1);
+    }
+  }, []);
 
   const [inputs, setInputs] = useState({
     email: "",
