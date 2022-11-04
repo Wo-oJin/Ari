@@ -39,6 +39,7 @@ import SearchStore from "./pages/SearchStore";
 import Notice from "./pages/Notice";
 import NoticeArticle from "./pages/NoticeArticle";
 import NoticeWrite from "./pages/NoticeWrite";
+import NoticeModify from "./pages/NoticeModify";
 
 function App() {
   const { reissue } = useReissue();
@@ -70,7 +71,10 @@ function App() {
           path="/notice/write"
           element={<NoticeWrite></NoticeWrite>}
         ></Route>
-        <Route path="/notice/modify/:articleId"></Route>
+        <Route
+          path="/notice/modify/:articleId"
+          element={<NoticeModify></NoticeModify>}
+        ></Route>
         <Route path="/detail/:storeId" element={<Detail />} />
         <Route path="/store/category/:categoryId" element={<Category />} />
         <Route path="/searchStore" element={<SearchStore />} />

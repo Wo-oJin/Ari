@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import "./NoticeWrite.css";
 
-const NoticeWrite = () => {
-  //기능 완성 후 관리자 권한 확인 필요함
+const NoticeModify = () => {
+  const { articleId } = useParams();
   const [title, setTitle] = useState();
   const [context, setContext] = useState();
   const onChangeTitle = (e) => {
@@ -48,4 +49,4 @@ const NoticeWrite = () => {
   );
 };
 
-export default NoticeWrite;
+export default NoticeModify;

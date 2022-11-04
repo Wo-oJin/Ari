@@ -63,7 +63,7 @@ const Notice = () => {
         <div className="noticeArticlesContainer">
           {testData.map((item, index) => {
             return (
-              <div className="noticeArticle">
+              <div className="noticeArticle" key={index}>
                 <span
                   className="noticeTitle"
                   onClick={onClick}
