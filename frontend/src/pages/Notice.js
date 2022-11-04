@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import Header from "../components/Header";
+import { authState } from "../state";
 import "./Notice.css";
 
 const testData = [
@@ -42,10 +44,16 @@ const testData = [
 ];
 
 const Notice = () => {
+  const [auth, setAuth] = useRecoilState(authState);
   const navigate = useNavigate();
   const onClick = (e) => {
     console.log(e.target.getAttribute("data-key"));
     navigate(`/notice/${e.target.getAttribute("data-key")}`);
+  };
+  let testAuth = 3;
+
+  const moveToWrite = () => {
+    navigate("/notice/write");
   };
   return (
     <>
@@ -68,6 +76,13 @@ const Notice = () => {
             );
           })}
         </div>
+        {testAuth === 3 && (
+          <div className="btnContainer">
+            <button className="noticeWriteBtn" onClick={moveToWrite}>
+              글쓰기
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

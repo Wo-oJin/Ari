@@ -38,6 +38,7 @@ import Category from "./pages/Category";
 import SearchStore from "./pages/SearchStore";
 import Notice from "./pages/Notice";
 import NoticeArticle from "./pages/NoticeArticle";
+import NoticeWrite from "./pages/NoticeWrite";
 
 function App() {
   const { reissue } = useReissue();
@@ -65,6 +66,11 @@ function App() {
           path="/notice/:articleId"
           element={<NoticeArticle></NoticeArticle>}
         ></Route>
+        <Route
+          path="/notice/write"
+          element={<NoticeWrite></NoticeWrite>}
+        ></Route>
+        <Route path="/notice/modify/:articleId"></Route>
         <Route path="/detail/:storeId" element={<Detail />} />
         <Route path="/store/category/:categoryId" element={<Category />} />
         <Route path="/searchStore" element={<SearchStore />} />
