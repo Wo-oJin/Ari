@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import Header from "../components/Header";
 import { authState } from "../state";
+import { customAxios } from "./customAxios";
 import "./Notice.css";
 
 const testData = [
@@ -44,8 +46,15 @@ const testData = [
 ];
 
 const Notice = () => {
+  const [data, setData] = useState();
   const [auth, setAuth] = useRecoilState(authState);
   const navigate = useNavigate();
+  useEffect(() => {
+    customAxios.get("/notice").then((res) => {
+      setData(res.data);
+    });
+  }, []);
+
   const onClick = (e) => {
     console.log(e.target.getAttribute("data-key"));
     navigate(`/notice/${e.target.getAttribute("data-key")}`);
