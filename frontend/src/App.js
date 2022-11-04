@@ -69,7 +69,7 @@ function App() {
           path="/loginRegister"
           element={AuthRoute(0, <LoginRegister />)}
         />
-        <Route path="/login" element={AuthRoute(0, <Login />)} />
+        <Route path="/login" element={<Login />} />
         <Route path="/loginUser" element={AuthRoute(0, <LoginUser />)} />
         <Route path="/loginOwner" element={AuthRoute(0, <LoginOwner />)} />
         {/* <Route path="/redirectLogin" element={<RedirectLogin />} /> */}
