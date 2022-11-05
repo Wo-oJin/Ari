@@ -24,8 +24,8 @@ const SidebarMenu = ({ userState, isNew }) => {
           if (res.data.result === "success") {
             // 로그아웃 성공
             // 쿠키에 저장된 토큰 삭제
-            cookies.remove("accessToken");
-            cookies.remove("refreshToken");
+            cookies.remove("accessToken", { path: "/" });
+            cookies.remove("refreshToken", { path: "/" });
 
             // recoil persist로 저장된 변수 초기화
             setAuth(0);
