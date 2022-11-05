@@ -90,7 +90,7 @@ public class MemberController {
         return memberService.showLikeList(principal);
     }
 
-    @GetMapping("/event-num")
+    @GetMapping("/owner/event-num")
     public ResponseEntity<?> getEventNum(Principal principal) {
         return memberService.getEventNum(principal);
     }

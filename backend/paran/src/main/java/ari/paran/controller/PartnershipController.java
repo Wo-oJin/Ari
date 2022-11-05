@@ -14,7 +14,7 @@ import java.security.Principal;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/partnership")
+@RequestMapping("/owner/partnership")
 public class PartnershipController {
 
     private final PartnershipService partnershipService;
