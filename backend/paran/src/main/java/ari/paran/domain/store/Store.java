@@ -140,8 +140,12 @@ public class Store implements Serializable{
     public Map<String, String> getRandomEvents(){
         Map<String, String> events = new HashMap<>();
 
+        // 가게 이벤트가 사이트에 포함되지 않을 조건
+        // 조건 1. 제휴 이벤트의 만료 날짜가 지남
+        // 조건 2. 제휴 이벤트의 상태가 상호 승인이 아님
         for(Partnership partnership : partnershipList){
-            if(partnership.getFinishDate().isBefore(LocalDate.now()))
+            if(partnership.getFinishDate().isBefore(LocalDate.now()) ||
+                    partnership.getPartnershipState() != PartnershipState.APPROVED)
                 continue;
 
             String eventInfo = partnership.getInfo();
