@@ -30,7 +30,6 @@ const StoreInfoEdit = () => {
   const [uPhoneNumber, setuPhoneNumber] = useState("");
   const [uImages, setuImages] = useState([]); // base64 인코딩된 문자열이 들어감
   const [uFormImages, setuFormImages] = useState([]); // form data에 담아 보낼 이미지 파일 리스트
-  const [uCurrentImagesLength, setuCurrentImagesLength] = useState(0); // 현재 업로드한 이미지 개수
   const [uSubText, setuSubText] = useState("");
   const [uOpenHour, setuOpenHour] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
@@ -66,7 +65,6 @@ const StoreInfoEdit = () => {
                 (image) => `data:image/;base64,${image}`
               )
             ); // 미리보기 이미지
-            setuCurrentImagesLength(dataArr[0].existingImages.length); // 현재 업로드된 이미지 개수
 
             // input[type="file"] 요소에 files props 할당하기
             // 1. base64 이미지 url을 file 객체로 디코딩
@@ -121,7 +119,6 @@ const StoreInfoEdit = () => {
           (image) => `data:image/;base64,${image}`
         )
       ); // 미리보기 이미지
-      setuCurrentImagesLength(currentStore.existingImages.length); // 현재 업로드된 이미지 개수
 
       // input[type="file"] 요소에 files props 할당하기
       // 1. base64 이미지 url을 file 객체로 디코딩
@@ -220,11 +217,9 @@ const StoreInfoEdit = () => {
 
     let image;
     const maxImageLength = 3;
-    const maxAddImageCnt = maxImageLength - uCurrentImagesLength; // 새로 추가할 이미지의 최대 업로드 개수
+    const maxAddImageCnt = maxImageLength - uFormImages.length; // 새로 추가할 이미지의 최대 업로드 개수
     const addImagesLength =
       imageArr.length > maxAddImageCnt ? maxAddImageCnt : imageArr.length;
-
-    setuCurrentImagesLength(uCurrentImagesLength + addImagesLength); // 현재 이미지 개수 저장
 
     if (imageArr.length > addImagesLength) {
       alert(`최대 등록 가능한 이미지 개수를 초과했습니다.`);
@@ -277,9 +272,6 @@ const StoreInfoEdit = () => {
       (image, index) => index !== parseInt(e.target.name)
     );
     setuFormImages([...newFromImagesArr]);
-
-    // 현재 업로드된 이미지 개수 변경
-    setuCurrentImagesLength(uCurrentImagesLength - 1);
   };
 
   // base64 인코딩되어 받은 이미지 url을 file 객체로 디코딩
@@ -507,7 +499,7 @@ const StoreInfoEdit = () => {
                     ></img>
                     <span style={{ fontSize: "14px" }}>
                       <span style={{ color: "#386FFE" }}>
-                        {uCurrentImagesLength}
+                        {uFormImages.length}
                       </span>
                       /3
                     </span>

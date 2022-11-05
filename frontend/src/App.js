@@ -36,6 +36,10 @@ import BoardModify from "./pages/BoardModify";
 import Chat from "./pages/Chat";
 import Category from "./pages/Category";
 import SearchStore from "./pages/SearchStore";
+import Notice from "./pages/Notice";
+import NoticeArticle from "./pages/NoticeArticle";
+import NoticeWrite from "./pages/NoticeWrite";
+import NoticeModify from "./pages/NoticeModify";
 
 function App() {
   const { reissue } = useReissue();
@@ -58,6 +62,19 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/notice" element={<Notice></Notice>}></Route>
+        <Route
+          path="/notice/:articleId"
+          element={<NoticeArticle></NoticeArticle>}
+        ></Route>
+        <Route
+          path="/notice/write"
+          element={<NoticeWrite></NoticeWrite>}
+        ></Route>
+        <Route
+          path="/notice/modify/:articleId"
+          element={<NoticeModify></NoticeModify>}
+        ></Route>
         <Route path="/detail/:storeId" element={<Detail />} />
         <Route path="/store/category/:categoryId" element={<Category />} />
         <Route path="/searchStore" element={<SearchStore />} />
