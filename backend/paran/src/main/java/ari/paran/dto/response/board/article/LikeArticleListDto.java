@@ -1,4 +1,4 @@
-package ari.paran.dto.response.board;
+package ari.paran.dto.response.board.article;
 
 import lombok.Builder;
 import lombok.Data;

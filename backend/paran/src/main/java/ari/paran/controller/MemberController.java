@@ -1,13 +1,11 @@
 package ari.paran.controller;
 
 import ari.paran.domain.member.Member;
-import ari.paran.domain.store.Store;
 import ari.paran.dto.MemberResponseDto;
 import ari.paran.dto.Response;
-import ari.paran.dto.response.board.MemberToStoreDto;
-import ari.paran.dto.response.store.MainResult;
+import ari.paran.dto.response.board.article.MemberToStoreDto;
+import ari.paran.dto.response.MainResult;
 import ari.paran.service.auth.MemberService;
-import ari.paran.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

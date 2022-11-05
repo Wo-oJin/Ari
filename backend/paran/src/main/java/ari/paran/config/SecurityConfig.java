@@ -65,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/v2/**").permitAll()
                 .antMatchers("/swagger/**").permitAll()
+                .antMatchers("/admin/**").permitAll()
 
                 //권한 테스트
                 .antMatchers("/member/userTest").hasRole("USER")
