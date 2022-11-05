@@ -73,7 +73,7 @@ public class ChatRoomController {
     }
 
     // 채팅방 생성
-    @GetMapping("/chat/room")
+    @GetMapping("/owner/chat/room")
     @ResponseBody
     public Result enterRoom() {
         Map<LocalDate, List<ChatMessage>> chatting = chatService.getMessageGroups();
