@@ -14,12 +14,13 @@ const NoticeArticle = () => {
   const { articleId } = useParams();
   const [auth, setAuth] = useRecoilState(authState);
   const navigate = useNavigate();
-  const testAuth = 3;
+
   useEffect(() => {
     customAxios.get(`/admin/notice/${articleId}`).then((res) => {
       setData(res.data);
     });
   }, []);
+
   const onClick = () => {
     console.log(articleId);
     navigate(`/notice/modify/${articleId}`);
@@ -42,7 +43,7 @@ const NoticeArticle = () => {
             <span className="noticleArticleText">{data.content}</span>
           </div>
         </div>
-        {testAuth === 3 && (
+        {auth === 3 && (
           <div className="noticeWriteBtnBox">
             <button className="noticeModifyBtn" onClick={onClick}>
               수정
