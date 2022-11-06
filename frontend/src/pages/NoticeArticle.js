@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -9,12 +10,16 @@ import "./NoticeArticle.css";
 import "./NoticeWrite.css";
 
 const NoticeArticle = () => {
+  const [data, setData] = useState();
   const { articleId } = useParams();
   const [auth, setAuth] = useRecoilState(authState);
-
   const navigate = useNavigate();
   const testAuth = 3;
-  const data = 1;
+  useEffect(() => {
+    customAxios.get(`/admin/notice/${articleId}`).then((res) => {
+      setData(res.data);
+    });
+  }, []);
   const onClick = () => {
     console.log(articleId);
     navigate(`/notice/modify/${articleId}`);
@@ -23,25 +28,18 @@ const NoticeArticle = () => {
     console.log(articleId, "삭제");
   };
   if (!data) {
-    <Loading></Loading>;
+    return <Loading></Loading>;
   } else {
     return (
       <>
         <Header text="공지사항" back={true}></Header>
         <div className="noticeArticleContainer">
           <div className="noticeArticleHeader">
-            <span className="noticeArticleTitle">첫 번째 공지사항입니다.</span>
-            <span className="noticeArticleDate">2022.10.31</span>
+            <span className="noticeArticleTitle">{data.title}</span>
+            <span className="noticeArticleDate">{data.createDate}</span>
           </div>
           <div className="noticeArticleContent">
-            <span className="noticleArticleText">
-              안녕하세요 첫 번째 공지사항 글입니다. 안녕하세요 첫 번째 공지사항
-              글입니다. 안녕하세요 첫 번째 공지사항 글입니다. 안녕하세요 첫 번째
-              공지사항 글입니다. 안녕하세요 첫 번째 공지사항 글입니다.
-              안녕하세요 첫 번째 공지사항 글입니다. 안녕하세요 첫 번째 공지사항
-              글입니다.안녕하세요 첫 번째 공지사항 글입니다.안녕하세요 첫 번째
-              공지사항 글입니다.안녕하세요 첫 번째 공지사항 글입니다.
-            </span>
+            <span className="noticleArticleText">{data.content}</span>
           </div>
         </div>
         {testAuth === 3 && (

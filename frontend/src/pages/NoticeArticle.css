@@ -30,8 +30,10 @@
   padding: 10px;
 }
 .noticleArticleText {
+  width: 350px;
   height: 100%;
-  white-space: pre-wrap;
+  word-break: break-all;
+  white-space: pre-line;
 }
 .noticeModifyBtn {
   width: 75px;
