@@ -50,7 +50,8 @@ const Notice = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const navigate = useNavigate();
   useEffect(() => {
-    customAxios.get("/notice").then((res) => {
+    customAxios.get("/admin/notice").then((res) => {
+      console.log(res.data);
       setData(res.data);
     });
   }, []);
@@ -59,7 +60,6 @@ const Notice = () => {
     console.log(e.target.getAttribute("data-key"));
     navigate(`/notice/${e.target.getAttribute("data-key")}`);
   };
-  let testAuth = 3;
 
   const moveToWrite = () => {
     navigate("/notice/write");
@@ -85,7 +85,7 @@ const Notice = () => {
             );
           })}
         </div>
-        {testAuth === 3 && (
+        {auth === 3 && (
           <div className="btnContainer">
             <button className="noticeWriteBtn" onClick={moveToWrite}>
               글쓰기
