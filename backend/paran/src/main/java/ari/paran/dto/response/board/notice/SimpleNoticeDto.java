@@ -7,10 +7,12 @@ import java.time.LocalDate;
 @Data
 public class SimpleNoticeDto {
 
+    private Long id;
     private String title;
     private String createDate;
 
-    public SimpleNoticeDto(String title, String createDate){
+    public SimpleNoticeDto(Long id, String title, String createDate){
+        this.id = id;
         this.title = title;
         this.createDate = createDate;
     }

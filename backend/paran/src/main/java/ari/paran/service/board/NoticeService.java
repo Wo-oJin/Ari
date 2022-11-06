@@ -24,7 +24,7 @@ public class NoticeService {
     public List<SimpleNoticeDto> getSimpleNotices(){
 
         return noticeRepository.findAll().stream()
-                .map(notice -> new SimpleNoticeDto(notice.getTitle(), notice.getCreateDate()))
+                .map(notice -> new SimpleNoticeDto(notice.getId(), notice.getTitle(), notice.getCreateDate()))
                 .collect(Collectors.toList());
     }
 
