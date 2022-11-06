@@ -13,6 +13,9 @@ import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
 import { useRecoilState } from "recoil";
 import { authState } from "../state";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Detail = () => {
   const [auth, setAuth] = useRecoilState(authState);
@@ -68,19 +71,47 @@ const Detail = () => {
         return;
     }
   };
+
+  // react-slick 캐러셀 설정
+  const settings = {
+    infinite: true, // 무한 캐러셀
+    speed: 500, // 다음 컨텐츠 까지의 속도
+    slidesToShow: 1, // 화면에 보이는 컨텐츠 수
+    slidesToScroll: 1, // 스크롤 시 넘어가는 컨텐츠 수
+    autoplay: false, // 자동 캐러셀
+    autoplaySpeed: 3000, // 자동 캐러셀 속도
+    draggable: true, // 드래그
+    pauseOnFocus: true, // focus시 정지
+    pauseOnHover: true, // hover시 정지
+  };
+
   //아직 data가 setting되지 않았으면 로딩 중 문구 표시
   if (data === null) {
     return <Loading></Loading>;
   }
   return (
     <div className="DetailContainer">
-      <div className="Wrapper">
+      <div style={{ width: "390px", height: "226px" }}>
+        <Slider {...settings}>
+          {data.images.map((item, index) => {
+            return (
+              <img
+                key={index}
+                className="StoreImg"
+                src={`data:image/jpg;base64, ${item}`}
+                alt="이미지"
+              ></img>
+            );
+          })}
+        </Slider>
+      </div>
+      {/* <div className="Wrapper">
         <img
           className="StoreImg"
           src={`data:image/jpg;base64, ${data.images[0]}`}
           alt="이미지"
         ></img>
-      </div>
+      </div> */}
       <button
         className="BackBtn"
         onClick={() => {
