@@ -22,11 +22,16 @@ const NoticeArticle = () => {
   }, []);
 
   const onClick = () => {
-    console.log(articleId);
     navigate(`/notice/modify/${articleId}`);
   };
   const onClickDelete = () => {
     console.log(articleId, "삭제");
+    customAxios.delete(`/admin/notice/${articleId}`).then((res) => {
+      if (res.data.result === "success") {
+        window.alert(res.data.massage);
+        navigate("/notice");
+      }
+    });
   };
   if (!data) {
     return <Loading></Loading>;
