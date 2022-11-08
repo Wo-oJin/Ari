@@ -42,7 +42,7 @@ const Notice = () => {
                     <span
                       className="noticeTitle"
                       onClick={onClick}
-                      data-key={index + 1}
+                      data-key={item.id}
                     >
                       {item.title}
                     </span>
