@@ -1,4 +1,4 @@
-package ari.paran.dto.response.board;
+package ari.paran.dto.response.board.article;
 
 import ari.paran.domain.board.ArticleImgFile;
 import lombok.Builder;

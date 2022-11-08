@@ -4,7 +4,7 @@ import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.EditInfoDto;
 import ari.paran.dto.response.store.DetailStoreDto;
-import ari.paran.dto.response.store.MainResult;
+import ari.paran.dto.response.MainResult;
 import ari.paran.dto.response.store.SimpleStoreDto;
 import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.FileService;

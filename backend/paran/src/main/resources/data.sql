@@ -1,5 +1,5 @@
 -- 공통 비밀번호: password123!
-INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (1, '$2a$10$Pqli0r4TwDdi7Fd2RPL9SOKTvmTru121x6loQryHplGMuKg8wWnJu', 'dnwls813@ajou.ac.kr', 0, 20, '우진', 'male', 'ROLE_OWNER');
+INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (1, '$2a$10$Pqli0r4TwDdi7Fd2RPL9SOKTvmTru121x6loQryHplGMuKg8wWnJu', 'dnwls813@ajou.ac.kr', 0, 20, '우진', 'male', 'ROLE_ADMIN');
 INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (2, '$2a$10$AzLul68qfPEi8KhC96AW8ucB8oMP.a5iSl21DGuWC6FNt5YpWeoli', 'cdf456@efg.com', 0, 30,'user', 'female', 'ROLE_USER');
 INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (3, '$2a$10$AzLul68qfPEi8KhC96AW8ucB8oMP.a5iSl21DGuWC6FNt5YpWeoli', 'ghi789@efg.com', 0, 30, '닉네임3', 'female', 'ROLE_OWNER');
 INSERT INTO member (member_id, password, email, from_oauth, age, nickname, gender, authority) VALUES (4, '$2a$10$AzLul68qfPEi8KhC96AW8ucB8oMP.a5iSl21DGuWC6FNt5YpWeoli', 'jkl101@efg.com', 0, 30, '닉네임4', 'male', 'ROLE_OWNER');

@@ -1,4 +1,4 @@
-package ari.paran.dto.response.store;
+package ari.paran.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

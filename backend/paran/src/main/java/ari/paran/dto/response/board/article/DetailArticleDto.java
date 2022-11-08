@@ -1,4 +1,4 @@
-package ari.paran.dto.response.board;
+package ari.paran.dto.response.board.article;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;

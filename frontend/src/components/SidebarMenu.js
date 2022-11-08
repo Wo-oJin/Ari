@@ -48,7 +48,7 @@ const SidebarMenu = ({ userState, isNew }) => {
   };
 
   const menuForCustomer = [
-    { title: "공지사항", url: "/", service: false },
+    { title: "공지사항", url: "/notice", service: true },
     { title: "찜 목록", url: "/userFavoriteList", service: true },
     {
       title: "문의하기",
@@ -58,7 +58,7 @@ const SidebarMenu = ({ userState, isNew }) => {
     },
   ];
   const menuForBusiness = [
-    { title: "공지사항", url: "/", service: false },
+    { title: "공지사항", url: "/notice", service: true },
     { title: "내 가게 정보 관리", url: "/storeInfoEdit", service: true },
     { title: "제휴 맺기 게시판", url: "/board/list", service: true },
     {

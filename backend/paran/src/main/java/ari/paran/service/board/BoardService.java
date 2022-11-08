@@ -6,14 +6,12 @@ import ari.paran.domain.member.Member;
 import ari.paran.domain.repository.BoardRepository;
 import ari.paran.domain.repository.FavoriteArticleRepository;
 import ari.paran.domain.repository.MemberRepository;
-import ari.paran.domain.store.FavoriteStore;
 import ari.paran.domain.store.Store;
 import ari.paran.dto.Response;
-import ari.paran.dto.response.board.DetailArticleDto;
-import ari.paran.dto.response.board.LikeArticleListDto;
-import ari.paran.dto.response.board.SimpleArticleDto;
-import ari.paran.dto.response.board.UpdateForm;
-import ari.paran.dto.response.store.LikeStoreListDto;
+import ari.paran.dto.response.board.article.DetailArticleDto;
+import ari.paran.dto.response.board.article.LikeArticleListDto;
+import ari.paran.dto.response.board.article.SimpleArticleDto;
+import ari.paran.dto.response.board.article.UpdateForm;
 import ari.paran.service.auth.MemberService;
 import ari.paran.service.store.FileService;
 import ari.paran.service.store.StoreService;
@@ -28,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
 

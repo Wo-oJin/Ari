@@ -1,9 +1,9 @@
 package ari.paran.controller.board;
 
 import ari.paran.domain.board.Article;
-import ari.paran.dto.response.board.DetailArticleDto;
-import ari.paran.dto.response.board.SimpleArticleDto;
-import ari.paran.dto.response.board.UpdateForm;
+import ari.paran.dto.response.board.article.DetailArticleDto;
+import ari.paran.dto.response.board.article.SimpleArticleDto;
+import ari.paran.dto.response.board.article.UpdateForm;
 import ari.paran.service.board.BoardService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
