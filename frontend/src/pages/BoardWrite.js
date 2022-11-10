@@ -14,7 +14,7 @@ const BoardWrite = () => {
   const [period, setPeriod] = useState("");
   const [content, setcContent] = useState("");
   const [authorStore, setAuthorStore] = useState("");
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState("-1");
   const [authorList, setAuthorList] = useState();
   const navigate = useNavigate();
   const imgRef = useRef();
@@ -66,23 +66,41 @@ const BoardWrite = () => {
   const onChangeContent = (e) => {
     setcContent(e.target.value);
   };
-  const onChangeImage = () => {
-    if (imageUrl.length >= 3) {
+  const onChangeImage = (e) => {
+    const imageArr = e.target.files; // e.target.files에서 넘어온 이미지들을 배열에 저장
+    const maxImageLength = 3;
+    const maxAddImageCnt = maxImageLength - imageUrl.length; // 새로 추가할 이미지의 최대 업로드 개수
+
+    // 1. 파일 업로드 개수 검증
+    if (imageArr.length > maxAddImageCnt) {
       window.alert("3장 이상의 이미지는 등록할 수 없습니다.");
-    } else {
-      //업로드된 이미지가 3장 미만이라면 imageURL 배열에 추가
-      if (imgRef.current.files.length > 0) {
-        const imageFiles = [...imgRef.current.files];
-        console.log(imageFiles);
-        setPostImages(imageFiles);
-        imageFiles.map((item) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(item);
-          reader.onloadend = () => {
-            setImageUrl((prev) => [...prev, reader.result]);
-          };
-        });
+      return;
+    }
+
+    // 2. 파일 업로드 시 모든 파일 (*.*) 선택 방지 위해 이미지 type을 한 번 더 검증
+    for (let i = 0; i < imageArr.length; i++) {
+      if (
+        imageArr[i].type !== "image/jpeg" &&
+        imageArr[i].type !== "image/jpg" &&
+        imageArr[i].type !== "image/png"
+      ) {
+        alert("JPG 혹은 PNG 확장자의 이미지 파일만 등록 가능합니다.");
+        return;
       }
+    }
+
+    //업로드된 이미지가 3장 미만이라면 imageURL 배열에 추가
+    if (imgRef.current.files.length > 0) {
+      const imageFiles = [...imgRef.current.files];
+      console.log(imageFiles);
+      setPostImages(imageFiles);
+      imageFiles.map((item) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(item);
+        reader.onloadend = () => {
+          setImageUrl((prev) => [...prev, reader.result]);
+        };
+      });
     }
   };
 
@@ -104,6 +122,11 @@ const BoardWrite = () => {
   };
 
   const changeSelectHandler = (e) => {
+    // 작성자 가게를 선택하지 않은 경우
+    if (e.target.value === "-1") {
+      setSelected("-1");
+      return;
+    }
     setAuthorStore(authorList[e.target.value].storeName);
     setSelected(authorList[e.target.value].storeName);
     console.log(authorStore, selected);
@@ -169,7 +192,7 @@ const BoardWrite = () => {
           <div className="writeAuthor" placeholder="작성자 가게 선택">
             <span>작성자 가게 선택</span>
             <select className="writeSelect" onChange={changeSelectHandler}>
-              <option value={"--선택하세요--"}>--선택하세요--</option>
+              <option value={"-1"}>--선택하세요--</option>
               {authorList &&
                 authorList.map((item, index) => {
                   return (
@@ -191,7 +214,11 @@ const BoardWrite = () => {
             placeholder="제휴를 함께하고 싶은 가게에게 요청하는 글을 작성해주세요."
             onChange={onChangeContent}
           ></textarea>
-          <button className="completeBtn" type="submit">
+          <button
+            className="completeBtn"
+            type="submit"
+            disabled={selected !== "-1" ? false : true}
+          >
             완료
           </button>
         </form>

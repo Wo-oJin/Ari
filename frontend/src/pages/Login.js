@@ -130,7 +130,7 @@ const Login = () => {
             setName(res.data.data.info); // recoil
             // alert(res.data.massage);
             navigate("/"); // 메인 페이지로 이동
-            window.location.reload(); // 요청에 토큰값이 반영될 수 있도록 함
+            // window.location.reload(); // 요청에 토큰값이 반영될 수 있도록 함
           }
         });
     } catch (e) {

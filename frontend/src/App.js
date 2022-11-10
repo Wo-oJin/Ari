@@ -54,6 +54,11 @@ function App() {
     }
   }, []);
 
+  // 배포 환경에서 console.log 지우기
+  if (process.env.NODE_ENV === "production") {
+    console.log = function no_console() {};
+  }
+
   return (
     <BrowserRouter>
       <Routes>
