@@ -27,7 +27,7 @@ const StoreFavoriteList = () => {
 
     const initialFavoriteArticle = async () => {
       try {
-        await customAxios.get("/board/like").then((res) => {
+        await customAxios.get("/owner/board/like").then((res) => {
           setLikeArticles(res.data.data);
           setIsLoadedArticles(true);
         });

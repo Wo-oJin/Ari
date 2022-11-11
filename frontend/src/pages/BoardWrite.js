@@ -46,7 +46,7 @@ const BoardWrite = () => {
     console.log("dddd", authorStore);
 
     customAxios
-      .post("/board/write", formData, {
+      .post("/owner/board/write", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

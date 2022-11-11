@@ -21,7 +21,7 @@ const PartnershipList = () => {
     const initialList = async () => {
       try {
         await customAxios
-          .get(`/partnership/received?storeId=${storeId}`)
+          .get(`/owner/partnership/received?storeId=${storeId}`)
           .then((res) => {
             setRequestList(res.data.data);
             setIsLoaded(true);
@@ -40,7 +40,7 @@ const PartnershipList = () => {
       case "0": // 내가 받은 요청
         try {
           await customAxios
-            .get(`/partnership/received?storeId=${storeId}`)
+            .get(`/owner/partnership/received?storeId=${storeId}`)
             .then((res) => {
               setRequestList(res.data.data);
             });
@@ -51,7 +51,7 @@ const PartnershipList = () => {
       case "1": // 내가 한 요청
         try {
           await customAxios
-            .get(`/partnership/send?storeId=${storeId}`)
+            .get(`/owner/partnership/send?storeId=${storeId}`)
             .then((res) => {
               setRequestList(res.data.data);
               setIsSentByMe(true);
@@ -63,7 +63,7 @@ const PartnershipList = () => {
       case "2": // 처리된 요청
         try {
           await customAxios
-            .get(`/partnership/completed?storeId=${storeId}`)
+            .get(`/owner/partnership/completed?storeId=${storeId}`)
             .then((res) => {
               setRequestList(res.data.data);
             });

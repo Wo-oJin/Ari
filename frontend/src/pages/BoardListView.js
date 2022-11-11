@@ -26,7 +26,7 @@ const BoardListView = () => {
   const [convertDate, setConvertDate] = useState("");
 
   const getBoardData = async () => {
-    customAxios.get(`/board/list/${articleId}`).then((response) => {
+    customAxios.get(`/owner/board/${articleId}`).then((response) => {
       console.log(response.data);
       setData(response.data);
       setIsfavorited(response.data.favorite);
@@ -43,7 +43,7 @@ const BoardListView = () => {
   //찜 버튼 클릭 함수
   const onLikeClick = async () => {
     await customAxios
-      .post(`/board/favorite/toggle?articleId=${data.articleId}`)
+      .post(`/owner/board/favorite/toggle?articleId=${data.articleId}`)
       .then((res) => {
         setIsfavorited(!isFavorited);
         console.log("찜 성공");
@@ -62,7 +62,7 @@ const BoardListView = () => {
 
   //게시글 삭제 함수
   const deleteHandler = async () => {
-    await customAxios.delete(`/board/delete/${articleId}`).then((res) => {
+    await customAxios.delete(`/owner/board/delete/${articleId}`).then((res) => {
       alert("삭제되었습니다.");
     });
     //팝업 닫기

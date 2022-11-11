@@ -19,7 +19,7 @@ const StorePrivateEventList = () => {
 
     const initialPrivateEvent = async () => {
       try {
-        await customAxios.get("/edit/self-event").then((res) => {
+        await customAxios.get("/owner/private-event").then((res) => {
           // [{storeId: 5, storeName: "가게1", eventList: []}, {storeId: 30, storeName: "가게1", eventList: []}]
           setPrivateEvents(res.data.data);
 

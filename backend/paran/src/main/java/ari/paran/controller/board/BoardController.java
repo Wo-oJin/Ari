@@ -38,7 +38,7 @@ public class BoardController {
             @ApiResponse(code = 200, message = "API 정상 작동"),
             @ApiResponse(code = 500, message = "서버 에러")
     })
-    @GetMapping("/")
+    @GetMapping
     @ResponseBody
     public Page<SimpleArticleDto> ArticleList(
             @PageableDefault(page = 0, size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,

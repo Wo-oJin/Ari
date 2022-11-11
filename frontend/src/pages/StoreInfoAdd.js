@@ -41,7 +41,7 @@ const StoreInfoAdd = () => {
   useEffect(() => {
     const initialEdit = async () => {
       try {
-        await customAxios.get("/edit/store").then((res) => {
+        await customAxios.get("/owner/update/store").then((res) => {
           console.log("res.data.data", res.data.data);
           const dataArr = res.data.data;
           setStoreInfoArr(dataArr);
@@ -261,7 +261,7 @@ const StoreInfoAdd = () => {
 
     try {
       await customAxios
-        .post("/add/store", formData, {
+        .post("/owner/add/store", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
