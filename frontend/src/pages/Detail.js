@@ -24,7 +24,7 @@ const Detail = () => {
   useEffect(() => {
     if (auth !== 0) {
       const getDetailData = async () => {
-        customAxios.get(`/map/store/${storeId}`).then((response) => {
+        customAxios.get(`/member/store/${storeId}`).then((response) => {
           if (response.data.result) {
             setData(response.data);
             setIsfavorited(response.data.favorite);

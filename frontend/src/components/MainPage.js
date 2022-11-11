@@ -90,7 +90,7 @@ const MainPage = ({ onClick }) => {
 
   const getBannerInfo = async () => {
     try {
-      const { data } = await customAxios.get("/map/random-events");
+      const { data } = await customAxios.get("/random-events");
       setCount(data.count);
       setStoreList(data.storeList);
       setIsLoaded(true);

@@ -28,7 +28,7 @@ public class StoreController {
     private final FileService fileService;
     private final MemberService memberService;
 
-    @GetMapping("random-events")
+    @GetMapping("/random-events")
     public MainResult randomEventsList() throws IOException {
         List<SimpleStoreDto> storeList = storeService.findRandomEvents();
 
@@ -97,6 +97,11 @@ public class StoreController {
                                       @RequestParam(value = "newImages", required = false) List<MultipartFile> images,
                                       Principal principal) throws IOException {
         return storeService.editInfo(editInfoDto, images, principal);
+    }
+
+    @GetMapping("/owner/event-num")
+    public ResponseEntity<?> getEventNum(Principal principal) {
+        return memberService.getEventNum(principal);
     }
 
     @GetMapping("/owner/private-event")
