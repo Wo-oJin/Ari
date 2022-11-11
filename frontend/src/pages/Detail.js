@@ -16,12 +16,18 @@ import { authState } from "../state";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Lightbox from "react-image-lightbox";
+import "react-image-lightbox/style.css";
 
 const Detail = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const [data, setData] = useState(null);
   //좋아요 유무를 확인하기 위한 변수
   const [isFavorited, setIsfavorited] = useState(false);
+  // image lightbox 관련 변수
+  const [isOpen, setIsOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState("0");
+
   const { storeId } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
@@ -71,6 +77,11 @@ const Detail = () => {
         return;
     }
   };
+  // 이미지 클릭 함수
+  const onClickImage = (e) => {
+    setIsOpen((prev) => !prev);
+    setPhotoIndex(e.target.id);
+  };
 
   // react-slick 캐러셀 설정
   const settings = {
@@ -97,13 +108,37 @@ const Detail = () => {
             return (
               <img
                 key={index}
+                id={index}
                 className="StoreImg"
                 src={`data:image/jpg;base64, ${item}`}
                 alt="이미지"
+                onClick={onClickImage}
               ></img>
             );
           })}
         </Slider>
+        {isOpen && (
+          <Lightbox
+            mainSrc={`data:image/jpg;base64, ${data.images[photoIndex]}`}
+            nextSrc={`data:image/jpg;base64, ${
+              data.images[(photoIndex + 1) % data.images.length]
+            }`}
+            prevSrc={`data:image/jpg;base64, ${
+              data.images[
+                (photoIndex + data.images.length - 1) % data.images.length
+              ]
+            }`}
+            onCloseRequest={() => setIsOpen((prev) => !prev)}
+            onMovePrevRequest={() =>
+              setPhotoIndex(
+                (photoIndex + data.images.length - 1) % data.images.length
+              )
+            }
+            onMoveNextRequest={() =>
+              setPhotoIndex((photoIndex + 1) % data.images.length)
+            }
+          />
+        )}
       </div>
       {/* <div className="Wrapper">
         <img
