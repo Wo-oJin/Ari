@@ -2,7 +2,7 @@ package ari.paran.controller;
 
 import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Store;
-import ari.paran.dto.EditInfoDto;
+import ari.paran.dto.response.store.EditInfoDto;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.response.MainResult;
 import ari.paran.dto.response.store.SimpleStoreDto;
@@ -72,7 +72,7 @@ public class StoreController {
                     .address(store.getAddress())
                     .openTime(store.getOpenTime())
                     .subText(store.getSubText())
-                    .phoneNumber(store.getPhoneNumber())
+                    .storePhoneNumber(store.getStorePhoneNumber())
                     .isFavorite(member.isFavoriteStore(store))
                     .eventList(store.getEventList())
                     .partners(storeService.getPartners(store.getPartnershipList()))

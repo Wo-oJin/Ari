@@ -18,7 +18,7 @@ public class DetailStoreDto {
     private Long ownerId;
     private String ownerName;
     private Address address;
-    private String phoneNumber;
+    private String storePhoneNumber;
     private String openTime;
     private String subText;
     private boolean favorite;
@@ -34,7 +34,7 @@ public class DetailStoreDto {
 
     @Builder
     public DetailStoreDto(Long storeId, String storeName, Long ownerId, String ownerName, Address address,
-                          String openTime, String subText, String phoneNumber,
+                          String openTime, String subText, String storePhoneNumber,
                           boolean doPrivateEvent, List<Event> eventList, List<Partner> partners,
                           List<String> images, boolean isFavorite, boolean result) throws IOException {
 
@@ -45,7 +45,7 @@ public class DetailStoreDto {
         this.address = address;
         this.openTime = openTime;
         this.subText = subText;
-        this.phoneNumber = phoneNumber;
+        this.storePhoneNumber = storePhoneNumber;
         this.privateEvent = doPrivateEvent;
         this.events = eventList;
         this.partners = partners;
