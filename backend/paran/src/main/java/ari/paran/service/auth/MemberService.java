@@ -1,6 +1,7 @@
 package ari.paran.service.auth;
 
 import ari.paran.Util.SecurityUtil;
+import ari.paran.domain.History;
 import ari.paran.domain.SignupCode;
 import ari.paran.domain.member.Member;
 import ari.paran.domain.member.Authority;
@@ -54,6 +55,7 @@ public class MemberService {
     private final SignupCodeRepository signupCodeRepository;
     private final EventRepository eventRepository;
     private final PartnershipRepository partnershipRepository;
+    private final HistoryRepository historyRepository;
     private final Response response;
     private final FileService fileService;
     private final PasswordEncoder passwordEncoder;
@@ -402,6 +404,24 @@ public class MemberService {
         result.add(eventNum);
 
         return response.success(result, "이벤트 갯수", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getHistory(Long memberId) {
+
+        Member member = memberRepository.findById(memberId).orElse(null);
+
+        log.info("member null 여부: {}", member.getId());
+        log.info("member email: {}", member.getEmail());
+
+        List<History> historyList = historyRepository.findAllByMember(member);
+
+        log.info("이벤트가 null 여부: {}", historyList.isEmpty());
+        for (History history : historyList) {
+            log.info("이벤트: {}", history.getEventInfo());
+        }
+
+        return response.success(historyList, "방문 기록 리스트", HttpStatus.OK);
+
     }
 
 
