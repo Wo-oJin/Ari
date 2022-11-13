@@ -25,14 +25,14 @@ public class MemberController {
     private final Response response;
 
     @GetMapping("/stores")
-    public MainResult getAuthorStore(Principal principal){
+    public MainResult getAuthorStore(Principal principal) {
         Long memberId = Long.parseLong(principal.getName());
         Member member = memberService.getMemberInfoById(memberId);
 
         List<MemberToStoreDto> result =
                 member.getStores().stream()
-                .map(store -> new MemberToStoreDto(store.getId(), store.getName()))
-                .collect(Collectors.toList());
+                        .map(store -> new MemberToStoreDto(store.getId(), store.getName()))
+                        .collect(Collectors.toList());
 
         return new MainResult(result);
     }
@@ -91,6 +91,14 @@ public class MemberController {
     @GetMapping("/event-num")
     public ResponseEntity<?> getEventNum(Principal principal) {
         return memberService.getEventNum(principal);
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<?> getHistory(Principal principal) {
+
+        long memberId = Long.parseLong(principal.getName());
+
+        return memberService.getHistory(memberId);
     }
     /*
     @PostMapping("/like/add/{store_name}")
