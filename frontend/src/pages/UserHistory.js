@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import timeConverter from "../util/timeConverter";
 import { customAxios } from "./customAxios";
+import "./UserHistory.css";
 
 const UserHistory = () => {
   const [data, setData] = useState();
@@ -20,17 +21,28 @@ const UserHistory = () => {
         <Header text={"가게 사용 내역"} back={true}></Header>
         <div className="userHistoryContainer">
           {data.map((item) => {
-            <div className="userHistoryItemBox">
-              <span className="userHistoryDate">
-                {timeConverter(item.visitTime)}
-              </span>
-              <div className="userHistoryItem">
-                <span className="userHistoryStoreName">미스터쉐프</span>
-                <span className="userHistoryEvent">
-                  콜라 무료로드려오욘ㅇㅁ옴ㄴ옴ㄴ오노
-                </span>
-              </div>
-            </div>;
+            return (
+              <>
+                <div className="userHistoryItemBox">
+                  <div className="visitTimeBox">
+                    {" "}
+                    <span className="userHistoryDate">
+                      {item.visitTime.substr(0, 10)}
+                    </span>
+                    <span className="userHistoryTime">
+                      {timeConverter(item.visitTime)}
+                    </span>
+                  </div>
+
+                  <div className="userHistoryItem">
+                    <span className="userHistoryStoreName">
+                      {item.storeName}
+                    </span>
+                    <span className="userHistoryEvent">{item.eventInfo}</span>
+                  </div>
+                </div>
+              </>
+            );
           })}
         </div>
       </>
