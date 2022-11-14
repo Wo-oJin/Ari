@@ -209,7 +209,7 @@ const SignupOwner2 = () => {
           </div>
         </Formbox>
         <Formbox>
-          <div className="intro">연락처</div>
+          <div className="intro">사장님 전화번호</div>
           <input
             className="inputBox"
             name="phoneNumber"
