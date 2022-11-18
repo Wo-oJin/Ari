@@ -17,7 +17,9 @@ const Main = () => {
 
   const checkNewPartnership = async () => {
     try {
-      const { data } = await customAxios.get("/partnership/check/new-request");
+      const { data } = await customAxios.get(
+        "/owner/partnership/check/new-request"
+      );
       setIsNewPartnership(data.data);
     } catch (e) {
       console.log(e);

@@ -87,11 +87,7 @@ public class MemberController {
 
         return memberService.showLikeList(principal);
     }
-
-    @GetMapping("/event-num")
-    public ResponseEntity<?> getEventNum(Principal principal) {
-        return memberService.getEventNum(principal);
-    }
+    
     /*
     @PostMapping("/like/add/{store_name}")
     public ResponseEntity<?> addLike(@PathVariable Long storeId, Principal principal) {

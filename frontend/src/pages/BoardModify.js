@@ -38,7 +38,7 @@ const BoardModify = () => {
   //처음 페이지에 접근하면 작성자의 가게들을 받아오기
   useEffect(() => {
     const getData = async () => {
-      await customAxios.get(`/board/update/${articleId}`).then((res) => {
+      await customAxios.get(`/owner/board/update/${articleId}`).then((res) => {
         console.log(res.data);
         setData(res.data);
         setTitle(res.data.title);
@@ -78,7 +78,7 @@ const BoardModify = () => {
     formData.append("period", period);
 
     customAxios
-      .put(`/board/update/${articleId}`, formData, {
+      .put(`/owner/board/update/${articleId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

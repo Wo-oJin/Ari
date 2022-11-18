@@ -35,7 +35,7 @@ const Category = () => {
     console.log("이 인덱스 넘어옴", menuIndex);
     console.log("menu: ", categoryArr[menuIndex]);
     await customAxios
-      .get(`/map/category?code=${categoryArr[menuIndex]}`)
+      .get(`/category?code=${categoryArr[menuIndex]}`)
       .then((res) => {
         console.log(res.data);
         setData(res.data);

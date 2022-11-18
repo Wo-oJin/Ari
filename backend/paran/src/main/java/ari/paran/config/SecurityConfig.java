@@ -10,15 +10,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 메서드 단위로 @PreAuthorize 검증 어노테이션을 사용
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     private final TokenProvider tokenProvider; // jwt 생성 및 유저 정보 반환
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -30,8 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         // CSRF 설정 Disable
         http.csrf().disable()
 
@@ -50,31 +50,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/map/**").permitAll() //test
-                .antMatchers("/image/**").permitAll() //test
-                .antMatchers("/board/**").permitAll()
-                .antMatchers("/edit/**").permitAll()
-                .antMatchers("/add/**").permitAll()
-                .antMatchers("/delete/**").permitAll()
-                .antMatchers("/chat/**").permitAll()
-                .antMatchers("/member/**").permitAll()
-                .antMatchers("/app/**").permitAll()
-                .antMatchers("/topic/**").permitAll()
-                .antMatchers("/ws/**").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
-                .antMatchers("/v2/**").permitAll()
-                .antMatchers("/swagger/**").permitAll()
-                .antMatchers("/admin/**").permitAll()
+                .antMatchers("/random-events").permitAll()
+                .antMatchers("/auth/logout").hasAnyRole("USER","OWNER", "ADMIN")
+                .antMatchers("/member/**").hasAnyRole("USER", "OWNER", "ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/owner/**").hasRole("OWNER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/ws/**").permitAll()
+//                .antMatchers("/swagger-resources/**").permitAll()
+//                .antMatchers("/swagger-ui/**").permitAll()
+//                .antMatchers("/v2/**").permitAll()
+//                .antMatchers("/swagger/**").permitAll()
 
-                //권한 테스트
-                .antMatchers("/member/userTest").hasRole("USER")
-                .antMatchers("/member/ownerTest").hasRole("OWNER")
-                .antMatchers("/member/adminTest").hasRole("ADMIN")
                 .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 
                 // JwtFilter를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider, redisTemplate));
+
+        return http.build();
     }
 }

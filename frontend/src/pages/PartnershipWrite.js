@@ -21,7 +21,7 @@ const PartnershipWrite = () => {
     // 협약 신청자의 가게 리스트 받아오기
     const getFromStoreList = async () => {
       try {
-        await customAxios.get("/partnership/store-list").then((res) => {
+        await customAxios.get("/owner/partnership/store-list").then((res) => {
           setFromStores(res.data.data);
           setIsLoaded(true);
         });
@@ -35,7 +35,7 @@ const PartnershipWrite = () => {
   const partnershipRequest = async () => {
     try {
       await customAxios
-        .post("/partnership/request", {
+        .post("/owner/partnership/request", {
           startDate: startDate.replace(/-/g, "/"),
           endDate: endDate.replace(/-/g, "/"),
           fromStoreId: fromStores[storeIndex].storeId,

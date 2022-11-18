@@ -18,7 +18,7 @@ const Map = ({ onClick, name }) => {
   useEffect(() => {
     const getMarkerData = async () => {
       customAxios
-        .get("/map/store")
+        .get("/map/all-stores")
         .then((response) => {
           setData(response.data.storeList);
           KakaoMapScript(response.data.storeList, onMarkerClicked);
