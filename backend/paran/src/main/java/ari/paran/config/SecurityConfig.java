@@ -14,11 +14,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 메서드 단위로 @PreAuthorize 검증 어노테이션을 사용
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     private final TokenProvider tokenProvider; // jwt 생성 및 유저 정보 반환
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -30,8 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         // CSRF 설정 Disable
         http.csrf().disable()
 
@@ -50,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/random-events").permitAll()
                 .antMatchers("/auth/logout").hasAnyRole("USER","OWNER", "ADMIN")
                 .antMatchers("/member/**").hasAnyRole("USER", "OWNER", "ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
@@ -66,5 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // JwtFilter를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider, redisTemplate));
+
+        return http.build();
     }
 }
