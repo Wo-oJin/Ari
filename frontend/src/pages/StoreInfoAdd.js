@@ -20,13 +20,14 @@ const Formbox = styled.div`
 `;
 
 const StoreInfoAdd = () => {
-  // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
+  // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 사장님 전화번호, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
   const [storeInfoArr, setStoreInfoArr] = useState([]);
   const [uStoreName, setuStoreName] = useState("");
   const [uRoadAddress, setuRoadAddress] = useState("");
   const [uDetailAddress, setuDetailAddress] = useState("");
   const [uOwnerName, setuOwnerName] = useState("");
-  const [uPhoneNumber, setuPhoneNumber] = useState("");
+  const [uOwnerPhoneNumber, setuOwnerPhoneNumber] = useState("");
+  const [uStorePhoneNumber, setuStorePhoneNumber] = useState("");
   const [uImages, setuImages] = useState([]); // base64 인코딩된 문자열이 들어감
   const [uFormImages, setuFormImages] = useState([]); // form data에 담아 보낼 이미지 파일 리스트
   const [uSubText, setuSubText] = useState("");
@@ -90,7 +91,7 @@ const StoreInfoAdd = () => {
   const [isStoreName, setIsStoreName] = useState(false);
   const [isAddress, setIsAddress] = useState(false);
   const [isOwnerName, setIsOwnerName] = useState(false);
-  const [isPhoneNumber, setIsPhoneNumber] = useState(false);
+  const [isOwnerPhoneNumber, setIsOwnerPhoneNumber] = useState(false);
 
   const [isOpenPost, setIsOpenPost] = useState(false); // daum-postcode api를 팝업처럼 관리하기 위함
 
@@ -138,15 +139,15 @@ const StoreInfoAdd = () => {
     }
   };
 
-  // 가게 전화번호
-  const onChangePhoneNumner = (e) => {
+  // 사장님 전화번호
+  const onChangeOwnerPhoneNumber = (e) => {
     const phoneNumberRegex = /^\d{3}-\d{3,4}-\d{4}$/;
-    setuPhoneNumber(e.target.value);
+    setuOwnerPhoneNumber(e.target.value);
 
     if (!phoneNumberRegex.test(e.target.value)) {
-      setIsPhoneNumber(false);
+      setIsOwnerPhoneNumber(false);
     } else {
-      setIsPhoneNumber(true);
+      setIsOwnerPhoneNumber(true);
     }
   };
 
@@ -244,7 +245,8 @@ const StoreInfoAdd = () => {
     formData.append("roadAddress", uRoadAddress);
     formData.append("detailAddress", uDetailAddress);
     formData.append("ownerName", uOwnerName);
-    formData.append("phoneNumber", uPhoneNumber);
+    formData.append("phoneNumber", uOwnerPhoneNumber);
+    formData.append("storePhoneNumber", uStorePhoneNumber);
     // formData.append('newImages', uFormImages);
     formData.append("subText", uSubText);
     formData.append("openHour", uOpenHour);
@@ -357,14 +359,29 @@ const StoreInfoAdd = () => {
             </div>
           </Formbox>
           <Formbox>
-            <div className="edit-intro">가게 전화번호:</div>
+            <div className="edit-intro">사장님 전화번호:</div>
             <div className="edit-box">
               <input
                 className="edit-input"
                 name="phoneNumber"
-                value={uPhoneNumber || ""}
+                value={uOwnerPhoneNumber || ""}
                 type="text"
-                onChange={onChangePhoneNumner}
+                onChange={onChangeOwnerPhoneNumber}
+                placeholder="010-xxxx-xxxx"
+                autoComplete="off"
+              />
+              <img alt="" src="images/edit_icon.png"></img>
+            </div>
+          </Formbox>
+          <Formbox>
+            <div className="edit-intro">가게 전화번호:</div>
+            <div className="edit-box">
+              <input
+                className="edit-input"
+                name="storePhoneNumber"
+                value={uStorePhoneNumber || ""}
+                type="text"
+                onChange={(e) => setuStorePhoneNumber(e.target.value)}
                 placeholder="010-xxxx-xxxx"
                 autoComplete="off"
               />
@@ -468,7 +485,7 @@ const StoreInfoAdd = () => {
               className="store-addBtn"
               type="submit"
               disabled={
-                isStoreName && isAddress && isOwnerName && isPhoneNumber
+                isStoreName && isAddress && isOwnerName && isOwnerPhoneNumber
                   ? false
                   : true
               }

@@ -20,14 +20,15 @@ const Formbox = styled.div`
 `;
 
 const StoreInfoEdit = () => {
-  // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
+  // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 사장님 전화번호, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
   const [storeInfoArr, setStoreInfoArr] = useState([]);
   const [uStoreId, setuStoreId] = useState(null);
   const [uStoreName, setuStoreName] = useState("");
   const [uRoadAddress, setuRoadAddress] = useState("");
   const [uDetailAddress, setuDetailAddress] = useState("");
   const [uOwnerName, setuOwnerName] = useState("");
-  const [uPhoneNumber, setuPhoneNumber] = useState("");
+  const [uOwnerPhoneNumber, setuOwnerPhoneNumber] = useState("");
+  const [uStorePhoneNumber, setuStorePhoneNumber] = useState("");
   const [uImages, setuImages] = useState([]); // base64 인코딩된 문자열이 들어감
   const [uFormImages, setuFormImages] = useState([]); // form data에 담아 보낼 이미지 파일 리스트
   const [uSubText, setuSubText] = useState("");
@@ -55,7 +56,8 @@ const StoreInfoEdit = () => {
           setuRoadAddress(dataArr[0].roadAddress || "");
           setuDetailAddress(dataArr[0].detailAddress || "");
           setuOwnerName(dataArr[0].ownerName || "");
-          setuPhoneNumber(dataArr[0].phoneNumber || "");
+          setuOwnerPhoneNumber(dataArr[0].phoneNumber || "");
+          setuStorePhoneNumber(dataArr[0].storePhoneNumber || "");
           setuSubText(dataArr[0].subText || "");
           setuOpenHour(dataArr[0].openHour || "");
 
@@ -109,7 +111,8 @@ const StoreInfoEdit = () => {
     setuRoadAddress(currentStore.roadAddress || "");
     setuDetailAddress(currentStore.detailAddress || "");
     setuOwnerName(currentStore.ownerName || "");
-    setuPhoneNumber(currentStore.phoneNumber || "");
+    setuOwnerPhoneNumber(currentStore.phoneNumber || "");
+    setuStorePhoneNumber(currentStore.storePhoneNumber || "");
     setuSubText(currentStore.subText || "");
     setuOpenHour(currentStore.openHour || "");
 
@@ -149,7 +152,7 @@ const StoreInfoEdit = () => {
   const [isStoreName, setIsStoreName] = useState(true);
   const [isAddress, setIsAddress] = useState(true);
   const [isOwnerName, setIsOwnerName] = useState(true);
-  const [isPhoneNumber, setIsPhoneNumber] = useState(true);
+  const [isOwnerPhoneNumber, setIsOwnerPhoneNumber] = useState(true);
 
   const [isOpenPost, setIsOpenPost] = useState(false); // daum-postcode api를 팝업처럼 관리하기 위함
 
@@ -197,15 +200,15 @@ const StoreInfoEdit = () => {
     }
   };
 
-  // 가게 전화번호
-  const onChangePhoneNumner = (e) => {
+  // 사장님 전화번호
+  const onChangeOwnerPhoneNumber = (e) => {
     const phoneNumberRegex = /^\d{3}-\d{3,4}-\d{4}$/;
-    setuPhoneNumber(e.target.value);
+    setuOwnerPhoneNumber(e.target.value);
 
     if (!phoneNumberRegex.test(e.target.value)) {
-      setIsPhoneNumber(false);
+      setIsOwnerPhoneNumber(false);
     } else {
-      setIsPhoneNumber(true);
+      setIsOwnerPhoneNumber(true);
     }
   };
 
@@ -304,7 +307,8 @@ const StoreInfoEdit = () => {
     formData.append("roadAddress", uRoadAddress);
     formData.append("detailAddress", uDetailAddress);
     formData.append("ownerName", uOwnerName);
-    formData.append("phoneNumber", uPhoneNumber);
+    formData.append("phoneNumber", uOwnerPhoneNumber);
+    formData.append("storePhoneNumber", uStorePhoneNumber);
     // formData.append('newImages', uFormImages);
     formData.append("subText", uSubText);
     formData.append("openHour", uOpenHour);
@@ -451,14 +455,29 @@ const StoreInfoEdit = () => {
             </div>
           </Formbox>
           <Formbox>
-            <div className="edit-intro">가게 전화번호:</div>
+            <div className="edit-intro">사장님 전화번호:</div>
             <div className="edit-box">
               <input
                 className="edit-input"
                 name="phoneNumber"
-                value={uPhoneNumber || ""}
+                value={uOwnerPhoneNumber || ""}
                 type="text"
-                onChange={onChangePhoneNumner}
+                onChange={onChangeOwnerPhoneNumber}
+                placeholder="010-xxxx-xxxx"
+                autoComplete="off"
+              />
+              <img alt="" src="images/edit_icon.png"></img>
+            </div>
+          </Formbox>
+          <Formbox>
+            <div className="edit-intro">가게 전화번호:</div>
+            <div className="edit-box">
+              <input
+                className="edit-input"
+                name="storePhoneNumber"
+                value={uStorePhoneNumber || ""}
+                type="text"
+                onChange={(e) => setuStorePhoneNumber(e.target.value)}
                 placeholder="010-xxxx-xxxx"
                 autoComplete="off"
               />
@@ -569,7 +588,7 @@ const StoreInfoEdit = () => {
                 className="editBtn"
                 type="submit"
                 disabled={
-                  isStoreName && isAddress && isOwnerName && isPhoneNumber
+                  isStoreName && isAddress && isOwnerName && isOwnerPhoneNumber
                     ? false
                     : true
                 }

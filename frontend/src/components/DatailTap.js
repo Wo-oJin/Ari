@@ -386,8 +386,8 @@ export const StoreInfoTap = ({ data }) => {
           ) : (
             <span className="StoreInfoRight">아직 등록된 정보가 없습니다.</span>
           )}
-          {data.phoneNumber ? (
-            <span className="StoreInfoRight">{data.phoneNumber} </span>
+          {data.storePhoneNumber ? (
+            <span className="StoreInfoRight">{data.storePhoneNumber} </span>
           ) : (
             <span className="StoreInfoRight">아직 등록된 정보가 없습니다.</span>
           )}
