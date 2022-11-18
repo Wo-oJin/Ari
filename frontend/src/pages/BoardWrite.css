@@ -58,6 +58,11 @@ select:focus {
   cursor: pointer;
 }
 
+.completeBtn:disabled {
+  background-color: #dcdcdc;
+  cursor: default;
+}
+
 .deletePhotoBtn {
   position: relative;
   right: 20px;

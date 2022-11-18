@@ -58,6 +58,11 @@ function App() {
     }
   }, []);
 
+  // 배포 환경에서 console.log 지우기
+  if (process.env.NODE_ENV === "production") {
+    console.log = function no_console() {};
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -86,7 +91,7 @@ function App() {
           path="/loginRegister"
           element={AuthRoute(0, <LoginRegister />)}
         />
-        <Route path="/login" element={AuthRoute(0, <Login />)} />
+        <Route path="/login" element={<Login />} />
         <Route path="/loginUser" element={AuthRoute(0, <LoginUser />)} />
         <Route path="/loginOwner" element={AuthRoute(0, <LoginOwner />)} />
         {/* <Route path="/redirectLogin" element={<RedirectLogin />} /> */}

@@ -153,48 +153,40 @@ const StoreInfoAdd = () => {
   // 가게 대표 사진 (최대 3장)
   const onChangeImage = (e) => {
     const imageArr = e.target.files; // e.target.files에서 넘어온 이미지들을 배열에 저장
-
-    let imageURLs = [];
-
-    let image;
     const maxImageLength = 3;
     const maxAddImageCnt = maxImageLength - uFormImages.length; // 새로 추가할 이미지의 최대 업로드 개수
-    const addImagesLength =
-      imageArr.length > maxAddImageCnt ? maxAddImageCnt : imageArr.length;
 
-    if (imageArr.length > addImagesLength) {
-      alert(`최대 등록 가능한 이미지 개수를 초과했습니다.`);
-      return false;
-    } else {
-      setuFormImages([...uFormImages, ...e.target.files]);
+    // 1. 파일 업로드 개수 검증
+    if (imageArr.length > maxAddImageCnt) {
+      alert("최대 등록 가능한 이미지 개수를 초과했습니다.");
+      return;
     }
 
-    for (let i = 0; i < addImagesLength; i++) {
-      image = imageArr[i];
-
-      // 파일 업로드 시 모든 파일 (*.*) 선택 방지 위해 이미지 type을 한 번 더 검증
+    // 2. 파일 업로드 시 모든 파일 (*.*) 선택 방지 위해 이미지 type을 한 번 더 검증
+    for (let i = 0; i < imageArr.length; i++) {
       if (
-        image.type !== "image/jpeg" &&
-        image.type !== "image/jpg" &&
-        image.type !== "image/png"
+        imageArr[i].type !== "image/jpeg" &&
+        imageArr[i].type !== "image/jpg" &&
+        imageArr[i].type !== "image/png"
       ) {
-        setuImages([]);
         alert("JPG 혹은 PNG 확장자의 이미지 파일만 등록 가능합니다.");
-        break;
-      } else {
-        // 이미지 파일 Base64 인코딩: 이미지 미리보기 위함
-        const reader = new FileReader();
-
-        reader.readAsDataURL(image); // 파일을 읽고, result 속성에 파일을 나타내는 URL을 저장
-
-        reader.onload = () => {
-          // 읽기 완료 시(성공만) 트리거 됨
-          imageURLs[i] = reader.result; // reader.result는 preview Image URL임
-
-          setuImages([...uImages, ...imageURLs]); // 기존 이미지 배열에 새로운 이미지 추가
-        };
+        return;
       }
     }
+
+    Array.from(imageArr).forEach((image) => {
+      setuFormImages((prev) => [...prev, image]);
+
+      // 이미지 파일 Base64 인코딩: 이미지 미리보기 위함
+      const reader = new FileReader();
+
+      reader.readAsDataURL(image); // 파일을 읽고, result 속성에 파일을 나타내는 URL을 저장
+
+      reader.onload = () => {
+        // 읽기 완료 시(성공만) 트리거 됨
+        setuImages((prev) => [...prev, reader.result]); // reader.result는 preview Image URL임
+      };
+    });
   };
 
   // 이미지 삭제: images 배열의 데이터 삭제
