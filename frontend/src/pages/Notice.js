@@ -12,7 +12,7 @@ const Notice = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const navigate = useNavigate();
   useEffect(() => {
-    customAxios.get("/admin/notice").then((res) => {
+    customAxios.get("/notice").then((res) => {
       console.log(res.data);
       setData(res.data);
     });
