@@ -14,12 +14,11 @@ import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/notice")
 public class NoticeBoardController {
     private final Response response;
     private final NoticeService noticeService;
 
-    @PostMapping
+    @PostMapping("/admin/noitce")
     public ResponseEntity saveNotice(@Validated @RequestBody DetailNoticeDto detailNoticeDto, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()) {
@@ -32,7 +31,7 @@ public class NoticeBoardController {
         return response.success("성공적으로 저장했습니다.");
     }
 
-    @PutMapping("/{noticeId}")
+    @PutMapping("/admin/noitce/{noticeId}")
     public ResponseEntity updateNotice(@Validated @RequestBody DetailNoticeDto detailNoticeDto, BindingResult bindingResult,
                                        @PathVariable Long noticeId){
         if(bindingResult.hasErrors())
@@ -41,17 +40,17 @@ public class NoticeBoardController {
         return noticeService.updateNotice(noticeId, detailNoticeDto);
     }
 
-    @DeleteMapping("/{noticeId}")
+    @DeleteMapping("/admin/noitce/{noticeId}")
     public ResponseEntity deleteNotice(@PathVariable Long noticeId){
         return noticeService.deleteNotice(noticeId);
     }
 
-    @GetMapping
+    @GetMapping("/notice")
     public List<SimpleNoticeDto> getSimpleNoticeBoard(){
         return noticeService.getSimpleNotices();
     }
 
-    @GetMapping("/{noticeId}")
+    @GetMapping("/notice/{noticeId}")
     public DetailNoticeDto getDetailNotice(@PathVariable Long noticeId){
         return noticeService.getDetailNotice(noticeId);
     }
