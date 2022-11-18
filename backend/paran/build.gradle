@@ -48,6 +48,7 @@ dependencies {
 	implementation 'org.mariadb.jdbc:mariadb-java-client'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
 
 	//websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
