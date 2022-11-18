@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.context.annotation.Configuration;
 
-
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 메서드 단위로 @PreAuthorize 검증 어노테이션을 사용
 @RequiredArgsConstructor
@@ -36,7 +35,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         // CSRF 설정 Disable
         http.csrf().disable()
 
@@ -54,6 +52,7 @@ public class SecurityConfig {
                 // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeRequests()
+
                 .antMatchers("/auth/logout").hasAnyRole("USER","OWNER", "ADMIN")
                 .antMatchers("/member/**").hasAnyRole("USER", "OWNER", "ADMIN")
                 .antMatchers("/user/**").hasRole("USER")

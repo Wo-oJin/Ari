@@ -13,7 +13,7 @@ const SearchStore = () => {
 
   const getData = async () => {
     try {
-      const { data } = await customAxios.get(`/map/find?keyword=${keyword}`);
+      const { data } = await customAxios.get(`/store?keyword=${keyword}`);
       setSearchData(data);
       setLoading(true);
     } catch (e) {

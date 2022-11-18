@@ -28,7 +28,7 @@ import java.util.*;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/owner/board")
 public class BoardController {
 
     private final BoardService boardService;
@@ -38,7 +38,7 @@ public class BoardController {
             @ApiResponse(code = 200, message = "API 정상 작동"),
             @ApiResponse(code = 500, message = "서버 에러")
     })
-    @GetMapping("/list")
+    @GetMapping
     @ResponseBody
     public Page<SimpleArticleDto> ArticleList(
             @PageableDefault(page = 0, size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
@@ -53,7 +53,7 @@ public class BoardController {
             @ApiResponse(code = 500, message = "서버 에러")
     })
     @ApiImplicitParam(name = "id", value = "게시글 id", paramType = "path")
-    @GetMapping("/list/{id}")
+    @GetMapping("/{id}")
     @ResponseBody
     public DetailArticleDto detailArticle(@PathVariable("id") Long articleId, Principal principal) throws IOException {
         Long memberId = Long.parseLong(principal.getName());

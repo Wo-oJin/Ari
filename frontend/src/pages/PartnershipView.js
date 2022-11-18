@@ -18,7 +18,7 @@ const PartnershipView = () => {
       try {
         await customAxios
           .get(
-            `/partnership/info?storeId=${state.storeId}&partnershipId=${state.partnershipId}`
+            `/owner/partnership/info?storeId=${state.storeId}&partnershipId=${state.partnershipId}`
           )
           .then((res) => {
             setData(res.data.data);
@@ -35,7 +35,7 @@ const PartnershipView = () => {
     try {
       await customAxios
         .post(
-          `/partnership/reject?storeId=${state.storeId}&partnershipId=${state.partnershipId}`
+          `/owner/partnership/reject?storeId=${state.storeId}&partnershipId=${state.partnershipId}`
         )
         .then((res) => {
           alert("협약 요청이 거절되었습니다.");
@@ -50,7 +50,7 @@ const PartnershipView = () => {
     try {
       await customAxios
         .post(
-          `/partnership/approve?storeId=${state.storeId}&partnershipId=${state.partnershipId}`
+          `/owner/partnership/approve?storeId=${state.storeId}&partnershipId=${state.partnershipId}`
         )
         .then((res) => {
           alert("제휴 맺기가 성공적으로 처리되었습니다.");

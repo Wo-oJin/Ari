@@ -12,7 +12,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/history")
+@RequestMapping("/user/history")
 public class HistoryController {
 
     private final HistoryService historyService;

@@ -13,7 +13,7 @@ const NoticeModify = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    customAxios.get(`/admin/notice/${articleId}`).then((res) => {
+    customAxios.get(`/notice/${articleId}`).then((res) => {
       setData(res.data);
       setTitle(res.data.title);
       setContext(res.data.content);

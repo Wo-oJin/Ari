@@ -17,7 +17,7 @@ const MyPageOwner = () => {
 
   const initialEventNum = async () => {
     try {
-      await customAxios.get("/member/event-num").then((res) => {
+      await customAxios.get("/owner/event-num").then((res) => {
         setCoopEventNum(res.data.data[0]);
         setPrivateEventNum(res.data.data[1]);
         setIsLoaded(true);
@@ -29,7 +29,9 @@ const MyPageOwner = () => {
 
   const checkNewPartnership = async () => {
     try {
-      const { data } = await customAxios.get("/partnership/check/new-request");
+      const { data } = await customAxios.get(
+        "/owner/partnership/check/new-request"
+      );
       setIsNewPartnership(data.data);
     } catch (e) {
       console.log(e);
