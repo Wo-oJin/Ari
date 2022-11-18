@@ -16,7 +16,7 @@ const NoticeArticle = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    customAxios.get(`/admin/notice/${articleId}`).then((res) => {
+    customAxios.get(`/notice/${articleId}`).then((res) => {
       setData(res.data);
     });
   }, []);
