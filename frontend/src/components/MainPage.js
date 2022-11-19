@@ -194,6 +194,7 @@ const MainPage = ({ onClick }) => {
                       style={{
                         backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
                         backgroundPosition: "center",
+                        backgroundSize: "cover",
                       }}
                       className="mainPage-banner-box"
                     >

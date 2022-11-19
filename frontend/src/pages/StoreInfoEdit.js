@@ -6,6 +6,7 @@ import "../pages/StoreInfoEdit.css";
 import DaumPostcode from "react-daum-postcode";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
+import { HiOutlineCamera } from "react-icons/hi";
 
 const Formbox = styled.div`
   margin-bottom: 36px;
@@ -503,11 +504,10 @@ const StoreInfoEdit = () => {
               <div style={{ display: "flex", marginBottom: "6px" }}>
                 <label htmlFor="images">
                   <div className="uploadImage" style={{ cursor: "pointer" }}>
-                    <img
+                    <HiOutlineCamera
+                      size={"1.7em"}
                       style={{ paddingTop: "3px" }}
-                      alt=""
-                      src="images/camera.png"
-                    ></img>
+                    ></HiOutlineCamera>
                     <span style={{ fontSize: "14px" }}>
                       <span style={{ color: "#386FFE" }}>
                         {uFormImages.length}
