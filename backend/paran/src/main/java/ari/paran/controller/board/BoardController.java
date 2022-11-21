@@ -88,6 +88,7 @@ public class BoardController {
                 .content(article.getContent())
                 .period(article.getPeriod())
                 .updateDate(LocalDate.now())
+                .contact(article.getContact())
                 .build();
 
         boardService.updateArticle(updateForm, files);

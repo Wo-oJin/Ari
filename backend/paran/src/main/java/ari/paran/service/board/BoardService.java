@@ -84,6 +84,7 @@ public class BoardService {
                     .articleId(article.getId())
                     .author(article.getAuthor())
                     .period(article.getPeriod())
+                    .contact(article.getContact())
                     .favorite(memberService.getMemberInfoById(memberId).isFavoriteArticle(article))
                     .authority(article.getMember().getId() == memberId ? true : false)
                     .location(store.getFullAddress())
@@ -117,6 +118,7 @@ public class BoardService {
         updateArticle.changeTitle(updateForm.getTitle());
         updateArticle.changeContent(updateForm.getContent());
         updateArticle.changePeriod(updateForm.getPeriod());
+        updateArticle.setContact(updateForm.getContact());
         updateArticle.setUpdateDate(LocalDate.now());
 
         fileService.changeArticleImage(updateForm.getId(), files);
