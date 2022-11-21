@@ -57,11 +57,9 @@ const Chat = () => {
       newMessage.type === "CHAT" &&
       newMessage.sender !== name
     ) {
-      console.log("메시지 들어왔고, 인뷰 안보는중");
       //가장 최신 메시지로 설정
       setNewMessageState(true);
     } else if (inView) {
-      console.log("인뷰 본느 중");
       setNewMessageState(false);
       setNewMessage(null);
     }
@@ -83,20 +81,16 @@ const Chat = () => {
   const onConnected = async () => {
     await customAxios.get("/owner/chat/room").then((res) => {
       //여기서 채팅 기록 받아오기
-      console.log(res.data);
       setMessageList(res.data.data);
       //받은 roomID를 기반으로 subscribe 주소 열기
       stompClient.subscribe("/topic/public", onMessageReceived);
 
-      console.log("send 이전");
       // 유저 네임을 서버에게 알리기
       stompClient.send(
         "/app/chat/addUser",
         {},
         JSON.stringify({ sender: name, type: "JOIN" })
       );
-
-      console.log("send 이후");
     });
   };
 
@@ -105,14 +99,11 @@ const Chat = () => {
     var message = JSON.parse(payload.body);
 
     if (message.type === "JOIN") {
-      console.log("JOIN!!!");
       setRecMessage((prev) => [...prev, message]);
       scrollToElement();
     } else if (message.type === "LEAVE") {
-      console.log("LEAVE!!");
       // setRecMessage((prev) => [...prev, message]);
     } else {
-      console.log("Chatting: ", message);
       setRecMessage((prev) => [...prev, message]);
       setNewMessage(message);
       scrollToElement();
@@ -124,7 +115,6 @@ const Chat = () => {
 
   const sendMessage = () => {
     if (chat && stompClient) {
-      console.log("send 실행됨, chat: ", chat);
       let chatMessage = {
         sender: name,
         content: chat,

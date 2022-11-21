@@ -24,7 +24,6 @@ const NoticeWrite = () => {
         title: title,
       })
       .then((res) => {
-        console.log(res.data);
         if (res.data.result === "success") {
           window.alert(res.data.massage);
           navigate("/notice");
@@ -33,7 +32,6 @@ const NoticeWrite = () => {
           navigate("/notice");
         }
       });
-    console.log(title, context);
   };
   return (
     <>

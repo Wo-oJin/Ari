@@ -35,7 +35,6 @@ const MainPage = ({ onClick }) => {
           refreshToken: cookies.get("refreshToken"),
         })
         .then((res) => {
-          console.log(res.data.massage);
           if (res.data.result === "fail") {
             // 토큰 갱신 실패
             // recoil persist로 저장된 변수 초기화

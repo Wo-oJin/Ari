@@ -32,16 +32,12 @@ const Category = () => {
   const getData = async (menuIndex) => {
     setData("");
     setLoading(true);
-    console.log("이 인덱스 넘어옴", menuIndex);
-    console.log("menu: ", categoryArr[menuIndex]);
     await customAxios
       .get(`/category?code=${categoryArr[menuIndex]}`)
       .then((res) => {
-        console.log(res.data);
         setData(res.data);
       })
       .catch((error) => {
-        console.log("error");
         setData(null);
       });
     setLoading(false);
@@ -88,7 +84,6 @@ const Category = () => {
   //메뉴 클릭시 index 세팅
   const selectMenu = (e) => {
     setMenuIndex(e.target.getAttribute("data-key"));
-    console.log("이 인덱스 선택함 ", e.target.getAttribute("data-key"));
     getData(e.target.getAttribute("data-key"));
   };
 

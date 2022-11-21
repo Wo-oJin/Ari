@@ -13,13 +13,11 @@ const Notice = () => {
   const navigate = useNavigate();
   useEffect(() => {
     customAxios.get("/notice").then((res) => {
-      console.log(res.data);
       setData(res.data);
     });
   }, []);
 
   const onClick = (e) => {
-    console.log(e.target.getAttribute("data-key"));
     navigate(`/notice/${e.target.getAttribute("data-key")}`);
   };
 

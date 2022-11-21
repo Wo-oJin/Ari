@@ -15,8 +15,6 @@ export const DetailCoopTap = ({ data }) => {
   const [target, setTarget] = useState();
   const [value, setValue] = useState();
   const [auth, setAuth] = useRecoilState(authState);
-  console.log("현재 유저 상태: ", auth);
-  console.log("in detailTap ", data);
   //로드되면 처음에 협력 가게 위치를 카카오맵 상에 마커로 찍기
   useEffect(() => {
     if (data.partners.length > 0) {
@@ -68,7 +66,6 @@ export const DetailCoopTap = ({ data }) => {
           eventInfo: data.events[e.target.getAttribute("data-key")].info,
         })
         .then((res) => {
-          console.log(res.data);
           if (res.data.result === "success") {
             e.target.classList.remove("sendVerifyBtn");
             e.target.classList.add("verifiedBtn");
@@ -273,7 +270,6 @@ export const PrivateEventTap = ({ data }) => {
           eventInfo: data.events[e.target.getAttribute("data-key")].info,
         })
         .then((res) => {
-          console.log(res.data);
           if (res.data.result === "success") {
             e.target.classList.remove("sendVerifyBtn");
             e.target.classList.add("verifiedBtn");

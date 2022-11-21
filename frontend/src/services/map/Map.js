@@ -26,7 +26,6 @@ const Map = ({ onClick, name }) => {
         .catch((e) => console.log("something went wrong :(", e));
     };
     getMarkerData();
-    console.log("여긴 Map ", data);
   }, []);
 
   return (

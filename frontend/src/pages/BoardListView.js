@@ -27,12 +27,10 @@ const BoardListView = () => {
 
   const getBoardData = async () => {
     customAxios.get(`/owner/board/${articleId}`).then((response) => {
-      console.log(response.data);
       setData(response.data);
       setIsfavorited(response.data.favorite);
       setAuthority(response.data.authority);
       setConvertDate(ConvertDate(response.data.createDate));
-      console.log("asdasdsd", convertDate);
     });
   };
 
@@ -46,7 +44,6 @@ const BoardListView = () => {
       .post(`/owner/board/favorite/toggle?articleId=${data.articleId}`)
       .then((res) => {
         setIsfavorited(!isFavorited);
-        console.log("찜 성공");
       });
   };
 

@@ -40,7 +40,6 @@ const KakaoMapScript = (data, onMarkerClicked) => {
             //만약 이미 표시된 마커 수가 존재하면 표시된 마커 제거
             if (markers.length > 0) {
               let popMarker = markers.pop();
-              console.log(popMarker);
               popMarker.setMap(null);
             }
             // 마커 위에 인포윈도우를 표시

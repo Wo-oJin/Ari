@@ -65,13 +65,11 @@ const Board = () => {
         //마지막 페이지가 아니라면
         if (response.data.last === false) {
           setData((prev) => [...prev, ...response.data.content]);
-          console.log(`${page}번째 페이지 렌더링 `, data);
         }
         //마지막 페이지라면
         else {
           setData((prev) => [...prev, ...response.data.content]);
           setEndPage(true);
-          console.log("페이지 끝임", data);
         }
       });
     }
@@ -86,20 +84,14 @@ const Board = () => {
   useEffect(() => {
     setLoad(true);
     getBoardData();
-    console.log("맨 처음에 렌더링 page: ", page, inView);
     setLoad(false);
   }, [page]);
 
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있고, 로딩 중이 아니라면
     if (inView && !load) {
-      console.log("invView: ", inView, "load: ", load);
-      console.log("page 업뎃 전", page);
       setPage((prevState) => prevState + 1);
-      //getBoardData();
-      console.log("인뷰 렌더링 page: ", page);
     }
-    console.log("page 업뎃 후", page);
   }, [inView, load]);
 
   const handleOnKeyPress = (e) => {
