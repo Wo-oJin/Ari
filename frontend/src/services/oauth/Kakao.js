@@ -31,7 +31,6 @@ const Kakao = () => {
             state: state,
           })
           .then((res) => {
-            console.log("소셜 로그인>>" + JSON.stringify(res.data));
             if (res.data.state === 400) {
               // from_oauth 값에 따라 다른 메시지 띄우기
               alert(res.data.massage);

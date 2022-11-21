@@ -42,7 +42,6 @@ const BoardModify = () => {
   useEffect(() => {
     const getData = async () => {
       await customAxios.get(`/owner/board/update/${articleId}`).then((res) => {
-        console.log(res.data);
         setData(res.data);
         setTitle(res.data.title);
         setPeriod(res.data.period);
@@ -132,7 +131,6 @@ const BoardModify = () => {
     if (imgRef.current.files.length > 0) {
       const imageFiles = [...imgRef.current.files];
       setPostImages((prev) => [prev, ...imageFiles]);
-      console.log("post ", postImages);
       imageFiles.map((item) => {
         const reader = new FileReader();
         reader.readAsDataURL(item);
@@ -163,7 +161,6 @@ const BoardModify = () => {
   const changeSelectHandler = (e) => {
     setAuthorStore(authorList[e.target.value].storeName);
     setSelected(authorList[e.target.value].storeName);
-    console.log(authorStore, selected);
   };
   if (!data) {
     return <Loading />;

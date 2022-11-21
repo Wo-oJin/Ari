@@ -21,8 +21,6 @@ const StoreModal = ({
     };
   });
 
-  console.log("여긴 모달", data);
-
   //모달 바깥을 클릭하면 모달창과 인포박스를 끄기
   const clickModalOutside = (event) => {
     if (modalRef && !modalRef.current.contains(event.target)) {

@@ -44,7 +44,6 @@ const StoreInfoAdd = () => {
     const initialEdit = async () => {
       try {
         await customAxios.get("/owner/update/store").then((res) => {
-          console.log("res.data.data", res.data.data);
           const dataArr = res.data.data;
           setStoreInfoArr(dataArr);
 
@@ -226,8 +225,6 @@ const StoreInfoAdd = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(uFormImages);
 
     // 이미지와 json 데이터를 함께 전달하기 위해 FormData 객체에 담아서 전달
     const formData = new FormData();

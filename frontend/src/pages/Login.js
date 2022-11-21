@@ -69,7 +69,6 @@ const Login = () => {
           password: password,
         })
         .then((res) => {
-          console.log("로그인>>" + JSON.stringify(res.data));
           if (res.data.result === "fail") {
             // 로그인 실패
             alert(res.data.massage);

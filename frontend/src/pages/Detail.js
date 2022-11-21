@@ -46,7 +46,6 @@ const Detail = () => {
       navigate("/");
     }
   }, [storeId]);
-  console.log("in Detail ", data);
 
   //클릭한 탭의 인덱스를 관리하기 위한 변수 선언
   const [tapIndex, setTapIndex] = useState("0");
@@ -57,7 +56,6 @@ const Detail = () => {
       .post(`/member/favorite/toggle?storeId=${data.id}`)
       .then((res) => {
         setIsfavorited(!isFavorited);
-        console.log("찜 성공");
       });
   };
   //탭 클릭 함수
