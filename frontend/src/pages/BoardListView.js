@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./BoardListView.css";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import ConvertDate from "../components/ConvertDate";
+import Loading from "../components/Loading";
 
 const BoardListView = () => {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ const BoardListView = () => {
 
   //아직 데이터가 들어오기 전이면 로딩 중 출력
   if (!data) {
-    return <h1>로딩 중...</h1>;
+    return <Loading />;
   } else {
     return (
       <>
@@ -109,6 +110,9 @@ const BoardListView = () => {
             <div className="viewContentHeader">
               <span className="author">{data.author}</span>
               <span className="location">{data.location}</span>
+              <span style={{ fontSize: "11px", marginTop: "5px" }}>
+                제휴 문의 연락처: {data.contact}
+              </span>
             </div>
             <div className="viewContentMiddle">
               <div className="viewContentTop">

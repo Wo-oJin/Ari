@@ -5,11 +5,14 @@ import { IoMdCloseCircle } from "react-icons/io";
 import { HiOutlineCamera } from "react-icons/hi";
 import "./BoardWrite.css";
 import { customAxios } from "./customAxios";
+import Loading from "../components/Loading";
+
 const BoardModify = () => {
   const [imageUrl, setImageUrl] = useState([]);
   const [postImages, setPostImages] = useState();
   //업로드된 이미지를 확인하기 위한 변수
   const [title, setTitle] = useState("");
+  const [contact, setContact] = useState("");
   const [period, setPeriod] = useState("");
   const [content, setcContent] = useState("");
   const [authorStore, setAuthorStore] = useState("");
@@ -75,6 +78,7 @@ const BoardModify = () => {
     }
     formData.append("title", title);
     formData.append("content", content);
+    formData.append("contact", contact);
     formData.append("period", period);
 
     customAxios
@@ -91,6 +95,9 @@ const BoardModify = () => {
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
+  };
+  const onChangeContact = (e) => {
+    setContact(e.target.value);
   };
   const onChangePeriod = (e) => {
     setPeriod(e.target.value);
@@ -159,7 +166,7 @@ const BoardModify = () => {
     console.log(authorStore, selected);
   };
   if (!data) {
-    return <h1>로딩 중</h1>;
+    return <Loading />;
   } else {
     return (
       <>
@@ -249,7 +256,11 @@ const BoardModify = () => {
                   })}
               </select>
             </div>
-
+            <input
+              className="writeDuration"
+              placeholder="개인 연락처 (전화번호, sns 등)"
+              onChange={onChangeContact}
+            ></input>
             <input
               className="writeDuration"
               placeholder="제휴기간 (일주일/한 달/1년)"

@@ -12,6 +12,7 @@ const BoardWrite = () => {
   //업로드된 이미지를 확인하기 위한 변수
   const [title, setTitle] = useState("");
   const [period, setPeriod] = useState("");
+  const [contact, setContact] = useState("");
   const [content, setcContent] = useState("");
   const [authorStore, setAuthorStore] = useState("");
   const [selected, setSelected] = useState("-1");
@@ -40,6 +41,7 @@ const BoardWrite = () => {
     }
     formData.append("title", title);
     formData.append("content", content);
+    formData.append("contact", contact);
     formData.append("period", period);
     formData.append("author", authorStore);
 
@@ -59,6 +61,9 @@ const BoardWrite = () => {
 
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
+  };
+  const onChangeContact = (e) => {
+    setContact(e.target.value);
   };
   const onChangePeriod = (e) => {
     setPeriod(e.target.value);
@@ -203,7 +208,11 @@ const BoardWrite = () => {
                 })}
             </select>
           </div>
-
+          <input
+            className="writeDuration"
+            placeholder="개인 연락처 (전화번호, sns 등)"
+            onChange={onChangeContact}
+          ></input>
           <input
             className="writeDuration"
             placeholder="제휴기간 (일주일/한 달/1년)"
