@@ -17,6 +17,7 @@ public class DetailArticleDto {
     private String location;
     private String content;
     private String period;
+    private String contact;
     private boolean favorite;
     private boolean authority;
     private LocalDate createDate;
@@ -24,7 +25,7 @@ public class DetailArticleDto {
     private List<String> images;
 
     @Builder
-    public DetailArticleDto(Long storeId, String title, String author, Long articleId, String location, String content, String period, boolean favorite,
+    public DetailArticleDto(Long storeId, String title, String author, Long articleId, String location, String content, String period, String contact, boolean favorite,
                             boolean authority, LocalDate createDate, LocalDate updateDate, List<String> images){
 
         this.storeId = storeId;
@@ -34,6 +35,7 @@ public class DetailArticleDto {
         this.location = location;
         this.content = content;
         this.period = period;
+        this.contact = contact;
         this.favorite = favorite;
         this.authority = authority;
         this.createDate = createDate;

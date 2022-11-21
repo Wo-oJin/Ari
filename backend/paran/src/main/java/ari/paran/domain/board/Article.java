@@ -29,6 +29,10 @@ public class Article {
     @Column
     private String author;
 
+    @Column
+    @Setter
+    private String contact;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
