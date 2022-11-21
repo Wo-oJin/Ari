@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import Header from "../components/Header";
 import { authState } from "../state";
@@ -31,7 +31,16 @@ const Notice = () => {
       <>
         <Header text="공지사항" back={true}></Header>
         <div className="noticeContainer">
-          <div className="noticeBanner"></div>
+          <div
+            className="noticeBanner"
+            onClick={() => {
+              window.open(
+                "https://sky-drive-16d.notion.site/ARI-94ad2e39504046a3ac11ee5fb2f33382",
+                "_blank"
+              );
+            }}
+          ></div>
+
           <div className="noticeArticlesContainer">
             {data &&
               data.map((item, index) => {
