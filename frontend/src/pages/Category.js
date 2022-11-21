@@ -135,9 +135,8 @@ const Category = () => {
         {data
           ? data.map((item, index) => {
               return (
-                <Link to={`/detail/${item.storeId}`}>
+                <Link key={index} to={`/detail/${item.storeId}`}>
                   <div
-                    key={index}
                     // onClick={() => {
                     //   navigate(`/detail/${item.storeId}`);
                     // }}
