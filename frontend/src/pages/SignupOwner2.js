@@ -28,7 +28,7 @@ const SignupOwner2 = () => {
 
   const navigate = useNavigate();
 
-  // 가게 이름, 사장님 성함, 가게 주소, 상세 주소, 연락처, 가게 인증
+  // 가게 이름, 사장님 성함, 가게 주소, 상세 주소, 사장님 연락처, 가게 인증
   const [storeName, setStoreName] = useState("");
   const [ownerName, setOwnerName] = useState("");
   const [storeRoadAddress, setStoreRoadAddress] = useState(""); // 도로명주소
@@ -71,7 +71,7 @@ const SignupOwner2 = () => {
     setIsOpenPost(false);
   };
 
-  // 연락처
+  // 사장님 연락처
   const onChangePhoneNumner = (e) => {
     const phoneNumberRegex = /^\d{3}-\d{3,4}-\d{4}$/;
     setPhoneNumber(e.target.value);
@@ -209,7 +209,7 @@ const SignupOwner2 = () => {
           </div>
         </Formbox>
         <Formbox>
-          <div className="intro">연락처</div>
+          <div className="intro">사장님 전화번호</div>
           <input
             className="inputBox"
             name="phoneNumber"

@@ -81,7 +81,7 @@ const Chat = () => {
 
   //connect 되면 채팅 기록 받아오고 subscribe 열기
   const onConnected = async () => {
-    await customAxios.get("/chat/room").then((res) => {
+    await customAxios.get("/owner/chat/room").then((res) => {
       //여기서 채팅 기록 받아오기
       console.log(res.data);
       setMessageList(res.data.data);

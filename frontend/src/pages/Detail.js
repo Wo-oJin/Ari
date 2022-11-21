@@ -13,18 +13,27 @@ import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
 import { useRecoilState } from "recoil";
 import { authState } from "../state";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Lightbox from "react-image-lightbox";
+import "react-image-lightbox/style.css";
 
 const Detail = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const [data, setData] = useState(null);
   //좋아요 유무를 확인하기 위한 변수
   const [isFavorited, setIsfavorited] = useState(false);
+  // image lightbox 관련 변수
+  const [isOpen, setIsOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState("0");
+
   const { storeId } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
     if (auth !== 0) {
       const getDetailData = async () => {
-        customAxios.get(`/map/store/${storeId}`).then((response) => {
+        customAxios.get(`/member/store/${storeId}`).then((response) => {
           if (response.data.result) {
             setData(response.data);
             setIsfavorited(response.data.favorite);
@@ -68,19 +77,76 @@ const Detail = () => {
         return;
     }
   };
+  // 이미지 클릭 함수
+  const onClickImage = (e) => {
+    setIsOpen((prev) => !prev);
+    setPhotoIndex(e.target.id);
+  };
+
+  // react-slick 캐러셀 설정
+  const settings = {
+    infinite: true, // 무한 캐러셀
+    speed: 500, // 다음 컨텐츠 까지의 속도
+    slidesToShow: 1, // 화면에 보이는 컨텐츠 수
+    slidesToScroll: 1, // 스크롤 시 넘어가는 컨텐츠 수
+    autoplay: false, // 자동 캐러셀
+    autoplaySpeed: 3000, // 자동 캐러셀 속도
+    draggable: true, // 드래그
+    pauseOnFocus: true, // focus시 정지
+    pauseOnHover: true, // hover시 정지
+  };
+
   //아직 data가 setting되지 않았으면 로딩 중 문구 표시
   if (data === null) {
     return <Loading></Loading>;
   }
   return (
     <div className="DetailContainer">
-      <div className="Wrapper">
+      <div style={{ width: "390px", height: "226px" }}>
+        <Slider {...settings}>
+          {data.images.map((item, index) => {
+            return (
+              <img
+                key={index}
+                id={index}
+                className="StoreImg"
+                src={`data:image/jpg;base64, ${item}`}
+                alt="이미지"
+                onClick={onClickImage}
+              ></img>
+            );
+          })}
+        </Slider>
+        {isOpen && (
+          <Lightbox
+            mainSrc={`data:image/jpg;base64, ${data.images[photoIndex]}`}
+            nextSrc={`data:image/jpg;base64, ${
+              data.images[(photoIndex + 1) % data.images.length]
+            }`}
+            prevSrc={`data:image/jpg;base64, ${
+              data.images[
+                (photoIndex + data.images.length - 1) % data.images.length
+              ]
+            }`}
+            onCloseRequest={() => setIsOpen((prev) => !prev)}
+            onMovePrevRequest={() =>
+              setPhotoIndex(
+                (photoIndex + data.images.length - 1) % data.images.length
+              )
+            }
+            onMoveNextRequest={() =>
+              setPhotoIndex((photoIndex + 1) % data.images.length)
+            }
+          />
+        )}
+      </div>
+      {/* <div className="Wrapper">
         <img
           className="StoreImg"
           src={`data:image/jpg;base64, ${data.images[0]}`}
           alt="이미지"
         ></img>
-      </div>
+      </div> */}
       <button
         className="BackBtn"
         onClick={() => {

@@ -110,7 +110,7 @@
 .StoreInfoRight {
   width: 100%;
   font-size: 13px;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 .eventBox {
   display: flex;

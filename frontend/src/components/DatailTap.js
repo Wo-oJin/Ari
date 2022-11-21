@@ -63,7 +63,7 @@ export const DetailCoopTap = ({ data }) => {
   const sendVerify = async (e) => {
     if (!e.target.classList.contains("verifiedBtn")) {
       await customAxios
-        .post("/history/record", {
+        .post("/user/history/record", {
           storeName: data.name,
           eventInfo: data.events[e.target.getAttribute("data-key")].info,
         })
@@ -91,14 +91,16 @@ export const DetailCoopTap = ({ data }) => {
 
   //버튼 클릭시 인증코드 전송
   const sendVerifyKey = async (e) => {
-    console.log(`/history/check-code?code=${value}&ownerId=${data.ownerId}`);
+    console.log(
+      `/user/history/check-code?code=${value}&ownerId=${data.ownerId}`
+    );
 
     await customAxios
-      .post(`/history/check-code?code=${value}&ownerId=${data.ownerId}`)
+      .post(`/user/history/check-code?code=${value}&ownerId=${data.ownerId}`)
       .then(async (res) => {
         if (res.data.result === "success") {
           await customAxios
-            .post("/history/record-code", {
+            .post("/user/history/record-code", {
               storeName: data.name,
               eventInfo: data.events[target.getAttribute("data-key")].info,
             })
@@ -266,7 +268,7 @@ export const PrivateEventTap = ({ data }) => {
   const sendVerify = async (e) => {
     if (!e.target.classList.contains("verifiedBtn")) {
       await customAxios
-        .post("/history/record", {
+        .post("/user/history/record", {
           storeName: data.name,
           eventInfo: data.events[e.target.getAttribute("data-key")].info,
         })
@@ -384,8 +386,8 @@ export const StoreInfoTap = ({ data }) => {
           ) : (
             <span className="StoreInfoRight">아직 등록된 정보가 없습니다.</span>
           )}
-          {data.phoneNumber ? (
-            <span className="StoreInfoRight">{data.phoneNumber} </span>
+          {data.storePhoneNumber ? (
+            <span className="StoreInfoRight">{data.storePhoneNumber} </span>
           ) : (
             <span className="StoreInfoRight">아직 등록된 정보가 없습니다.</span>
           )}

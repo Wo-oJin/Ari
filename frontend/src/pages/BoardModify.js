@@ -38,7 +38,7 @@ const BoardModify = () => {
   //처음 페이지에 접근하면 작성자의 가게들을 받아오기
   useEffect(() => {
     const getData = async () => {
-      await customAxios.get(`/board/update/${articleId}`).then((res) => {
+      await customAxios.get(`/owner/board/update/${articleId}`).then((res) => {
         console.log(res.data);
         setData(res.data);
         setTitle(res.data.title);
@@ -78,7 +78,7 @@ const BoardModify = () => {
     formData.append("period", period);
 
     customAxios
-      .put(`/board/update/${articleId}`, formData, {
+      .put(`/owner/board/update/${articleId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -98,23 +98,41 @@ const BoardModify = () => {
   const onChangeContent = (e) => {
     setcContent(e.target.value);
   };
-  const onChangeImage = () => {
-    if (imageUrl.length >= 3) {
+  const onChangeImage = (e) => {
+    const imageArr = e.target.files; // e.target.files에서 넘어온 이미지들을 배열에 저장
+    const maxImageLength = 3;
+    const maxAddImageCnt = maxImageLength - imageUrl.length; // 새로 추가할 이미지의 최대 업로드 개수
+
+    // 1. 파일 업로드 개수 검증
+    if (imageArr.length > maxAddImageCnt) {
       window.alert("3장 이상의 이미지는 등록할 수 없습니다.");
-    } else {
-      //업로드된 이미지가 3장 미만이라면 imageURL 배열에 추가
-      if (imgRef.current.files.length > 0) {
-        const imageFiles = [...imgRef.current.files];
-        setPostImages((prev) => [prev, ...imageFiles]);
-        console.log("post ", postImages);
-        imageFiles.map((item) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(item);
-          reader.onloadend = () => {
-            setImageUrl((prev) => [...prev, reader.result]);
-          };
-        });
+      return;
+    }
+
+    // 2. 파일 업로드 시 모든 파일 (*.*) 선택 방지 위해 이미지 type을 한 번 더 검증
+    for (let i = 0; i < imageArr.length; i++) {
+      if (
+        imageArr[i].type !== "image/jpeg" &&
+        imageArr[i].type !== "image/jpg" &&
+        imageArr[i].type !== "image/png"
+      ) {
+        alert("JPG 혹은 PNG 확장자의 이미지 파일만 등록 가능합니다.");
+        return;
       }
+    }
+
+    //업로드된 이미지가 3장 미만이라면 imageURL 배열에 추가
+    if (imgRef.current.files.length > 0) {
+      const imageFiles = [...imgRef.current.files];
+      setPostImages((prev) => [prev, ...imageFiles]);
+      console.log("post ", postImages);
+      imageFiles.map((item) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(item);
+        reader.onloadend = () => {
+          setImageUrl((prev) => [...prev, reader.result]);
+        };
+      });
     }
   };
 

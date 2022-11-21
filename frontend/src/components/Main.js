@@ -7,17 +7,20 @@ import { authState, nameState } from "../state";
 import MainPage from "./MainPage";
 import { customAxios } from "../pages/customAxios";
 import { Link } from "react-router-dom";
+import useHistoryState from "use-history-state";
 
 const Main = () => {
   // 0:비회원 1:손님 2:사장님 3:관리자
   const [auth, setAuth] = useRecoilState(authState);
   const [name, setName] = useRecoilState(nameState);
-  const [isOpend, setIsOpened] = useState(false);
+  const [isOpend, setIsOpened] = useHistoryState(false, "sidebarMenu");
   const [isNewPartnership, setIsNewPartnership] = useState(false);
 
   const checkNewPartnership = async () => {
     try {
-      const { data } = await customAxios.get("/partnership/check/new-request");
+      const { data } = await customAxios.get(
+        "/owner/partnership/check/new-request"
+      );
       setIsNewPartnership(data.data);
     } catch (e) {
       console.log(e);

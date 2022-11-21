@@ -2,7 +2,7 @@ package ari.paran.controller;
 
 import ari.paran.domain.member.Member;
 import ari.paran.domain.store.Store;
-import ari.paran.dto.EditInfoDto;
+import ari.paran.dto.response.store.EditInfoDto;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.response.MainResult;
 import ari.paran.dto.response.store.SimpleStoreDto;
@@ -28,7 +28,7 @@ public class StoreController {
     private final FileService fileService;
     private final MemberService memberService;
 
-    @GetMapping("/map/random-events")
+    @GetMapping("/random-events")
     public MainResult randomEventsList() throws IOException {
         List<SimpleStoreDto> storeList = storeService.findRandomEvents();
 
@@ -57,7 +57,7 @@ public class StoreController {
         return new MainResult(simpleStoreDtoList);
     }
 
-    @GetMapping("/map/store/{store_id}")
+    @GetMapping("/member/store/{store_id}")
     public DetailStoreDto detailStoreList(@PathVariable Long store_id, Principal principal) throws IOException {
 
         Store store = storeService.findStore(store_id);
@@ -72,7 +72,7 @@ public class StoreController {
                     .address(store.getAddress())
                     .openTime(store.getOpenTime())
                     .subText(store.getSubText())
-                    .phoneNumber(store.getPhoneNumber())
+                    .storePhoneNumber(store.getStorePhoneNumber())
                     .isFavorite(member.isFavoriteStore(store))
                     .eventList(store.getEventList())
                     .partners(storeService.getPartners(store.getPartnershipList()))
@@ -87,24 +87,29 @@ public class StoreController {
 
     }
 
-    @GetMapping("/edit/store")
+    @GetMapping("/owner/update/store")
     public ResponseEntity<?> existingInfo(Principal principal) throws IOException {
         return storeService.existingInfo(principal);
     }
 
-    @PostMapping("/edit/store")
+    @PostMapping("/owner/update/store")
     public ResponseEntity<?> editInfo(@ModelAttribute EditInfoDto editInfoDto,
                                       @RequestParam(value = "newImages", required = false) List<MultipartFile> images,
                                       Principal principal) throws IOException {
         return storeService.editInfo(editInfoDto, images, principal);
     }
 
-    @GetMapping("/edit/self-event")
+    @GetMapping("/owner/event-num")
+    public ResponseEntity<?> getEventNum(Principal principal) {
+        return memberService.getEventNum(principal);
+    }
+
+    @GetMapping("/owner/private-event")
     public ResponseEntity<?> existingEvent(Principal principal) {
         return storeService.existingEvent(principal);
     }
 
-    @PostMapping("/edit/self-event")
+    @PostMapping("/owner/update/private-event")
     public ResponseEntity<?> editEvent(@RequestBody Map<String, String> param, Principal principal) {
         Long storeId = Long.valueOf(param.get("storeId"));
         Integer eventNum = Integer.valueOf(param.get("eventNum"));
@@ -113,7 +118,7 @@ public class StoreController {
         return storeService.editEvent(storeId, eventNum, newInfo);
     }
 
-    @PostMapping("/add/self-event")
+    @PostMapping("/owner/add/private-event")
     public ResponseEntity<?> addEvent(@RequestBody Map<String, String> param, Principal principal) {
         Long storeId = Long.valueOf(param.get("storeId"));
         String info = param.get("info");
@@ -121,7 +126,7 @@ public class StoreController {
         return storeService.addEvent(storeId, info, principal);
     }
 
-    @PostMapping("/delete/self-event")
+    @PostMapping("/owner/delete/private-event")
     public ResponseEntity<?> deleteEvent(@RequestBody Map<String, String> param, Principal principal) {
         Long storeId = Long.valueOf(param.get("storeId"));
         Integer eventNum = Integer.valueOf(param.get("eventNum"));
@@ -129,19 +134,19 @@ public class StoreController {
         return storeService.deleteEvent(storeId, eventNum, principal);
     }
 
-    @PostMapping("/add/store")
+    @PostMapping("/owner/add/store")
     public ResponseEntity<?> addStore(@ModelAttribute EditInfoDto editInfoDto,
                                       @RequestParam(value = "newImages", required = false) List<MultipartFile> images,
                                       Principal principal) throws IOException {
         return storeService.addStore(editInfoDto, images, principal);
     }
 
-    @GetMapping("/map/category")
+    @GetMapping("/category")
     public List<SimpleStoreDto> findCategoryStores(@RequestParam String code) throws IOException{
         return storeService.findByCategory(code);
     }
 
-    @GetMapping("/map/find")
+    @GetMapping("/store")
     public List<SimpleStoreDto> findStoreByKeyword(@RequestParam String keyword) throws IOException {
         return storeService.findStoreByKeyword(keyword);
     }

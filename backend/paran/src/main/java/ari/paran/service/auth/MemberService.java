@@ -411,14 +411,10 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElse(null);
 
         log.info("member null 여부: {}", member.getId());
-        log.info("member email: {}", member.getEmail());
 
         List<History> historyList = historyRepository.findAllByMember(member);
 
-        log.info("이벤트가 null 여부: {}", historyList.isEmpty());
-        for (History history : historyList) {
-            log.info("이벤트: {}", history.getEventInfo());
-        }
+        log.info("이벤트 null 여부: {}", historyList.isEmpty());
 
         return response.success(historyList, "방문 기록 리스트", HttpStatus.OK);
 

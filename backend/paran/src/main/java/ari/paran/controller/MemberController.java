@@ -9,6 +9,7 @@ import ari.paran.service.auth.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.io.IOException;
@@ -88,6 +89,7 @@ public class MemberController {
         return memberService.showLikeList(principal);
     }
 
+
     @GetMapping("/event-num")
     public ResponseEntity<?> getEventNum(Principal principal) {
         return memberService.getEventNum(principal);
@@ -100,6 +102,7 @@ public class MemberController {
 
         return memberService.getHistory(memberId);
     }
+
     /*
     @PostMapping("/like/add/{store_name}")
     public ResponseEntity<?> addLike(@PathVariable Long storeId, Principal principal) {

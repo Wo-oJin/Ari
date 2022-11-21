@@ -17,7 +17,7 @@ const MyPageOwner = () => {
 
   const initialEventNum = async () => {
     try {
-      await customAxios.get("/member/event-num").then((res) => {
+      await customAxios.get("/owner/event-num").then((res) => {
         setCoopEventNum(res.data.data[0]);
         setPrivateEventNum(res.data.data[1]);
         setIsLoaded(true);
@@ -29,7 +29,9 @@ const MyPageOwner = () => {
 
   const checkNewPartnership = async () => {
     try {
-      const { data } = await customAxios.get("/partnership/check/new-request");
+      const { data } = await customAxios.get(
+        "/owner/partnership/check/new-request"
+      );
       setIsNewPartnership(data.data);
     } catch (e) {
       console.log(e);
@@ -58,7 +60,7 @@ const MyPageOwner = () => {
   } else {
     return (
       <>
-        <Header text="마이페이지" back={true}></Header>
+        <Header text="마이페이지" back={true} url="/"></Header>
         <div className="container">
           <div className="welcome-card">
             <div style={{ marginLeft: "30px" }}>
@@ -77,12 +79,14 @@ const MyPageOwner = () => {
           </div>
           <div className="flex-align">
             <div style={{ margin: "24px 0" }}>
-              <div className="main-info">
-                <div style={{ textAlign: "center" }}>
-                  <p className="mid-card">협력형 제휴</p>
-                  <span style={{ fontSize: "20px" }}>{coopEventNum}</span>
+              <Link to="/partnership">
+                <div className="main-info">
+                  <div style={{ textAlign: "center" }}>
+                    <p className="mid-card">협력형 제휴</p>
+                    <span style={{ fontSize: "20px" }}>{coopEventNum}</span>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
             <div style={{ margin: "24px 0" }}>
               <Link to="/storePrivateEventList">

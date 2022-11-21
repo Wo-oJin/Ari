@@ -58,6 +58,18 @@ function App() {
     }
   }, []);
 
+  // 배포 환경에서 console.log 지우기
+  if (process.env.REACT_APP_HOST === "paran-ari.com") {
+    console.log = function no_console() {};
+  }
+  // create-react-app의 실행 명령어에 따라 자동으로 NODE_ENV값이 정해짐
+  // npm run start => development
+  // npm run test => test
+  // npm run build => production
+
+  // 실행 OS에 따라 환경변수를 설정하는 방법이 다르기 때문에, 환경변수 설정 시 undefined가 나오는 경우가 있음
+  // .env.local, .env.development, .env.test, .env.production 라는 파일을 만들어서 환경변수를 관리하는 것이 좋음
+
   return (
     <BrowserRouter>
       <Routes>
@@ -86,7 +98,7 @@ function App() {
           path="/loginRegister"
           element={AuthRoute(0, <LoginRegister />)}
         />
-        <Route path="/login" element={AuthRoute(0, <Login />)} />
+        <Route path="/login" element={<Login />} />
         <Route path="/loginUser" element={AuthRoute(0, <LoginUser />)} />
         <Route path="/loginOwner" element={AuthRoute(0, <LoginOwner />)} />
         {/* <Route path="/redirectLogin" element={<RedirectLogin />} /> */}

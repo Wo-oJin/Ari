@@ -4,7 +4,7 @@ import ari.paran.domain.member.Member;
 import ari.paran.domain.repository.*;
 import ari.paran.domain.store.*;
 import ari.paran.dto.Response;
-import ari.paran.dto.EditInfoDto;
+import ari.paran.dto.response.store.EditInfoDto;
 import ari.paran.dto.response.store.DetailStoreDto;
 import ari.paran.dto.response.store.EventListDto;
 import ari.paran.dto.response.store.SimpleStoreDto;
@@ -110,7 +110,7 @@ public class StoreService {
             List<String> existingImages = fileService.getStoreImages(store);
             log.info("store 정보: {}", store.getName());
             EditInfoDto existingInfo = new EditInfoDto(store.getId(), store.getName(), store.getAddress().getRoadAddress(), store.getAddress().getDetailAddress(),
-                    store.getOwnerName(), store.getPhoneNumber(), existingImages, store.getSubText(), store.getOpenTime());
+                    store.getOwnerName(), store.getPhoneNumber(), store.getStorePhoneNumber(), existingImages, store.getSubText(), store.getOpenTime());
 
             existingInfos.add(existingInfo);
         }

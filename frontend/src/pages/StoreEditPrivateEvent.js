@@ -23,7 +23,7 @@ const StoreEditPrivateEvent = () => {
   const onDelete = async () => {
     try {
       await customAxios
-        .post("/delete/self-event", {
+        .post("/owner/delete/private-event", {
           storeId: storeId,
           eventNum: index,
         })
@@ -39,7 +39,7 @@ const StoreEditPrivateEvent = () => {
   const onEdit = async () => {
     try {
       await customAxios
-        .post("/edit/self-event", {
+        .post("/owner/update/private-event", {
           storeId: storeId,
           eventNum: index,
           newInfo: newInfo,

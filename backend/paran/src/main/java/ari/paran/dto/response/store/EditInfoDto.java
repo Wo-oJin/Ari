@@ -1,4 +1,4 @@
-package ari.paran.dto;
+package ari.paran.dto.response.store;
 
 import ari.paran.domain.store.Address;
 import ari.paran.domain.store.Store;
@@ -19,11 +19,13 @@ public class EditInfoDto {
     private String ownerName;
     private String phoneNumber;
     //private List<MultipartFile> newImages = new ArrayList<>();
+    private String storePhoneNumber;
     private List<String> existingImages;
     private String subText;
     private String openHour;
 
-    public EditInfoDto(Long id, String storeName, String roadAddress, String detailAddress, String ownerName, String phoneNumber, List<String> existingImages, String subText, String openHour) {
+    public EditInfoDto(Long id, String storeName, String roadAddress, String detailAddress, String ownerName,
+                       String phoneNumber, String storePhoneNumber, List<String> existingImages, String subText, String openHour) {
 
         this.storeId = id;
         this.storeName = storeName;
@@ -31,6 +33,7 @@ public class EditInfoDto {
         this.detailAddress = detailAddress;
         this.ownerName = ownerName;
         this.phoneNumber = phoneNumber;
+        this.storePhoneNumber = storePhoneNumber;
         this.existingImages = existingImages;
         this.subText = subText;
         this.openHour = openHour;

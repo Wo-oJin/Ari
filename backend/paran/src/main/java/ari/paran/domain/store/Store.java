@@ -34,8 +34,11 @@ public class Store implements Serializable{
     @Column
     private Address address;
 
-    @Column(name = "phone")
+    @Column(name = "owner_phone")
     private String phoneNumber;
+
+    @Column(name = "store_phone")
+    private String storePhoneNumber;
 
     @Column(name = "open_time")
     private String openTime;
@@ -73,13 +76,14 @@ public class Store implements Serializable{
     private List<FavoriteStore> favorites = new ArrayList<>();
 
     @Builder
-    public Store(String name, String ownerName, Address address, String phoneNumber, Member member, List<StoreImgFile> storeImgFile,
-                 Category category, String subText, String openTime) {
+    public Store(String name, String ownerName, Address address, String phoneNumber, String storePhoneNumber,
+                 Member member, List<StoreImgFile> storeImgFile, Category category, String subText, String openTime) {
 
         this.name = name;
         this.ownerName = ownerName;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.storePhoneNumber = storePhoneNumber;
         this.member = member;
         this.storeImgFiles = storeImgFile;
         this.category = category;
@@ -101,7 +105,6 @@ public class Store implements Serializable{
     }
 
     // 비즈니스 로직
-
     public void updateInfo(String name, Address address, String ownerName, String phoneNumber, String subText, String openTime) {
         this.name = name;
         this.address = address;
