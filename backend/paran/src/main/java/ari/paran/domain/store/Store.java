@@ -105,10 +105,11 @@ public class Store implements Serializable{
     }
 
     // 비즈니스 로직
-    public void updateInfo(String name, Address address, String ownerName, String phoneNumber, String subText, String openTime) {
+    public void updateInfo(String name, Address address, String ownerName, String phoneNumber, String storePhoneNumber, String subText, String openTime) {
         this.name = name;
         this.address = address;
         this.ownerName = ownerName;
+        this.storePhoneNumber = storePhoneNumber;
         this.phoneNumber = phoneNumber;
         this.subText = subText;
         this.openTime = openTime;
