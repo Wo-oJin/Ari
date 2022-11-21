@@ -140,7 +140,7 @@ public class StoreService {
 
         //2. 이미지를 제외하고 새 가게 정보로 변경
         store.updateInfo(editInfoDto.getStoreName(), new Address(editInfoDto.getRoadAddress(), editInfoDto.getDetailAddress()),
-                editInfoDto.getOwnerName(), editInfoDto.getPhoneNumber(), editInfoDto.getSubText(), editInfoDto.getOpenHour());
+                editInfoDto.getOwnerName(), editInfoDto.getPhoneNumber(), editInfoDto.getStorePhoneNumber(), editInfoDto.getSubText(), editInfoDto.getOpenHour());
 
         //3. 이미지 새로 저장
         fileService.saveStoreImage(store, images);
