@@ -44,6 +44,7 @@ const BoardModify = () => {
       await customAxios.get(`/owner/board/update/${articleId}`).then((res) => {
         setData(res.data);
         setTitle(res.data.title);
+        setContact(res.data.contact);
         setPeriod(res.data.period);
         setcContent(res.data.content);
         setImageUrl(
@@ -257,6 +258,7 @@ const BoardModify = () => {
               className="writeDuration"
               placeholder="개인 연락처 (전화번호, sns 등)"
               onChange={onChangeContact}
+              value={contact}
             ></input>
             <input
               className="writeDuration"
