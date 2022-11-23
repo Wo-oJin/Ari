@@ -3,6 +3,7 @@ import "../App.css";
 import "../styles/SidebarMenu.css";
 import { Link } from "react-router-dom";
 import SidebarMenu from "./SidebarMenu";
+import { IoIosArrowForward } from "react-icons/io";
 
 const SideBar = ({ userState, nameState, isNew }) => {
   const userSideBar = (userState) => {
@@ -12,11 +13,9 @@ const SideBar = ({ userState, nameState, isNew }) => {
           <div>
             <Link className="loginRegisterBtn" to="/loginRegister">
               <div>
-                <span>로그인/회원가입</span>
+                <span style={{ margin: "0" }}>로그인/회원가입</span>
               </div>
-              <button>
-                <img alt="" src="../images/arrow.png"></img>
-              </button>
+              <IoIosArrowForward color="black" size="24" />
             </Link>
           </div>
         );
@@ -25,7 +24,7 @@ const SideBar = ({ userState, nameState, isNew }) => {
           <div className="memberContainer">
             <div className="nicknameBtn" style={{ cursor: "default" }}>
               <div className="nicknameContainer">
-                <span>{nameState}</span>
+                <span style={{ margin: "0" }}>{nameState}</span>
               </div>
             </div>
             <SidebarMenu userState={userState} />
@@ -36,25 +35,21 @@ const SideBar = ({ userState, nameState, isNew }) => {
           <div className="memberContainer">
             <Link className="nicknameBtn" to="/myPageOwner">
               <div className="nicknameContainer">
-                <span>{nameState}</span>
+                <span style={{ margin: "0" }}>{nameState}</span>
               </div>
-              <button>
-                <img alt="" src="../images/arrow.png"></img>
-              </button>
+              <IoIosArrowForward color="black" size="24" />
             </Link>
             <SidebarMenu userState={userState} isNew={isNew} />
           </div>
         );
-      case 3:
+      case 3: //관리자
         return (
           <div className="memberContainer">
             <Link className="nicknameBtn" to="/myPageOwner">
               <div className="nicknameContainer">
-                <span>{nameState}</span>
+                <span style={{ margin: "0" }}>{nameState}</span>
               </div>
-              <button>
-                <img alt="" src="../images/arrow.png"></img>
-              </button>
+              <IoIosArrowForward color="black" size="24" />
             </Link>
             <SidebarMenu userState={userState} isNew={isNew} />
           </div>
@@ -64,11 +59,9 @@ const SideBar = ({ userState, nameState, isNew }) => {
           <div className="memberContainer">
             <Link className="nicknameBtn" to="/myPageUser">
               <div className="nicknameContainer">
-                <span>{nameState}</span>
+                <span style={{ margin: "0" }}>{nameState}</span>
               </div>
-              <button>
-                <img alt="" src="../images/arrow.png"></img>
-              </button>
+              <IoIosArrowForward color="black" size="24" />
             </Link>
             <SidebarMenu userState={userState} />
           </div>
