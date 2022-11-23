@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import "../pages/PartnershipList.css";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
+import { IoIosArrowForward } from "react-icons/io";
 
 const PartnershipList = () => {
   const [requestList, setRequestList] = useState([]);
@@ -130,7 +131,7 @@ const PartnershipList = () => {
                       ) : null}
                     </div>
                     {request.partnershipState === "WAITING" ? (
-                      <img alt="" src="images/arrow_right.png"></img>
+                      <IoIosArrowForward color="#959595" size="20" />
                     ) : request.partnershipState === "REJECTED" ? (
                       <div
                         className="partnershipState"

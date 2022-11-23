@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import "../pages/Partnership.css";
 import { customAxios } from "./customAxios";
+import { IoIosArrowForward } from "react-icons/io";
 
 const Partnership = () => {
   const [fromStores, setFromStores] = useState([]);
@@ -55,7 +56,11 @@ const Partnership = () => {
                   }
                 >
                   <span>{store.storeName}</span>
-                  <img alt="" src="images/partnership_arrow.png"></img>
+                  <IoIosArrowForward
+                    color="#FAFAFA"
+                    size="26"
+                    style={{ margin: "0 3px 0 13px" }}
+                  />
                 </button>
               );
             })}

@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { nameState } from "../state";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
+import { IoIosArrowForward } from "react-icons/io";
 
 const MyPageOwner = () => {
   const [name, setName] = useRecoilState(nameState);
@@ -110,11 +111,11 @@ const MyPageOwner = () => {
                         <span className="new">new</span>
                       ) : null}
                     </div>
-                    <img
+                    <IoIosArrowForward
+                      color="#959595"
+                      size="20"
                       style={{ marginRight: "20px" }}
-                      alt=""
-                      src="images/arrow_right.png"
-                    ></img>
+                    />
                   </div>
                 </Link>
               </div>

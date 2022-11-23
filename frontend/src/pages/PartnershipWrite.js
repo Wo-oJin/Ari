@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import "../pages/PartnershipWrite.css";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
+import { BiEditAlt } from "react-icons/bi";
 
 const PartnershipWrite = () => {
   const [fromStores, setFromStores] = useState([]);
@@ -110,16 +111,16 @@ const PartnershipWrite = () => {
                 placeholder="(XXX가게 영수증 지참 후 우리 가게 방문 시, A메뉴 10% 할인)"
                 maxLength="152"
               ></textarea>
-              <img
+              <BiEditAlt
+                color="#A3A3A3"
+                size="22"
                 style={{
                   position: "absolute",
                   right: "0",
                   bottom: "6px",
                   padding: "16px",
                 }}
-                alt=""
-                src="images/edit_icon.png"
-              ></img>
+              />
             </div>
             <button
               className="partnership-rightBtn"
