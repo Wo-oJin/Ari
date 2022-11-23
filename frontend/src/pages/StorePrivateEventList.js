@@ -4,6 +4,8 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import "../pages/StorePrivateEventList.css";
 import { customAxios } from "./customAxios";
+import { HiPlus } from "react-icons/hi";
+import { IoIosArrowForward } from "react-icons/io";
 
 const StorePrivateEventList = () => {
   const [privateEvents, setPrivateEvents] = useState([]); // 개인 이벤트
@@ -97,11 +99,11 @@ const StorePrivateEventList = () => {
                 >
                   <div className="event-list-info">
                     <p className="event-text-ellipsis">{privateEvent}</p>
-                    <img
+                    <IoIosArrowForward
+                      color="#959595"
+                      size="20"
                       style={{ marginRight: "20px" }}
-                      alt=""
-                      src="images/arrow_right.png"
-                    ></img>
+                    />
                   </div>
                 </Link>
               </div>
@@ -115,7 +117,7 @@ const StorePrivateEventList = () => {
             }}
           >
             <div className="addList">
-              <img alt="" src="images/add_icon.png"></img>
+              <HiPlus color="#B9B9B9" size="20" />
             </div>
           </Link>
         </div>

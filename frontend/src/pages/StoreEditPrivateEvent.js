@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/StoreEditPrivateEvent.css";
 import { customAxios } from "./customAxios";
+import { BiEditAlt } from "react-icons/bi";
 
 const StoreEditPrivateEvent = () => {
   const [newInfo, setNewInfo] = useState("");
@@ -72,16 +73,16 @@ const StoreEditPrivateEvent = () => {
             onChange={(e) => setNewInfo(e.target.value)}
             maxLength="250"
           ></textarea>
-          <img
+          <BiEditAlt
+            color="#A3A3A3"
+            size="22"
             style={{
               position: "absolute",
               right: "0",
               bottom: "6px",
               padding: "16px",
             }}
-            alt=""
-            src="images/edit_icon.png"
-          ></img>
+          />
         </div>
       </div>
       <div style={{ width: "327px", margin: "0 auto", marginTop: "16px" }}>

@@ -6,7 +6,8 @@ import "../pages/StoreInfoEdit.css";
 import DaumPostcode from "react-daum-postcode";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
-import { HiOutlineCamera } from "react-icons/hi";
+import { HiOutlineCamera, HiPlus } from "react-icons/hi";
+import { BiEditAlt } from "react-icons/bi";
 
 const Formbox = styled.div`
   margin-bottom: 36px;
@@ -366,7 +367,7 @@ const StoreInfoEdit = () => {
             })}
             <Link to="/storeInfoAdd">
               <button className="add-store-tap">
-                <img alt="" src="images/add_icon.png"></img>
+                <HiPlus color="#B9B9B9" size="14" />
               </button>
             </Link>
           </div>
@@ -386,7 +387,7 @@ const StoreInfoEdit = () => {
                 autoComplete="off"
                 maxLength="20"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -434,7 +435,7 @@ const StoreInfoEdit = () => {
                 autoComplete="off"
                 maxLength="20"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -450,7 +451,7 @@ const StoreInfoEdit = () => {
                 autoComplete="off"
                 maxLength="16"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -465,7 +466,7 @@ const StoreInfoEdit = () => {
                 placeholder="010-xxxx-xxxx"
                 autoComplete="off"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -480,7 +481,7 @@ const StoreInfoEdit = () => {
                 placeholder="010-xxxx-xxxx"
                 autoComplete="off"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -505,7 +506,7 @@ const StoreInfoEdit = () => {
                     <HiOutlineCamera
                       size={"1.7em"}
                       style={{ paddingTop: "3px" }}
-                    ></HiOutlineCamera>
+                    />
                     <span style={{ fontSize: "14px" }}>
                       <span style={{ color: "#386FFE" }}>
                         {uFormImages.length}
@@ -544,8 +545,8 @@ const StoreInfoEdit = () => {
             <div className="edit-intro">가게 한 줄 소개:</div>
             <div className="edit-box">
               <textarea
-                style={{ height: "26px" }}
                 className="edit-input"
+                style={{ height: "26px", resize: "none" }}
                 name="subText"
                 value={uSubText || ""}
                 type="text"
@@ -554,7 +555,7 @@ const StoreInfoEdit = () => {
                 autoComplete="off"
                 maxLength="250"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -570,7 +571,7 @@ const StoreInfoEdit = () => {
                 autoComplete="off"
                 maxLength="30"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
         </div>

@@ -4,6 +4,8 @@ import MainButton from "../components/common/Mainbutton";
 import "./LoginUser.css";
 import Header from "../components/Header";
 import axios from "axios";
+import { RiKakaoTalkFill } from "react-icons/ri";
+import { SiNaver } from "react-icons/si";
 
 const LoginUser = () => {
   const [kakaoURL, setKakaoURL] = useState("");
@@ -40,15 +42,11 @@ const LoginUser = () => {
 
       <div className="buttonContainer">
         <div className="kakao" onClick={onKakao}>
-          <img
-            style={{ margin: "0 5px" }}
-            alt=""
-            src="images/Kakao_Logo.png"
-          ></img>
+          <RiKakaoTalkFill size="20" style={{ marginRight: "7px" }} />
           <span>카카오로 로그인</span>
         </div>
         <div className="naver" onClick={onNaver}>
-          <img alt="" src="images/Naver_Logo.png"></img>
+          <SiNaver size="17" style={{ marginRight: "8px" }} />
           <span>네이버로 로그인</span>
         </div>
 

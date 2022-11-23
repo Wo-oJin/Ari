@@ -7,6 +7,7 @@ import DaumPostcode from "react-daum-postcode";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
 import { HiOutlineCamera } from "react-icons/hi";
+import { BiEditAlt } from "react-icons/bi";
 
 const Formbox = styled.div`
   margin-bottom: 36px;
@@ -289,7 +290,7 @@ const StoreInfoAdd = () => {
                 autoComplete="off"
                 maxLength="20"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -337,7 +338,7 @@ const StoreInfoAdd = () => {
                 autoComplete="off"
                 maxLength="20"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -353,7 +354,7 @@ const StoreInfoAdd = () => {
                 autoComplete="off"
                 maxLength="16"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -368,7 +369,7 @@ const StoreInfoAdd = () => {
                 placeholder="010-xxxx-xxxx"
                 autoComplete="off"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -383,7 +384,7 @@ const StoreInfoAdd = () => {
                 placeholder="010-xxxx-xxxx"
                 autoComplete="off"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -408,7 +409,7 @@ const StoreInfoAdd = () => {
                     <HiOutlineCamera
                       size={"1.7em"}
                       style={{ paddingTop: "3px" }}
-                    ></HiOutlineCamera>
+                    />
                     <span style={{ fontSize: "14px" }}>
                       <span style={{ color: "#386FFE" }}>
                         {uFormImages.length}
@@ -446,17 +447,18 @@ const StoreInfoAdd = () => {
           <Formbox>
             <div className="edit-intro">가게 한 줄 소개:</div>
             <div className="edit-box">
-              <input
+              <textarea
                 className="edit-input"
+                style={{ height: "26px", resize: "none" }}
                 name="subText"
                 value={uSubText || ""}
                 type="text"
                 onChange={(e) => setuSubText(e.target.value)}
                 placeholder="가게 한 줄 소개 입력"
                 autoComplete="off"
-                maxLength="40"
+                maxLength="250"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
           <Formbox>
@@ -472,7 +474,7 @@ const StoreInfoAdd = () => {
                 autoComplete="off"
                 maxLength="30"
               />
-              <img alt="" src="images/edit_icon.png"></img>
+              <BiEditAlt color="#A3A3A3" size="22" />
             </div>
           </Formbox>
         </div>
