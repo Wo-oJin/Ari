@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { customAxios } from "./customAxios";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
@@ -62,21 +62,19 @@ const FindPassword = () => {
   // 이메일 중복 확인 (이메일 가입 여부 확인)
   const checkEmail = async () => {
     try {
-      await customAxios
-        .post("/auth/check-email", {
-          email: email,
-        })
-        .then((res) => {
-          if (res.data.result === "success") {
-            // 가입된 이메일이 아닌 경우
-            setEmailMessage("가입된 이메일이 아닙니다.");
-            setIsJoinedEmail(false);
-          } else {
-            // 가입된 이메일인 경우
-            setEmailMessage("가입된 이메일입니다.");
-            setIsJoinedEmail(true);
-          }
-        });
+      const { data } = await customAxios.post("/auth/check-email", {
+        email: email,
+      });
+
+      if (data.result === "success") {
+        // 가입된 이메일이 아닌 경우
+        setEmailMessage("가입된 이메일이 아닙니다.");
+        setIsJoinedEmail(false);
+      } else {
+        // 가입된 이메일인 경우
+        setEmailMessage("가입된 이메일입니다.");
+        setIsJoinedEmail(true);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -97,6 +95,7 @@ const FindPassword = () => {
       setNewPasswordMessage("안전한 비밀번호입니다.");
       setIsNewPassword(true);
     }
+
     // password가 바뀔 때에도 passwordCheck와 일치한지 확인
     if (newPasswordCheck !== e.target.value) {
       setNewPasswordCheckMessage("일치하지 않는 비밀번호입니다.");
@@ -110,8 +109,7 @@ const FindPassword = () => {
   // 비밀번호 확인
   const onChangeNewPasswordCheck = (e) => {
     setNewPasswordCheck(e.target.value);
-    // console.log("password>>"+password);
-    // console.log("passwordCheck>>"+passwordCheck);
+
     if (newPassword !== e.target.value) {
       setNewPasswordCheckMessage("일치하지 않는 비밀번호입니다.");
       setIsNewPasswordCheck(false);
@@ -138,21 +136,17 @@ const FindPassword = () => {
   // 인증 확인 눌러서 post 요청 보내면 일치할 경우 200, 이외의 경우에는 400을 응답
   const onEmailCheck = async () => {
     try {
-      await customAxios
-        .post("/auth/email-auth", {
-          code: certificationNumber.toUpperCase(),
-        })
-        .then((res) => {
-          if (res.data.state === 200) {
-            // console.log(res.data.state);
-            setEmailCheckMessage("인증에 성공했습니다.");
-            setIsEmailCheck(true);
-          } else {
-            // console.log(res.data.state);
-            setEmailCheckMessage(res.data.massage);
-            setIsEmailCheck(false);
-          }
-        });
+      const { data } = await customAxios.post("/auth/email-auth", {
+        code: certificationNumber.toUpperCase(),
+      });
+
+      if (data.state === 200) {
+        setEmailCheckMessage("인증에 성공했습니다.");
+        setIsEmailCheck(true);
+      } else {
+        setEmailCheckMessage(data.massage);
+        setIsEmailCheck(false);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -160,15 +154,13 @@ const FindPassword = () => {
 
   const onSubmit = async () => {
     try {
-      await customAxios
-        .post("/auth/change-password", {
-          email: email,
-          newPassword: newPassword,
-        })
-        .then((res) => {
-          alert(res.data.massage);
-          navigate("/login");
-        });
+      const { data } = await customAxios.post("/auth/change-password", {
+        email: email,
+        newPassword: newPassword,
+      });
+
+      alert(data.massage);
+      navigate("/login");
     } catch (e) {
       console.log(e);
     }
@@ -193,7 +185,6 @@ const FindPassword = () => {
                   onChange={onChangeEmail}
                   placeholder="이메일 주소 입력"
                   required
-                  autoComplete="off"
                 />
                 <button
                   className="sendBtn"
@@ -221,7 +212,6 @@ const FindPassword = () => {
                   onChange={(e) => setCertificationNumber(e.target.value)}
                   placeholder="인증번호 입력"
                   required
-                  autoComplete="off"
                 />
                 <button
                   className="sendBtn"
@@ -262,7 +252,6 @@ const FindPassword = () => {
                 onChange={onChangeNewPassword}
                 placeholder="비밀번호 입력"
                 required
-                autoComplete="off"
               />
               {newPassword.length > 0 && (
                 <p className={`message ${isNewPassword ? "success" : "error"}`}>
@@ -280,7 +269,6 @@ const FindPassword = () => {
                 onChange={onChangeNewPasswordCheck}
                 placeholder="비밀번호 재입력"
                 required
-                autoComplete="off"
               />
               {newPasswordCheck.length > 0 && (
                 <p

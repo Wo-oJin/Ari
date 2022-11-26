@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MainButton from "../components/common/Mainbutton";
 import "./LoginUser.css";
@@ -11,19 +11,19 @@ const LoginUser = () => {
   const [kakaoURL, setKakaoURL] = useState("");
   const [naverURL, setNaverURL] = useState("");
 
+  // Oauth 로그인 요청 url 받아오기
+  const getOauthURL = async () => {
+    try {
+      const { data } = await axios.get("/auth/login");
+
+      setKakaoURL(data.kakao);
+      setNaverURL(data.naver);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
-    // Oauth 로그인 요청 url 받아오기
-    const getOauthURL = async () => {
-      try {
-        await axios.get("/auth/login").then((res) => {
-          // console.log("res>>"+JSON.stringify(res));
-          setKakaoURL(res.data.kakao);
-          setNaverURL(res.data.naver);
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    };
     getOauthURL();
   }, []);
 
@@ -49,7 +49,6 @@ const LoginUser = () => {
           <SiNaver size="17" style={{ marginRight: "8px" }} />
           <span>네이버로 로그인</span>
         </div>
-
         <Link to="/login">
           <MainButton
             radius="15px"
