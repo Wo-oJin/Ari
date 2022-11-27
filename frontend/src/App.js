@@ -40,6 +40,7 @@ import Notice from "./pages/Notice";
 import NoticeArticle from "./pages/NoticeArticle";
 import NoticeWrite from "./pages/NoticeWrite";
 import NoticeModify from "./pages/NoticeModify";
+import UserHistory from "./pages/UserHistory";
 
 function App() {
   const { reissue } = useReissue();
@@ -112,6 +113,10 @@ function App() {
           path="/userFavoriteList"
           element={AuthRoute(1, <UserFavoriteList />)}
         />
+        <Route
+          path="/user/history"
+          element={AuthRoute(1, <UserHistory></UserHistory>)}
+        ></Route>
 
         {/* 사장님 페이지 권한 설정 : auth=2 */}
         <Route path="/myPageOwner" element={AuthRoute(2, <MyPageOwner />)} />
