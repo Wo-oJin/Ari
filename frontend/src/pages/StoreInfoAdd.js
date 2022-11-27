@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import styled from "styled-components";
 import "../pages/StoreInfoAdd.css";
 import DaumPostcode from "react-daum-postcode";
 import { customAxios } from "./customAxios";
-import Loading from "../components/Loading";
 import { HiOutlineCamera } from "react-icons/hi";
 import { BiEditAlt } from "react-icons/bi";
 
@@ -23,7 +22,6 @@ const Formbox = styled.div`
 
 const StoreInfoAdd = () => {
   // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 사장님 전화번호, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
-  const [storeInfoArr, setStoreInfoArr] = useState([]);
   const [uStoreName, setuStoreName] = useState("");
   const [uRoadAddress, setuRoadAddress] = useState("");
   const [uDetailAddress, setuDetailAddress] = useState("");
@@ -34,59 +32,7 @@ const StoreInfoAdd = () => {
   const [uFormImages, setuFormImages] = useState([]); // form data에 담아 보낼 이미지 파일 리스트
   const [uSubText, setuSubText] = useState("");
   const [uOpenHour, setuOpenHour] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
-  const fileRef = useRef([]); // input[type="file"] DOM 요소에 접근하기 위함
-  // useRef(null)이면 렌더링 시간차로 인해 스크립트가 먼저 실행되고 DOM 요소를 참조하지 못해서 Cannot read properties of undefined 에러날 수 있음
-
-  const initialEdit = async () => {
-    try {
-      const { data } = await customAxios.get("/owner/update/store");
-
-      const dataArr = data.data;
-      setStoreInfoArr(dataArr);
-
-      // 기본 이미지 설정
-      if (dataArr[0].existingImages !== undefined) {
-        setuImages(
-          dataArr[0].existingImages.map(
-            (image) => `data:image/;base64,${image}`
-          )
-        ); // 미리보기 이미지
-
-        // input[type="file"] 요소에 files props 할당하기
-        // 1. base64 이미지 url을 file 객체로 디코딩
-        let decodeFilesArr = [];
-        dataArr[0].existingImages.forEach((image, index) => {
-          decodeFilesArr[index] = base64ToFile(
-            `data:image/;base64,${image}`,
-            `${dataArr[0].storeId}_${index}.png`
-          );
-        });
-
-        setuFormImages(decodeFilesArr);
-
-        // 2. DataTransfer 객체를 이용하여 FileList의 값을 변경
-        const dataTranster = new DataTransfer();
-
-        decodeFilesArr.forEach((file) => {
-          dataTranster.items.add(file);
-        });
-
-        // 2-1. document.getElementById('images').prop("files", setFilesArr);
-        fileRef.current.files = dataTranster.files;
-        // console.log(fileRef.current.files);
-      }
-      setIsLoading(true);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    initialEdit();
-  }, []);
 
   // 유효성 검사
   const [isStoreName, setIsStoreName] = useState(false);
@@ -199,31 +145,14 @@ const StoreInfoAdd = () => {
     const newImagesArr = uImages.filter(
       (image, index) => index !== parseInt(e.target.name)
     );
-    setuImages([...newImagesArr]);
+    setuImages(newImagesArr);
 
     // 2. 실제로 전달할 파일 객체
-    const fromImagesArr = Array.from(uFormImages);
-
-    const newFromImagesArr = fromImagesArr.filter(
+    const newFormImagesArr = uFormImages.filter(
       (image, index) => index !== parseInt(e.target.name)
     );
-    setuFormImages([...newFromImagesArr]);
+    setuFormImages(newFormImagesArr);
   };
-
-  // base64 인코딩되어 받은 이미지 url을 file 객체로 디코딩
-  function base64ToFile(base64, fileName) {
-    const arr = base64.split(",");
-    const mime = arr[0].match(/:(.*?);/)[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    let u8arr = new Uint8Array(n);
-
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-
-    return new File([u8arr], fileName, { type: mime });
-  }
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -263,10 +192,6 @@ const StoreInfoAdd = () => {
       console.log(e);
     }
   };
-
-  if (!isLoading) {
-    return <Loading />;
-  }
 
   return (
     <>
@@ -388,7 +313,6 @@ const StoreInfoAdd = () => {
               multiple
               accept="image/jpg, image/jpeg, image/png"
               onChange={onChangeImage}
-              ref={fileRef}
             />
             <div style={{ display: "flex", marginBottom: "6px" }}>
               <label htmlFor="images">

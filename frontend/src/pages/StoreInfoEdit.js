@@ -50,32 +50,32 @@ const StoreInfoEdit = () => {
       setStoreInfoArr(dataArr);
 
       // 처음 페이지 렌더링되었을 때 첫 번째 가게에 대한 초기값 세팅
-      setuStoreId(dataArr[0].storeId);
-      setuStoreName(dataArr[0].storeName || "");
-      setuRoadAddress(dataArr[0].roadAddress || "");
-      setuDetailAddress(dataArr[0].detailAddress || "");
-      setuOwnerName(dataArr[0].ownerName || "");
-      setuOwnerPhoneNumber(dataArr[0].phoneNumber || "");
-      setuStorePhoneNumber(dataArr[0].storePhoneNumber || "");
-      setuSubText(dataArr[0].subText || "");
-      setuOpenHour(dataArr[0].openHour || "");
+      const initialStore = dataArr[0];
+      setuStoreId(initialStore.storeId);
+      setuStoreName(initialStore.storeName || "");
+      setuRoadAddress(initialStore.roadAddress || "");
+      setuDetailAddress(initialStore.detailAddress || "");
+      setuOwnerName(initialStore.ownerName || "");
+      setuOwnerPhoneNumber(initialStore.phoneNumber || "");
+      setuStorePhoneNumber(initialStore.storePhoneNumber || "");
+      setuSubText(initialStore.subText || "");
+      setuOpenHour(initialStore.openHour || "");
 
-      if (dataArr[0].existingImages !== undefined) {
+      if (initialStore.existingImages !== undefined) {
         setuImages(
-          dataArr[0].existingImages.map(
+          initialStore.existingImages.map(
             (image) => `data:image/;base64,${image}`
           )
         ); // 미리보기 이미지
 
         // input[type="file"] 요소에 files props 할당하기
         // 1. base64 이미지 url을 file 객체로 디코딩
-        let decodeFilesArr = [];
-        dataArr[0].existingImages.forEach((image, index) => {
-          decodeFilesArr[index] = base64ToFile(
+        const decodeFilesArr = dataArr[0].existingImages.map((image, index) =>
+          base64ToFile(
             `data:image/;base64,${image}`,
             `${dataArr[0].storeId}_${index}.png`
-          );
-        });
+          )
+        );
 
         setuFormImages(decodeFilesArr);
 
@@ -124,13 +124,12 @@ const StoreInfoEdit = () => {
 
       // input[type="file"] 요소에 files props 할당하기
       // 1. base64 이미지 url을 file 객체로 디코딩
-      let decodeFilesArr = [];
-      currentStore.existingImages.forEach((image, index) => {
-        decodeFilesArr[index] = base64ToFile(
+      const decodeFilesArr = currentStore.existingImages.map((image, index) =>
+        base64ToFile(
           `data:image/;base64,${image}`,
           `${currentStore.storeId}_${index}.png`
-        );
-      });
+        )
+      );
 
       setuFormImages(decodeFilesArr);
 
@@ -257,15 +256,13 @@ const StoreInfoEdit = () => {
     const newImagesArr = uImages.filter(
       (image, index) => index !== parseInt(e.target.name)
     );
-    setuImages([...newImagesArr]);
+    setuImages(newImagesArr);
 
     // 2. 실제로 전달할 파일 객체
-    const fromImagesArr = Array.from(uFormImages);
-
-    const newFromImagesArr = fromImagesArr.filter(
+    const newFormImagesArr = uFormImages.filter(
       (image, index) => index !== parseInt(e.target.name)
     );
-    setuFormImages([...newFromImagesArr]);
+    setuFormImages(newFormImagesArr);
   };
 
   // base64 인코딩되어 받은 이미지 url을 file 객체로 디코딩
@@ -291,7 +288,7 @@ const StoreInfoEdit = () => {
 
     if (uFormImages.length > 0) {
       // 이미지 파일이 업로드된 경우
-      Array.from(uFormImages).forEach((image) => {
+      uFormImages.forEach((image) => {
         formData.append("newImages", image); // 이미지 파일 배열 담기
       });
     } else {
