@@ -94,6 +94,12 @@
   color: #ffffff;
 }
 
+.mainPage-catecory-img {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+
 .footer {
   background: #f1f1f1;
   color: #a2a2a2;
