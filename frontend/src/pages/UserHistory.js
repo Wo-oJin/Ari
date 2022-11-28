@@ -9,7 +9,6 @@ const UserHistory = () => {
   const [data, setData] = useState();
   useEffect(() => {
     customAxios.get("/member/history").then((res) => {
-      console.log(res.data.data);
       setData(res.data.data);
     });
   }, []);
@@ -20,12 +19,11 @@ const UserHistory = () => {
       <>
         <Header text={"가게 사용 내역"} back={true}></Header>
         <div className="userHistoryContainer">
-          {data.map((item) => {
+          {data.map((item, index) => {
             return (
               <>
-                <div className="userHistoryItemBox">
+                <div key={index} className="userHistoryItemBox">
                   <div className="visitTimeBox">
-                    {" "}
                     <span className="userHistoryDate">
                       {item.visitTime.substr(0, 10)}
                     </span>
