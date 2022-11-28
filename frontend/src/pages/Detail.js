@@ -108,7 +108,7 @@ const Detail = () => {
                 key={index}
                 id={index}
                 className="StoreImg"
-                src={`data:image/jpg;base64, ${item}`}
+                src={`${item}`}
                 alt="이미지"
                 onClick={onClickImage}
               ></img>

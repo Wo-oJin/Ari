@@ -92,6 +92,7 @@ const MainPage = ({ onClick }) => {
       const { data } = await customAxios.get("/random-events");
       setCount(data.count);
       setStoreList(data.storeList);
+      console.log(data);
       setIsLoaded(true);
     } catch (e) {
       console.log(e);
@@ -191,16 +192,12 @@ const MainPage = ({ onClick }) => {
                   <Link to={`/detail/${item.storeId}`} key={index}>
                     <div
                       style={{
-                        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
+                        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(${item.storeImage})`,
                         backgroundPosition: "center",
                         backgroundSize: "cover",
                       }}
                       className="mainPage-banner-box"
                     >
-                      {/* <img
-                        alt=""
-                        src={`data:image/;base64,${item.storeImage}`}
-                      ></img> */}
                       <p className="mainPage-banner-intro">
                         {item.storeName}
                         <br />

@@ -137,7 +137,7 @@ const Category = () => {
                     // }}
                     className="storeItem"
                     style={{
-                      backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
+                      backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(${item.storeImage})`,
                     }}
                   >
                     <div className="ctContentBox">
