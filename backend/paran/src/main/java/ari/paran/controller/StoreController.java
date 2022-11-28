@@ -76,7 +76,7 @@ public class StoreController {
                     .isFavorite(member.isFavoriteStore(store))
                     .eventList(store.getEventList())
                     .partners(storeService.getPartners(store.getPartnershipList()))
-                    .images(fileService.getStoreImages(store))
+                    .images(fileService.getStoreImgUrls(store))
                     .result(true)
                     .build();
 

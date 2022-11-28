@@ -334,10 +334,10 @@ public class MemberService {
             return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
         }
 
-        //2. Access Token에서 User email을 가져옴
+        //2. Access Token에서 User id를 가져옴
         Authentication authentication = tokenProvider.getAuthentication(logout.getAccessToken());
 
-        //3. Redis에서 해당 User email로 저장된 refresh token이 있는지 여부를 확인 후, 있을 경우 삭제
+        //3. Redis에서 해당 User id로 저장된 refresh token이 있는지 여부를 확인 후, 있을 경우 삭제
         if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
             //refresh token 삭제
             redisTemplate.delete("RT:" + authentication.getName());

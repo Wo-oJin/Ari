@@ -144,6 +144,25 @@ public class FileService {
         return base64Images;
     }
 
+    public List<String> getStoreImgUrls(Store store) {
+        List<StoreImgFile> storeImages = store.getStoreImgFiles();
+        List<String> imgUrls = new ArrayList<>();
+
+        if(storeImages.isEmpty()){
+            String fileUrl = resourceUrl;
+            String fileName = "ari.PNG";
+
+            imgUrls.add(fileUrl + fileName);
+        }
+        else {
+            for (StoreImgFile imgFile : storeImages) {
+                imgUrls.add(imgFile.getFileUrl() + imgFile.getFilename());
+            }
+        }
+
+        return imgUrls;
+    }
+
     public List<String> getArticleImages(Article article, int count) throws IOException{
         List<String> base64Images = new ArrayList<>();
         List<ArticleImgFile> articleImages = article.getImgFiles();
@@ -172,6 +191,25 @@ public class FileService {
         }
 
         return base64Images;
+    }
+
+    public List<String> getArticleUrls(Article article, int count) {
+        List<String> imgUrls = new ArrayList<>();
+        List<ArticleImgFile> articleImages = article.getImgFiles();
+
+        if(articleImages.isEmpty()){
+            String fileUrl = resourceUrl;
+            String fileName = "ari.PNG";
+
+            imgUrls.add(fileUrl + fileName);
+        }else {
+            for (int i = 0; i < count; i++) {
+                ArticleImgFile articleImgFile = articleImages.get(i);
+                imgUrls.add(articleImgFile.getFileUrl() + articleImgFile.getFilename());
+            }
+        }
+
+        return imgUrls;
     }
 
     public String getMainStoreImage(Store store) throws IOException{
@@ -205,6 +243,27 @@ public class FileService {
         }
     }
 
+    public String getMainStoreImgUrl(Store store) throws IOException{
+        try {
+            List<StoreImgFile> storeImages = store.getStoreImgFiles();
+
+            if(storeImages.isEmpty()) {
+                String fileUrl = resourceUrl;
+                String fileName = "ari.PNG";
+                String imgStr = fileUrl + fileName;
+
+                return imgStr;
+            }
+            else {
+                StoreImgFile mainImage = storeImages.get(0);
+                String imgStr = mainImage.getFileUrl() + mainImage.getFilename();
+                return imgStr;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
     public String getMainArticleImage(Article article) throws IOException{
         try {
             ArticleImgFile mainImage = article.getImgFiles().get(0);
@@ -216,6 +275,18 @@ public class FileService {
             String imgStr = new String(byteEnc64, "UTF-8");
 
             imageStream.close();
+            return imgStr;
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+
+    }
+
+    public String getMainArticleImgUrl(Article article) throws IOException {
+        try {
+            ArticleImgFile mainImage = article.getImgFiles().get(0);
+            String imgStr = mainImage.getFileUrl() + mainImage.getFilename();
+
             return imgStr;
         } catch (IndexOutOfBoundsException e) {
             return null;
