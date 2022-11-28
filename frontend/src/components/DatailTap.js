@@ -1,6 +1,4 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { customAxios } from "../pages/customAxios";
 import { authState } from "../state";
@@ -288,13 +286,9 @@ export const PrivateEventTap = ({ data }) => {
         {data.events && data.events.length > 0 ? (
           data.events.map((item, i) => {
             return (
-              <div className="eventBox">
-                <span className="PrivateEventSubText1" key={i}>
-                  {i + 1}.
-                </span>
-                <span className="PrivateEventSubText2" key={i}>
-                  {item.info}
-                </span>
+              <div className="eventBox" key={i}>
+                <span className="PrivateEventSubText1">{i + 1}.</span>
+                <span className="PrivateEventSubText2">{item.info}</span>
                 {auth === 1 ? (
                   <button
                     data-key={i}
@@ -365,6 +359,7 @@ export const StoreInfoTap = ({ data }) => {
       );
     }
   }, []);
+  console.log(data);
   return (
     <div className="TapContainer">
       <span className="EventTitle">가게 정보:</span>
@@ -376,7 +371,7 @@ export const StoreInfoTap = ({ data }) => {
           <span className="StoreInfoLeft">한 줄 소개: </span>
         </div>
         <div className="StoreContentR">
-          <span className="StoreInfoRight">{data.ownerName} </span>
+          <span className="StoreInfoRight">{data.name} </span>
           {data.openTime ? (
             <span className="StoreInfoRight">{data.openTime} </span>
           ) : (
