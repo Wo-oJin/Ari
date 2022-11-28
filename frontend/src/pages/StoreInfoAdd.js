@@ -1,11 +1,10 @@
-import { React, useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import styled from "styled-components";
 import "../pages/StoreInfoAdd.css";
 import DaumPostcode from "react-daum-postcode";
 import { customAxios } from "./customAxios";
-import Loading from "../components/Loading";
 import { HiOutlineCamera } from "react-icons/hi";
 import { BiEditAlt } from "react-icons/bi";
 
@@ -23,7 +22,6 @@ const Formbox = styled.div`
 
 const StoreInfoAdd = () => {
   // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 사장님 전화번호, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
-  const [storeInfoArr, setStoreInfoArr] = useState([]);
   const [uStoreName, setuStoreName] = useState("");
   const [uRoadAddress, setuRoadAddress] = useState("");
   const [uDetailAddress, setuDetailAddress] = useState("");
@@ -34,59 +32,7 @@ const StoreInfoAdd = () => {
   const [uFormImages, setuFormImages] = useState([]); // form data에 담아 보낼 이미지 파일 리스트
   const [uSubText, setuSubText] = useState("");
   const [uOpenHour, setuOpenHour] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const fileRef = useRef([]); // input[type="file"] DOM 요소에 접근하기 위함
-  // useRef(null)이면 렌더링 시간차로 인해 스크립트가 먼저 실행되고 DOM 요소를 참조하지 못해서 Cannot read properties of undefined 에러날 수 있음
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const initialEdit = async () => {
-      try {
-        await customAxios.get("/owner/update/store").then((res) => {
-          const dataArr = res.data.data;
-          setStoreInfoArr(dataArr);
-
-          // 기본 이미지 설정
-          if (dataArr[0].existingImages !== undefined) {
-            setuImages(
-              dataArr[0].existingImages.map(
-                (image) => `data:image/;base64,${image}`
-              )
-            ); // 미리보기 이미지
-
-            // input[type="file"] 요소에 files props 할당하기
-            // 1. base64 이미지 url을 file 객체로 디코딩
-            let decodeFilesArr = [];
-            dataArr[0].existingImages.forEach((image, index) => {
-              decodeFilesArr[index] = base64ToFile(
-                `data:image/;base64,${image}`,
-                `${dataArr[0].storeId}_${index}.png`
-              );
-            });
-
-            setuFormImages(decodeFilesArr);
-
-            // 2. DataTransfer 객체를 이용하여 FileList의 값을 변경
-            const dataTranster = new DataTransfer();
-
-            decodeFilesArr.forEach((file) => {
-              dataTranster.items.add(file);
-            });
-
-            // 2-1. document.getElementById('images').prop("files", setFilesArr);
-            fileRef.current.files = dataTranster.files;
-            // console.log(fileRef.current.files);
-          }
-          setIsLoaded(true);
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    initialEdit();
-  }, []);
 
   // 유효성 검사
   const [isStoreName, setIsStoreName] = useState(false);
@@ -94,7 +40,8 @@ const StoreInfoAdd = () => {
   const [isOwnerName, setIsOwnerName] = useState(false);
   const [isOwnerPhoneNumber, setIsOwnerPhoneNumber] = useState(false);
 
-  const [isOpenPost, setIsOpenPost] = useState(false); // daum-postcode api를 팝업처럼 관리하기 위함
+  // daum-postcode api를 팝업처럼 관리하기 위함
+  const [isOpenPost, setIsOpenPost] = useState(false);
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost);
@@ -198,31 +145,14 @@ const StoreInfoAdd = () => {
     const newImagesArr = uImages.filter(
       (image, index) => index !== parseInt(e.target.name)
     );
-    setuImages([...newImagesArr]);
+    setuImages(newImagesArr);
 
     // 2. 실제로 전달할 파일 객체
-    const fromImagesArr = Array.from(uFormImages);
-
-    const newFromImagesArr = fromImagesArr.filter(
+    const newFormImagesArr = uFormImages.filter(
       (image, index) => index !== parseInt(e.target.name)
     );
-    setuFormImages([...newFromImagesArr]);
+    setuFormImages(newFormImagesArr);
   };
-
-  // base64 인코딩되어 받은 이미지 url을 file 객체로 디코딩
-  function base64ToFile(base64, fileName) {
-    const arr = base64.split(",");
-    const mime = arr[0].match(/:(.*?);/)[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    let u8arr = new Uint8Array(n);
-
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-
-    return new File([u8arr], fileName, { type: mime });
-  }
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -246,256 +176,234 @@ const StoreInfoAdd = () => {
     formData.append("ownerName", uOwnerName);
     formData.append("phoneNumber", uOwnerPhoneNumber);
     formData.append("storePhoneNumber", uStorePhoneNumber);
-    // formData.append('newImages', uFormImages);
     formData.append("subText", uSubText);
     formData.append("openHour", uOpenHour);
 
-    // console.log(formData.get("newImages"));
-
     try {
-      await customAxios
-        .post("/owner/add/store", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          console.log(JSON.stringify(res.data));
-          alert("추가되었습니다.");
-          navigate("/storeInfoEdit");
-        });
+      await customAxios.post("/owner/add/store", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert("추가되었습니다.");
+      navigate("/storeInfoEdit");
     } catch (e) {
       console.log(e);
     }
   };
 
-  if (!isLoaded) {
-    return <Loading />;
-  } else {
-    return (
-      <>
-        <Header text="내 가게 추가" back={true}></Header>
-        <div className="inputContainer">
-          <Formbox>
-            <div className="edit-intro">가게 이름:</div>
-            <div className="edit-box">
-              <input
-                className="edit-input"
-                name="storeName"
-                value={uStoreName || ""}
-                type="text"
-                onChange={onChangeStoreName}
-                placeholder="가게 이름 입력"
-                required
-                autoComplete="off"
-                maxLength="20"
-              />
-              <BiEditAlt color="#A3A3A3" size="22" />
-            </div>
-          </Formbox>
-          <Formbox>
-            <div className="edit-intro">가게 주소:</div>
-            <div className="edit-box">
-              <textarea
-                style={{ resize: "none" }}
-                className="edit-input"
-                name="roadAddress"
-                value={uRoadAddress || ""}
-                type="text"
-                onChange={(e) => setuRoadAddress(e.target.value)}
-                placeholder="도로명 주소 검색"
-                required
-                readOnly
-                autoComplete="off"
-              />
-              <button
-                className="store-searchAddress"
-                onClick={onChangeOpenPost}
-              >
-                주소 찾기
-              </button>
-            </div>
-            <div style={{ width: "260px" }}>
-              {isOpenPost ? (
-                <DaumPostcode
-                  className="daumPost"
-                  autoClose
-                  onComplete={onCompletePost}
-                />
-              ) : null}
-            </div>
-          </Formbox>
-          <Formbox>
-            <div className="edit-intro">상세 주소:</div>
-            <div className="edit-box">
-              <input
-                className="edit-input"
-                name="detailAddress"
-                value={uDetailAddress || ""}
-                type="text"
-                onChange={(e) => setuDetailAddress(e.target.value)}
-                placeholder="상세 주소 입력"
-                autoComplete="off"
-                maxLength="20"
-              />
-              <BiEditAlt color="#A3A3A3" size="22" />
-            </div>
-          </Formbox>
-          <Formbox>
-            <div className="edit-intro">사장님 성함:</div>
-            <div className="edit-box">
-              <input
-                className="edit-input"
-                name="ownerName"
-                value={uOwnerName || ""}
-                type="text"
-                onChange={onChangeOwnerName}
-                placeholder="사장님 성함 입력"
-                autoComplete="off"
-                maxLength="16"
-              />
-              <BiEditAlt color="#A3A3A3" size="22" />
-            </div>
-          </Formbox>
-          <Formbox>
-            <div className="edit-intro">사장님 전화번호:</div>
-            <div className="edit-box">
-              <input
-                className="edit-input"
-                name="phoneNumber"
-                value={uOwnerPhoneNumber || ""}
-                type="text"
-                onChange={onChangeOwnerPhoneNumber}
-                placeholder="010-xxxx-xxxx"
-                autoComplete="off"
-              />
-              <BiEditAlt color="#A3A3A3" size="22" />
-            </div>
-          </Formbox>
-          <Formbox>
-            <div className="edit-intro">가게 전화번호:</div>
-            <div className="edit-box">
-              <input
-                className="edit-input"
-                name="storePhoneNumber"
-                value={uStorePhoneNumber || ""}
-                type="text"
-                onChange={(e) => setuStorePhoneNumber(e.target.value)}
-                placeholder="010-xxxx-xxxx"
-                autoComplete="off"
-              />
-              <BiEditAlt color="#A3A3A3" size="22" />
-            </div>
-          </Formbox>
-          <Formbox>
-            <div className="edit-intro">
-              가게 대표 사진
-              <span style={{ fontSize: "15px" }}>&#40;최대 3장&#41;</span>:
-            </div>
-            <div className="edit-box">
-              <input
-                style={{ display: "none" }}
-                type="file"
-                name="images"
-                id="images"
-                multiple
-                accept="image/jpg, image/jpeg, image/png"
-                onChange={onChangeImage}
-                ref={fileRef}
-              />
-              <div style={{ display: "flex", marginBottom: "6px" }}>
-                <label htmlFor="images">
-                  <div className="uploadImage" style={{ cursor: "pointer" }}>
-                    <HiOutlineCamera
-                      size={"1.7em"}
-                      style={{ paddingTop: "3px" }}
-                    />
-                    <span style={{ fontSize: "14px" }}>
-                      <span style={{ color: "#386FFE" }}>
-                        {uFormImages.length}
-                      </span>
-                      /3
-                    </span>
-                  </div>
-                </label>
-                {uImages &&
-                  uImages.map((image, index) => (
-                    <div
-                      key={index}
-                      style={{ position: "relative", marginRight: "9px" }}
-                    >
-                      <img
-                        className="edit-image"
-                        alt=""
-                        src={image}
-                        id={index}
-                      ></img>
-                      {index === 0 && <div className="mainPick">대표 사진</div>}
-                      <label htmlFor={index}></label>
-                      <img
-                        className="delete-image"
-                        alt=""
-                        src="images/img_delete.png"
-                        name={index}
-                        onClick={deleteImage}
-                      ></img>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          </Formbox>
-          <Formbox>
-            <div className="edit-intro">가게 한 줄 소개:</div>
-            <div className="edit-box">
-              <textarea
-                className="edit-input"
-                style={{ height: "26px", resize: "none" }}
-                name="subText"
-                value={uSubText || ""}
-                type="text"
-                onChange={(e) => setuSubText(e.target.value)}
-                placeholder="가게 한 줄 소개 입력"
-                autoComplete="off"
-                maxLength="250"
-              />
-              <BiEditAlt color="#A3A3A3" size="22" />
-            </div>
-          </Formbox>
-          <Formbox>
-            <div className="edit-intro">영업 시간:</div>
-            <div className="edit-box">
-              <input
-                className="edit-input"
-                name="openHour"
-                value={uOpenHour || ""}
-                type="text"
-                onChange={(e) => setuOpenHour(e.target.value)}
-                placeholder="오전 9:00 ~ 오후 9:00 (연중무휴)"
-                autoComplete="off"
-                maxLength="30"
-              />
-              <BiEditAlt color="#A3A3A3" size="22" />
-            </div>
-          </Formbox>
-        </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <form onSubmit={onSubmit}>
-            <button
-              className="store-addBtn"
-              type="submit"
-              disabled={
-                isStoreName && isAddress && isOwnerName && isOwnerPhoneNumber
-                  ? false
-                  : true
-              }
-            >
-              추가
+  return (
+    <>
+      <Header text="내 가게 추가" back={true}></Header>
+      <div className="inputContainer">
+        <Formbox>
+          <div className="edit-intro">가게 이름:</div>
+          <div className="edit-box">
+            <input
+              className="edit-input"
+              name="storeName"
+              value={uStoreName || ""}
+              type="text"
+              onChange={onChangeStoreName}
+              placeholder="가게 이름 입력"
+              required
+              maxLength="20"
+            />
+            <BiEditAlt color="#A3A3A3" size="22" />
+          </div>
+        </Formbox>
+        <Formbox>
+          <div className="edit-intro">가게 주소:</div>
+          <div className="edit-box">
+            <textarea
+              style={{ resize: "none" }}
+              className="edit-input"
+              name="roadAddress"
+              value={uRoadAddress || ""}
+              type="text"
+              onChange={(e) => setuRoadAddress(e.target.value)}
+              placeholder="도로명 주소 검색"
+              required
+              readOnly
+            />
+            <button className="store-searchAddress" onClick={onChangeOpenPost}>
+              주소 찾기
             </button>
-          </form>
-        </div>
-      </>
-    );
-  }
+          </div>
+          <div style={{ width: "260px" }}>
+            {isOpenPost ? (
+              <DaumPostcode
+                className="daumPost"
+                autoClose
+                onComplete={onCompletePost}
+              />
+            ) : null}
+          </div>
+        </Formbox>
+        <Formbox>
+          <div className="edit-intro">상세 주소:</div>
+          <div className="edit-box">
+            <input
+              className="edit-input"
+              name="detailAddress"
+              value={uDetailAddress || ""}
+              type="text"
+              onChange={(e) => setuDetailAddress(e.target.value)}
+              placeholder="상세 주소 입력"
+              maxLength="20"
+            />
+            <BiEditAlt color="#A3A3A3" size="22" />
+          </div>
+        </Formbox>
+        <Formbox>
+          <div className="edit-intro">사장님 성함:</div>
+          <div className="edit-box">
+            <input
+              className="edit-input"
+              name="ownerName"
+              value={uOwnerName || ""}
+              type="text"
+              onChange={onChangeOwnerName}
+              placeholder="사장님 성함 입력"
+              maxLength="16"
+            />
+            <BiEditAlt color="#A3A3A3" size="22" />
+          </div>
+        </Formbox>
+        <Formbox>
+          <div className="edit-intro">사장님 전화번호:</div>
+          <div className="edit-box">
+            <input
+              className="edit-input"
+              name="phoneNumber"
+              value={uOwnerPhoneNumber || ""}
+              type="text"
+              onChange={onChangeOwnerPhoneNumber}
+              placeholder="010-xxxx-xxxx"
+            />
+            <BiEditAlt color="#A3A3A3" size="22" />
+          </div>
+        </Formbox>
+        <Formbox>
+          <div className="edit-intro">가게 전화번호:</div>
+          <div className="edit-box">
+            <input
+              className="edit-input"
+              name="storePhoneNumber"
+              value={uStorePhoneNumber || ""}
+              type="text"
+              onChange={(e) => setuStorePhoneNumber(e.target.value)}
+              placeholder="010-xxxx-xxxx"
+            />
+            <BiEditAlt color="#A3A3A3" size="22" />
+          </div>
+        </Formbox>
+        <Formbox>
+          <div className="edit-intro">
+            가게 대표 사진
+            <span style={{ fontSize: "15px" }}>&#40;최대 3장&#41;</span>:
+          </div>
+          <div className="edit-box">
+            <input
+              style={{ display: "none" }}
+              type="file"
+              name="images"
+              id="images"
+              multiple
+              accept="image/jpg, image/jpeg, image/png"
+              onChange={onChangeImage}
+            />
+            <div style={{ display: "flex", marginBottom: "6px" }}>
+              <label htmlFor="images">
+                <div className="uploadImage" style={{ cursor: "pointer" }}>
+                  <HiOutlineCamera
+                    size={"1.7em"}
+                    style={{ paddingTop: "3px" }}
+                  />
+                  <span style={{ fontSize: "14px" }}>
+                    <span style={{ color: "#386FFE" }}>
+                      {uFormImages.length}
+                    </span>
+                    /3
+                  </span>
+                </div>
+              </label>
+              {uImages &&
+                uImages.map((image, index) => (
+                  <div
+                    key={index}
+                    style={{ position: "relative", marginRight: "9px" }}
+                  >
+                    <img
+                      className="edit-image"
+                      alt=""
+                      src={image}
+                      id={index}
+                    ></img>
+                    {index === 0 && <div className="mainPick">대표 사진</div>}
+                    <label htmlFor={index}></label>
+                    <img
+                      className="delete-image"
+                      alt=""
+                      src="images/img_delete.png"
+                      name={index}
+                      onClick={deleteImage}
+                    ></img>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </Formbox>
+        <Formbox>
+          <div className="edit-intro">가게 한 줄 소개:</div>
+          <div className="edit-box">
+            <textarea
+              className="edit-input"
+              style={{ height: "26px", resize: "none" }}
+              name="subText"
+              value={uSubText || ""}
+              type="text"
+              onChange={(e) => setuSubText(e.target.value)}
+              placeholder="가게 한 줄 소개 입력"
+              maxLength="250"
+            />
+            <BiEditAlt color="#A3A3A3" size="22" />
+          </div>
+        </Formbox>
+        <Formbox>
+          <div className="edit-intro">영업 시간:</div>
+          <div className="edit-box">
+            <input
+              className="edit-input"
+              name="openHour"
+              value={uOpenHour || ""}
+              type="text"
+              onChange={(e) => setuOpenHour(e.target.value)}
+              placeholder="오전 9:00 ~ 오후 9:00 (연중무휴)"
+              maxLength="30"
+            />
+            <BiEditAlt color="#A3A3A3" size="22" />
+          </div>
+        </Formbox>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <form onSubmit={onSubmit}>
+          <button
+            className="store-addBtn"
+            type="submit"
+            disabled={
+              isStoreName && isAddress && isOwnerName && isOwnerPhoneNumber
+                ? false
+                : true
+            }
+          >
+            추가
+          </button>
+        </form>
+      </div>
+    </>
+  );
 };
 
 export default StoreInfoAdd;

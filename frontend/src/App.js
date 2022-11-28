@@ -8,7 +8,6 @@ import LoginRegister from "./components/LoginRegister";
 import Login from "./pages/Login";
 import LoginUser from "./pages/LoginUser";
 import LoginOwner from "./pages/LoginOwner";
-// import RedirectLogin from "./pages/RedirectLogin";
 import Kakao from "./services/oauth/Kakao";
 import Naver from "./services/oauth/Naver";
 import SignupUser from "./pages/SignupUser";
@@ -53,6 +52,7 @@ function App() {
         .getEntriesByType("navigation")
         .map((nav) => nav.type)
         .includes("reload");
+
     if (pageAccessedByReload === true) {
       // 새로고침 후
       setTimeout(() => reissue(), 1000);
@@ -102,7 +102,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/loginUser" element={AuthRoute(0, <LoginUser />)} />
         <Route path="/loginOwner" element={AuthRoute(0, <LoginOwner />)} />
-        {/* <Route path="/redirectLogin" element={<RedirectLogin />} /> */}
         <Route path="/signupUser" element={AuthRoute(0, <SignupUser />)} />
         <Route path="/signupOwner" element={AuthRoute(0, <SignupOwner />)} />
         <Route path="/signupOwner2" element={AuthRoute(0, <SignupOwner2 />)} />
