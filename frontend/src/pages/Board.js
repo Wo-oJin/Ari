@@ -22,6 +22,7 @@ const BoardItem = ({ boardId, img, title, author, date, completed }) => {
           <div className="itemBox">
             <img
               className="itemImg"
+              alt=""
               src={`data:image/jpg;base64, ${img}`}
             ></img>
             <div className="itemContent">
@@ -38,6 +39,7 @@ const BoardItem = ({ boardId, img, title, author, date, completed }) => {
             <div className="itemBox">
               <img
                 className="itemImg"
+                alt=""
                 src={`data:image/jpg;base64, ${img}`}
               ></img>
               <div className="itemContent">

@@ -150,6 +150,10 @@ const MainPage = ({ onClick }) => {
     navigate(`/store/category/${menuIndex}`);
   };
 
+  const moveToNotice = () => {
+    navigate("/notice/1");
+  };
+
   if (!isLoaded) {
     return <Loading />;
   } else {
@@ -172,6 +176,15 @@ const MainPage = ({ onClick }) => {
                   <span style={{ color: "#386FFE" }}>아리</span>에서
                 </p>
               </div>
+
+              <div className="mainPage-banner-container">
+                <div className="mainPage-banner" onClick={moveToNotice}>
+                  <span className="mainPage-banner-text">
+                    처음 오신 분들 클릭!
+                  </span>
+                </div>
+              </div>
+
               <div style={{ position: "relative" }}>
                 <div className="mainPage-search-icon" onClick={searchStore}>
                   <FiSearch></FiSearch>

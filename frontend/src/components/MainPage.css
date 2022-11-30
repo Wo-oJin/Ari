@@ -12,12 +12,12 @@
   border: 0.5px solid #c5c5c5;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  margin: 25px 0;
+  margin: 0 0 25px 0;
 }
 
 .mainPage-search-icon {
   position: absolute;
-  top: 36px;
+  top: 11px;
   left: 10px;
   color: #a3a3a3;
   padding: 5px;
@@ -27,6 +27,29 @@
 .mainPage-store-search::placeholder {
   font-size: 13px;
   color: #a3a3a3;
+}
+
+.mainPage-banner-container {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 3px;
+  margin-top: 20px;
+}
+
+.mainPage-banner {
+  cursor: pointer;
+  text-align: center;
+  width: 150px;
+  height: 30px;
+  background-color: #386ffe;
+  margin-bottom: 12px;
+  border-radius: 10px 10px 0 10px;
+}
+
+.mainPage-banner-text {
+  font-weight: 300;
+  font-size: 13px;
+  color: white;
 }
 
 .mainPage-subIntro {
