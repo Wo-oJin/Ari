@@ -133,9 +133,6 @@ const Category = () => {
               return (
                 <Link key={index} to={`/detail/${item.storeId}`}>
                   <div
-                    // onClick={() => {
-                    //   navigate(`/detail/${item.storeId}`);
-                    // }}
                     className="storeItem"
                     style={{
                       backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,

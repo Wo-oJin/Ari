@@ -83,7 +83,7 @@
   white-space: pre-wrap;
   width: 303px;
   font-size: 15px;
-  word-break: break-all;
+  word-break: keep-all;
 }
 .PrivateEventContent {
   display: flex;

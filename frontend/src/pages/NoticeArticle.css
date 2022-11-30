@@ -32,7 +32,7 @@
 .noticleArticleText {
   width: 350px;
   height: 100%;
-  word-break: break-all;
+  word-break: keep-all;
   white-space: pre-line;
 }
 .noticeModifyBtn {
