@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "../pages/StoreEditPrivateEvent.css";
@@ -7,9 +7,7 @@ import { BiEditAlt } from "react-icons/bi";
 
 const StoreEditPrivateEvent = () => {
   const [newInfo, setNewInfo] = useState("");
-
   const navigate = useNavigate();
-
   const { state } = useLocation(); // StorePrivateEventList.js에서 Link로 전달한 데이터 받아오기
   const index = state.index;
   const storeId = state.storeId;
@@ -19,19 +17,15 @@ const StoreEditPrivateEvent = () => {
     setNewInfo(info);
   }, [info]);
 
-  // console.log("index>>"+index);
-
   const onDelete = async () => {
     try {
-      await customAxios
-        .post("/owner/delete/private-event", {
-          storeId: storeId,
-          eventNum: index,
-        })
-        .then((res) => {
-          alert(res.data.massage);
-          navigate(`/storePrivateEventList?storeId=${storeId}`);
-        });
+      const { data } = await customAxios.post("/owner/delete/private-event", {
+        storeId: storeId,
+        eventNum: index,
+      });
+
+      alert(data.massage);
+      navigate(`/storePrivateEventList?storeId=${storeId}`);
     } catch (e) {
       console.log(e);
     }
@@ -39,21 +33,19 @@ const StoreEditPrivateEvent = () => {
 
   const onEdit = async () => {
     try {
-      await customAxios
-        .post("/owner/update/private-event", {
-          storeId: storeId,
-          eventNum: index,
-          newInfo: newInfo,
-        })
-        .then((res) => {
-          if (res.data.result === "success") {
-            alert("수정에 성공하였습니다.");
-            navigate(`/storePrivateEventList?storeId=${storeId}`);
-          } else {
-            alert("수정에 실패하였습니다.");
-            navigate(`/storePrivateEventList?storeId=${storeId}`);
-          }
-        });
+      const { data } = await customAxios.post("/owner/update/private-event", {
+        storeId: storeId,
+        eventNum: index,
+        newInfo: newInfo,
+      });
+
+      if (data.result === "success") {
+        alert("수정에 성공하였습니다.");
+        navigate(`/storePrivateEventList?storeId=${storeId}`);
+      } else {
+        alert("수정에 실패하였습니다.");
+        navigate(`/storePrivateEventList?storeId=${storeId}`);
+      }
     } catch (e) {
       console.log(e);
     }

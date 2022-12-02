@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -25,7 +25,6 @@ const Formbox = styled.div`
 
 const SignupOwner2 = () => {
   const { state } = useLocation(); // SignupOwner.js에서 navigate로 보낸 데이터 받아오기
-
   const navigate = useNavigate();
 
   // 가게 이름, 사장님 성함, 가게 주소, 상세 주소, 사장님 연락처, 가게 인증
@@ -45,7 +44,8 @@ const SignupOwner2 = () => {
   const [isPhoneNumber, setIsPhoneNumber] = useState(false);
   const [isAddress, setIsAddress] = useState(false);
 
-  const [isOpenPost, setIsOpenPost] = useState(false); // daum-postcode api를 팝업처럼 관리하기 위함
+  // daum-postcode api를 팝업처럼 관리하기 위함
+  const [isOpenPost, setIsOpenPost] = useState(false);
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost);
@@ -92,21 +92,17 @@ const SignupOwner2 = () => {
   // 인증 확인 눌러서 post 요청 보내면 일치할 경우 200, 이외의 경우에는 400을 응답
   const onEmailCheck = async () => {
     try {
-      await axios
-        .post("/auth/signup-code", {
-          code: certificationNumber,
-        })
-        .then((res) => {
-          if (res.data.state === 200) {
-            // console.log(res.data.state);
-            setStoreCheckMessage("인증에 성공했습니다.");
-            setIsStoreCheck(true);
-          } else {
-            // console.log(res.data.state);
-            setStoreCheckMessage(res.data.massage);
-            setIsStoreCheck(false);
-          }
-        });
+      const { data } = await axios.post("/auth/signup-code", {
+        code: certificationNumber,
+      });
+
+      if (data.state === 200) {
+        setStoreCheckMessage("인증에 성공했습니다.");
+        setIsStoreCheck(true);
+      } else {
+        setStoreCheckMessage(data.massage);
+        setIsStoreCheck(false);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -128,7 +124,6 @@ const SignupOwner2 = () => {
       signupCode: certificationNumber,
     });
 
-    // console.log(JSON.stringify(result));
     if (result.result === "fail") {
       alert(result.massage);
       navigate("/loginRegister"); // 로그인/회원가입 처음 페이지로 이동
@@ -152,7 +147,6 @@ const SignupOwner2 = () => {
             onChange={(e) => setStoreName(e.target.value)}
             placeholder="가게 이름 입력"
             required
-            autoComplete="off"
             maxLength="20"
           />
         </Formbox>
@@ -166,7 +160,6 @@ const SignupOwner2 = () => {
             onChange={(e) => setOwnerName(e.target.value)}
             placeholder="사장님 성함 입력"
             required
-            autoComplete="off"
             maxLength="16"
           />
         </Formbox>
@@ -181,7 +174,6 @@ const SignupOwner2 = () => {
             placeholder="도로명 주소 검색"
             required
             readOnly
-            autoComplete="off"
           />
           <button className="searchAddress" onClick={onChangeOpenPost}>
             주소 찾기
@@ -203,7 +195,6 @@ const SignupOwner2 = () => {
               type="text"
               onChange={(e) => setStoreDetailAddress(e.target.value)}
               placeholder="상세 주소 입력"
-              autoComplete="off"
               maxLength="20"
             />
           </div>
@@ -218,7 +209,6 @@ const SignupOwner2 = () => {
             onChange={onChangePhoneNumner}
             placeholder="010-xxxx-xxxx"
             required
-            autoComplete="off"
           />
           {phoneNumber.length > 0 && (
             <p className={`message ${isPhoneNumber ? "success" : "error"}`}>
@@ -237,7 +227,6 @@ const SignupOwner2 = () => {
               onChange={(e) => setCertificationNumber(e.target.value)}
               placeholder="가게 인증 코드 입력"
               required
-              autoComplete="off"
             />
           </div>
           <MainButton
@@ -269,7 +258,6 @@ const SignupOwner2 = () => {
             background="#386FFE;"
             type="submit"
             disabled={isPhoneNumber && isAddress && isStoreCheck ? false : true}
-            // disabled={(isPhoneNumber && isAddress) ? false : true}
             text="회원가입"
           />
         </div>

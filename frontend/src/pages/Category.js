@@ -22,11 +22,12 @@ const Category = () => {
     "한식",
     "양식",
     "일식",
-    "패스트푸드",
+    "중식",
+    "뷰티/헬스",
     "카페",
-    "헤어",
     "술집",
     "놀이시설",
+    "스터디카페",
   ];
 
   const getData = async (menuIndex) => {
@@ -132,9 +133,6 @@ const Category = () => {
               return (
                 <Link key={index} to={`/detail/${item.storeId}`}>
                   <div
-                    // onClick={() => {
-                    //   navigate(`/detail/${item.storeId}`);
-                    // }}
                     className="storeItem"
                     style={{
                       backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(${item.storeImage})`,

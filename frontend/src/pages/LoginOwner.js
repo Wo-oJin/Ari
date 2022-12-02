@@ -1,4 +1,4 @@
-import { React } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import MainButton from "../components/common/Mainbutton";
 import Header from "../components/Header";

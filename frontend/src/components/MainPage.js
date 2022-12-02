@@ -107,17 +107,19 @@ const MainPage = ({ onClick }) => {
 
   // 가게 카테고리
   const menuRow1 = [
+    { name: "전체", image: "images/seeAll.png" },
     { name: "한식", image: "images/koreanFood.png" },
     { name: "양식", image: "images/westernFood.png" },
     { name: "일식", image: "images/japaneseFood.png" },
-    { name: "패스트푸드", image: "images/FastFood.png" },
+    { name: "중식", image: "images/chineseFood.png" },
   ];
 
   const menuRow2 = [
+    { name: "뷰티/헬스", image: "images/hairshop.png" },
     { name: "카페", image: "images/cafe.png" },
-    { name: "헤어", image: "images/hairshop.png" },
     { name: "술집", image: "images/bar.png" },
     { name: "놀이시설", image: "images/karaoke.png" },
+    { name: "스터디카페", image: "images/studyCafe.png" },
   ];
 
   // react-slick 캐러셀 설정
@@ -149,6 +151,10 @@ const MainPage = ({ onClick }) => {
     navigate(`/store/category/${menuIndex}`);
   };
 
+  const moveToNotice = () => {
+    navigate("/notice/1");
+  };
+
   if (!isLoaded) {
     return <Loading />;
   } else {
@@ -171,6 +177,15 @@ const MainPage = ({ onClick }) => {
                   <span style={{ color: "#386FFE" }}>아리</span>에서
                 </p>
               </div>
+
+              <div className="mainPage-banner-container">
+                <div className="mainPage-banner" onClick={moveToNotice}>
+                  <span className="mainPage-banner-text">
+                    처음 오신 분들 클릭!
+                  </span>
+                </div>
+              </div>
+
               <div style={{ position: "relative" }}>
                 <div className="mainPage-search-icon" onClick={searchStore}>
                   <FiSearch></FiSearch>
@@ -211,7 +226,7 @@ const MainPage = ({ onClick }) => {
                 );
               })}
             </Slider>
-            <div style={{ padding: "0 28px", marginTop: "40px" }}>
+            <div style={{ padding: "0 5px", marginTop: "40px" }}>
               <p className="mainPage-subIntro">
                 <span className="mainPage-select-intro">골라서</span>
                 보는 건 어때요?
@@ -227,10 +242,10 @@ const MainPage = ({ onClick }) => {
                             style={{ margin: "0 11px 34px 11px" }}
                           >
                             <img
-                              style={{ cursor: "pointer" }}
+                              className="mainPage-catecory-img"
                               onClick={moveToCategory}
                               alt=""
-                              data-key={index + 1}
+                              data-key={index}
                               src={menu.image}
                             ></img>
                             <span
@@ -252,7 +267,7 @@ const MainPage = ({ onClick }) => {
                             style={{ margin: "0 11px 34px 11px" }}
                           >
                             <img
-                              style={{ cursor: "pointer" }}
+                              className="mainPage-catecory-img"
                               data-key={index + 5}
                               onClick={moveToCategory}
                               alt=""
@@ -271,7 +286,7 @@ const MainPage = ({ onClick }) => {
                 </tbody>
               </table>
               <div style={{ clear: "both" }}></div>
-              <p className="mainPage-subIntro">전체 목록 보기!</p>
+              {/* <p className="mainPage-subIntro">전체 목록 보기!</p>
               <div style={{ float: "left", marginLeft: "10px" }}>
                 <div className="mainPage-flex-column-center">
                   <img
@@ -285,7 +300,7 @@ const MainPage = ({ onClick }) => {
                     전체
                   </span>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

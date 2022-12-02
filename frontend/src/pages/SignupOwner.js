@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
@@ -23,10 +23,8 @@ const Formbox = styled.div`
 `;
 
 const SignupOwner = () => {
-  const navigate = useNavigate();
-
-  // use-history-state hook : 뒤로가기 시 입력값 유지하기 위함
   // 이메일, 비밀번호, 연령대, 성별
+  // use-history-state hook : 뒤로가기 시 입력값 유지하기 위함
   const [email, setEmail] = useHistoryState("", "email");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -55,6 +53,8 @@ const SignupOwner = () => {
   const [emailCheckMessage, setEmailCheckMessage] = useState("");
   const [isEmailCheck, setIsEmailCheck] = useState(false);
 
+  const navigate = useNavigate();
+
   // 이메일
   const onChangeEmail = (e) => {
     const emailRegex =
@@ -73,19 +73,17 @@ const SignupOwner = () => {
   // 이메일 중복 확인
   const checkEmail = async () => {
     try {
-      await axios
-        .post("/auth/check-email", {
-          email: email,
-        })
-        .then((res) => {
-          if (res.data.result === "success") {
-            setEmailMessage("사용 가능한 이메일입니다.");
-            setIsUniqueEmail(true);
-          } else {
-            setEmailMessage(res.data.massage);
-            setIsUniqueEmail(false);
-          }
-        });
+      const { data } = await axios.post("/auth/check-email", {
+        email: email,
+      });
+
+      if (data.result === "success") {
+        setEmailMessage("사용 가능한 이메일입니다.");
+        setIsUniqueEmail(true);
+      } else {
+        setEmailMessage(data.massage);
+        setIsUniqueEmail(false);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -106,6 +104,7 @@ const SignupOwner = () => {
       setPasswordMessage("안전한 비밀번호입니다.");
       setIsPassword(true);
     }
+
     // password가 바뀔 때에도 passwordCheck와 일치한지 확인
     if (passwordCheck !== e.target.value) {
       setPasswordCheckMessage("일치하지 않는 비밀번호입니다.");
@@ -119,8 +118,7 @@ const SignupOwner = () => {
   // 비밀번호 확인
   const onChangePasswordCheck = (e) => {
     setPasswordCheck(e.target.value);
-    // console.log("password>>"+password);
-    // console.log("passwordCheck>>"+passwordCheck);
+
     if (password !== e.target.value) {
       setPasswordCheckMessage("일치하지 않는 비밀번호입니다.");
       setIsPasswordCheck(false);
@@ -147,21 +145,17 @@ const SignupOwner = () => {
   // 인증 확인 눌러서 post 요청 보내면 일치할 경우 200, 이외의 경우에는 400을 응답
   const onEmailCheck = async () => {
     try {
-      await axios
-        .post("/auth/email-auth", {
-          code: certificationNumber.toUpperCase(),
-        })
-        .then((res) => {
-          if (res.data.state === 200) {
-            // console.log(res.data.state);
-            setEmailCheckMessage("인증에 성공했습니다.");
-            setIsEmailCheck(true);
-          } else {
-            // console.log(res.data.state);
-            setEmailCheckMessage(res.data.massage);
-            setIsEmailCheck(false);
-          }
-        });
+      const { data } = await axios.post("/auth/email-auth", {
+        code: certificationNumber.toUpperCase(),
+      });
+
+      if (data.state === 200) {
+        setEmailCheckMessage("인증에 성공했습니다.");
+        setIsEmailCheck(true);
+      } else {
+        setEmailCheckMessage(data.massage);
+        setIsEmailCheck(false);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -193,7 +187,6 @@ const SignupOwner = () => {
               onChange={onChangeEmail}
               placeholder="이메일 주소 입력"
               required
-              autoComplete="off"
             />
             <button
               className="sendBtn"
@@ -221,7 +214,6 @@ const SignupOwner = () => {
               onChange={(e) => setCertificationNumber(e.target.value)}
               placeholder="인증번호 입력"
               required
-              autoComplete="off"
             />
             <button
               className="sendBtn"
@@ -257,7 +249,6 @@ const SignupOwner = () => {
             onChange={onChangePassword}
             placeholder="비밀번호 입력"
             required
-            autoComplete="off"
           />
           {password.length > 0 && (
             <p className={`message ${isPassword ? "success" : "error"}`}>
@@ -275,7 +266,6 @@ const SignupOwner = () => {
             onChange={onChangePasswordCheck}
             placeholder="비밀번호 재입력"
             required
-            autoComplete="off"
           />
           {passwordCheck.length > 0 && (
             <p className={`message ${isPasswordCheck ? "success" : "error"}`}>
@@ -351,7 +341,6 @@ const SignupOwner = () => {
               ? false
               : true
           }
-          // disabled={(isEmail && isPassword && isPasswordCheck) ? false : true}
           text="다음"
         />
       </div>
