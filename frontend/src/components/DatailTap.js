@@ -359,7 +359,6 @@ export const StoreInfoTap = ({ data }) => {
       );
     }
   }, []);
-  console.log(data);
   return (
     <div className="TapContainer">
       <span className="EventTitle">가게 정보:</span>

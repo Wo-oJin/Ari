@@ -212,10 +212,6 @@ const MainPage = ({ onClick }) => {
                       }}
                       className="mainPage-banner-box"
                     >
-                      {/* <img
-                        alt=""
-                        src={`data:image/;base64,${item.storeImage}`}
-                      ></img> */}
                       <p className="mainPage-banner-intro">
                         {item.storeName}
                         <br />
