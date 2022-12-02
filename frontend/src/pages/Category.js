@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
@@ -15,7 +16,11 @@ const Category = () => {
   const menuRef = useRef(null);
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
+  const [load, setLoad] = useState(false);
   const navigate = useNavigate();
+  const [ref, inView] = useInView();
+  const [endPage, setEndPage] = useState(false);
+  const [page, setPage] = useState(0);
 
   let categoryArr = [
     "전체",
@@ -31,21 +36,40 @@ const Category = () => {
   ];
 
   const getData = async (menuIndex) => {
-    setData("");
+    console.log("page:", page);
+    console.log("data:", data);
     setLoading(true);
-    await customAxios
-      .get(`/category?code=${categoryArr[menuIndex]}`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((error) => {
-        setData(null);
-      });
+    if (!endPage) {
+      await customAxios
+        .get(`/category?code=${categoryArr[menuIndex]}&page=${page}`)
+        .then((res) => {
+          if (res.data.last === false) {
+            console.log("aa", data);
+            setData((prev) => [...prev, ...res.data]);
+          } else {
+            console.log("aa", res.data);
+            setData((prev) => [...prev, ...res.data]);
+            setEndPage(true);
+          }
+        })
+        .catch((error) => {
+          setData(null);
+        });
+    }
     setLoading(false);
   };
+
   useEffect(() => {
+    setLoad(true);
     getData(menuIndex);
-  }, []);
+    setLoad(false);
+  }, [page]);
+
+  useEffect(() => {
+    if (inView && !load) {
+      setPage((prev) => prev + 1);
+    }
+  }, [inView, load]);
 
   useEffect(() => {
     //메뉴를 클릭하면 메뉴바 자동 슬라이드
@@ -54,6 +78,7 @@ const Category = () => {
     } else if (menuIndex < 4) {
       scrollRef.current.scrollLeft = 0;
     }
+    setPage(0);
   }, [menuIndex]);
 
   const onDragStart = (e) => {
@@ -135,7 +160,7 @@ const Category = () => {
                   <div
                     className="storeItem"
                     style={{
-                      backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(${item.storeImage})`,
+                      backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
                     }}
                   >
                     <div className="ctContentBox">
@@ -151,6 +176,7 @@ const Category = () => {
             })
           : null}
       </div>
+      {data ? <div ref={ref}></div> : null}
     </>
   );
 };
