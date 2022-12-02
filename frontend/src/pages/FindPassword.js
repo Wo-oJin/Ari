@@ -63,7 +63,7 @@ const FindPassword = () => {
   const checkEmail = async () => {
     try {
       const { data } = await customAxios.post("/auth/check-email", {
-        email: email,
+        email,
       });
 
       if (data.result === "success") {
@@ -126,7 +126,7 @@ const FindPassword = () => {
 
     try {
       await customAxios.post("/auth/email", {
-        email: email,
+        email,
       });
     } catch (e) {
       console.log(e);
@@ -155,8 +155,8 @@ const FindPassword = () => {
   const onSubmit = async () => {
     try {
       const { data } = await customAxios.post("/auth/change-password", {
-        email: email,
-        newPassword: newPassword,
+        email,
+        newPassword,
       });
 
       alert(data.massage);

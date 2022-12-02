@@ -14,7 +14,7 @@ const StoreAddPrivateEvent = () => {
   const onAdd = async () => {
     try {
       const { data } = await customAxios.post("/owner/add/private-event", {
-        storeId: storeId,
+        storeId,
         info: newInfo,
       });
 

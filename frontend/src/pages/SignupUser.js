@@ -69,7 +69,7 @@ const SignupUser = () => {
   const checkEmail = async () => {
     try {
       const { data } = await axios.post("/auth/check-email", {
-        email: email,
+        email,
       });
 
       if (data.result === "success") {
@@ -147,7 +147,7 @@ const SignupUser = () => {
 
     try {
       await axios.post("/auth/email", {
-        email: email,
+        email,
       });
     } catch (e) {
       console.log(e);

@@ -20,7 +20,7 @@ const StoreEditPrivateEvent = () => {
   const onDelete = async () => {
     try {
       const { data } = await customAxios.post("/owner/delete/private-event", {
-        storeId: storeId,
+        storeId,
         eventNum: index,
       });
 
@@ -34,9 +34,9 @@ const StoreEditPrivateEvent = () => {
   const onEdit = async () => {
     try {
       const { data } = await customAxios.post("/owner/update/private-event", {
-        storeId: storeId,
+        storeId,
+        newInfo,
         eventNum: index,
-        newInfo: newInfo,
       });
 
       if (data.result === "success") {

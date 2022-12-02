@@ -27,8 +27,8 @@ const Kakao = () => {
       try {
         await axios
           .post("/auth/kakao/login", {
-            code: code,
-            state: state,
+            code,
+            state,
           })
           .then((res) => {
             if (res.data.state === 400) {

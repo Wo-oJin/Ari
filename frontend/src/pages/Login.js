@@ -60,8 +60,8 @@ const Login = () => {
 
     try {
       const { data } = await axios.post("/auth/login", {
-        email: email,
-        password: password,
+        email,
+        password,
       });
 
       if (data.result === "fail") {

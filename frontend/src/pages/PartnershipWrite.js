@@ -35,11 +35,11 @@ const PartnershipWrite = () => {
   const partnershipRequest = async () => {
     try {
       await customAxios.post("/owner/partnership/request", {
+        content,
         startDate: startDate.replace(/-/g, "/"),
         endDate: endDate.replace(/-/g, "/"),
         fromStoreId: fromStores[storeIndex].storeId,
         toStoreId: state.storeId,
-        content: content,
         articleId: parseInt(state.articleId),
       });
 
