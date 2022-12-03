@@ -1,24 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import styled from "styled-components";
-import "../pages/StoreInfoAdd.css";
 import DaumPostcode from "react-daum-postcode";
 import { customAxios } from "./customAxios";
 import { HiOutlineCamera } from "react-icons/hi";
 import { BiEditAlt } from "react-icons/bi";
-
-const Formbox = styled.div`
-  margin-bottom: 36px;
-  .message {
-    font-size: 11px;
-    letter-spacing: -1px;
-    margin: 0;
-    &.error {
-      color: #ff2727;
-    }
-  }
-`;
+import { Container } from "../components/common/Container";
+import Formbox from "../components/common/FormBox";
+import { RightButton, SendButton } from "../components/common/Button";
+import {
+  Intro,
+  Box,
+  Input,
+  Textarea,
+  Image,
+  UploadImage,
+  DeleteImage,
+  MainPick,
+} from "../components/store/StoreInfoStyle";
 
 const StoreInfoAdd = () => {
   // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 사장님 전화번호, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
@@ -196,12 +195,11 @@ const StoreInfoAdd = () => {
   return (
     <>
       <Header text="내 가게 추가" back={true}></Header>
-      <div className="inputContainer">
+      <Container>
         <Formbox>
-          <div className="edit-intro">가게 이름:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>가게 이름:</Intro>
+          <Box>
+            <Input
               name="storeName"
               value={uStoreName || ""}
               type="text"
@@ -211,14 +209,12 @@ const StoreInfoAdd = () => {
               maxLength="20"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">가게 주소:</div>
-          <div className="edit-box">
-            <textarea
-              style={{ resize: "none" }}
-              className="edit-input"
+          <Intro>가게 주소:</Intro>
+          <Box>
+            <Textarea
               name="roadAddress"
               value={uRoadAddress || ""}
               type="text"
@@ -227,10 +223,8 @@ const StoreInfoAdd = () => {
               required
               readOnly
             />
-            <button className="store-searchAddress" onClick={onChangeOpenPost}>
-              주소 찾기
-            </button>
-          </div>
+            <SendButton onClick={onChangeOpenPost}>주소 찾기</SendButton>
+          </Box>
           <div style={{ width: "260px" }}>
             {isOpenPost ? (
               <DaumPostcode
@@ -242,10 +236,9 @@ const StoreInfoAdd = () => {
           </div>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">상세 주소:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>상세 주소:</Intro>
+          <Box>
+            <Input
               name="detailAddress"
               value={uDetailAddress || ""}
               type="text"
@@ -254,13 +247,12 @@ const StoreInfoAdd = () => {
               maxLength="20"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">사장님 성함:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>사장님 성함:</Intro>
+          <Box>
+            <Input
               name="ownerName"
               value={uOwnerName || ""}
               type="text"
@@ -269,13 +261,12 @@ const StoreInfoAdd = () => {
               maxLength="16"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">사장님 전화번호:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>사장님 전화번호:</Intro>
+          <Box>
+            <Input
               name="phoneNumber"
               value={uOwnerPhoneNumber || ""}
               type="text"
@@ -283,13 +274,12 @@ const StoreInfoAdd = () => {
               placeholder="010-xxxx-xxxx"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">가게 전화번호:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>가게 전화번호:</Intro>
+          <Box>
+            <Input
               name="storePhoneNumber"
               value={uStorePhoneNumber || ""}
               type="text"
@@ -297,14 +287,14 @@ const StoreInfoAdd = () => {
               placeholder="010-xxxx-xxxx"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">
+          <Intro>
             가게 대표 사진
             <span style={{ fontSize: "15px" }}>&#40;최대 3장&#41;</span>:
-          </div>
-          <div className="edit-box">
+          </Intro>
+          <Box>
             <input
               style={{ display: "none" }}
               type="file"
@@ -316,7 +306,7 @@ const StoreInfoAdd = () => {
             />
             <div style={{ display: "flex", marginBottom: "6px" }}>
               <label htmlFor="images">
-                <div className="uploadImage" style={{ cursor: "pointer" }}>
+                <UploadImage>
                   <HiOutlineCamera
                     size={"1.7em"}
                     style={{ paddingTop: "3px" }}
@@ -327,7 +317,7 @@ const StoreInfoAdd = () => {
                     </span>
                     /3
                   </span>
-                </div>
+                </UploadImage>
               </label>
               {uImages &&
                 uImages.map((image, index) => (
@@ -335,32 +325,25 @@ const StoreInfoAdd = () => {
                     key={index}
                     style={{ position: "relative", marginRight: "9px" }}
                   >
-                    <img
-                      className="edit-image"
-                      alt=""
-                      src={image}
-                      id={index}
-                    ></img>
-                    {index === 0 && <div className="mainPick">대표 사진</div>}
+                    <Image alt="" src={image} id={index}></Image>
+                    {index === 0 && <MainPick>대표 사진</MainPick>}
                     <label htmlFor={index}></label>
-                    <img
-                      className="delete-image"
+                    <DeleteImage
                       alt=""
                       src="images/img_delete.png"
                       name={index}
                       onClick={deleteImage}
-                    ></img>
+                    ></DeleteImage>
                   </div>
                 ))}
             </div>
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">가게 한 줄 소개:</div>
-          <div className="edit-box">
-            <textarea
-              className="edit-input"
-              style={{ height: "26px", resize: "none" }}
+          <Intro>가게 한 줄 소개:</Intro>
+          <Box>
+            <Textarea
+              height="26px"
               name="subText"
               value={uSubText || ""}
               type="text"
@@ -369,13 +352,12 @@ const StoreInfoAdd = () => {
               maxLength="250"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">영업 시간:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>영업 시간:</Intro>
+          <Box>
+            <Input
               name="openHour"
               value={uOpenHour || ""}
               type="text"
@@ -384,23 +366,20 @@ const StoreInfoAdd = () => {
               maxLength="30"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
-      </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <form onSubmit={onSubmit}>
-          <button
-            className="store-addBtn"
-            type="submit"
-            disabled={
-              isStoreName && isAddress && isOwnerName && isOwnerPhoneNumber
-                ? false
-                : true
-            }
-          >
-            추가
-          </button>
-        </form>
+      </Container>
+      <div style={{ width: "327px", margin: "0 auto" }}>
+        <RightButton
+          onClick={onSubmit}
+          disabled={
+            isStoreName && isAddress && isOwnerName && isOwnerPhoneNumber
+              ? false
+              : true
+          }
+        >
+          추가
+        </RightButton>
       </div>
     </>
   );

@@ -6,9 +6,3 @@
   background-position: center;
   margin: 50px auto;
 }
-
-.buttonContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}

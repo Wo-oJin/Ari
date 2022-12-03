@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import "../pages/PartnershipWrite.css";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
 import { BiEditAlt } from "react-icons/bi";
+import { Container } from "../components/common/Container";
+import { Intro } from "../components/common/Intro";
+import { RightButton } from "../components/common/Button";
+import { Period, Textarea } from "../components/store/PartnershipStyle";
 
 const PartnershipWrite = () => {
   const [fromStores, setFromStores] = useState([]);
@@ -35,11 +38,11 @@ const PartnershipWrite = () => {
   const partnershipRequest = async () => {
     try {
       await customAxios.post("/owner/partnership/request", {
+        content,
         startDate: startDate.replace(/-/g, "/"),
         endDate: endDate.replace(/-/g, "/"),
         fromStoreId: fromStores[storeIndex].storeId,
         toStoreId: state.storeId,
-        content: content,
         articleId: parseInt(state.articleId),
       });
 
@@ -57,7 +60,7 @@ const PartnershipWrite = () => {
   return (
     <>
       <Header text="협약 제휴 작성" back={true}></Header>
-      <div className="container">
+      <Container>
         <div
           style={{ boxSizing: "border-box", width: "375px", padding: "25px" }}
         >
@@ -70,9 +73,9 @@ const PartnershipWrite = () => {
               paddingBottom: "15px",
             }}
           >
-            <p className="partnership-write-intro">작성자 가게 선택</p>
+            <Intro>작성자 가게 선택</Intro>
             <select
-              className="partnership-select-store"
+              style={{ textAlign: "center" }}
               onChange={(e) => setStoreIndex(e.target.value)}
             >
               <option value="-1">--선택하세요--</option>
@@ -86,8 +89,8 @@ const PartnershipWrite = () => {
                 })}
             </select>
           </div>
-          <p className="partnership-write-intro">제휴 기간</p>
-          <div className="partnership-period-input">
+          <Intro>제휴 기간</Intro>
+          <Period>
             <input
               type="date"
               value={startDate}
@@ -99,16 +102,15 @@ const PartnershipWrite = () => {
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             ></input>
-          </div>
-          <p className="partnership-write-intro">제휴 내용</p>
+          </Period>
+          <Intro>제휴 내용</Intro>
           <div style={{ position: "relative" }}>
-            <textarea
-              className="partnership-write-textarea"
+            <Textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="(XXX가게 영수증 지참 후 우리 가게 방문 시, A메뉴 10% 할인)"
               maxLength="152"
-            ></textarea>
+            ></Textarea>
             <BiEditAlt
               color="#A3A3A3"
               size="22"
@@ -120,8 +122,7 @@ const PartnershipWrite = () => {
               }}
             />
           </div>
-          <button
-            className="partnership-rightBtn"
+          <RightButton
             onClick={partnershipRequest}
             disabled={
               storeIndex !== "-1" && startDate !== "" && endDate !== ""
@@ -130,9 +131,9 @@ const PartnershipWrite = () => {
             }
           >
             협약 등록
-          </button>
+          </RightButton>
         </div>
-      </div>
+      </Container>
     </>
   );
 };

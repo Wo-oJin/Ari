@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import "../pages/StoreEditPrivateEvent.css";
 import { customAxios } from "./customAxios";
 import { BiEditAlt } from "react-icons/bi";
+import Header from "../components/Header";
+import {
+  Container,
+  SpaceBetweenContainer,
+} from "../components/common/Container";
+import { HalfButton } from "../components/common/Button";
+import { EventForm } from "../components/store/StorePrivateEventStyle";
 
 const StoreEditPrivateEvent = () => {
   const [newInfo, setNewInfo] = useState("");
@@ -20,7 +25,7 @@ const StoreEditPrivateEvent = () => {
   const onDelete = async () => {
     try {
       const { data } = await customAxios.post("/owner/delete/private-event", {
-        storeId: storeId,
+        storeId,
         eventNum: index,
       });
 
@@ -34,9 +39,9 @@ const StoreEditPrivateEvent = () => {
   const onEdit = async () => {
     try {
       const { data } = await customAxios.post("/owner/update/private-event", {
-        storeId: storeId,
+        storeId,
+        newInfo,
         eventNum: index,
-        newInfo: newInfo,
       });
 
       if (data.result === "success") {
@@ -54,17 +59,16 @@ const StoreEditPrivateEvent = () => {
   return (
     <>
       <Header text="개인 이벤트 수정/삭제" back={true}></Header>
-      <div className="container">
+      <Container>
         <p style={{ width: "327px", margin: "32px 0", fontSize: "19px" }}>
           개인 이벤트 수정/삭제
         </p>
         <div style={{ position: "relative" }}>
-          <textarea
-            className="eventForm"
+          <EventForm
             value={newInfo}
             onChange={(e) => setNewInfo(e.target.value)}
             maxLength="250"
-          ></textarea>
+          ></EventForm>
           <BiEditAlt
             color="#A3A3A3"
             size="22"
@@ -76,16 +80,20 @@ const StoreEditPrivateEvent = () => {
             }}
           />
         </div>
-      </div>
+      </Container>
       <div style={{ width: "327px", margin: "0 auto", marginTop: "16px" }}>
-        <div className="edit-buttonContainer">
-          <button className="event-deleteBtn" type="button" onClick={onDelete}>
+        <SpaceBetweenContainer>
+          <HalfButton
+            backgroundColor="#ff6767"
+            type="button"
+            onClick={onDelete}
+          >
             삭제
-          </button>
-          <button className="event-editBtn" type="submit" onClick={onEdit}>
+          </HalfButton>
+          <HalfButton backgroundColor="#386ffe" type="submit" onClick={onEdit}>
             수정
-          </button>
-        </div>
+          </HalfButton>
+        </SpaceBetweenContainer>
       </div>
     </>
   );

@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import "../pages/StorePrivateEventList.css";
 import { customAxios } from "./customAxios";
 import { HiPlus } from "react-icons/hi";
-import { IoIosArrowForward } from "react-icons/io";
+import { Container } from "../components/common/Container";
+import {
+  AddList,
+  EventListInfo,
+} from "../components/store/StorePrivateEventStyle";
+import { StoreTap } from "../components/store/StoreInfoStyle";
 
 const StorePrivateEventList = () => {
   const [privateEvents, setPrivateEvents] = useState([]); // 개인 이벤트
@@ -52,36 +56,30 @@ const StorePrivateEventList = () => {
     <>
       <Header text="개인 이벤트 등록" back={true} url={"/myPageOwner"}></Header>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{ width: "312px", marginTop: "26px" }}>
+        <div style={{ width: "327px", marginTop: "26px" }}>
           {privateEvents.map((store, index) => {
             return index === parseInt(storeIndex) ? (
-              <button
+              <StoreTap
+                backgroundColor="#386ffe"
                 key={index}
                 id={index}
-                className="edit-store-tap-active"
                 onClick={onClickStore}
               >
                 {store.storeName}
-              </button>
+              </StoreTap>
             ) : (
-              <button
-                key={index}
-                id={index}
-                className="edit-store-tap"
-                onClick={onClickStore}
-              >
+              <StoreTap key={index} id={index} onClick={onClickStore}>
                 {store.storeName}
-              </button>
+              </StoreTap>
             );
           })}
         </div>
       </div>
-      <div className="container">
+      <Container>
         <p style={{ width: "327px", margin: "32px 0", fontSize: "19px" }}>
           개인 이벤트 목록&#40;{privateEvents[storeIndex].eventList.length}
           &#41;
         </p>
-        {/* 개인 이벤트 내용이 담긴 문자열 배열 받아서 map 함수로 리스트 구성 */}
         {privateEvents[storeIndex].eventList.map((privateEvent, index) => {
           return (
             <div key={index}>
@@ -93,30 +91,22 @@ const StorePrivateEventList = () => {
                   info: privateEvent,
                 }}
               >
-                <div className="event-list-info">
-                  <p className="event-text-ellipsis">{privateEvent}</p>
-                  <IoIosArrowForward
-                    color="#959595"
-                    size="20"
-                    style={{ marginRight: "20px" }}
-                  />
-                </div>
+                <EventListInfo privateEvent={privateEvent} />
               </Link>
             </div>
           );
         })}
-
         <Link
           to="/storeAddPrivateEvent"
           state={{
             storeId: privateEvents[storeIndex].storeId,
           }}
         >
-          <div className="addList">
+          <AddList>
             <HiPlus color="#B9B9B9" size="20" />
-          </div>
+          </AddList>
         </Link>
-      </div>
+      </Container>
     </>
   );
 };

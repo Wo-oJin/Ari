@@ -1,25 +1,29 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import styled from "styled-components";
-import "../pages/StoreInfoEdit.css";
 import DaumPostcode from "react-daum-postcode";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
 import { HiOutlineCamera, HiPlus } from "react-icons/hi";
 import { BiEditAlt } from "react-icons/bi";
-
-const Formbox = styled.div`
-  margin-bottom: 36px;
-  .message {
-    font-size: 11px;
-    letter-spacing: -1px;
-    margin: 0;
-    &.error {
-      color: #ff2727;
-    }
-  }
-`;
+import {
+  Container,
+  SpaceBetweenContainer,
+} from "../components/common/Container";
+import Formbox from "../components/common/FormBox";
+import { HalfButton, SendButton } from "../components/common/Button";
+import {
+  Intro,
+  Box,
+  Input,
+  Textarea,
+  UploadImage,
+  DeleteImage,
+  MainPick,
+  Image,
+  StoreTap,
+  AddStoreTap,
+} from "../components/store/StoreInfoStyle";
 
 const StoreInfoEdit = () => {
   // 가게 이름, 가게 주소, 상세 주소, 사장님 성함, 사장님 전화번호, 가게 전화번호, 이미지, 한 줄 소개, 영업 시간
@@ -332,41 +336,35 @@ const StoreInfoEdit = () => {
         url={"/myPageOwner"}
       ></Header>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{ width: "312px", marginTop: "26px" }}>
+        <div style={{ width: "327px", marginTop: "26px" }}>
           {storeInfoArr.map((store, index) => {
             return index === parseInt(storeIndex) ? (
-              <button
+              <StoreTap
+                backgroundColor="#386ffe"
                 key={index}
                 id={index}
-                className="edit-store-tap-active"
                 onClick={onClickStore}
               >
                 {store.storeName}
-              </button>
+              </StoreTap>
             ) : (
-              <button
-                key={index}
-                id={index}
-                className="edit-store-tap"
-                onClick={onClickStore}
-              >
+              <StoreTap key={index} id={index} onClick={onClickStore}>
                 {store.storeName}
-              </button>
+              </StoreTap>
             );
           })}
           <Link to="/storeInfoAdd">
-            <button className="add-store-tap">
+            <AddStoreTap>
               <HiPlus color="#B9B9B9" size="14" />
-            </button>
+            </AddStoreTap>
           </Link>
         </div>
       </div>
-      <div className="inputContainer">
+      <Container>
         <Formbox>
-          <div className="edit-intro">가게 이름:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>가게 이름:</Intro>
+          <Box>
+            <Input
               name="storeName"
               value={uStoreName || ""}
               type="text"
@@ -376,14 +374,12 @@ const StoreInfoEdit = () => {
               maxLength="20"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">가게 주소:</div>
-          <div className="edit-box">
-            <textarea
-              style={{ resize: "none" }}
-              className="edit-input"
+          <Intro>가게 주소:</Intro>
+          <Box>
+            <Textarea
               name="roadAddress"
               value={uRoadAddress || ""}
               type="text"
@@ -392,10 +388,8 @@ const StoreInfoEdit = () => {
               required
               readOnly
             />
-            <button className="store-searchAddress" onClick={onChangeOpenPost}>
-              주소 찾기
-            </button>
-          </div>
+            <SendButton onClick={onChangeOpenPost}>주소 찾기</SendButton>
+          </Box>
           <div style={{ width: "260px" }}>
             {isOpenPost ? (
               <DaumPostcode
@@ -407,10 +401,9 @@ const StoreInfoEdit = () => {
           </div>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">상세 주소:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>상세 주소:</Intro>
+          <Box>
+            <Input
               name="detailAddress"
               value={uDetailAddress || ""}
               type="text"
@@ -419,13 +412,12 @@ const StoreInfoEdit = () => {
               maxLength="20"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">사장님 성함:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>사장님 성함:</Intro>
+          <Box>
+            <Input
               name="ownerName"
               value={uOwnerName || ""}
               type="text"
@@ -434,13 +426,12 @@ const StoreInfoEdit = () => {
               maxLength="16"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">사장님 전화번호:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>사장님 전화번호:</Intro>
+          <Box>
+            <Input
               name="phoneNumber"
               value={uOwnerPhoneNumber || ""}
               type="text"
@@ -448,13 +439,12 @@ const StoreInfoEdit = () => {
               placeholder="010-xxxx-xxxx"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">가게 전화번호:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>가게 전화번호:</Intro>
+          <Box>
+            <Input
               name="storePhoneNumber"
               value={uStorePhoneNumber || ""}
               type="text"
@@ -462,14 +452,14 @@ const StoreInfoEdit = () => {
               placeholder="010-xxxx-xxxx"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">
+          <Intro>
             가게 대표 사진
             <span style={{ fontSize: "15px" }}>&#40;최대 3장&#41;</span>:
-          </div>
-          <div className="edit-box">
+          </Intro>
+          <Box>
             <input
               style={{ display: "none" }}
               type="file"
@@ -482,7 +472,7 @@ const StoreInfoEdit = () => {
             />
             <div style={{ display: "flex", marginBottom: "6px" }}>
               <label htmlFor="images">
-                <div className="uploadImage" style={{ cursor: "pointer" }}>
+                <UploadImage>
                   <HiOutlineCamera
                     size={"1.7em"}
                     style={{ paddingTop: "3px" }}
@@ -493,7 +483,7 @@ const StoreInfoEdit = () => {
                     </span>
                     /3
                   </span>
-                </div>
+                </UploadImage>
               </label>
               {uImages &&
                 uImages.map((image, index) => (
@@ -501,32 +491,25 @@ const StoreInfoEdit = () => {
                     key={index}
                     style={{ position: "relative", marginRight: "9px" }}
                   >
-                    <img
-                      className="edit-image"
-                      alt=""
-                      src={image}
-                      id={index}
-                    ></img>
-                    {index === 0 && <div className="mainPick">대표 사진</div>}
+                    <Image alt="" src={image} id={index}></Image>
+                    {index === 0 && <MainPick>대표 사진</MainPick>}
                     <label htmlFor={index}></label>
-                    <img
-                      className="delete-image"
+                    <DeleteImage
                       alt=""
                       src="images/img_delete.png"
                       name={index}
                       onClick={deleteImage}
-                    ></img>
+                    ></DeleteImage>
                   </div>
                 ))}
             </div>
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">가게 한 줄 소개:</div>
-          <div className="edit-box">
-            <textarea
-              className="edit-input"
-              style={{ height: "26px", resize: "none" }}
+          <Intro>가게 한 줄 소개:</Intro>
+          <Box>
+            <Textarea
+              height="26px"
               name="subText"
               value={uSubText || ""}
               type="text"
@@ -535,13 +518,12 @@ const StoreInfoEdit = () => {
               maxLength="250"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
         <Formbox>
-          <div className="edit-intro">영업 시간:</div>
-          <div className="edit-box">
-            <input
-              className="edit-input"
+          <Intro>영업 시간:</Intro>
+          <Box>
+            <Input
               name="openHour"
               value={uOpenHour || ""}
               type="text"
@@ -550,30 +532,28 @@ const StoreInfoEdit = () => {
               maxLength="30"
             />
             <BiEditAlt color="#A3A3A3" size="22" />
-          </div>
+          </Box>
         </Formbox>
-      </div>
-      <div style={{ width: "304px", margin: "0 auto" }}>
-        <div className="edit-buttonContainer">
+      </Container>
+      <div style={{ width: "327px", margin: "0 auto" }}>
+        <SpaceBetweenContainer>
           <Link to="/myPageOwner">
-            <button className="cancelBtn" type="button">
+            <HalfButton backgroundColor="#a3a3a3" type="button">
               취소
-            </button>
+            </HalfButton>
           </Link>
-          <form onSubmit={onSubmit}>
-            <button
-              className="editBtn"
-              type="submit"
-              disabled={
-                isStoreName && isAddress && isOwnerName && isOwnerPhoneNumber
-                  ? false
-                  : true
-              }
-            >
-              수정
-            </button>
-          </form>
-        </div>
+          <HalfButton
+            backgroundColor="#386ffe"
+            onClick={onSubmit}
+            disabled={
+              isStoreName && isAddress && isOwnerName && isOwnerPhoneNumber
+                ? false
+                : true
+            }
+          >
+            수정
+          </HalfButton>
+        </SpaceBetweenContainer>
       </div>
     </>
   );

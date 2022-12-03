@@ -1,10 +1,17 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Header from "../components/Header";
-import "../pages/PartnershipList.css";
 import { customAxios } from "./customAxios";
-import Loading from "../components/Loading";
 import { IoIosArrowForward } from "react-icons/io";
+import Loading from "../components/Loading";
+import Header from "../components/Header";
+import { Container } from "../components/common/Container";
+import TextEllipsis from "../components/common/TextEllipsis";
+import {
+  EventListInfo,
+  Tap,
+  TapActive,
+  PartnershipState,
+} from "../components/store/PartnershipStyle";
 
 const PartnershipList = () => {
   const [requestList, setRequestList] = useState([]);
@@ -88,28 +95,18 @@ const PartnershipList = () => {
         <div style={{ width: "312px", marginTop: "26px" }}>
           {taps.map((tap, index) => {
             return index === parseInt(tapIndex) ? (
-              <button
-                key={index}
-                id={index}
-                className="partnership-tap-active"
-                onClick={onClickTap}
-              >
+              <TapActive key={index} id={index} onClick={onClickTap}>
                 {tap}
-              </button>
+              </TapActive>
             ) : (
-              <button
-                key={index}
-                id={index}
-                className="partnership-tap"
-                onClick={onClickTap}
-              >
+              <Tap key={index} id={index} onClick={onClickTap}>
                 {tap}
-              </button>
+              </Tap>
             );
           })}
         </div>
       </div>
-      <div className="container" style={{ marginTop: "31px" }}>
+      <Container marginTop="31px">
         {requestList.map((request, index) => {
           return (
             <div key={index}>
@@ -121,11 +118,11 @@ const PartnershipList = () => {
                   partnershipState: request.partnershipState,
                 }}
               >
-                <div className="partnership-event-list-info">
+                <EventListInfo>
                   <div style={{ display: "flex", alignItems: "center" }}>
-                    <p className="partnership-event-text-ellipsis">
+                    <TextEllipsis maxWidth="200px">
                       {request.storeName}
-                    </p>
+                    </TextEllipsis>
                     {request.partnershipState === "WAITING" &&
                     isSentByMe === false &&
                     request.read === false ? (
@@ -135,21 +132,20 @@ const PartnershipList = () => {
                   {request.partnershipState === "WAITING" ? (
                     <IoIosArrowForward color="#959595" size="20" />
                   ) : request.partnershipState === "REJECTED" ? (
-                    <div
-                      className="partnershipState"
-                      style={{ background: "#D86F6F" }}
-                    >
+                    <PartnershipState backgroundColor="#D86F6F">
                       거절
-                    </div>
+                    </PartnershipState>
                   ) : (
-                    <div className="partnershipState">승인</div>
+                    <PartnershipState backgroundColor="#386ffe">
+                      승인
+                    </PartnershipState>
                   )}
-                </div>
+                </EventListInfo>
               </Link>
             </div>
           );
         })}
-      </div>
+      </Container>
     </>
   );
 };

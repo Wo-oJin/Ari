@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import "../pages/StoreFavoriteList.css";
 import { customAxios } from "./customAxios";
+import { Container } from "../components/common/Container";
+import ListBox from "../components/common/FavoriteList";
 
 const UserFavoriteList = () => {
   const [likeStores, setLikeStores] = useState([]); // 객체를 요소로 갖는 배열
@@ -32,7 +33,7 @@ const UserFavoriteList = () => {
   return (
     <>
       <Header text="찜 목록" back={true}></Header>
-      <div className="fav-container">
+      <Container>
         {likeStores.length === 0 ? (
           <p style={{ color: "#4E514F", marginTop: "100px" }}>
             아직 찜 목록이 없습니다.
@@ -42,23 +43,17 @@ const UserFavoriteList = () => {
             return (
               <div key={index}>
                 <Link to={`/detail/${item.storeId}`}>
-                  <div className="fav-list-box">
-                    <img
-                      className="fav-store-img"
-                      alt=""
-                      src={`data:image/;base64,${item.image}`}
-                    ></img>
-                    <div className="text-ellipsis">
-                      <p className="fav-store-name">{item.name}</p>
-                      <span className="fav-store-address">{item.address}</span>
-                    </div>
-                  </div>
+                  <ListBox
+                    image={item.image}
+                    name={item.name}
+                    address={item.address}
+                  ></ListBox>
                 </Link>
               </div>
             );
           })
         )}
-      </div>
+      </Container>
     </>
   );
 };

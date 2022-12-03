@@ -1,34 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import MainButton from "../components/common/Mainbutton";
 import Header from "../components/Header";
+import { Container } from "../components/common/Container";
+import { MainButton } from "../components/common/Button";
 
 const LoginStore = () => {
   return (
     <>
       <Header text="로그인/회원가입" back={true}></Header>
       <div className="logoContainer"></div>
-      <div className="buttonContainer">
+      <Container>
         <Link to="/login">
-          <MainButton
-            radius="15px"
-            color="#FFFFFF"
-            background="#4E514F"
-            marginBottom="0"
-            text="이메일로 로그인"
-          />
+          <MainButton background="#4E514F" marginBottom="0">
+            이메일로 로그인
+          </MainButton>
         </Link>
         <div style={{ marginBottom: "11px" }}></div>
         <Link to="/signupOwner">
-          <MainButton
-            radius="15px"
-            color="#FFFFFF"
-            background="#4E514F"
-            marginBottom="0"
-            text="이메일로 회원가입"
-          />
+          <MainButton background="#4E514F" marginBottom="0">
+            이메일로 회원가입
+          </MainButton>
         </Link>
-      </div>
+      </Container>
     </>
   );
 };

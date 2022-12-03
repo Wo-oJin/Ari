@@ -26,8 +26,8 @@ const Naver = () => {
       try {
         await axios
           .post("/auth/naver/login", {
-            code: code,
-            state: state,
+            code,
+            state,
           })
           .then((res) => {
             if (res.data.state === 400) {

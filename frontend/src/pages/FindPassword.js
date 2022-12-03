@@ -1,25 +1,13 @@
 import React, { useState } from "react";
 import { customAxios } from "./customAxios";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import "../pages/FindPassword.css";
-import styled from "styled-components";
-import MainButton from "../components/common/Mainbutton";
-
-const Formbox = styled.div`
-  margin-bottom: 20px;
-  .message {
-    font-size: 11px;
-    letter-spacing: -1px;
-    margin: 0;
-    &.success {
-      color: #8f8c8b;
-    }
-    &.error {
-      color: #ff2727;
-    }
-  }
-`;
+import Header from "../components/Header";
+import { Container } from "../components/common/Container";
+import Formbox from "../components/common/FormBox";
+import { Intro } from "../components/common/Intro";
+import { Input, ShortInput } from "../components/common/Input";
+import { MainButton, SendButton } from "../components/common/Button";
 
 const FindPassword = () => {
   // 이메일, 인증번호, 새로운 비밀번호
@@ -63,7 +51,7 @@ const FindPassword = () => {
   const checkEmail = async () => {
     try {
       const { data } = await customAxios.post("/auth/check-email", {
-        email: email,
+        email,
       });
 
       if (data.result === "success") {
@@ -126,7 +114,7 @@ const FindPassword = () => {
 
     try {
       await customAxios.post("/auth/email", {
-        email: email,
+        email,
       });
     } catch (e) {
       console.log(e);
@@ -155,8 +143,8 @@ const FindPassword = () => {
   const onSubmit = async () => {
     try {
       const { data } = await customAxios.post("/auth/change-password", {
-        email: email,
-        newPassword: newPassword,
+        email,
+        newPassword,
       });
 
       alert(data.massage);
@@ -170,29 +158,28 @@ const FindPassword = () => {
     <>
       <Header text="비밀번호 찾기" back={true}></Header>
       <div className="logoContainer"></div>
-      <div className="inputContainer">
+      <Container>
         {isEmailCheck ? null : (
           <>
             <Formbox>
               <p>Step 1. 이메일 인증하기</p>
-              <div className="intro">이메일 주소</div>
+              <Intro>이메일 주소</Intro>
               <div>
-                <input
-                  className="emailInput"
+                <ShortInput
                   name="email"
                   value={email}
                   type="email"
                   onChange={onChangeEmail}
                   placeholder="이메일 주소 입력"
-                  required
+                  required={true}
                 />
-                <button
-                  className="sendBtn"
+                <SendButton
+                  type="button"
                   onClick={checkEmail}
                   disabled={isEmail ? false : true}
                 >
                   확인
-                </button>
+                </SendButton>
               </div>
               {email.length > 0 && (
                 <p className={`message ${isEmail ? "success" : "error"}`}>
@@ -201,36 +188,35 @@ const FindPassword = () => {
               )}
             </Formbox>
             <Formbox>
-              <div className="intro">메일 인증</div>
+              <Intro>메일 인증</Intro>
               <div>
-                <input
-                  style={{ textTransform: "uppercase" }}
-                  className="certificationInput"
+                <ShortInput
                   name="certificationNumber"
                   value={certificationNumber}
                   type="text"
                   onChange={(e) => setCertificationNumber(e.target.value)}
                   placeholder="인증번호 입력"
-                  required
+                  required={true}
+                  marginBottom="21px"
+                  textTransform="uppercase"
                 />
-                <button
-                  className="sendBtn"
+                <SendButton
+                  type="button"
                   onClick={sendEmailCode}
                   disabled={isEmail && isJoinedEmail ? false : true}
                 >
                   {sendText}
-                </button>
+                </SendButton>
               </div>
               <MainButton
-                radius="5px"
-                color="#FFFFFF"
-                background="#386FFE;"
+                borderRadius="5px"
                 onClick={onEmailCheck}
                 disabled={
                   certificationNumber.length > 0 && !isEmailCheck ? false : true
                 }
-                text="인증 확인"
-              />
+              >
+                인증 확인
+              </MainButton>
               {certificationNumber.length > 0 && (
                 <p className={`message ${isEmailCheck ? "success" : "error"}`}>
                   {emailCheckMessage}
@@ -243,15 +229,14 @@ const FindPassword = () => {
           <>
             <Formbox>
               <p>Step 2. 비밀번호 변경하기</p>
-              <div className="intro">새로운 비밀번호</div>
-              <input
-                className="inputBox"
+              <Intro>새로운 비밀번호</Intro>
+              <Input
                 name="newPassword"
                 value={newPassword}
                 type="password"
                 onChange={onChangeNewPassword}
                 placeholder="비밀번호 입력"
-                required
+                required={true}
               />
               {newPassword.length > 0 && (
                 <p className={`message ${isNewPassword ? "success" : "error"}`}>
@@ -260,15 +245,14 @@ const FindPassword = () => {
               )}
             </Formbox>
             <Formbox>
-              <div className="intro">비밀번호 확인</div>
-              <input
-                className="inputBox"
+              <Intro>비밀번호 확인</Intro>
+              <Input
                 name="newPasswordCheck"
                 value={newPasswordCheck}
                 type="password"
                 onChange={onChangeNewPasswordCheck}
                 placeholder="비밀번호 재입력"
-                required
+                required={true}
               />
               {newPasswordCheck.length > 0 && (
                 <p
@@ -281,20 +265,19 @@ const FindPassword = () => {
               )}
             </Formbox>
             <MainButton
-              radius="5px"
-              color="#FFFFFF"
-              background="#386FFE;"
+              borderRadius="5px"
               onClick={onSubmit}
               disabled={
                 isEmailCheck && isNewPassword && isNewPasswordCheck
                   ? false
                   : true
               }
-              text="비밀번호 변경"
-            />
+            >
+              비밀번호 변경
+            </MainButton>
           </>
         )}
-      </div>
+      </Container>
     </>
   );
 };

@@ -2,30 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
-import styled from "styled-components";
 import axios from "axios";
 import "../pages/Login.css";
 import Header from "../components/Header";
 import { useReissue } from "../services/jwt/useReissue";
 import Cookies from "universal-cookie";
-
-const Formbox = styled.div`
-  position: relative;
-  margin-bottom: 20px;
-  .message {
-    font-size: 11px;
-    letter-spacing: -1px;
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    &.success {
-      color: #8f8c8b;
-    }
-    &.error {
-      color: #ff2727;
-    }
-  }
-`;
+import { Container } from "../components/common/Container";
+import Formbox from "../components/common/FormBox";
+import { Input } from "../components/common/Input";
+import { MainButton } from "../components/common/Button";
+import { LoginSubMenu } from "../components/login/LoginStyle";
 
 const Login = () => {
   const [auth, setAuth] = useRecoilState(authState);
@@ -60,8 +46,8 @@ const Login = () => {
 
     try {
       const { data } = await axios.post("/auth/login", {
-        email: email,
-        password: password,
+        email,
+        password,
       });
 
       if (data.result === "fail") {
@@ -135,49 +121,47 @@ const Login = () => {
       <Header text="로그인" back={true}></Header>
       <div className="logoContainer"></div>
       <form onSubmit={onSubmit}>
-        <div className="login-inputContainer">
+        <Container>
           <Formbox>
-            <input
-              className="login-inputBox"
+            <Input
               name="email"
               value={email}
               type="email"
               onChange={onChange}
               placeholder="이메일 주소 입력"
-              required
+              required={true}
+              fontSize="16px"
             />
           </Formbox>
           <Formbox>
-            <input
-              className="login-inputBox"
+            <Input
               name="password"
               value={password}
               type="password"
               onChange={onChange}
               placeholder="비밀번호 입력"
-              required
+              required={true}
+              fontSize="16px"
             />
           </Formbox>
-        </div>
-        <div className="buttonContainer">
-          <button
-            className="loginButton"
+        </Container>
+        <Container>
+          <MainButton
+            fontSize="18px"
             type="submit"
             disabled={email !== "" && password !== "" ? false : true}
           >
             로그인
-          </button>
-        </div>
-        <div className="login-subAlign">
-          <div className="login-sub-menu">
-            <Link to="/loginRegister">
-              <span>이메일 회원가입</span>
-            </Link>
-            <Link to="/findPassword">
-              <span>비밀번호 찾기</span>
-            </Link>
-          </div>
-        </div>
+          </MainButton>
+        </Container>
+        <LoginSubMenu>
+          <Link to="/loginRegister">
+            <span>이메일 회원가입</span>
+          </Link>
+          <Link to="/findPassword">
+            <span>비밀번호 찾기</span>
+          </Link>
+        </LoginSubMenu>
       </form>
     </>
   );

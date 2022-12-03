@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
-import "../pages/MyPageOwner.css";
 import { useRecoilState } from "recoil";
 import { nameState } from "../state";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
 import { IoIosArrowForward } from "react-icons/io";
+import {
+  Container,
+  SpaceBetweenContainer,
+} from "../components/common/Container";
+import {
+  WelcomeCard,
+  MainInfo,
+  MidCard,
+  SubInfo,
+  NewItem,
+} from "../components/store/MyPageOwnerStyle";
 
 const MyPageOwner = () => {
   const [name, setName] = useRecoilState(nameState);
@@ -63,8 +73,8 @@ const MyPageOwner = () => {
   return (
     <>
       <Header text="마이페이지" back={true} url="/"></Header>
-      <div className="container">
-        <div className="welcome-card">
+      <Container>
+        <WelcomeCard>
           <div style={{ marginLeft: "30px" }}>
             <p
               style={{
@@ -78,51 +88,49 @@ const MyPageOwner = () => {
             </p>
             <span style={{ fontSize: "18px" }}>사장님 안녕하세요!</span>
           </div>
-        </div>
-        <div className="flex-align">
+        </WelcomeCard>
+        <SpaceBetweenContainer width="327px">
           <div style={{ margin: "24px 0" }}>
             <Link to="/partnership">
-              <div className="main-info">
+              <MainInfo>
                 <div style={{ textAlign: "center" }}>
-                  <p className="mid-card">협력형 제휴</p>
+                  <MidCard>협력형 제휴</MidCard>
                   <span style={{ fontSize: "20px" }}>{coopEventNum}</span>
                 </div>
-              </div>
+              </MainInfo>
             </Link>
           </div>
           <div style={{ margin: "24px 0" }}>
             <Link to="/storePrivateEventList">
-              <div className="main-info">
+              <MainInfo>
                 <div style={{ textAlign: "center" }}>
-                  <p className="mid-card">개인 이벤트</p>
+                  <MidCard>개인 이벤트</MidCard>
                   <span style={{ fontSize: "20px" }}>{privateEventNum}</span>
                 </div>
-              </div>
+              </MainInfo>
             </Link>
           </div>
-        </div>
+        </SpaceBetweenContainer>
         {menu.map((item, index) => {
           return (
             <div style={{ marginBottom: "12px" }} key={index}>
               <Link to={item.url}>
-                <div className="sub-info">
+                <SubInfo>
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <p style={{ marginLeft: "28px" }}>{item.title}</p>
-                    {item.isNew === true ? (
-                      <span className="new">new</span>
-                    ) : null}
+                    {item.isNew === true ? <NewItem>new</NewItem> : null}
                   </div>
                   <IoIosArrowForward
                     color="#959595"
                     size="20"
                     style={{ marginRight: "20px" }}
                   />
-                </div>
+                </SubInfo>
               </Link>
             </div>
           );
         })}
-      </div>
+      </Container>
     </>
   );
 };
