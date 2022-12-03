@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../pages/PartnershipView.css";
 import Header from "../components/Header";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
+import {
+  Container,
+  SpaceBetweenContainer,
+} from "../components/common/Container";
+import { HalfButton } from "../components/common/Button";
+import { InfoForm } from "../components/store/PartnershipStyle";
 
 const PartnershipView = () => {
   const [data, setData] = useState(null);
@@ -70,14 +75,14 @@ const PartnershipView = () => {
   return (
     <>
       <Header text="협약 내용" back={true}></Header>
-      <div className="container">
+      <Container>
         <div
           style={{ boxSizing: "border-box", width: "375px", padding: "24px" }}
         >
           <p style={{ width: "327px", margin: "32px 0", fontSize: "19px" }}>
             협력형 제휴 내용
           </p>
-          <div className="partnership-infoForm">
+          <InfoForm>
             <table>
               <tbody>
                 <tr>
@@ -99,31 +104,31 @@ const PartnershipView = () => {
                 </tr>
               </tbody>
             </table>
-          </div>
+          </InfoForm>
           {data.partnershipState === "WAITING" && data.sentByMe === false ? (
             <div
               style={{ width: "327px", margin: "0 auto", marginTop: "16px" }}
             >
-              <div className="edit-buttonContainer">
-                <button
-                  className="event-deleteBtn"
+              <SpaceBetweenContainer>
+                <HalfButton
                   type="button"
                   onClick={onRejected}
+                  backgroundColor="#ff6767"
                 >
                   거절
-                </button>
-                <button
-                  className="event-editBtn"
+                </HalfButton>
+                <HalfButton
                   type="submit"
                   onClick={onApproved}
+                  backgroundColor="#386ffe"
                 >
                   수락
-                </button>
-              </div>
+                </HalfButton>
+              </SpaceBetweenContainer>
             </div>
           ) : null}
         </div>
-      </div>
+      </Container>
     </>
   );
 };

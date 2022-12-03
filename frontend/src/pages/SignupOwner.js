@@ -1,26 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import styled from "styled-components";
-import MainButton from "../components/common/Mainbutton";
 import Header from "../components/Header";
 import "../pages/SignupOwner.css";
 import useHistoryState from "use-history-state";
-
-const Formbox = styled.div`
-  margin-bottom: 20px;
-  .message {
-    font-size: 11px;
-    letter-spacing: -1px;
-    margin: 0;
-    &.success {
-      color: #8f8c8b;
-    }
-    &.error {
-      color: #ff2727;
-    }
-  }
-`;
+import { Container, CenterContainer } from "../components/common/Container";
+import Formbox from "../components/common/FormBox";
+import { Intro } from "../components/common/Intro";
+import { Input, ShortInput } from "../components/common/Input";
+import { MainButton, SendButton } from "../components/common/Button";
+import {
+  GenderContainer,
+  GenderWrap,
+  Current,
+  Normal,
+} from "../components/signup/SignupStyle";
 
 const SignupOwner = () => {
   // 이메일, 비밀번호, 연령대, 성별
@@ -175,12 +169,11 @@ const SignupOwner = () => {
   return (
     <>
       <Header text="회원가입" back={true}></Header>
-      <div className="inputContainer">
+      <Container marginTop="30px" marginBottom="30px">
         <Formbox>
-          <div className="intro">이메일 주소</div>
+          <Intro>이메일 주소</Intro>
           <div>
-            <input
-              className="emailInput"
+            <ShortInput
               name="email"
               value={email}
               type="email"
@@ -188,13 +181,9 @@ const SignupOwner = () => {
               placeholder="이메일 주소 입력"
               required
             />
-            <button
-              className="sendBtn"
-              onClick={checkEmail}
-              disabled={isEmail ? false : true}
-            >
+            <SendButton onClick={checkEmail} disabled={isEmail ? false : true}>
               중복 확인
-            </button>
+            </SendButton>
           </div>
           {email.length > 0 && (
             <p className={`message ${isEmail ? "success" : "error"}`}>
@@ -203,11 +192,11 @@ const SignupOwner = () => {
           )}
         </Formbox>
         <Formbox>
-          <div className="intro">메일 인증</div>
+          <Intro>메일 인증</Intro>
           <div>
-            <input
-              style={{ textTransform: "uppercase" }}
-              className="certificationInput"
+            <ShortInput
+              marginBottom="21px"
+              textTransform="uppercase"
               name="certificationNumber"
               value={certificationNumber}
               type="text"
@@ -215,24 +204,22 @@ const SignupOwner = () => {
               placeholder="인증번호 입력"
               required
             />
-            <button
-              className="sendBtn"
+            <SendButton
               onClick={sendEmailCode}
               disabled={isEmail && isUniqueEmail ? false : true}
             >
               {sendText}
-            </button>
+            </SendButton>
           </div>
           <MainButton
-            radius="5px"
-            color="#FFFFFF"
-            background="#386FFE;"
+            borderRadius="5px"
             onClick={onEmailCheck}
             disabled={
               certificationNumber.length > 0 && !isEmailCheck ? false : true
             }
-            text="인증 확인"
-          />
+          >
+            인증 확인
+          </MainButton>
           {certificationNumber.length > 0 && (
             <p className={`message ${isEmailCheck ? "success" : "error"}`}>
               {emailCheckMessage}
@@ -240,9 +227,8 @@ const SignupOwner = () => {
           )}
         </Formbox>
         <Formbox>
-          <div className="intro">비밀번호</div>
-          <input
-            className="inputBox"
+          <Intro>비밀번호</Intro>
+          <Input
             name="password"
             value={password}
             type="password"
@@ -257,9 +243,8 @@ const SignupOwner = () => {
           )}
         </Formbox>
         <Formbox>
-          <div className="intro">비밀번호 확인</div>
-          <input
-            className="inputBox"
+          <Intro>비밀번호 확인</Intro>
+          <Input
             name="passwordCheck"
             value={passwordCheck}
             type="password"
@@ -273,9 +258,8 @@ const SignupOwner = () => {
             </p>
           )}
         </Formbox>
-
         <Formbox>
-          <div className="intro">연령대</div>
+          <Intro>연령대</Intro>
           <div style={{ width: "260px" }}>
             <select
               name="age"
@@ -294,9 +278,9 @@ const SignupOwner = () => {
           </div>
         </Formbox>
         <Formbox>
-          <div className="intro">성별</div>
-          <div className="genderContainer">
-            <div className="gender-wrap">
+          <Intro>성별</Intro>
+          <GenderContainer>
+            <GenderWrap>
               <input
                 type="radio"
                 name="gender"
@@ -306,8 +290,8 @@ const SignupOwner = () => {
                 defaultChecked={gender === "male" ? true : false}
               ></input>
               <label htmlFor="male">남</label>
-            </div>
-            <div className="gender-wrap">
+            </GenderWrap>
+            <GenderWrap>
               <input
                 type="radio"
                 name="gender"
@@ -317,19 +301,17 @@ const SignupOwner = () => {
                 defaultChecked={gender === "female" ? true : false}
               ></input>
               <label htmlFor="female">여</label>
-            </div>
-          </div>
+            </GenderWrap>
+          </GenderContainer>
         </Formbox>
-      </div>
-      <div className="flexContainer">
-        <div className="current"></div>
-        <div className="normal"></div>
-      </div>
-      <div className="buttonContainer">
+      </Container>
+      <CenterContainer>
+        <Current />
+        <Normal />
+      </CenterContainer>
+      <Container marginTop="9px">
         <MainButton
-          radius="15px"
-          color="#FFFFFF"
-          background="#386FFE;"
+          borderRadius="15px"
           type="submit"
           onClick={onNext}
           disabled={
@@ -341,9 +323,10 @@ const SignupOwner = () => {
               ? false
               : true
           }
-          text="다음"
-        />
-      </div>
+        >
+          다음
+        </MainButton>
+      </Container>
     </>
   );
 };

@@ -1,27 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import styled from "styled-components";
-import MainButton from "../components/common/Mainbutton";
 import { signOwnerData } from "../services/sign/signOwnerData";
 import "../pages/SignupOwner.css";
 import DaumPostcode from "react-daum-postcode";
 import Header from "../components/Header";
-
-const Formbox = styled.div`
-  margin-bottom: 20px;
-  .message {
-    font-size: 11px;
-    letter-spacing: -1px;
-    margin: 0;
-    &.success {
-      color: #8f8c8b;
-    }
-    &.error {
-      color: #ff2727;
-    }
-  }
-`;
+import { Container, CenterContainer } from "../components/common/Container";
+import Formbox from "../components/common/FormBox";
+import { Intro } from "../components/common/Intro";
+import { Input, ShortInput } from "../components/common/Input";
+import { MainButton, SendButton } from "../components/common/Button";
+import { Current, Normal } from "../components/signup/SignupStyle";
 
 const SignupOwner2 = () => {
   const { state } = useLocation(); // SignupOwner.js에서 navigate로 보낸 데이터 받아오기
@@ -136,11 +125,10 @@ const SignupOwner2 = () => {
   return (
     <>
       <Header text="회원가입" back={true}></Header>
-      <div className="inputContainer">
+      <Container marginTop="30px" marginBottom="30px">
         <Formbox>
-          <div className="intro">가게 이름</div>
-          <input
-            className="inputBox"
+          <Intro>가게 이름</Intro>
+          <Input
             name="storeName"
             value={storeName}
             type="text"
@@ -151,9 +139,8 @@ const SignupOwner2 = () => {
           />
         </Formbox>
         <Formbox>
-          <div className="intro">사장님 성함</div>
-          <input
-            className="inputBox"
+          <Intro>사장님 성함</Intro>
+          <Input
             name="ownerName"
             value={ownerName}
             type="text"
@@ -164,9 +151,8 @@ const SignupOwner2 = () => {
           />
         </Formbox>
         <Formbox>
-          <div className="intro">가게 주소</div>
-          <input
-            className="roadAddress"
+          <Intro>가게 주소</Intro>
+          <ShortInput
             name="storeRoadAddress"
             value={storeRoadAddress}
             type="text"
@@ -175,21 +161,14 @@ const SignupOwner2 = () => {
             required
             readOnly
           />
-          <button className="searchAddress" onClick={onChangeOpenPost}>
-            주소 찾기
-          </button>
+          <SendButton onClick={onChangeOpenPost}>주소 찾기</SendButton>
           <div style={{ width: "260px" }}>
             {isOpenPost ? (
-              <DaumPostcode
-                className="daumPost"
-                autoClose
-                onComplete={onCompletePost}
-              />
+              <DaumPostcode onComplete={onCompletePost} autoClose />
             ) : null}
           </div>
-          <div className="detailAddress">
-            <input
-              className="inputBox"
+          <div style={{ marginTop: "10px" }}>
+            <Input
               name="storeDetailAddress"
               value={storeDetailAddress}
               type="text"
@@ -200,9 +179,8 @@ const SignupOwner2 = () => {
           </div>
         </Formbox>
         <Formbox>
-          <div className="intro">사장님 전화번호</div>
-          <input
-            className="inputBox"
+          <Intro>사장님 전화번호</Intro>
+          <Input
             name="phoneNumber"
             value={phoneNumber}
             type="text"
@@ -217,10 +195,10 @@ const SignupOwner2 = () => {
           )}
         </Formbox>
         <Formbox>
-          <div className="intro">가게 인증</div>
+          <Intro>가게 인증</Intro>
           <div>
-            <input
-              className="storeCodeInput"
+            <Input
+              marginBottom="21px"
               name="certificationNumber"
               value={certificationNumber}
               type="text"
@@ -230,37 +208,35 @@ const SignupOwner2 = () => {
             />
           </div>
           <MainButton
-            radius="5px"
-            color="#FFFFFF"
-            background="#386FFE;"
+            borderRadius="5px"
             onClick={onEmailCheck}
             disabled={
               certificationNumber.length > 0 && !isStoreCheck ? false : true
             }
-            text="인증 확인"
-          />
+          >
+            인증 확인
+          </MainButton>
           {certificationNumber.length > 0 && (
             <p className={`message ${isStoreCheck ? "success" : "error"}`}>
               {storeCheckMessage}
             </p>
           )}
         </Formbox>
-      </div>
-      <div className="flexContainer">
-        <div className="normal"></div>
-        <div className="current"></div>
-      </div>
+      </Container>
+      <CenterContainer>
+        <Normal />
+        <Current />
+      </CenterContainer>
       <form onSubmit={onSubmit}>
-        <div className="buttonContainer">
+        <Container marginTop="9px">
           <MainButton
-            radius="15px"
-            color="#FFFFFF"
-            background="#386FFE;"
+            borderRadius="15px"
             type="submit"
             disabled={isPhoneNumber && isAddress && isStoreCheck ? false : true}
-            text="회원가입"
-          />
-        </div>
+          >
+            회원가입
+          </MainButton>
+        </Container>
       </form>
     </>
   );

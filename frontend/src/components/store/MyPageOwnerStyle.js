@@ -1,10 +1,6 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+import styled from "styled-components";
 
-.welcome-card {
+const WelcomeCard = styled.div`
   display: flex;
   align-items: center;
   width: 327px;
@@ -14,15 +10,9 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   margin-top: 31px;
-}
+`;
 
-.flex-align {
-  display: flex;
-  width: 327px;
-  justify-content: space-between;
-}
-
-.main-info {
+const MainInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,15 +20,15 @@
   height: 81px;
   border: 1px solid #d2d2d2;
   border-radius: 25px;
-}
+`;
 
-.mid-card {
+const MidCard = styled.p`
   font-size: 12px;
   margin-top: 0;
   margin-bottom: 3px;
-}
+`;
 
-.sub-info {
+const SubInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,9 +36,9 @@
   height: 60px;
   border: 0.7px solid #d7d7d7;
   border-radius: 15px;
-}
+`;
 
-.new {
+const NewItem = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,4 +49,6 @@
   background: #386ffe;
   border-radius: 10px;
   margin-left: 10px;
-}
+`;
+
+export { WelcomeCard, MainInfo, MidCard, SubInfo, NewItem };
