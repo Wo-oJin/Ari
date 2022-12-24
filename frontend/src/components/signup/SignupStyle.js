@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import selectArrow from "../../assets/images/selectArrow.png";
 
 const GenderContainer = styled.div`
   width: 260px;
@@ -50,4 +51,19 @@ const Normal = styled.div`
   margin-right: 5px;
 `;
 
-export { GenderContainer, GenderWrap, Current, Normal };
+const StyledSelectAge = styled.select`
+  width: 140px;
+  height: 41px;
+  color: #a3a3a3;
+  appearance: none;
+  background: url(${selectArrow}) calc(100% - 15px) center no-repeat;
+  border-radius: 5px;
+  padding: 9px 30px;
+  border: 1px solid #dcdcdc;
+`;
+
+function SelectAge({ children, ...rest }) {
+  return <StyledSelectAge {...rest}>{children}</StyledSelectAge>;
+}
+
+export { GenderContainer, GenderWrap, Current, Normal, SelectAge };

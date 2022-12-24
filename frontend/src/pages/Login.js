@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
 import axios from "axios";
-import "../pages/Login.css";
 import Header from "../components/Header";
 import { useReissue } from "../services/jwt/useReissue";
 import Cookies from "universal-cookie";
+import { Logo } from "../components/common/Logo";
 import { Container } from "../components/common/Container";
 import Formbox from "../components/common/FormBox";
 import { Input } from "../components/common/Input";
@@ -119,7 +119,7 @@ const Login = () => {
   return (
     <>
       <Header text="로그인" back={true}></Header>
-      <div className="logoContainer"></div>
+      <Logo />
       <form onSubmit={onSubmit}>
         <Container>
           <Formbox>

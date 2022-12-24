@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { customAxios } from "./customAxios";
 import { useNavigate } from "react-router-dom";
-import "../pages/FindPassword.css";
 import Header from "../components/Header";
+import { Logo } from "../components/common/Logo";
 import { Container } from "../components/common/Container";
 import Formbox from "../components/common/FormBox";
 import { Intro } from "../components/common/Intro";
@@ -157,7 +157,7 @@ const FindPassword = () => {
   return (
     <>
       <Header text="비밀번호 찾기" back={true}></Header>
-      <div className="logoContainer"></div>
+      <Logo />
       <Container>
         {isEmailCheck ? null : (
           <>

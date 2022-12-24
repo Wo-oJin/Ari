@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./LoginUser.css";
 import Header from "../components/Header";
 import axios from "axios";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { SiNaver } from "react-icons/si";
+import { Logo } from "../components/common/Logo";
 import { Container } from "../components/common/Container";
 import { MainButton } from "../components/common/Button";
 import { Kakao, Naver } from "../components/login/LoginUserStyle";
@@ -40,7 +40,7 @@ const LoginUser = () => {
   return (
     <>
       <Header text="로그인/회원가입" back={true}></Header>
-      <div className="logoContainer"></div>
+      <Logo />
       <Container>
         <Kakao onClick={onKakao}>
           <RiKakaoTalkFill size="20" style={{ marginRight: "7px" }} />
