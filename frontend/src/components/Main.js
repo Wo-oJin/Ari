@@ -8,6 +8,7 @@ import MainPage from "./MainPage";
 import { customAxios } from "../pages/customAxios";
 import { Link } from "react-router-dom";
 import useHistoryState from "use-history-state";
+import button from "../assets/images/button.png";
 
 const Main = () => {
   // 0:비회원 1:손님 2:사장님 3:관리자
@@ -59,7 +60,7 @@ const Main = () => {
         </Link>
       ) : (
         <button className="side_btn" onClick={onClick}>
-          <img alt="" src="images/button.png"></img>
+          <img alt="" src={button}></img>
         </button>
       )}
 

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
-import "../pages/SignupOwner.css";
 import useHistoryState from "use-history-state";
 import { Container, CenterContainer } from "../components/common/Container";
 import Formbox from "../components/common/FormBox";
@@ -14,6 +13,7 @@ import {
   GenderWrap,
   Current,
   Normal,
+  SelectAge,
 } from "../components/signup/SignupStyle";
 
 const SignupOwner = () => {
@@ -261,10 +261,9 @@ const SignupOwner = () => {
         <Formbox>
           <Intro>연령대</Intro>
           <div style={{ width: "260px" }}>
-            <select
+            <SelectAge
               name="age"
               onChange={(e) => setAge(e.target.value)}
-              className="select-age"
               defaultValue={age}
             >
               <option value="10">10대</option>
@@ -274,7 +273,7 @@ const SignupOwner = () => {
               <option value="50">50대</option>
               <option value="60">60대</option>
               <option value="70">70대 이상</option>
-            </select>
+            </SelectAge>
           </div>
         </Formbox>
         <Formbox>

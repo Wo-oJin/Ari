@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { signOwnerData } from "../services/sign/signOwnerData";
-import "../pages/SignupOwner.css";
 import DaumPostcode from "react-daum-postcode";
 import Header from "../components/Header";
 import { Container, CenterContainer } from "../components/common/Container";

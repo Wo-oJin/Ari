@@ -12,11 +12,27 @@ function Container({ children, ...rest }) {
   return <StyledContainer {...rest}>{children}</StyledContainer>;
 }
 
-const CenterContainer = styled.div`
+const StyledColumnEndContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+function ColumnEndContainer({ children, ...rest }) {
+  return (
+    <StyledColumnEndContainer {...rest}>{children}</StyledColumnEndContainer>
+  );
+}
+
+const StyledCenterContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+
+function CenterContainer({ children, ...rest }) {
+  return <StyledCenterContainer {...rest}>{children}</StyledCenterContainer>;
+}
 
 const StyledSpaceBetweenContainer = styled.div`
   display: flex;
@@ -32,4 +48,9 @@ function SpaceBetweenContainer({ children, ...rest }) {
   );
 }
 
-export { Container, CenterContainer, SpaceBetweenContainer };
+export {
+  Container,
+  ColumnEndContainer,
+  CenterContainer,
+  SpaceBetweenContainer,
+};

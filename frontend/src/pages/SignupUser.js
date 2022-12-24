@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { signUserData } from "../services/sign/signUserData";
 import Header from "../components/Header";
-import "../pages/SignupUser.css";
 import { Container } from "../components/common/Container";
 import Formbox from "../components/common/FormBox";
 import { Intro } from "../components/common/Intro";
 import { Input, ShortInput } from "../components/common/Input";
 import { MainButton, SendButton } from "../components/common/Button";
-import { GenderContainer, GenderWrap } from "../components/signup/SignupStyle";
+import {
+  GenderContainer,
+  GenderWrap,
+  SelectAge,
+} from "../components/signup/SignupStyle";
 
 const SignupUser = () => {
   // 이메일, 비밀번호, 닉네임, 연령대, 성별
@@ -293,9 +296,8 @@ const SignupUser = () => {
         <Formbox>
           <Intro>연령대</Intro>
           <div style={{ width: "260px" }}>
-            <select
+            <SelectAge
               onChange={(e) => setAge(e.target.value)}
-              className="select-age"
               defaultValue="20"
             >
               <option value="10">10대</option>
@@ -305,7 +307,7 @@ const SignupUser = () => {
               <option value="50">50대</option>
               <option value="60">60대</option>
               <option value="70">70대 이상</option>
-            </select>
+            </SelectAge>
           </div>
         </Formbox>
         <Formbox>

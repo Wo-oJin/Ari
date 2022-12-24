@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
-import "./MainPage.css";
+import Cookies from "universal-cookie";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -10,8 +11,23 @@ import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 import { useRecoilState } from "recoil";
 import { authState, nameState } from "../state";
-import Cookies from "universal-cookie";
-import axios from "axios";
+import { Container, ColumnEndContainer } from "./common/Container";
+import { SmallLogo } from "../components/common/Logo";
+import {
+  Intro,
+  StoreSearch,
+  SearchIcon,
+  BannerContainer,
+  Banner,
+  BannerText,
+  SubIntro,
+  SelectIntro,
+  BannerBox,
+  BannerIntro,
+  BannerNum,
+  CatecoryImg,
+} from "./mainPage/MainPageStyle";
+import { Footer, FooterLogo } from "./common/Footer";
 
 const MainPage = ({ onClick }) => {
   const [count, setCount] = useState(0);
@@ -106,19 +122,19 @@ const MainPage = ({ onClick }) => {
 
   // 가게 카테고리
   const menuRow1 = [
-    { name: "전체", image: "images/seeAll.png" },
-    { name: "한식", image: "images/koreanFood.png" },
-    { name: "양식", image: "images/westernFood.png" },
-    { name: "일식", image: "images/japaneseFood.png" },
-    { name: "중식", image: "images/chineseFood.png" },
+    { name: "전체" },
+    { name: "한식" },
+    { name: "양식" },
+    { name: "일식" },
+    { name: "중식" },
   ];
 
   const menuRow2 = [
-    { name: "뷰티/헬스", image: "images/hairshop.png" },
-    { name: "카페", image: "images/cafe.png" },
-    { name: "술집", image: "images/bar.png" },
-    { name: "놀이시설", image: "images/karaoke.png" },
-    { name: "스터디카페", image: "images/studyCafe.png" },
+    { name: "뷰티/헬스" },
+    { name: "카페" },
+    { name: "술집" },
+    { name: "놀이시설" },
+    { name: "스터디카페" },
   ];
 
   // react-slick 캐러셀 설정
@@ -165,98 +181,91 @@ const MainPage = ({ onClick }) => {
         >
           <div style={{ width: "375px" }}>
             <div style={{ padding: "0 28px", marginTop: "85px" }}>
-              <div className="mainPage-flex-column-end">
-                <img
+              <ColumnEndContainer>
+                <SmallLogo />
+                {/* <img
                   style={{ width: "61px" }}
                   alt=""
                   src="images/ari_logo_text.png"
-                ></img>
-                <p className="mainPage-intro">우리 주변 제휴 정보</p>
-                <p className="mainPage-intro">
+                ></img> */}
+                <Intro>우리 주변 제휴 정보</Intro>
+                <Intro>
                   <span style={{ color: "#386FFE" }}>아리</span>에서
-                </p>
-              </div>
+                </Intro>
+              </ColumnEndContainer>
 
-              <div className="mainPage-banner-container">
-                <div className="mainPage-banner" onClick={moveToNotice}>
-                  <span className="mainPage-banner-text">
-                    처음 오신 분들 클릭!
-                  </span>
-                </div>
-              </div>
+              <BannerContainer>
+                <Banner onClick={moveToNotice}>
+                  <BannerText>처음 오신 분들 클릭!</BannerText>
+                </Banner>
+              </BannerContainer>
 
               <div style={{ position: "relative" }}>
-                <div className="mainPage-search-icon" onClick={searchStore}>
-                  <FiSearch></FiSearch>
-                </div>
-                <input
+                <SearchIcon onClick={searchStore}>
+                  <FiSearch />
+                </SearchIcon>
+                <StoreSearch
                   onKeyPress={handleOnKeyPress}
-                  className="mainPage-store-search"
                   type="text"
                   value={keyword}
                   onChange={(e) => setKeyword(e.target.value)}
                   placeholder="제휴 정보를 보고 싶은 가게명을 검색하세요!"
                   maxLength={20}
-                ></input>
+                ></StoreSearch>
               </div>
             </div>
             <Slider {...settings}>
               {storeList.map((item, index) => {
                 return (
                   <Link to={`/detail/${item.storeId}`} key={index}>
-                    <div
+                    <BannerBox
                       style={{
                         backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(50,50,50,10) 100%), url(data:image/gif;base64,${item.storeImage})`,
                         backgroundPosition: "center",
                         backgroundSize: "cover",
                       }}
-                      className="mainPage-banner-box"
                     >
                       {/* <img
                         alt=""
                         src={`data:image/;base64,${item.storeImage}`}
                       ></img> */}
-                      <p className="mainPage-banner-intro">
+                      <BannerIntro>
                         {item.storeName}
                         <br />
                         제휴 이벤트 확인하기
-                      </p>
-                      <div className="mainPage-banner-num">
+                      </BannerIntro>
+                      <BannerNum>
                         {index + 1}/{count}
-                      </div>
-                    </div>
+                      </BannerNum>
+                    </BannerBox>
                   </Link>
                 );
               })}
             </Slider>
             <div style={{ padding: "0 5px", marginTop: "40px" }}>
-              <p className="mainPage-subIntro">
-                <span className="mainPage-select-intro">골라서</span>
+              <SubIntro>
+                <SelectIntro>골라서</SelectIntro>
                 보는 건 어때요?
-              </p>
+              </SubIntro>
               <table>
                 <tbody>
                   <tr>
                     {menuRow1.map((menu, index) => {
                       return (
                         <td key={index}>
-                          <div
-                            className="mainPage-flex-column-center"
-                            style={{ margin: "0 11px 34px 11px" }}
-                          >
-                            <img
-                              className="mainPage-catecory-img"
+                          <Container style={{ margin: "0 11px 34px 11px" }}>
+                            <CatecoryImg
                               onClick={moveToCategory}
                               alt=""
                               data-key={index}
-                              src={menu.image}
-                            ></img>
+                              index={index}
+                            ></CatecoryImg>
                             <span
                               style={{ marginTop: "9px", fontSize: "12px" }}
                             >
                               {menu.name}
                             </span>
-                          </div>
+                          </Container>
                         </td>
                       );
                     })}
@@ -265,23 +274,19 @@ const MainPage = ({ onClick }) => {
                     {menuRow2.map((menu, index) => {
                       return (
                         <td key={index}>
-                          <div
-                            className="mainPage-flex-column-center"
-                            style={{ margin: "0 11px 34px 11px" }}
-                          >
-                            <img
-                              className="mainPage-catecory-img"
-                              data-key={index + 5}
+                          <Container style={{ margin: "0 11px 34px 11px" }}>
+                            <CatecoryImg
                               onClick={moveToCategory}
                               alt=""
-                              src={menu.image}
-                            ></img>
+                              data-key={index + 5}
+                              index={index + 5}
+                            ></CatecoryImg>
                             <span
                               style={{ marginTop: "9px", fontSize: "12px" }}
                             >
                               {menu.name}
                             </span>
-                          </div>
+                          </Container>
                         </td>
                       );
                     })}
@@ -289,36 +294,12 @@ const MainPage = ({ onClick }) => {
                 </tbody>
               </table>
               <div style={{ clear: "both" }}></div>
-              {/* <p className="mainPage-subIntro">전체 목록 보기!</p>
-              <div style={{ float: "left", marginLeft: "10px" }}>
-                <div className="mainPage-flex-column-center">
-                  <img
-                    alt=""
-                    src="images/seeAll.png"
-                    data-key={0}
-                    onClick={moveToCategory}
-                    style={{ cursor: "pointer" }}
-                  ></img>
-                  <span style={{ marginTop: "9px", fontSize: "12px" }}>
-                    전체
-                  </span>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
-        <div className="footer">
+        <Footer>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              alt=""
-              style={{
-                width: "48px",
-                height: "48px",
-                filter: "grayscale(100%)",
-                marginRight: "10px",
-              }}
-              src="/images/ari_logo_text.png"
-            ></img>
+            <FooterLogo />
             <span>정보</span>
           </div>
           <table>
@@ -337,7 +318,7 @@ const MainPage = ({ onClick }) => {
               </tr>
             </tbody>
           </table>
-        </div>
+        </Footer>
       </>
     );
   }

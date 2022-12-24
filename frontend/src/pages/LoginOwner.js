@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import { Logo } from "../components/common/Logo";
 import { Container } from "../components/common/Container";
 import { MainButton } from "../components/common/Button";
 
@@ -8,7 +9,7 @@ const LoginStore = () => {
   return (
     <>
       <Header text="로그인/회원가입" back={true}></Header>
-      <div className="logoContainer"></div>
+      <Logo />
       <Container>
         <Link to="/login">
           <MainButton background="#4E514F" marginBottom="0">

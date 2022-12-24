@@ -6,8 +6,17 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { authState } from "../state";
 import { customAxios } from "./customAxios";
-import "./NoticeArticle.css";
-import "./NoticeWrite.css";
+import { NoticeWriteBtnBox } from "../components/notice/NoticeWriteStyle";
+import {
+  NoticeArticleContainer,
+  NoticeArticleHeader,
+  NoticeArticleTitle,
+  NoticeArticleDate,
+  NoticeArticleContent,
+  NoticeArticleText,
+  NoticeModifyBtn,
+  NoticedeleteBtn,
+} from "../components/notice/NoticeArticleStyle";
 
 const NoticeArticle = () => {
   const [data, setData] = useState();
@@ -38,24 +47,20 @@ const NoticeArticle = () => {
     return (
       <>
         <Header text="공지사항" back={true}></Header>
-        <div className="noticeArticleContainer">
-          <div className="noticeArticleHeader">
-            <span className="noticeArticleTitle">{data.title}</span>
-            <span className="noticeArticleDate">{data.createDate}</span>
-          </div>
-          <div className="noticeArticleContent">
-            <span className="noticleArticleText">{data.content}</span>
-          </div>
-        </div>
+        <NoticeArticleContainer>
+          <NoticeArticleHeader>
+            <NoticeArticleTitle>{data.title}</NoticeArticleTitle>
+            <NoticeArticleDate>{data.createDate}</NoticeArticleDate>
+          </NoticeArticleHeader>
+          <NoticeArticleContent>
+            <NoticeArticleText>{data.content}</NoticeArticleText>
+          </NoticeArticleContent>
+        </NoticeArticleContainer>
         {auth === 3 && (
-          <div className="noticeWriteBtnBox">
-            <button className="noticeModifyBtn" onClick={onClick}>
-              수정
-            </button>
-            <button className="noticedeleteBtn" onClick={onClickDelete}>
-              삭제
-            </button>
-          </div>
+          <NoticeWriteBtnBox>
+            <NoticeModifyBtn onClick={onClick}>수정</NoticeModifyBtn>
+            <NoticedeleteBtn onClick={onClickDelete}>삭제</NoticedeleteBtn>
+          </NoticeWriteBtnBox>
         )}
       </>
     );
