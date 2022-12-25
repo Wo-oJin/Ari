@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledNoticeArticleContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,15 +10,7 @@ const StyledNoticeArticleContainer = styled.div`
   border-bottom: 1px solid #dbdbdb;
 `;
 
-function NoticeArticleContainer({ children, ...rest }) {
-  return (
-    <StyledNoticeArticleContainer {...rest}>
-      {children}
-    </StyledNoticeArticleContainer>
-  );
-}
-
-const StyledNoticeArticleHeader = styled.div`
+const Header = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,62 +20,44 @@ const StyledNoticeArticleHeader = styled.div`
   border-bottom: 1px solid #dbdbdb;
 `;
 
-function NoticeArticleHeader({ children, ...rest }) {
-  return (
-    <StyledNoticeArticleHeader {...rest}>{children}</StyledNoticeArticleHeader>
-  );
-}
-
-const StyledNoticeArticleTitle = styled.span`
+const Title = styled.span`
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 5px;
 `;
 
-function NoticeArticleTitle({ children, ...rest }) {
-  return (
-    <StyledNoticeArticleTitle {...rest}>{children}</StyledNoticeArticleTitle>
-  );
-}
-
-const StyledNoticeArticleDate = styled.span`
+const Date = styled.span`
   color: #757474;
 `;
 
-function NoticeArticleDate({ children, ...rest }) {
-  return (
-    <StyledNoticeArticleDate {...rest}>{children}</StyledNoticeArticleDate>
-  );
-}
-
-const StyledNoticeArticleContent = styled.div`
+const Content = styled.div`
   width: 95%;
   height: 85%;
   padding: 10px;
 `;
 
-function NoticeArticleContent({ children, ...rest }) {
-  return (
-    <StyledNoticeArticleContent {...rest}>
-      {children}
-    </StyledNoticeArticleContent>
-  );
-}
-
-const StyledNoticeArticleText = styled.span`
+const Text = styled.span`
   width: 350px;
   height: 100%;
   word-break: keep-all;
   white-space: pre-line;
 `;
 
-function NoticeArticleText({ children, ...rest }) {
+function Article({ title, createDate, content }) {
   return (
-    <StyledNoticeArticleText {...rest}>{children}</StyledNoticeArticleText>
+    <Container>
+      <Header>
+        <Title>{title}</Title>
+        <Date>{createDate}</Date>
+      </Header>
+      <Content>
+        <Text>{content}</Text>
+      </Content>
+    </Container>
   );
 }
 
-const StyledNoticeModifyBtn = styled.button`
+const StyledModifyBtn = styled.button`
   width: 75px;
   height: 40px;
   background-color: #386ffe;
@@ -92,11 +66,11 @@ const StyledNoticeModifyBtn = styled.button`
   font-size: 18px;
 `;
 
-function NoticeModifyBtn({ children, ...rest }) {
-  return <StyledNoticeModifyBtn {...rest}>{children}</StyledNoticeModifyBtn>;
+function ModifyBtn({ children, ...rest }) {
+  return <StyledModifyBtn {...rest}>{children}</StyledModifyBtn>;
 }
 
-const StyledNoticedeleteBtn = styled.button`
+const StyledDeleteBtn = styled.button`
   width: 75px;
   height: 40px;
   background-color: #d86f6f;
@@ -106,17 +80,8 @@ const StyledNoticedeleteBtn = styled.button`
   margin-left: 10px;
 `;
 
-function NoticedeleteBtn({ children, ...rest }) {
-  return <StyledNoticedeleteBtn {...rest}>{children}</StyledNoticedeleteBtn>;
+function DeleteBtn({ children, ...rest }) {
+  return <StyledDeleteBtn {...rest}>{children}</StyledDeleteBtn>;
 }
 
-export {
-  NoticeArticleContainer,
-  NoticeArticleHeader,
-  NoticeArticleTitle,
-  NoticeArticleDate,
-  NoticeArticleContent,
-  NoticeArticleText,
-  NoticeModifyBtn,
-  NoticedeleteBtn,
-};
+export { Article, ModifyBtn, DeleteBtn };

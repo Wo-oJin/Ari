@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import banner from "../../assets/images/Ari_banner3x.png";
 
-const StyledNoticeContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,11 +9,7 @@ const StyledNoticeContainer = styled.div`
   min-height: 100%;
 `;
 
-function NoticeContainer({ children, ...rest }) {
-  return <StyledNoticeContainer {...rest}>{children}</StyledNoticeContainer>;
-}
-
-const StyledNoticeBanner = styled.div`
+const StyledBanner = styled.div`
   width: 90%;
   min-height: 80px;
   margin: 15px;
@@ -22,24 +18,16 @@ const StyledNoticeBanner = styled.div`
   background-size: cover;
 `;
 
-function NoticeBanner({ children, ...rest }) {
-  return <StyledNoticeBanner {...rest}>{children}</StyledNoticeBanner>;
+function Banner({ children, ...rest }) {
+  return <StyledBanner {...rest}>{children}</StyledBanner>;
 }
 
-const StyledNoticeArticlesContainer = styled.div`
+const ArticlesContainer = styled.div`
   width: 90%;
   border-bottom: 1px solid #dbdbdb;
 `;
 
-function NoticeArticlesContainer({ children, ...rest }) {
-  return (
-    <StyledNoticeArticlesContainer {...rest}>
-      {children}
-    </StyledNoticeArticlesContainer>
-  );
-}
-
-const StyledNoticeArticle = styled.div`
+const StyledArticle = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -50,28 +38,24 @@ const StyledNoticeArticle = styled.div`
   cursor: pointer;
 `;
 
-function NoticeArticle({ children, ...rest }) {
-  return <StyledNoticeArticle {...rest}>{children}</StyledNoticeArticle>;
+function Article({ children, ...rest }) {
+  return <StyledArticle {...rest}>{children}</StyledArticle>;
 }
 
-const StyledNoticeTitle = styled.span`
+const StyledTitle = styled.span`
   font-size: 18px;
 `;
 
-function NoticeTitle({ children, ...rest }) {
-  return <StyledNoticeTitle {...rest}>{children}</StyledNoticeTitle>;
+function Title({ children, ...rest }) {
+  return <StyledTitle {...rest}>{children}</StyledTitle>;
 }
 
-const StyledNoticeDate = styled.span`
+const Date = styled.span`
   font-size: 14px;
   color: #7c7c7c;
 `;
 
-function NoticeDate({ children, ...rest }) {
-  return <StyledNoticeDate {...rest}>{children}</StyledNoticeDate>;
-}
-
-const StyledBtnContainer = styled.div`
+const BtnContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 90%;
@@ -79,11 +63,7 @@ const StyledBtnContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-function BtnContainer({ children, ...rest }) {
-  return <StyledBtnContainer {...rest}>{children}</StyledBtnContainer>;
-}
-
-const StyledNoticeWriteBtn = styled.button`
+const StyledWriteBtn = styled.button`
   width: 75px;
   height: 40px;
   background-color: #386ffe;
@@ -93,17 +73,17 @@ const StyledNoticeWriteBtn = styled.button`
   font-size: 18px;
 `;
 
-function NoticeWriteBtn({ children, ...rest }) {
-  return <StyledNoticeWriteBtn {...rest}>{children}</StyledNoticeWriteBtn>;
+function WriteBtn({ children, ...rest }) {
+  return <StyledWriteBtn {...rest}>{children}</StyledWriteBtn>;
 }
 
 export {
-  NoticeContainer,
-  NoticeBanner,
-  NoticeArticlesContainer,
-  NoticeArticle,
-  NoticeTitle,
-  NoticeDate,
+  Container,
+  Banner,
+  ArticlesContainer,
+  Article,
+  Title,
+  Date,
   BtnContainer,
-  NoticeWriteBtn,
+  WriteBtn,
 };

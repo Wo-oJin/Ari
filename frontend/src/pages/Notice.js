@@ -6,14 +6,14 @@ import { authState } from "../state";
 import { customAxios } from "./customAxios";
 import Loading from "../components/Loading";
 import {
-  NoticeContainer,
-  NoticeBanner,
-  NoticeArticlesContainer,
-  NoticeArticle,
-  NoticeTitle,
-  NoticeDate,
+  Container,
+  Banner,
+  ArticlesContainer,
+  Article,
+  Title,
+  Date,
   BtnContainer,
-  NoticeWriteBtn,
+  WriteBtn,
 } from "../components/notice/NoticeStyle";
 
 const Notice = () => {
@@ -39,8 +39,8 @@ const Notice = () => {
     return (
       <>
         <Header text="공지사항" back={true}></Header>
-        <NoticeContainer>
-          <NoticeBanner
+        <Container>
+          <Banner
             onClick={() => {
               window.open(
                 "https://sky-drive-16d.notion.site/ARI-94ad2e39504046a3ac11ee5fb2f33382",
@@ -48,26 +48,25 @@ const Notice = () => {
               );
             }}
           />
-
-          <NoticeArticlesContainer>
+          <ArticlesContainer>
             {data &&
               data.map((item, index) => {
                 return (
-                  <NoticeArticle key={index}>
-                    <NoticeTitle onClick={onClick} data-key={item.id}>
+                  <Article key={index}>
+                    <Title onClick={onClick} data-key={item.id}>
                       {item.title}
-                    </NoticeTitle>
-                    <NoticeDate>{item.createDate}</NoticeDate>
-                  </NoticeArticle>
+                    </Title>
+                    <Date>{item.createDate}</Date>
+                  </Article>
                 );
               })}
-          </NoticeArticlesContainer>
+          </ArticlesContainer>
           {auth === 3 && (
             <BtnContainer>
-              <NoticeWriteBtn onClick={moveToWrite}>글쓰기</NoticeWriteBtn>
+              <WriteBtn onClick={moveToWrite}>글쓰기</WriteBtn>
             </BtnContainer>
           )}
-        </NoticeContainer>
+        </Container>
       </>
     );
   }

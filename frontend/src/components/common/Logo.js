@@ -10,6 +10,13 @@ const Logo = styled.div`
   margin: 50px auto;
 `;
 
+const Logo2 = styled.div`
+  width: 97px;
+  height: 97px;
+  background-image: url(${logoText});
+  background-size: cover;
+`;
+
 const SmallLogo = styled.div`
   width: 61px;
   height: 61px;
@@ -17,4 +24,4 @@ const SmallLogo = styled.div`
   background-size: cover;
 `;
 
-export { Logo, SmallLogo };
+export { Logo, Logo2, SmallLogo };

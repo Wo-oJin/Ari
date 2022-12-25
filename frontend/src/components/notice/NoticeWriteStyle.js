@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledNoticeWriteContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,15 +9,7 @@ const StyledNoticeWriteContainer = styled.div`
   padding: 15px;
 `;
 
-function NoticeWriteContainer({ children, ...rest }) {
-  return (
-    <StyledNoticeWriteContainer {...rest}>
-      {children}
-    </StyledNoticeWriteContainer>
-  );
-}
-
-const StyledNoticeWriteHeader = styled.div`
+const WriteHeader = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,22 +18,12 @@ const StyledNoticeWriteHeader = styled.div`
   margin-bottom: 15px;
 `;
 
-function NoticeWriteHeader({ children, ...rest }) {
-  return (
-    <StyledNoticeWriteHeader {...rest}>{children}</StyledNoticeWriteHeader>
-  );
-}
-
-const StyledNoticeTitleTag = styled.span`
+const TitleTag = styled.span`
   font-size: 18px;
   height: 40px;
 `;
 
-function NoticeTitleTag({ children, ...rest }) {
-  return <StyledNoticeTitleTag {...rest}>{children}</StyledNoticeTitleTag>;
-}
-
-const StyledNoticeTitleInput = styled.input`
+const StyledTitleInput = styled.input`
   max-width: 100%;
   height: 50px;
   border: none;
@@ -50,11 +32,11 @@ const StyledNoticeTitleInput = styled.input`
   border-bottom: 1px solid #d9d9d9;
 `;
 
-function NoticeTitleInput({ children, ...rest }) {
-  return <StyledNoticeTitleInput {...rest}>{children}</StyledNoticeTitleInput>;
+function TitleInput({ children, ...rest }) {
+  return <StyledTitleInput {...rest}>{children}</StyledTitleInput>;
 }
 
-const StyledNoticeWriteContentBox = styled.div`
+const ContentBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -62,28 +44,12 @@ const StyledNoticeWriteContentBox = styled.div`
   height: 450px;
 `;
 
-function NoticeWriteContentBox({ children, ...rest }) {
-  return (
-    <StyledNoticeWriteContentBox {...rest}>
-      {children}
-    </StyledNoticeWriteContentBox>
-  );
-}
-
-const StyledNoticeWriteContentTag = styled.span`
+const ContentTag = styled.span`
   font-size: 18px;
   height: 40px;
 `;
 
-function NoticeWriteContentTag({ children, ...rest }) {
-  return (
-    <StyledNoticeWriteContentTag {...rest}>
-      {children}
-    </StyledNoticeWriteContentTag>
-  );
-}
-
-const StyledNoticeWriteContentInput = styled.textarea`
+const StyledContentInput = styled.textarea`
   max-width: 100%;
   min-height: 410px;
   border: none;
@@ -92,15 +58,11 @@ const StyledNoticeWriteContentInput = styled.textarea`
   border-bottom: 1px solid #d9d9d9;
 `;
 
-function NoticeWriteContentInput({ children, ...rest }) {
-  return (
-    <StyledNoticeWriteContentInput {...rest}>
-      {children}
-    </StyledNoticeWriteContentInput>
-  );
+function ContentInput({ children, ...rest }) {
+  return <StyledContentInput {...rest}>{children}</StyledContentInput>;
 }
 
-const StyledNoticeWriteBtnBox = styled.div`
+const BtnBox = styled.div`
   display: flex;
   justify-content: end;
   align-items: flex-start;
@@ -109,13 +71,7 @@ const StyledNoticeWriteBtnBox = styled.div`
   padding: 0 15px 15px 15px;
 `;
 
-function NoticeWriteBtnBox({ children, ...rest }) {
-  return (
-    <StyledNoticeWriteBtnBox {...rest}>{children}</StyledNoticeWriteBtnBox>
-  );
-}
-
-const StyledNoticeWriteCompleteBtn = styled.button`
+const StyledCompleteBtn = styled.button`
   width: 85px;
   height: 40px;
   background-color: #386ffe;
@@ -124,22 +80,18 @@ const StyledNoticeWriteCompleteBtn = styled.button`
   font-size: 18px;
 `;
 
-function NoticeWriteCompleteBtn({ children, ...rest }) {
-  return (
-    <StyledNoticeWriteCompleteBtn {...rest}>
-      {children}
-    </StyledNoticeWriteCompleteBtn>
-  );
+function CompleteBtn({ children, ...rest }) {
+  return <StyledCompleteBtn {...rest}>{children}</StyledCompleteBtn>;
 }
 
 export {
-  NoticeWriteContainer,
-  NoticeWriteHeader,
-  NoticeTitleTag,
-  NoticeWriteContentTag,
-  NoticeTitleInput,
-  NoticeWriteContentBox,
-  NoticeWriteContentInput,
-  NoticeWriteBtnBox,
-  NoticeWriteCompleteBtn,
+  Container,
+  WriteHeader,
+  TitleTag,
+  ContentTag,
+  TitleInput,
+  ContentBox,
+  ContentInput,
+  BtnBox,
+  CompleteBtn,
 };

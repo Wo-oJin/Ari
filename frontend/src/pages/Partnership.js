@@ -9,6 +9,7 @@ import TextEllipsis from "../components/common/TextEllipsis";
 import { BigIntro } from "../components/common/Intro";
 import { StoreButton } from "../components/common/Button";
 import { CustomContainer } from "../components/store/PartnershipStyle";
+import { Logo2 } from "../components/common/Logo";
 
 const Partnership = () => {
   const [fromStores, setFromStores] = useState([]);
@@ -40,11 +41,7 @@ const Partnership = () => {
       <Header text="협약 요청 목록" back={true}></Header>
       <Container>
         <CustomContainer>
-          <img
-            alt=""
-            src="images/ari_logo_text.png"
-            style={{ width: "97px", height: "97px" }}
-          ></img>
+          <Logo2 />
           <BigIntro marginBottom="16px">어떤 가게로</BigIntro>
           <BigIntro marginBottom="55px">확인하시나요?</BigIntro>
           {fromStores.map((store, index) => {
