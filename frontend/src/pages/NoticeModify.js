@@ -4,15 +4,15 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { customAxios } from "./customAxios";
 import {
-  NoticeWriteContainer,
-  NoticeWriteHeader,
-  NoticeTitleTag,
-  NoticeWriteContentTag,
-  NoticeTitleInput,
-  NoticeWriteContentBox,
-  NoticeWriteContentInput,
-  NoticeWriteBtnBox,
-  NoticeWriteCompleteBtn,
+  Container,
+  WriteHeader,
+  TitleTag,
+  ContentTag,
+  TitleInput,
+  ContentBox,
+  ContentInput,
+  BtnBox,
+  CompleteBtn,
 } from "../components/notice/NoticeWriteStyle";
 
 const NoticeModify = () => {
@@ -60,29 +60,27 @@ const NoticeModify = () => {
     return (
       <>
         <Header text="공지사항" back={true}></Header>
-        <NoticeWriteContainer>
-          <NoticeWriteHeader>
-            <NoticeTitleTag>공지 제목</NoticeTitleTag>
-            <NoticeTitleInput
+        <Container>
+          <WriteHeader>
+            <TitleTag>공지 제목</TitleTag>
+            <TitleInput
               placeholder="제목을 입력해주세요"
               value={title || ""}
               onChange={onChangeTitle}
-            ></NoticeTitleInput>
-          </NoticeWriteHeader>
-          <NoticeWriteContentBox>
-            <NoticeWriteContentTag>공지 내용</NoticeWriteContentTag>
-            <NoticeWriteContentInput
+            />
+          </WriteHeader>
+          <ContentBox>
+            <ContentTag>공지 내용</ContentTag>
+            <ContentInput
               placeholder="내용을 입력해주세요."
               value={context || ""}
               onChange={onChangeContext}
-            ></NoticeWriteContentInput>
-          </NoticeWriteContentBox>
-        </NoticeWriteContainer>
-        <NoticeWriteBtnBox>
-          <NoticeWriteCompleteBtn onClick={onClick}>
-            작성 완료
-          </NoticeWriteCompleteBtn>
-        </NoticeWriteBtnBox>
+            />
+          </ContentBox>
+        </Container>
+        <BtnBox>
+          <CompleteBtn onClick={onClick}>작성 완료</CompleteBtn>
+        </BtnBox>
       </>
     );
   }

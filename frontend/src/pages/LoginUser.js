@@ -53,11 +53,10 @@ const LoginUser = () => {
         <Link to="/login">
           <MainButton background="#4E514F">이메일로 로그인</MainButton>
         </Link>
-        <div style={{ marginTop: "240px" }}>
-          <Link to="/signupUser">
-            <MainButton background="#4E514F">이메일로 회원가입</MainButton>
-          </Link>
-        </div>
+        <div style={{ marginTop: "240px" }}></div>
+        <Link to="/signupUser">
+          <MainButton background="#4E514F">이메일로 회원가입</MainButton>
+        </Link>
       </Container>
     </>
   );

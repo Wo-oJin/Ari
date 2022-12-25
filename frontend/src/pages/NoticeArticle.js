@@ -6,16 +6,11 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { authState } from "../state";
 import { customAxios } from "./customAxios";
-import { NoticeWriteBtnBox } from "../components/notice/NoticeWriteStyle";
+import { BtnBox } from "../components/notice/NoticeWriteStyle";
 import {
-  NoticeArticleContainer,
-  NoticeArticleHeader,
-  NoticeArticleTitle,
-  NoticeArticleDate,
-  NoticeArticleContent,
-  NoticeArticleText,
-  NoticeModifyBtn,
-  NoticedeleteBtn,
+  Article,
+  ModifyBtn,
+  DeleteBtn,
 } from "../components/notice/NoticeArticleStyle";
 
 const NoticeArticle = () => {
@@ -47,20 +42,16 @@ const NoticeArticle = () => {
     return (
       <>
         <Header text="공지사항" back={true}></Header>
-        <NoticeArticleContainer>
-          <NoticeArticleHeader>
-            <NoticeArticleTitle>{data.title}</NoticeArticleTitle>
-            <NoticeArticleDate>{data.createDate}</NoticeArticleDate>
-          </NoticeArticleHeader>
-          <NoticeArticleContent>
-            <NoticeArticleText>{data.content}</NoticeArticleText>
-          </NoticeArticleContent>
-        </NoticeArticleContainer>
+        <Article
+          title={data.title}
+          createDate={data.createDate}
+          content={data.content}
+        />
         {auth === 3 && (
-          <NoticeWriteBtnBox>
-            <NoticeModifyBtn onClick={onClick}>수정</NoticeModifyBtn>
-            <NoticedeleteBtn onClick={onClickDelete}>삭제</NoticedeleteBtn>
-          </NoticeWriteBtnBox>
+          <BtnBox>
+            <ModifyBtn onClick={onClick}>수정</ModifyBtn>
+            <DeleteBtn onClick={onClickDelete}>삭제</DeleteBtn>
+          </BtnBox>
         )}
       </>
     );
