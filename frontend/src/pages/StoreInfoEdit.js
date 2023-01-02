@@ -258,13 +258,13 @@ const StoreInfoEdit = () => {
     // 클릭 안 된 것들로만 배열 만들기
     // 1. 미리보기 이미지
     const newImagesArr = uImages.filter(
-      (image, index) => index !== parseInt(e.target.name)
+      (image, index) => index !== parseInt(e.target.id)
     );
     setuImages(newImagesArr);
 
     // 2. 실제로 전달할 파일 객체
     const newFormImagesArr = uFormImages.filter(
-      (image, index) => index !== parseInt(e.target.name)
+      (image, index) => index !== parseInt(e.target.id)
     );
     setuFormImages(newFormImagesArr);
   };
@@ -491,15 +491,9 @@ const StoreInfoEdit = () => {
                     key={index}
                     style={{ position: "relative", marginRight: "9px" }}
                   >
-                    <Image alt="" src={image} id={index}></Image>
+                    <Image alt="" src={image} id={index} />
                     {index === 0 && <MainPick>대표 사진</MainPick>}
-                    <label htmlFor={index}></label>
-                    <DeleteImage
-                      alt=""
-                      src="images/img_delete.png"
-                      name={index}
-                      onClick={deleteImage}
-                    ></DeleteImage>
+                    <DeleteImage id={index} onClick={deleteImage} />
                   </div>
                 ))}
             </div>

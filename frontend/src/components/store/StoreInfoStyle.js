@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import deleteBtn from "../../assets/images/img_delete.png";
 
 const Intro = styled.p`
   font-size: 19px;
@@ -67,10 +68,12 @@ const UploadImage = styled.div`
   cursor: pointer;
 `;
 
-const StyledDeleteImage = styled.img`
+const StyledDeleteImage = styled.div`
   position: absolute;
   width: 14px;
   height: 14px;
+  background-image: url(${deleteBtn});
+  background-size: cover;
   top: -3px;
   right: -3px;
   cursor: pointer;
