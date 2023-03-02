@@ -18,7 +18,7 @@ public class NoticeBoardController {
     private final Response response;
     private final NoticeService noticeService;
 
-    @PostMapping("/admin/noitce")
+    @PostMapping("/admin/notice")
     public ResponseEntity saveNotice(@Validated @RequestBody DetailNoticeDto detailNoticeDto, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()) {
@@ -31,7 +31,7 @@ public class NoticeBoardController {
         return response.success("성공적으로 저장했습니다.");
     }
 
-    @PutMapping("/admin/noitce/{noticeId}")
+    @PutMapping("/admin/notice/{noticeId}")
     public ResponseEntity updateNotice(@Validated @RequestBody DetailNoticeDto detailNoticeDto, BindingResult bindingResult,
                                        @PathVariable Long noticeId){
         if(bindingResult.hasErrors())
@@ -40,7 +40,7 @@ public class NoticeBoardController {
         return noticeService.updateNotice(noticeId, detailNoticeDto);
     }
 
-    @DeleteMapping("/admin/noitce/{noticeId}")
+    @DeleteMapping("/admin/notice/{noticeId}")
     public ResponseEntity deleteNotice(@PathVariable Long noticeId){
         return noticeService.deleteNotice(noticeId);
     }

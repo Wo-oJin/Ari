@@ -14,13 +14,11 @@ public enum Category {
     WESTERN("02", "양식"),
     JAPANESE("03", "일식"),
     CHINESE("04", "중식"),
-    FASTFOOD("05", "패스트푸드"),
-    CAFE("06", "카페"),
-    HAIRSHOP("07", "헤어"),
-    BAR("08", "술집"),
-    PLAY("09", "놀이시설"),
-    STUDYCAFE("10", "스터디카페"),
-    ALL("11", "전체");
+    HAIRSHOP("05", "뷰티/헬스"),
+    BAR("06", "술집"),
+    PLAY("07", "놀이시설"),
+    STUDYCAFE("08", "스터디카페"),
+    ALL("09", "전체");
 
     private final String code;
     private final String name;
